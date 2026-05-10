@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text-to-Speech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f1117;
+      --surface:  #1a1d27;
+      --card:     #22263a;
+      --border:   #2e3350;
+      --accent:   #6c63ff;
+      --accent2:  #a78bfa;
+      --success:  #34d399;
+      --danger:   #f87171;
+      --warning:  #fbbf24;
+      --text:     #e2e8f0;
+      --muted:    #94a3b8;
+      --radius:   12px;
+      --radius-sm:8px;
+      --shadow:   0 4px 24px rgba(0,0,0,.45);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px 14px 24px;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ───────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .header-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .header h1 { font-size: 16px; font-weight: 700; letter-spacing: .3px; }
+    .header p  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    /* ── Section ──────────────────────────────────────────────── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 10px;
+    }
+
+    /* ── Form controls ────────────────────────────────────────── */
+    label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 5px; }
+
+    select {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      padding: 8px 10px;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
+      transition: border-color .2s;
+    }
+    select:focus { border-color: var(--accent); }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+      height: 4px;
+      border-radius: 4px;
+    }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .field { margin-bottom: 0; }
+    .field label { margin-bottom: 4px; }
+    .range-val {
+      text-align: right;
+      font-size: 12px;
+      color: var(--accent2);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    /* ── Mode toggle ──────────────────────────────────────────── */
+    .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .mode-btn {
+      border: 2px solid var(--border);
+      background: var(--card);
+      border-radius: var(--radius-sm);
+      padding: 10px 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: all .2s;
+      color: var(--muted);
+    }
+    .mode-btn .mode-icon { font-size: 20px; display: block; margin-bottom: 5px; }
+    .mode-btn .mode-label{ font-size: 11px; font-weight: 600; line-height: 1.3; }
+
+    .mode-btn:hover { border-color: var(--accent); color: var(--text); }
+    .mode-btn.active {
+      border-color: var(--accent);
+      background: rgba(108,99,255,.15);
+      color: var(--text);
+      box-shadow: 0 0 0 3px rgba(108,99,255,.15);
+    }
+
+    /* ── Current cell display ─────────────────────────────────── */
+    .cell-display {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 12px;
+      min-height: 56px;
+      position: relative;
+    }
+    .cell-badge {
+      position: absolute;
+      top: -8px; left: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      letter-spacing: .5px;
+    }
+    .cell-text {
+      margin-top: 4px;
+      line-height: 1.5;
+      color: var(--text);
+      word-break: break-word;
+    }
+    .cell-empty { color: var(--muted); font-style: italic; }
+
+    /* ── Status indicator ─────────────────────────────────────── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--card);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      transition: all .3s;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--muted);
+      transition: background .3s;
+    }
+    .status-bar.reading  { border-color: var(--success); }
+    .status-bar.reading .status-dot { background: var(--success); animation: pulse 1.2s infinite; }
+    .status-bar.paused   { border-color: var(--warning); }
+    .status-bar.paused  .status-dot { background: var(--warning); }
+    .status-bar.stopped  { border-color: var(--border); }
+    .status-bar.stopped .status-dot { background: var(--muted); }
+    .status-bar.auto    { border-color: var(--accent2); }
+    .status-bar.auto   .status-dot { background: var(--accent2); animation: pulse 1.2s infinite; }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(1.4); }
+    }
+
+    /* ── Action buttons ───────────────────────────────────────── */
+    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+    .btn-full  { width: 100%; }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      transition: all .2s;
+    }
+    .btn:active { transform: scale(.97); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(108,99,255,.35);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 18px rgba(108,99,255,.5); }
+
+    .btn-success {
+      background: linear-gradient(135deg, #059669, var(--success));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(52,211,153,.3);
+    }
+    .btn-success:hover { box-shadow: 0 6px 18px rgba(52,211,153,.45); }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626, var(--danger));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(248,113,113,.3);
+    }
+    .btn-danger:hover { box-shadow: 0 6px 18px rgba(248,113,113,.45); }
+
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #d97706, var(--warning));
+      color: #111;
+      box-shadow: 0 4px 12px rgba(251,191,36,.3);
+    }
+    .btn-warning:hover { box-shadow: 0 6px 18px rgba(251,191,36,.45); }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ── Auto-mode toggle ─────────────────────────────────────── */
+    .auto-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .auto-toggle:hover { border-color: var(--accent2); }
+    .auto-toggle.on    { border-color: var(--accent2); background: rgba(167,139,250,.12); }
+    .auto-label { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .toggle-track {
+      width: 40px; height: 22px;
+      background: var(--border);
+      border-radius: 20px;
+      position: relative;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .auto-toggle.on .toggle-track { background: var(--accent2); }
+    .toggle-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 16px; height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: left .2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,.3);
+    }
+    .auto-toggle.on .toggle-thumb { left: 21px; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    .footer { text-align: center; margin-top: 16px; font-size: 10px; color: var(--muted); }
+
+    /* ── Responsive helpers ───────────────────────────────────── */
+    .mt-8  { margin-top: 8px; }
+    .mt-10 { margin-top: 10px; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-icon">🔊</div>
+    <div>
+      <h1>Text-to-Speech</h1>
+      <p>Đọc nội dung ô bằng giọng nói</p>
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <div class="status-bar stopped" id="statusBar">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Sẵn sàng</span>
+  </div>
+
+  <!-- Current cell preview -->
+  <div class="section" style="padding-bottom:16px; position:relative;">
+    <div class="section-title">Ô đang chọn</div>
+    <div class="cell-display" id="cellDisplay">
+      <div class="cell-badge" id="cellBadge">—</div>
+      <div class="cell-text cell-empty" id="cellText">Chưa có ô nào được chọn</div>
+    </div>
+  </div>
+
+  <!-- Language & Voice -->
+  <div class="section">
+    <div class="section-title">Ngôn ngữ &amp; Giọng đọc</div>
+
+    <div class="field">
+      <label>🌐 Ngôn ngữ</label>
+      <select id="langSelect">
+        <option value="ja-JP">🇯🇵 Tiếng Nhật (ja-JP)</option>
+        <option value="vi-VN">🇻🇳 Tiếng Việt (vi-VN)</option>
+        <option value="en-US">🇺🇸 Tiếng Anh Mỹ (en-US)</option>
+        <option value="en-GB">🇬🇧 Tiếng Anh Anh (en-GB)</option>
+        <option value="zh-CN">🇨🇳 Tiếng Trung (zh-CN)</option>
+        <option value="ko-KR">🇰🇷 Tiếng Hàn (ko-KR)</option>
+        <option value="fr-FR">🇫🇷 Tiếng Pháp (fr-FR)</option>
+        <option value="de-DE">🇩🇪 Tiếng Đức (de-DE)</option>
+        <option value="es-ES">🇪🇸 Tiếng Tây Ban Nha (es-ES)</option>
+      </select>
+    </div>
+
+    <div class="field mt-10">
+      <label>🎙️ Giọng đọc</label>
+      <select id="voiceSelect">
+        <option value="">— Đang tải giọng đọc… —</option>
+      </select>
+    </div>
+
+    <div class="row-2 mt-10">
+      <div class="field">
+        <label>⚡ Tốc độ</label>
+        <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1" />
+        <div class="range-val" id="rateVal">1.0×</div>
+      </div>
+      <div class="field">
+        <label>🎵 Cao độ</label>
+        <input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1" />
+        <div class="range-val" id="pitchVal">1.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode selection -->
+  <div class="section">
+    <div class="section-title">Chế độ đọc</div>
+    <div class="mode-grid">
+      <div class="mode-btn active" id="modeSingle" onclick="setMode('single')">
+        <span class="mode-icon">🎯</span>
+        <span class="mode-label">Đọc một ô<br/><span style="font-weight:400;color:var(--muted)">Dừng sau khi đọc</span></span>
+      </div>
+      <div class="mode-btn" id="modeAuto" onclick="setMode('auto')">
+        <span class="mode-icon">🔄</span>
+        <span class="mode-label">Liên tục<br/><span style="font-weight:400;color:var(--muted)">Đọc khi chọn ô</span></span>
+      </div>
+    </div>
+
+    <!-- Auto-mode live toggle (only shown in auto mode) -->
+    <div id="autoToggleWrap" class="mt-10" style="display:none;">
+      <div class="auto-toggle" id="autoToggle" onclick="toggleAutoRead()">
+        <span class="auto-label">⚡ Kích hoạt chế độ liên tục</span>
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="btn-grid">
+    <button class="btn btn-primary" id="btnRead" onclick="readCurrentCell()">
+      ▶ Đọc ô này
+    </button>
+    <button class="btn btn-secondary" id="btnRefresh" onclick="refreshCell()">
+      🔃 Làm mới
+    </button>
+  </div>
+
+  <div class="btn-grid">
+    <button class="btn btn-warning" id="btnRestart" onclick="restartReading()">
+      ↩ Đọc lại
+    </button>
+    <button class="btn btn-danger" id="btnStop" onclick="stopReading()">
+      ⏹ Dừng
+    </button>
+  </div>
+
+  <div class="footer">
+    Web Speech API · Google Apps Script · 2026
+  </div>
+
+<!-- ───────────────────────── JavaScript ───────────────────────── -->
+<script>
+  /* ── State ──────────────────────────────────────────────────── */
+  let synth       = window.speechSynthesis;
+  let voices      = [];
+  let currentMode = 'single';       // 'single' | 'auto'
+  let autoActive  = false;          // is auto mode live?
+  let lastText    = '';             // last spoken text (for restart)
+  let lastAddr    = '';
+  let pollTimer   = null;           // setInterval handle for auto mode
+  let lastPollAddr = '';
+
+  /* ── Voice loading ──────────────────────────────────────────── */
+  function loadVoices() {
+    voices = synth.getVoices();
+    populateVoices();
+  }
+
+  function populateVoices() {
+    const lang   = document.getElementById('langSelect').value;
+    const sel    = document.getElementById('voiceSelect');
+    const prev   = sel.value;
+    sel.innerHTML = '';
+
+    // Voices matching the selected language first
+    const matched  = voices.filter(v => v.lang.startsWith(lang.split('-')[0]));
+    const others   = voices.filter(v => !v.lang.startsWith(lang.split('-')[0]));
+    const ordered  = [...matched, ...others];
+
+    if (ordered.length === 0) {
+      sel.innerHTML = '<option value="">— Không tìm thấy giọng —</option>';
+      return;
+    }
+
+    ordered.forEach((v, i) => {
+      const opt       = document.createElement('option');
+      opt.value       = v.name;
+      opt.dataset.lang = v.lang;
+      const flag = v.lang.startsWith('ja') ? '🇯🇵'
+                 : v.lang.startsWith('vi') ? '🇻🇳'
+                 : v.lang.startsWith('en') ? '🇬🇧'
+                 : v.lang.startsWith('zh') ? '🇨🇳'
+                 : v.lang.startsWith('ko') ? '🇰🇷'
+                 : '🌐';
+      opt.textContent = `${flag} ${v.name} (${v.lang})`;
+      if (matched.length > 0 && i === matched.length) {
+        // separator before "other" voices
+        const sep   = document.createElement('option');
+        sep.disabled = true;
+        sep.textContent = '── Giọng khác ──';
+        sel.appendChild(sep);
+      }
+      sel.appendChild(opt);
+    });
+
+    // Restore previous selection if still available
+    if (prev && [...sel.options].some(o => o.value === prev)) sel.value = prev;
+  }
+
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+  loadVoices();
+
+  /* ── Language preference (persisted via Apps Script) ────────── */
+  google.script.run
+    .withSuccessHandler(lang => {
+      if (lang) {
+        document.getElementById('langSelect').value = lang;
+        populateVoices();
+      }
+    })
+    .getLanguagePreference();
+
+  document.getElementById('langSelect').addEventListener('change', () => {
+    const lang = document.getElementById('langSelect').value;
+    populateVoices();
+    google.script.run.saveLanguagePreference(lang);
+  });
+
+  /* ── Range sliders ──────────────────────────────────────────── */
+  document.getElementById('rateRange').addEventListener('input', function() {
+    document.getElementById('rateVal').textContent = parseFloat(this.value).toFixed(1) + '×';
+  });
+  document.getElementById('pitchRange').addEventListener('input', function() {
+    document.getElementById('pitchVal').textContent = parseFloat(this.value).toFixed(1);
+  });
+
+  /* ── Mode switching ─────────────────────────────────────────── */
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('modeSingle').classList.toggle('active', mode === 'single');
+    document.getElementById('modeAuto').classList.toggle('active', mode === 'auto');
+    document.getElementById('autoToggleWrap').style.display = mode === 'auto' ? 'block' : 'none';
+
+    if (mode === 'single') {
+      // turn off auto read if switching away
+      if (autoActive) stopAutoRead();
+    }
+  }
+
+  /* ── Auto-mode toggle ───────────────────────────────────────── */
+  function toggleAutoRead() {
+    if (autoActive) {
+      stopAutoRead();
+    } else {
+      startAutoRead();
+    }
+  }
+
+  function startAutoRead() {
+    autoActive = true;
+    document.getElementById('autoToggle').classList.add('on');
+    setStatus('auto', '⚡ Chế độ liên tục — đang theo dõi');
+    lastPollAddr = '';
+    pollTimer = setInterval(pollCell, 700);
+  }
+
+  function stopAutoRead() {
+    autoActive = false;
+    document.getElementById('autoToggle').classList.remove('on');
+    clearInterval(pollTimer);
+    synth.cancel();
+    setStatus('stopped', 'Sẵn sàng');
+  }
+
+  function pollCell() {
+    google.script.run
+      .withSuccessHandler(result => {
+        if (result.address !== lastPollAddr && result.value.trim() !== '') {
+          lastPollAddr = result.address;
+          updateCellDisplay(result);
+          speak(result.value);
+        }
+      })
+      .getActiveCellValue();
+  }
+
+  /* ── Cell display helpers ───────────────────────────────────── */
+  function updateCellDisplay(result) {
+    document.getElementById('cellBadge').textContent = result.address || '—';
+    const el = document.getElementById('cellText');
+    if (result.value && result.value.trim() !== '') {
+      el.textContent = result.value;
+      el.classList.remove('cell-empty');
+    } else {
+      el.textContent = 'Ô trống';
+      el.classList.add('cell-empty');
+    }
+    lastText = result.value;
+    lastAddr = result.address;
+  }
+
+  /* ── Refresh cell (manual) ──────────────────────────────────── */
+  function refreshCell() {
+    google.script.run
+      .withSuccessHandler(result => updateCellDisplay(result))
+      .getActiveCellValue();
+  }
+
+  /* ── Read current cell (single mode) ───────────────────────── */
+  function readCurrentCell() {
+    google.script.run
+      .withSuccessHandler(result => {
+        updateCellDisplay(result);
+        if (result.value && result.value.trim() !== '') {
+          speak(result.value);
+        } else {
+          setStatus('stopped', 'Ô trống, không có gì để đọc');
+        }
+      })
+      .getActiveCellValue();
+  }
+
+  /* ── Core speak function ─────────────────────────────────────── */
+  function speak(text) {
+    synth.cancel();
+    if (!text || text.trim() === '') return;
+
+    const utt   = new SpeechSynthesisUtterance(text);
+    const vName = document.getElementById('voiceSelect').value;
+    const voice = voices.find(v => v.name === vName);
+    if (voice) utt.voice = voice;
+
+    utt.lang  = document.getElementById('langSelect').value;
+    utt.rate  = parseFloat(document.getElementById('rateRange').value);
+    utt.pitch = parseFloat(document.getElementById('pitchRange').value);
+
+    utt.onstart = () => setStatus('reading', `▶ Đang đọc: ${lastAddr}`);
+    utt.onend   = () => {
+      if (!autoActive) setStatus('stopped', 'Đã đọc xong ✓');
+    };
+    utt.onerror = e => {
+      if (e.error !== 'interrupted') setStatus('stopped', `Lỗi: ${e.error}`);
+    };
+
+    synth.speak(utt);
+    lastText = text;
+  }
+
+  /* ── Stop reading ───────────────────────────────────────────── */
+  function stopReading() {
+    if (autoActive) stopAutoRead();
+    synth.cancel();
+    setStatus('stopped', 'Đã dừng');
+  }
+
+  /* ── Restart (read again from beginning) ────────────────────── */
+  function restartReading() {
+    if (lastText && lastText.trim() !== '') {
+      speak(lastText);
+    } else {
+      readCurrentCell();
+    }
+  }
+
+  /* ── Status helper ──────────────────────────────────────────── */
+  function setStatus(state, msg) {
+    const bar = document.getElementById('statusBar');
+    bar.className = 'status-bar ' + state;
+    document.getElementById('statusText').textContent = msg;
+  }
+
+  /* ── Initial cell load ──────────────────────────────────────── */
+  refreshCell();
+</script>
+</body>
+</html>
