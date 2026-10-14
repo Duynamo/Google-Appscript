@@ -89,6 +89,14 @@ function writeLog(action, detail) {
   } catch(e) {}
 }
 
+function userMatchesAssignee(assigneeStr, userEmail, userName) {
+  if (!assigneeStr) return false;
+  const list = String(assigneeStr).split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  if (userEmail && list.includes(String(userEmail).toLowerCase())) return true;
+  if (userName && list.includes(String(userName).toLowerCase())) return true;
+  return false;
+}
+
 // ── mapTaskFull: isOverdue dùng midnight comparison ──
 function mapTaskFull(t) {
   const deadlineDate = t[9] ? new Date(t[9]) : null;
@@ -131,11 +139,11 @@ function getInitData() {
   if (user.role === "Manager") {
     const managedProjects = allProjects.filter(p => p[3] === user.email);
     const managedPjIds    = new Set(managedProjects.map(p => p[0]));
-    tasks = allTasks.filter(t => managedPjIds.has(t[1]) || t[5] === user.email);
+    tasks = allTasks.filter(t => managedPjIds.has(t[1]) || userMatchesAssignee(t[5], user.email, user.name));
     const relatedPjIds    = new Set([...managedPjIds, ...tasks.map(t => t[1])]);
     projects = allProjects.filter(p => relatedPjIds.has(p[0]));
   } else if (user.role === "Member") {
-    tasks = allTasks.filter(t => t[5] === user.email);
+    tasks = allTasks.filter(t => userMatchesAssignee(t[5], user.email, user.name));
     const memberPjIds = new Set(tasks.map(t => t[1]));
     projects = allProjects.filter(p => memberPjIds.has(p[0]));
   }

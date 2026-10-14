@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Column Filter</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0f1117;--surf:#1a1d27;--surf2:#222536;--surf3:#2a2e42;
+  --bdr:#2e3248;--acc:#6c72ff;--acc2:#ff6c8a;
+  --tx:#e8eaf6;--tx2:#8b90b8;--tx3:#555a7a;
+  --green:#4ade80;--blue:#60b4ff;--r:10px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);font-size:13px;min-height:100vh;}
+
+/* HEADER */
+.hdr{padding:12px 14px 9px;border-bottom:1px solid var(--bdr);
+  background:linear-gradient(135deg,#1a1d27,#161926);position:sticky;top:0;z-index:300;}
+.hdr-row{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;}
+.hdr-ic{width:24px;height:24px;background:linear-gradient(135deg,var(--acc),var(--acc2));
+  border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.hdr-sub{font-size:10px;color:var(--tx3);margin-top:1px;padding-left:32px;}
+
+/* LAYOUT */
+.body{padding:11px;display:flex;flex-direction:column;gap:9px;}
+
+/* CARD */
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);overflow:visible;}
+.card-head{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--tx3);padding:8px 12px 6px;border-bottom:1px solid var(--bdr);}
+.card-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px;}
+
+/* LABEL */
+.fl{display:flex;flex-direction:column;gap:3px;}
+.fl-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--tx2);}
+
+/* NATIVE SELECT */
+select{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:7px;
+  color:var(--tx);font-family:'DM Sans',sans-serif;font-size:12px;padding:7px 26px 7px 9px;
+  outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238b90b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;
+  transition:border-color .15s,box-shadow .15s;}
+select:focus{border-color:var(--acc);box-shadow:0 0 0 2px rgba(108,114,255,.18);}
+select option{background:#1a1d27;}
+
+/* COMBOBOX (sheet + label picker) */
+.cb-wrap{position:relative;z-index:10;}
+/* give label picker higher z-index so its dropdown shows above result card */
+#lbl-wrap{z-index:20;}
+
+.cb-input-row{position:relative;}
+.cb-inp{
+  width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:7px;
+  color:var(--tx);font-family:'DM Sans',sans-serif;font-size:12px;
+  padding:7px 30px 7px 30px;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.cb-inp:focus{border-color:var(--acc);box-shadow:0 0 0 2px rgba(108,114,255,.18);}
+.cb-inp::placeholder{color:var(--tx3);}
+.cb-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  color:var(--tx3);font-size:12px;pointer-events:none;}
+.cb-clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px;
+  display:none;padding:1px 3px;border-radius:4px;line-height:1;}
+.cb-clr:hover{color:var(--tx2);}
+.cb-arr{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  color:var(--tx3);font-size:10px;pointer-events:none;}
+
+/* DROPDOWN LIST */
+.cb-dd{
+  display:none;position:absolute;top:calc(100% + 3px);left:0;right:0;
+  background:var(--surf3);border:1px solid var(--bdr);border-radius:8px;
+  box-shadow:0 10px 30px rgba(0,0,0,.55);
+  max-height:220px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;
+}
+.cb-dd::-webkit-scrollbar{width:4px;}
+.cb-dd::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:4px;}
+.cb-dd.show{display:block;}
+
+.cb-opt{
+  padding:8px 12px;font-size:12px;color:var(--tx);
+  cursor:pointer;border-bottom:1px solid rgba(46,50,72,.4);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:background .08s;
+}
+.cb-opt:last-child{border-bottom:none;}
+.cb-opt:hover,.cb-opt.hi{background:rgba(108,114,255,.13);}
+.cb-opt mark{background:rgba(108,114,255,.28);color:#b0b5ff;border-radius:2px;padding:0 1px;}
+.cb-empty{padding:10px 12px;font-size:11px;color:var(--tx3);font-style:italic;}
+
+/* 2-col grid */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* BUTTON */
+.btn-load{
+  width:100%;padding:8px;border-radius:7px;border:none;
+  background:linear-gradient(135deg,var(--acc),#8b6fff);color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;transition:opacity .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-load:hover:not(:disabled){opacity:.86;transform:translateY(-1px);}
+.btn-load:active{transform:none;}
+.btn-load:disabled{opacity:.35;cursor:not-allowed;}
+
+/* RESULT CARD */
+#res-card{display:none;}
+.res-inner{padding:12px;display:flex;flex-direction:column;gap:10px;}
+.res-name-row{display:flex;align-items:flex-start;gap:7px;}
+.res-badge{
+  flex-shrink:0;margin-top:2px;
+  background:rgba(108,114,255,.15);color:var(--acc);
+  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:4px;padding:2px 6px;
+}
+.res-name{font-size:13px;font-weight:600;color:var(--tx);line-height:1.4;word-break:break-word;}
+.res-divider{height:1px;background:var(--bdr);}
+
+/* LINK BOX */
+.link-box{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;overflow:hidden;}
+.link-box-head{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--tx3);padding:6px 10px 4px;border-bottom:1px solid var(--bdr);}
+.link-box-body{padding:9px 10px;display:flex;flex-direction:column;gap:8px;}
+.link-url{font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);
+  word-break:break-all;line-height:1.6;user-select:all;}
+.link-url.none{color:var(--tx3);font-style:italic;font-family:'DM Sans',sans-serif;}
+
+.val-input{
+  width:100%;background:var(--surf3);border:1px solid var(--bdr);border-radius:6px;
+  color:var(--tx);font-family:'DM Mono',monospace;font-size:11px;padding:7px 9px;
+  outline:none;resize:none;word-break:break-all;
+}
+.val-input:focus{border-color:var(--acc);}
+
+.res-btns{display:flex;gap:6px;}
+.rbtn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:5px;
+  padding:7px 8px;border-radius:7px;border:none;
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:all .15s;
+}
+.rbtn-open{background:linear-gradient(135deg,#1a6eee,var(--blue));color:#fff;}
+.rbtn-open:hover:not(.off){opacity:.83;}
+.rbtn-open.off{background:var(--surf3);color:var(--tx3);cursor:not-allowed;}
+.rbtn-go{background:var(--surf3);border:1px solid var(--bdr);color:var(--tx2);}
+.rbtn-go:hover{border-color:var(--acc);color:var(--acc);}
+
+.res-row{font-size:10px;color:var(--tx3);text-align:right;font-family:'DM Mono',monospace;}
+
+/* STATUS */
+#st{font-size:11px;color:var(--tx3);text-align:center;min-height:14px;padding:0 4px 2px;transition:color .2s;}
+#st.ok{color:var(--green);}#st.er{color:var(--acc2);}
+
+/* SPINNER */
+.spin{display:inline-block;width:13px;height:13px;
+  border:2px solid rgba(108,114,255,.2);border-top-color:var(--acc);
+  border-radius:50%;animation:sp .7s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-row"><div class="hdr-ic">🔍</div>Smart Column Filter</div>
+  <div class="hdr-sub">Lọc dữ liệu &amp; truy cập link nhanh</div>
+</div>
+
+<div class="body">
+
+  <!-- ① CÀI ĐẶT -->
+  <div class="card">
+    <div class="card-head">⚙ Cài đặt</div>
+    <div class="card-body">
+
+      <!-- Sheet combobox -->
+      <div class="fl">
+        <div class="fl-lbl">Sheet</div>
+        <div class="cb-wrap" id="sh-wrap">
+          <div class="cb-input-row">
+            <span class="cb-ico">☰</span>
+            <input class="cb-inp" id="sh-inp" type="text"
+              placeholder="Tìm hoặc chọn sheet…" autocomplete="off"
+              onfocus="cbOpen('sh')" oninput="cbType('sh',this.value)" onkeydown="cbKey(event,'sh')"/>
+            <button class="cb-clr" id="sh-clr" onclick="cbClear('sh')">✕</button>
+          </div>
+          <div class="cb-dd" id="sh-dd"></div>
+        </div>
+      </div>
+
+      <!-- Column selects -->
+      <div class="grid2">
+        <div class="fl">
+          <div class="fl-lbl">Cột Label</div>
+          <select id="sel-label" onchange="onColChg()"><option value="">— Chọn —</option></select>
+        </div>
+        <div class="fl">
+          <div class="fl-lbl">Cột Link</div>
+          <select id="sel-link" onchange="onColChg()"><option value="">— Chọn —</option></select>
+        </div>
+      </div>
+
+      <button class="btn-load" id="btn-load" onclick="doLoad()" disabled>▶ Load dữ liệu</button>
+    </div>
+  </div>
+
+  <!-- ② CHỌN GIÁ TRỊ -->
+  <div class="card" id="picker-card" style="display:none">
+    <div class="card-head">🗂 Chọn giá trị</div>
+    <div class="card-body">
+      <div class="fl">
+        <div class="fl-lbl" id="lbl-col-name">Label</div>
+        <div class="cb-wrap" id="lbl-wrap">
+          <div class="cb-input-row">
+            <span class="cb-ico">⌕</span>
+            <input class="cb-inp" id="lbl-inp" type="text"
+              placeholder="Nhập để lọc hoặc click ▼…" autocomplete="off"
+              onfocus="cbOpen('lbl')" oninput="cbType('lbl',this.value)" onkeydown="cbKey(event,'lbl')"/>
+            <button class="cb-clr" id="lbl-clr" onclick="cbClear('lbl')">✕</button>
+            <span class="cb-arr" id="lbl-arr" style="right:8px;pointer-events:none;">▾</span>
+          </div>
+          <div class="cb-dd" id="lbl-dd"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ KẾT QUẢ -->
+  <div class="card" id="res-card">
+    <div class="card-head">🔗 Kết quả</div>
+    <div class="res-inner">
+      <div class="res-name-row">
+        <span class="res-badge">Label</span>
+        <div class="res-name" id="res-name-txt"></div>
+      </div>
+      <div class="res-divider"></div>
+      <div class="link-box">
+        <div class="link-box-head">Giá trị Text của ô</div>
+        <div class="link-box-body" style="padding-bottom: 8px;">
+          <textarea id="res-val-txt" class="val-input" readonly rows="2"></textarea>
+        </div>
+      </div>
+      <div class="link-box">
+        <div class="link-box-head">URL / Link</div>
+        <div class="link-box-body">
+          <textarea id="res-url-txt" class="val-input" readonly rows="2"></textarea>
+          <div class="res-btns">
+            <a class="rbtn rbtn-open off" id="res-open" href="#" target="_blank">🔗 Mở link</a>
+            <button class="rbtn rbtn-go" onclick="doScroll()">↗ Đến dòng</button>
+          </div>
+          <div class="res-row" id="res-row-txt"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="st"></div>
+</div><!-- /body -->
+
+<script>
+/* =========================================================
+   STATE
+========================================================= */
+var G = {
+  sheets:  [],          // string[]
+  data:    [],          // [{label,linkText,linkUrl,rowIndex}]
+  sheet:   '',          // active sheet name
+  picked:  null,        // selected data row
+  openId:  null,        // which combobox is open: 'sh'|'lbl'|null
+  hiIdx:   { sh:-1, lbl:-1 }
+};
+
+/* =========================================================
+   INIT
+========================================================= */
+window.onload = function(){
+  st('Đang tải...','');
+  google.script.run
+    .withSuccessHandler(initSheets)
+    .withFailureHandler(function(e){ st('Lỗi: '+e.message,'er'); })
+    .getSheetNamesWithActive();
+};
+
+function initSheets(res){
+  if(Array.isArray(res)) res = {names:res, active:res[0]||''};
+  G.sheets = res.names || [];
+  cbRender('sh', G.sheets, '');
+
+  var act = res.active || G.sheets[0] || '';
+  if(act){
+    inp('sh-inp').value = act;
+    show('sh-clr');
+    G.sheet = act;
+    loadHeaders(act);
+  }
+  st('','');
+}
+
+/* =========================================================
+   COMBOBOX ENGINE
+   id = 'sh' | 'lbl'
+========================================================= */
+function cbItems(id){
+  if(id==='sh')  return G.sheets;
+  if(id==='lbl') return G.data.map(function(d){return d.label;});
+  return [];
+}
+
+/* Open dropdown */
+function cbOpen(id){
+  if(G.openId && G.openId!==id) cbClose(G.openId);
+  G.openId = id;
+  G.hiIdx[id] = -1;
+  var q = inp(id+'-inp').value.trim().toLowerCase();
+  var list = cbItems(id);
+  var filtered = q ? list.filter(function(v){return v.toLowerCase().indexOf(q)!==-1;}) : list;
+  cbRender(id, filtered, q);
+  dd(id).classList.add('show');
+}
+
+/* User typed */
+function cbType(id, val){
+  /* show/hide clear button */
+  e(id+'-clr').style.display = val ? 'inline' : 'none';
+  /* hide down-arrow for lbl when typing */
+  if(id==='lbl'){ var a=e('lbl-arr'); if(a) a.style.display = val ? 'none' : ''; }
+  G.hiIdx[id] = -1;
+  var q = val.trim().toLowerCase();
+  var list = cbItems(id);
+  var filtered = q ? list.filter(function(v){return v.toLowerCase().indexOf(q)!==-1;}) : list;
+  cbRender(id, filtered, q);
+  dd(id).classList.add('show');
+  G.openId = id;
+
+  /* For label: if there is an EXACT match, show result */
+  if(id==='lbl'){
+    var exact = G.data.find(function(d){return d.label.toLowerCase()===q;});
+    if(exact) showResult(exact);
+    else if(!q) hideResult();
+  }
+}
+
+/* Render options */
+function cbRender(id, items, q){
+  var el = dd(id);
+  if(!items.length){
+    el.innerHTML = '<div class="cb-empty">Không tìm thấy kết quả</div>';
+    return;
+  }
+  el.innerHTML = items.slice(0,200).map(function(v,i){
+    var disp = q ? hilite(esc(v),q) : esc(v);
+    return '<div class="cb-opt" data-val="'+esc(v)+'" data-i="'+i+'"'
+      +' onmousedown="cbPick(event,\''+id+'\',this)" onmouseover="cbHi(\''+id+'\','+i+')">'
+      +disp+'</div>';
+  }).join('');
+}
+
+/* Highlight focused option */
+function cbHi(id, idx){
+  G.hiIdx[id] = idx;
+  dd(id).querySelectorAll('.cb-opt').forEach(function(o,i){
+    o.classList.toggle('hi', i===idx);
+  });
+}
+
+/* Pick an option */
+function cbPick(event, id, el){
+  event.preventDefault();
+  var val = el.dataset.val;
+  inp(id+'-inp').value = val;
+  show(id+'-clr');
+  if(id==='lbl'){ var a=e('lbl-arr'); if(a) a.style.display='none'; }
+  cbClose(id);
+
+  if(id==='sh'){
+    G.sheet = val;
+    loadHeaders(val);
+  } else if(id==='lbl'){
+    var found = G.data.find(function(d){return d.label===val;});
+    if(found) showResult(found);
+  }
+}
+
+/* Clear input */
+function cbClear(id){
+  inp(id+'-inp').value = '';
+  e(id+'-clr').style.display = 'none';
+  if(id==='lbl'){ var a=e('lbl-arr'); if(a) a.style.display=''; }
+  cbClose(id);
+  if(id==='lbl') hideResult();
+}
+
+/* Close */
+function cbClose(id){
+  dd(id).classList.remove('show');
+  if(G.openId===id) G.openId = null;
+}
+
+/* Keyboard nav */
+function cbKey(event, id){
+  var opts = dd(id).querySelectorAll('.cb-opt');
+  var k = event.key;
+  if(k==='ArrowDown'){
+    event.preventDefault();
+    G.hiIdx[id] = Math.min(G.hiIdx[id]+1, opts.length-1);
+    cbHi(id, G.hiIdx[id]);
+    opts[G.hiIdx[id]] && opts[G.hiIdx[id]].scrollIntoView({block:'nearest'});
+    dd(id).classList.add('show'); G.openId=id;
+  } else if(k==='ArrowUp'){
+    event.preventDefault();
+    G.hiIdx[id] = Math.max(G.hiIdx[id]-1, 0);
+    cbHi(id, G.hiIdx[id]);
+    opts[G.hiIdx[id]] && opts[G.hiIdx[id]].scrollIntoView({block:'nearest'});
+  } else if(k==='Enter'){
+    var hi = G.hiIdx[id];
+    if(hi>=0 && opts[hi]){
+      cbPick({preventDefault:function(){}}, id, opts[hi]);
+    } else {
+      cbClose(id);
+    }
+  } else if(k==='Escape'){
+    cbClose(id);
+  }
+}
+
+/* Close on outside click */
+document.addEventListener('mousedown', function(ev){
+  ['sh','lbl'].forEach(function(id){
+    var w = e(id+'-wrap');
+    if(w && !w.contains(ev.target)) cbClose(id);
+  });
+});
+
+/* =========================================================
+   HEADERS
+========================================================= */
+function loadHeaders(sheetName){
+  st('Đang đọc cột…','');
+  e('btn-load').disabled = true;
+  google.script.run
+    .withSuccessHandler(fillHeaders)
+    .withFailureHandler(function(er){st('Lỗi: '+er.message,'er');})
+    .getHeaders(sheetName);
+}
+
+function fillHeaders(headers){
+  var sl = e('sel-label'), sk = e('sel-link');
+  var opt = '<option value="">— Chọn —</option>'
+    +headers.map(function(h){
+      return '<option value="'+h.index+'">'+h.letter+': '+esc(h.name)+'</option>';
+    }).join('');
+  sl.innerHTML = sk.innerHTML = opt;
+  autoDetect(headers, sl, sk);
+  onColChg();
+  st(headers.length+' cột','ok');
+}
+
+function autoDetect(headers, sl, sk){
+  var lk=['name','名前','project name','プロジェクト名','title','名称'];
+  var uk=['link','url','リンク','sheet link','href','リンク'];
+  headers.forEach(function(h){
+    var lo=h.name.toLowerCase();
+    if(lk.some(function(k){return lo.indexOf(k)!==-1;})) sl.value=h.index;
+    if(uk.some(function(k){return lo.indexOf(k)!==-1;})) sk.value=h.index;
+  });
+}
+
+function onColChg(){
+  var lv=e('sel-label').value, lk=e('sel-link').value;
+  e('btn-load').disabled = !(lv!==''&&lk!==''&&lv!==lk);
+}
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+function doLoad(){
+  var sheet  = G.sheet || inp('sh-inp').value;
+  var lbIdx  = parseInt(e('sel-label').value);
+  var lkIdx  = parseInt(e('sel-link').value);
+  if(!sheet||isNaN(lbIdx)||isNaN(lkIdx)) return;
+
+  /* show label col name in picker header */
+  var lbSel  = e('sel-label');
+  var lbName = lbSel.options[lbSel.selectedIndex] ? lbSel.options[lbSel.selectedIndex].text : 'Label';
+  e('lbl-col-name').textContent = lbName;
+
+  var btn = e('btn-load');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spin"></span> Đang tải…';
+  hideResult();
+
+  google.script.run
+    .withSuccessHandler(function(data){
+      G.data = data;
+      btn.disabled=false; btn.innerHTML='▶ Load dữ liệu';
+      e('picker-card').style.display='';
+      cbClear('lbl');
+      /* pre-render full list in dropdown (don't open yet) */
+      cbRender('lbl', data.map(function(d){return d.label;}), '');
+      inp('lbl-inp').focus();
+      st('✓ '+data.length+' dòng','ok');
+    })
+    .withFailureHandler(function(er){
+      btn.disabled=false; btn.innerHTML='▶ Load dữ liệu';
+      st('Lỗi: '+er.message,'er');
+    })
+    .getFilterData(sheet, lbIdx, lkIdx, 1);
+}
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
+function showResult(item){
+  G.picked = item;
+
+  var urlStr = item.linkUrl ? String(item.linkUrl).trim() : '';
+  var txtStr = item.linkText ? String(item.linkText).trim() : '';
+  var actualUrl = (urlStr && urlStr.match(/^https?:\/\//i)) ? urlStr : (txtStr && txtStr.match(/^https?:\/\//i)) ? txtStr : null;
+  var hasUrl = !!actualUrl;
+
+  e('res-card').style.display = '';
+  e('res-name-txt').textContent = item.label;
+  e('res-row-txt').textContent  = 'Row '+item.rowIndex;
+
+  e('res-val-txt').value = txtStr || '(Trống)';
+
+  var urlEl = e('res-url-txt');
+  if(hasUrl){
+    urlEl.value = actualUrl;
+  } else {
+    urlEl.value = '(Không có link)';
+  }
+
+  var openBtn = e('res-open');
+  if(hasUrl){
+    openBtn.href = actualUrl;
+    openBtn.className = 'rbtn rbtn-open';
+    openBtn.onclick = null;
+  } else {
+    openBtn.href = '#';
+    openBtn.className = 'rbtn rbtn-open off';
+    openBtn.onclick = function(ev){ev.preventDefault();};
+  }
+}
+
+function hideResult(){
+  G.picked = null;
+  e('res-card').style.display = 'none';
+}
+
+function doScroll(){
+  if(!G.picked) return;
+  google.script.run.scrollToRow(G.sheet, G.picked.rowIndex);
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+function st(msg,cls){ var el=e('st'); el.textContent=msg; el.className=cls||''; }
+function e(id){ return document.getElementById(id); }
+function inp(id){ return e(id); }
+function dd(id){ return e(id+'-dd'); }
+function show(id){ e(id).style.display='inline'; }
+
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function hilite(text, q){
+  return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),
+    '<mark>$1</mark>');
+}
+</script>
+</body>
+</html>

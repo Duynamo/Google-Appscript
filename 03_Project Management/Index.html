@@ -328,17 +328,28 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .mem-list-wrap{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;padding:2px}
 .mem-mini-row{display:flex;align-items:center;gap:5px;padding:3px 0}
 
-/* ══ NEW: ASSIGNEE COMBO ══ */
+/* ══ NEW: ASSIGNEE COMBO & MULTI-CHIPS ══ */
 .as-combo{position:relative}
-.as-combo-inp{width:100%;padding:8px 10px;border:1.5px solid var(--bdr);border-radius:7px;font-size:12px;outline:none;transition:.15s;background:#fff}
-.as-combo-inp:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(79,110,247,.12)}
-.as-combo-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--p);border-top:none;border-radius:0 0 7px 7px;z-index:400;max-height:200px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.12);display:none}
+.as-combo-box{display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-height:36px;padding:3px 6px;border:1.5px solid var(--bdr);border-radius:7px;background:#fff;cursor:text;transition:.15s}
+.as-combo-box:focus-within{border-color:var(--p);box-shadow:0 0 0 3px rgba(79,110,247,.12)}
+.as-chips{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px}
+.as-chip{display:inline-flex;align-items:center;gap:4px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;padding:2px 6px 2px 4px;border-radius:12px;font-size:11px;font-weight:500;user-select:none;max-width:100%}
+.as-chip-av{width:16px;height:16px;border-radius:50%;background:var(--p);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700}
+.as-chip-name{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.as-chip-del{cursor:pointer;color:#6366f1;font-size:12px;font-weight:700;line-height:1;margin-left:2px;border-radius:50%;width:13px;height:13px;display:inline-flex;align-items:center;justify-content:center}
+.as-chip-del:hover{background:#c7d2fe;color:#1e1b4b}
+.as-combo-box .as-combo-inp{border:none!important;box-shadow:none!important;outline:none!important;padding:3px 4px!important;flex:1;min-width:80px;font-size:12px;background:transparent;width:auto}
+.as-combo-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--p);border-top:none;border-radius:0 0 7px 7px;z-index:400;max-height:220px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.12);display:none}
 .as-combo-list.show{display:block}
-.as-opt{padding:8px 10px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.1s}
+.as-opt{padding:7px 10px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.1s}
 .as-opt:hover{background:#f0f4ff;color:var(--p)}
+.as-opt.selected{background:#f0f7ff;font-weight:600;color:var(--p)}
+.as-opt-check{margin-left:auto;color:var(--p);font-size:11px;font-weight:bold;background:#e0e7ff;padding:1px 6px;border-radius:10px}
 .as-opt-sep{border-top:1px solid var(--bdr)}
 .as-opt-new{color:var(--g);font-weight:600}
 .as-opt-new:hover{background:#f0fff4}
+.as-opt-clear{color:#ef4444;font-size:11px;font-weight:600;border-bottom:1px solid var(--bdr);padding:6px 10px}
+.as-opt-clear:hover{background:#fef2f2}
 
 /* ══ NEW: USER MODE TABS ══ */
 .usr-mode-tabs{display:flex;border:1px solid var(--bdr);border-radius:7px;overflow:hidden;margin-bottom:12px}
@@ -653,9 +664,12 @@ input[type=range]{width:100%;accent-color:var(--p)}
       <div class="frow">
         <div class="fg">
           <label class="fl">Người Thực Hiện</label>
-          <div class="as-combo">
-            <input class="as-combo-inp" id="mqtk-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
-              oninput="showAsCombo('qtk')" onfocus="showAsCombo('qtk')" onblur="setTimeout(()=>hideAsCombo('qtk'),200)">
+          <div class="as-combo" id="qtk-as-combo">
+            <div class="as-combo-box" onclick="focusAsInp('qtk')">
+              <div class="as-chips" id="qtk-as-chips"></div>
+              <input class="as-combo-inp" id="mqtk-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
+                oninput="showAsCombo('qtk')" onfocus="showAsCombo('qtk')" onkeydown="handleAsKeydown(event, 'qtk')">
+            </div>
             <div class="as-combo-list" id="qtk-as-list"></div>
           </div>
         </div>
@@ -799,9 +813,12 @@ input[type=range]{width:100%;accent-color:var(--p)}
         <div class="frow">
           <div class="fg">
             <label class="fl">Người thực hiện</label>
-            <div class="as-combo">
-              <input class="as-combo-inp" id="tp-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
-                oninput="showAsCombo('tp')" onfocus="showAsCombo('tp')" onblur="setTimeout(()=>hideAsCombo('tp'),200)">
+            <div class="as-combo" id="tp-as-combo">
+              <div class="as-combo-box" onclick="focusAsInp('tp')">
+                <div class="as-chips" id="tp-as-chips"></div>
+                <input class="as-combo-inp" id="tp-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
+                  oninput="showAsCombo('tp')" onfocus="showAsCombo('tp')" onkeydown="handleAsKeydown(event, 'tp')">
+              </div>
               <div class="as-combo-list" id="tp-as-list"></div>
             </div>
           </div>
@@ -817,8 +834,19 @@ input[type=range]{width:100%;accent-color:var(--p)}
           <div class="fg"><label class="fl">Trạng thái</label>
             <select class="fc" id="tp-st"><option>Chờ thực hiện</option><option>Đang thực hiện</option><option>Chờ duyệt</option><option>Hoàn thành</option><option>Tạm dừng</option><option>Hủy</option></select>
           </div>
-          <div class="fg"><label class="fl">Tiến độ: <b id="tp-pv">0</b>%</label>
-            <input type="range" id="tp-pg" min="0" max="100" value="0" oninput="document.getElementById('tp-pv').textContent=this.value">
+          <div class="fg">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+              <label class="fl" style="margin:0">Tiến độ (<span id="tp-pv">0</span>%)</label>
+              <div style="display:flex;align-items:center;gap:3px">
+                <input type="number" id="tp-pg-num" class="fc" min="0" max="100" value="0"
+                  style="width:58px;height:24px;padding:2px 5px;font-size:12px;font-weight:600;text-align:right"
+                  oninput="syncTpProgress(this.value, 'num')"
+                  onchange="syncTpProgress(this.value, 'num')">
+                <span style="font-size:11px;font-weight:600;color:var(--t2)">%</span>
+              </div>
+            </div>
+            <input type="range" id="tp-pg" min="0" max="100" value="0" style="width:100%;accent-color:var(--p);cursor:pointer"
+              oninput="syncTpProgress(this.value, 'range')">
           </div>
         </div>
         <div class="fg"><label class="fl">Ngày hoàn thành</label><input type="date" class="fc" id="tp-fin"></div>
@@ -965,7 +993,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (sd) sd.style.display='none';
     }
     // close assignee combos on outside click
-    document.querySelectorAll('.as-combo-list').forEach(l=>l.classList.remove('show'));
+    if (!e.target.closest('.as-combo')) {
+      document.querySelectorAll('.as-combo-list').forEach(l=>l.classList.remove('show'));
+    }
   });
 });
 
@@ -1179,13 +1209,28 @@ function renderPtkGrid(tasks) {
     </div>`).join("");
 }
 
-// Helper: get display name from email or raw name
+// Helper: get display name from email or raw name (supports comma-separated multiple assignees)
 function _displayName(val) {
   if (!val) return '—';
-  if (val.includes('@')) return val.split('@')[0];
-  const m = S.members.find(x=>x.email===val);
+  const str = String(val).trim();
+  if (!str) return '—';
+  if (str.includes(',')) {
+    return str.split(',')
+      .map(s => _displayNameSingle(s.trim()))
+      .filter(Boolean)
+      .join(', ');
+  }
+  return _displayNameSingle(str);
+}
+function _displayNameSingle(v) {
+  if (!v) return '';
+  const m = (S.members || []).find(x => 
+    (x.email && x.email.toLowerCase() === v.toLowerCase()) || 
+    (x.name && x.name.toLowerCase() === v.toLowerCase())
+  );
   if (m) return m.name;
-  return val;
+  if (v.includes('@')) return v.split('@')[0];
+  return v;
 }
 
 // ═══════════════════════════════════════
@@ -1360,7 +1405,11 @@ function renderChartPriority(tasks) {
 function renderChartStaff(tasks) {
   const ms={};
   S.members.filter(m=>m.role==="Member"||m.role==="Manager").forEach(m=>{
-    const mt=tasks.filter(t=>t.assignee===m.email);
+    const mt=tasks.filter(t=>{
+      if (!t.assignee) return false;
+      const parts = String(t.assignee).split(',').map(s=>s.trim().toLowerCase());
+      return parts.includes(m.email.toLowerCase()) || (m.name && parts.includes(m.name.toLowerCase()));
+    });
     if (mt.length>0) { const done=mt.filter(t=>t.status==="Hoàn thành").length; ms[m.name]={total:mt.length,rate:Math.round(done/mt.length*100)}; }
   });
   const labels=Object.keys(ms).slice(0,8);
@@ -1427,74 +1476,243 @@ function renderChartCompare() {
 }
 
 // ═══════════════════════════════════════
-//  ASSIGNEE COMBO (replaces select)
+//  ASSIGNEE MULTI-SELECT COMBO & PROGRESS SYNC
 // ═══════════════════════════════════════
+const _selectedAssignees = { tp: [], qtk: [] };
+
+function syncTpProgress(val, source) {
+  let num = parseInt(val, 10);
+  if (isNaN(num)) num = 0;
+  if (num < 0) num = 0;
+  if (num > 100) num = 100;
+  const range = document.getElementById('tp-pg');
+  const numInp = document.getElementById('tp-pg-num');
+  const pv = document.getElementById('tp-pv');
+  if (source !== 'range' && range) range.value = num;
+  if (source !== 'num' && numInp && numInp.value != num) numInp.value = num;
+  if (pv) pv.textContent = num;
+}
+
 function _getAllAssignees(projectId) {
-  const all = [...S.members];
-  const pmems = (projectId && S.projectMembers[projectId]) || [];
-  pmems.forEach(pm => { if (!all.find(m=>m.email===pm.email)) all.push(pm); });
+  const all = [...(S.members || [])];
+  const pmems = (projectId && S.projectMembers && S.projectMembers[projectId]) || [];
+  pmems.forEach(pm => { if (!all.find(m => m.email === pm.email)) all.push(pm); });
   return all;
 }
 
+function focusAsInp(prefix) {
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) inp.focus();
+}
+
+function renderAsChips(prefix) {
+  const chipsEl = document.getElementById(prefix + '-as-chips');
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (!chipsEl) return;
+  const list = _selectedAssignees[prefix] || [];
+  chipsEl.innerHTML = list.map((item, idx) => {
+    const name = item.name || item.email;
+    const initial = (name || '?').slice(0, 2).toUpperCase();
+    return `<span class="as-chip" title="${name}">` +
+      `<span class="as-chip-av">${initial}</span>` +
+      `<span class="as-chip-name">${name}</span>` +
+      `<span class="as-chip-del" onclick="removeAssignee('${prefix}', ${idx}, event)" title="Xóa">✕</span>` +
+      `</span>`;
+  }).join('');
+  if (inp) {
+    inp.placeholder = list.length ? '+ Thêm...' : 'Chọn hoặc nhập tên...';
+  }
+}
+
+function setAssignees(prefix, rawVal) {
+  _selectedAssignees[prefix] = [];
+  if (rawVal) {
+    const items = Array.isArray(rawVal) ? rawVal : String(rawVal).split(',').map(s => s.trim()).filter(Boolean);
+    const allMembers = S.members || [];
+    items.forEach(item => {
+      const trimmed = String(item).trim();
+      if (!trimmed) return;
+      const m = allMembers.find(x => 
+        (x.email && x.email.toLowerCase() === trimmed.toLowerCase()) || 
+        (x.name && x.name.toLowerCase() === trimmed.toLowerCase())
+      );
+      if (m) {
+        if (!_selectedAssignees[prefix].some(a => a.email === m.email)) {
+          _selectedAssignees[prefix].push({ email: m.email, name: m.name });
+        }
+      } else {
+        if (!_selectedAssignees[prefix].some(a => (a.email === trimmed || a.name === trimmed))) {
+          _selectedAssignees[prefix].push({
+            email: trimmed,
+            name: trimmed.includes('@') ? trimmed.split('@')[0] : trimmed
+          });
+        }
+      }
+    });
+  }
+  renderAsChips(prefix);
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) inp.value = '';
+}
+
 function showAsCombo(prefix) {
-  const inp = document.getElementById(prefix==='qtk'?'mqtk-as':'tp-as');
-  const list = document.getElementById(prefix+'-as-list');
-  if (!inp||!list) return;
-  const q = (inp.value||'').toLowerCase();
-  const pjId = prefix==='qtk'
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  const list = document.getElementById(prefix + '-as-list');
+  if (!inp || !list) return;
+  const q = (inp.value || '').trim().toLowerCase();
+  const pjId = prefix === 'qtk'
     ? document.getElementById('mqtk-pj')?.value
     : document.getElementById('tp-pj')?.value;
   const members = _getAllAssignees(pjId);
-  const filtered = q ? members.filter(m=>(m.name||'').toLowerCase().includes(q)||(m.email||'').toLowerCase().includes(q)) : members;
+  const filtered = q ? members.filter(m => (m.name || '').toLowerCase().includes(q) || (m.email || '').toLowerCase().includes(q)) : members;
+  
   let html = '';
-  // Empty option
-  html += `<div class="as-opt" onmousedown="selectAsMember('${prefix}','','')"><span style="color:var(--t3);font-size:13px">✕</span><span style="color:var(--t3)">Không giao</span></div>`;
+  const selList = _selectedAssignees[prefix] || [];
+  if (selList.length > 0) {
+    html += `<div class="as-opt as-opt-clear" onmousedown="clearAllAs('${prefix}', event)"><span style="color:#ef4444;font-size:11px">✕ Bỏ chọn tất cả (${selList.length} người)</span></div>`;
+  }
   if (filtered.length) {
-    html += filtered.map(m=>`<div class="as-opt" onmousedown="selectAsMember('${prefix}','${(m.email||m.name).replace(/'/g,"\\'")}','${m.name.replace(/'/g,"\\'")}')"><span class="mem-avatar" style="width:20px;height:20px;font-size:9px">${(m.name||'?').slice(0,2).toUpperCase()}</span><span style="flex:1">${m.name}</span><span style="color:var(--t3);font-size:10px">${m.role||''}</span></div>`).join('');
+    html += filtered.map(m => {
+      const isSel = selList.some(a => (a.email && a.email.toLowerCase() === (m.email || '').toLowerCase()) || (a.name && a.name.toLowerCase() === (m.name || '').toLowerCase()));
+      const safeEmail = (m.email || m.name || '').replace(/'/g, "\\'");
+      const safeName = (m.name || '').replace(/'/g, "\\'");
+      return `<div class="as-opt ${isSel ? 'selected' : ''}" onmousedown="toggleAsMember('${prefix}', '${safeEmail}', '${safeName}', event)">` +
+        `<span class="mem-avatar" style="width:20px;height:20px;font-size:9px">${(m.name || '?').slice(0, 2).toUpperCase()}</span>` +
+        `<span style="flex:1">${m.name}</span>` +
+        `<span style="color:var(--t3);font-size:10px">${m.role || ''}</span>` +
+        (isSel ? `<span class="as-opt-check">✓ Đã chọn</span>` : '') +
+        `</div>`;
+    }).join('');
   }
   if (q) {
-    const alreadyExact = members.find(m=>m.name.toLowerCase()===q||m.email.toLowerCase()===q);
+    const alreadyExact = members.find(m => (m.name || '').toLowerCase() === q || (m.email || '').toLowerCase() === q);
     if (!alreadyExact) {
-      html += `<div class="as-opt as-opt-sep as-opt-new" onmousedown="selectAsCustom('${prefix}','${q.replace(/'/g,"\\'")}')">✚ Dùng tên: "<b>${q}</b>"</div>`;
+      const safeQ = q.replace(/'/g, "\\'");
+      html += `<div class="as-opt as-opt-sep as-opt-new" onmousedown="addAsCustom('${prefix}', event)">✚ Dùng tên: "<b>${q}</b>"</div>`;
     }
   }
   list.innerHTML = html;
   list.classList.add('show');
-  event && event.stopPropagation();
 }
+
 function hideAsCombo(prefix) {
-  const l=document.getElementById(prefix+'-as-list'); if(l) l.classList.remove('show');
+  const l = document.getElementById(prefix + '-as-list');
+  if (l) l.classList.remove('show');
 }
-function selectAsMember(prefix, email, name) {
-  const inp = document.getElementById(prefix==='qtk'?'mqtk-as':'tp-as');
-  if (inp) inp.value = email ? (name && !email.includes('@') ? name : email) : '';
-  hideAsCombo(prefix);
+
+function toggleAsMember(prefix, email, name, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  if (!_selectedAssignees[prefix]) _selectedAssignees[prefix] = [];
+  const list = _selectedAssignees[prefix];
+  const idx = list.findIndex(a => 
+    (email && a.email && a.email.toLowerCase() === email.toLowerCase()) || 
+    (name && a.name && a.name.toLowerCase() === name.toLowerCase())
+  );
+  if (idx >= 0) {
+    list.splice(idx, 1);
+  } else {
+    list.push({ email: email || name, name: name || (email && email.includes('@') ? email.split('@')[0] : email) });
+  }
+  renderAsChips(prefix);
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) {
+    inp.value = '';
+    inp.focus();
+  }
+  showAsCombo(prefix);
 }
-function selectAsCustom(prefix, name) {
-  const inp = document.getElementById(prefix==='qtk'?'mqtk-as':'tp-as');
-  if (inp) inp.value = name;
-  hideAsCombo(prefix);
+
+function addAsCustom(prefix, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (!inp) return;
+  const name = inp.value.trim();
+  if (!name) return;
+  if (!_selectedAssignees[prefix]) _selectedAssignees[prefix] = [];
+  const list = _selectedAssignees[prefix];
+  const pjId = prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value;
+  const m = _getAllAssignees(pjId).find(x => (x.name && x.name.toLowerCase() === name.toLowerCase()) || (x.email && x.email.toLowerCase() === name.toLowerCase()));
+  if (m) {
+    if (!list.some(a => a.email === m.email)) {
+      list.push({ email: m.email, name: m.name });
+    }
+  } else {
+    if (!list.some(a => a.email === name || a.name === name)) {
+      list.push({ email: name, name: name.includes('@') ? name.split('@')[0] : name });
+    }
+  }
+  inp.value = '';
+  renderAsChips(prefix);
+  showAsCombo(prefix);
+  inp.focus();
 }
+
+function clearAllAs(prefix, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  _selectedAssignees[prefix] = [];
+  renderAsChips(prefix);
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) {
+    inp.value = '';
+    inp.focus();
+  }
+  showAsCombo(prefix);
+}
+
+function removeAssignee(prefix, index, e) {
+  if (e) { e.stopPropagation(); }
+  if (_selectedAssignees[prefix]) {
+    _selectedAssignees[prefix].splice(index, 1);
+    renderAsChips(prefix);
+    const l = document.getElementById(prefix + '-as-list');
+    if (l && l.classList.contains('show')) showAsCombo(prefix);
+  }
+}
+
+function handleAsKeydown(e, prefix) {
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (!inp) return;
+  if (e.key === 'Backspace' && !inp.value) {
+    if (_selectedAssignees[prefix] && _selectedAssignees[prefix].length > 0) {
+      _selectedAssignees[prefix].pop();
+      renderAsChips(prefix);
+      showAsCombo(prefix);
+    }
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (inp.value.trim()) {
+      addAsCustom(prefix, e);
+    }
+  }
+}
+
 function refreshAsCombo(prefix) {
-  // When project changes, clear assignee input
-  const inp = document.getElementById(prefix==='qtk'?'mqtk-as':'tp-as');
-  if (inp) inp.value = '';
+  renderAsChips(prefix);
+  const l = document.getElementById(prefix + '-as-list');
+  if (l && l.classList.contains('show')) showAsCombo(prefix);
 }
+
 // Legacy compat
 function ldAsSel(id, sel) {
   const el = document.getElementById(id); if (!el) return;
   if (el.tagName==='INPUT') { el.value = sel ? _displayName(sel) : ''; return; }
   el.innerHTML='<option value="">-- Người thực hiện --</option>';
-  S.members.forEach(m=>{ const o=document.createElement("option"); o.value=m.email; o.textContent=`${m.name}(${m.role})`; if(sel&&m.email===sel) o.selected=true; el.appendChild(o); });
+  (S.members || []).forEach(m=>{ const o=document.createElement("option"); o.value=m.email; o.textContent=`${m.name}(${m.role})`; if(sel&&m.email===sel) o.selected=true; el.appendChild(o); });
 }
-// Get raw assignee value from combo input
+
+// Get raw assignee value (comma-separated string of emails / custom names)
 function _getAssigneeVal(prefix) {
-  const inp = document.getElementById(prefix==='qtk'?'mqtk-as':'tp-as');
-  if (!inp) return '';
-  const val = inp.value.trim();
-  // Try to find matching member email
-  const m = S.members.find(x=>x.name===val||x.email===val);
-  return m ? m.email : val;
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  const list = [...(_selectedAssignees[prefix] || [])];
+  if (inp && inp.value.trim()) {
+    const text = inp.value.trim();
+    const m = (S.members || []).find(x => x.name === text || x.email === text);
+    const item = m ? { email: m.email, name: m.name } : { email: text, name: text };
+    if (!list.some(a => a.email === item.email || a.name === item.name)) {
+      list.push(item);
+    }
+  }
+  return list.map(a => a.email || a.name).join(', ');
 }
 
 // ═══════════════════════════════════════
@@ -1849,7 +2067,11 @@ function loadGantt() {
     if (!res.success) { el.innerHTML=`<div class="empty">${res.error}</div>`; return; }
     let data=res.data;
     if (selectedStaff&&selectedStaff.length>0)
-      data=data.map(g=>({project:g.project,tasks:g.tasks.filter(t=>selectedStaff.includes(t.assignee))})).filter(g=>g.tasks.length>0);
+      data=data.map(g=>({project:g.project,tasks:g.tasks.filter(t=>{
+        if (!t.assignee) return false;
+        const parts = String(t.assignee).split(',').map(s=>s.trim());
+        return parts.some(p => selectedStaff.includes(p));
+      })})).filter(g=>g.tasks.length>0);
     GANTT.data=data;
     GANTT.startDate=parseLocalDate(document.getElementById("g-from").value);
     GANTT.endDate=parseLocalDate(document.getElementById("g-to").value);
@@ -2100,6 +2322,7 @@ function openNewFullTask() {
   document.getElementById("tp-pr").value = document.getElementById("mqtk-pr")?.value || "Trung bình";
   document.getElementById("tp-nt").value = "";
   document.getElementById("tp-pg").value = 0;
+  if (document.getElementById("tp-pg-num")) document.getElementById("tp-pg-num").value = 0;
   document.getElementById("tp-pv").textContent = "0";
   document.getElementById("tp-tg").value = "";
   document.getElementById("tp-lr").value = "";
@@ -2108,8 +2331,7 @@ function openNewFullTask() {
   document.getElementById("tp-dl").value = document.getElementById("mqtk-dl")?.value || "";
   const curPj = document.getElementById("mqtk-pj")?.value || (S.projects[0]?.id || "");
   ldPjSel("tp-pj", curPj, false);
-  const asInp = document.getElementById("tp-as");
-  if (asInp) asInp.value = document.getElementById("mqtk-as")?.value || "";
+  setAssignees('tp', _getAssigneeVal('qtk'));
   _currTkReminders = [];
   renderReminders();
   previewLinks();
@@ -2130,17 +2352,17 @@ function fillTpForm(t) {
   document.getElementById("tp-st").value=t.status;
   document.getElementById("tp-pr").value=t.priority;
   document.getElementById("tp-nt").value=t.note||"";
-  document.getElementById("tp-pg").value=t.progress;
-  document.getElementById("tp-pv").textContent=t.progress;
+  const prog = t.progress || 0;
+  document.getElementById("tp-pg").value = prog;
+  if (document.getElementById("tp-pg-num")) document.getElementById("tp-pg-num").value = prog;
+  document.getElementById("tp-pv").textContent = prog;
   document.getElementById("tp-tg").value=t.target||"";
   document.getElementById("tp-lr").value=t.linkResults||"";
   document.getElementById("tp-or").value=t.outputResult||"";
   if (t.startRaw)    document.getElementById("tp-sd").value=t.startRaw;
   if (t.deadlineRaw) document.getElementById("tp-dl").value=t.deadlineRaw;
   ldPjSel("tp-pj",t.projectId,true);
-  // Set assignee in combo input
-  const asInp = document.getElementById('tp-as');
-  if (asInp) asInp.value = t.assignee ? _displayName(t.assignee) : '';
+  setAssignees('tp', t.assignee || '');
   _currTkReminders=t.reminders||[];
   renderReminders();
   previewLinks();
@@ -2158,7 +2380,7 @@ function saveFullTk() {
     status:document.getElementById("tp-st").value,
     startDate:document.getElementById("tp-sd").value,
     deadline:document.getElementById("tp-dl").value,
-    progress:parseInt(document.getElementById("tp-pg").value),
+    progress:parseInt(document.getElementById("tp-pg-num") ? document.getElementById("tp-pg-num").value : document.getElementById("tp-pg").value) || 0,
     note:document.getElementById("tp-nt").value,
     target:document.getElementById("tp-tg").value,
     linkResults:document.getElementById("tp-lr").value,
@@ -2292,14 +2514,14 @@ function openTkMod(taskId, defaultPjId) {
   document.getElementById("mqtk-pj").disabled=!!taskId;
   ldPjSel("mqtk-pj",defaultPjId||"");
   // clear assignee combo
-  const asInp=document.getElementById('mqtk-as'); if(asInp) asInp.value='';
+  setAssignees('qtk', '');
   if (taskId) {
     const t=S.tasks.find(x=>x.id===taskId);
     if(t){
       document.getElementById("mqtk-nm").value=t.name;
       document.getElementById("mqtk-st").value=t.status;
       document.getElementById("mqtk-pr").value=t.priority;
-      if(asInp) asInp.value=_displayName(t.assignee);
+      setAssignees('qtk', t.assignee);
     }
   }
   openModal("m-qtk");

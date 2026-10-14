@@ -239,15 +239,15 @@ function getGanttData(staffFilter) {
   if (user.role==="Manager") {
     projects=projects.filter(p=>p[3]===user.email);
     const pjIds=new Set(projects.map(p=>p[0]));
-    tasks=tasks.filter(t=>pjIds.has(t[1])||t[5]===user.email);
+    tasks=tasks.filter(t=>pjIds.has(t[1])||userMatchesAssignee(t[5], user.email, user.name));
     const relatedIds = new Set([...pjIds, ...tasks.map(t=>t[1])]);
     projects = projects.filter(p=>relatedIds.has(p[0]));
   } else if (user.role==="Member") {
-    tasks=tasks.filter(t=>t[5]===user.email);
+    tasks=tasks.filter(t=>userMatchesAssignee(t[5], user.email, user.name));
     const myPjIds=new Set(tasks.map(t=>t[1]));
     projects=projects.filter(p=>myPjIds.has(p[0]));
   }
-  if (staffFilter&&staffFilter!=="all") tasks=tasks.filter(t=>t[5]===staffFilter);
+  if (staffFilter&&staffFilter!=="all") tasks=tasks.filter(t=>userMatchesAssignee(t[5], staffFilter));
   tasks.sort((a,b)=>(Number(a[19])||999)-(Number(b[19])||999));
   return { success:true, data:projects.map(p=>({ project:mapProject(p), tasks:tasks.filter(t=>t[1]===p[0]).map(t=>mapTaskFull(t)) })) };
 }

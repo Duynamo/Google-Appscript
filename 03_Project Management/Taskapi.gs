@@ -41,8 +41,19 @@ function addTask(payload) {
   invalidateCache([CONFIG.SHEET_TASKS, CONFIG.SHEET_PROJECTS]);
   updateProjectProgress(payload.projectId);
 
-  if (payload.assignee && payload.assignee !== user.email && payload.assignee.includes("@") && !payload.assignee.endsWith(".local")) {
-    sendAssignmentEmail(payload.assignee, payload.name, project[1], payload.deadline);
+  if (payload.assignee) {
+    const rawList = String(payload.assignee).split(',').map(s => s.trim()).filter(Boolean);
+    const allUsers = getSheetData(CONFIG.SHEET_USERS);
+    rawList.forEach(item => {
+      let email = item;
+      if (!email.includes("@")) {
+        const u = allUsers.find(r => r[2] && r[2].toLowerCase() === item.toLowerCase());
+        if (u && u[1]) email = u[1];
+      }
+      if (email && email !== user.email && email.includes("@") && !email.endsWith(".local")) {
+        sendAssignmentEmail(email, payload.name, project[1], payload.deadline);
+      }
+    });
   }
   writeLog("ADD_TASK", `Tạo task: "${payload.name}" | DA: ${project[1]}`);
 
@@ -80,7 +91,7 @@ function updateTask(payload) {
   for (let i = 1; i < rows.length; i++) {
     if (rows[i][0] === payload.id) {
       const canMg = hasPermission(user.role, "manage_tasks");
-      const isAssignee = rows[i][5] && rows[i][5].toLowerCase() === user.email.toLowerCase();
+      const isAssignee = userMatchesAssignee(rows[i][5], user.email, user.name);
 
       if (user.role === "Member" && !isAssignee)
         return { success:false, error:"Không có quyền cập nhật task này" };
@@ -97,7 +108,7 @@ function updateTask(payload) {
       } else if (canMg) {
         if (user.role === "Manager") {
           const pj = getSheetData(CONFIG.SHEET_PROJECTS).find(p => p[0] === rows[i][1]);
-          if (pj && pj[3] !== user.email && rows[i][5] !== user.email) {
+          if (pj && pj[3] !== user.email && !userMatchesAssignee(rows[i][5], user.email, user.name)) {
             return { success:false, error:"Không có quyền quản lý task của dự án này" };
           }
         }
@@ -190,7 +201,7 @@ function updateTaskReminders(taskId, reminders) {
 
   for (let i = 1; i < rows.length; i++) {
     if (rows[i][0] === taskId) {
-      if (user.role === "Member" && rows[i][5] !== user.email) return { success:false, error:"Không có quyền" };
+      if (user.role === "Member" && !userMatchesAssignee(rows[i][5], user.email, user.name)) return { success:false, error:"Không có quyền" };
       sh.getRange(i+1, 19).setValue(JSON.stringify(reminders));
       sh.getRange(i+1, 15).setValue(new Date());
       SpreadsheetApp.flush();
@@ -214,19 +225,29 @@ function sendAssignmentEmail(toEmail, taskName, projectName, deadline) {
 
 function sendDeadlineReminders() {
   const tasks = getSheetData(CONFIG.SHEET_TASKS);
+  const allUsers = getSheetData(CONFIG.SHEET_USERS);
   const today = new Date(), in3 = new Date(today.getTime() + 3*86400000);
   tasks.forEach(t => {
     if (!t[9] || !t[5] || t[7] === "Hoàn thành" || t[7] === "Hủy") return;
-    if (!t[5].includes("@") || t[5].endsWith(".local")) return;
     const dl = new Date(t[9]);
     if (dl > today && dl <= in3) {
-      try {
-        MailApp.sendEmail({
-          to: t[5],
-          subject: `[NHẮC] Task "${t[3]}" còn ${Math.ceil((dl - today)/86400000)} ngày`,
-          body: `Công việc "${t[3]}" sẽ đến hạn ${Utilities.formatDate(dl, "Asia/Ho_Chi_Minh", "dd/MM/yyyy")}.\nTiến độ: ${t[10]}%`
-        });
-      } catch(e) {}
+      const rawList = String(t[5]).split(',').map(s => s.trim()).filter(Boolean);
+      rawList.forEach(item => {
+        let email = item;
+        if (!email.includes("@")) {
+          const u = allUsers.find(r => r[2] && r[2].toLowerCase() === item.toLowerCase());
+          if (u && u[1]) email = u[1];
+        }
+        if (email && email.includes("@") && !email.endsWith(".local")) {
+          try {
+            MailApp.sendEmail({
+              to: email,
+              subject: `[NHẮC] Task "${t[3]}" còn ${Math.ceil((dl - today)/86400000)} ngày`,
+              body: `Công việc "${t[3]}" sẽ đến hạn ${Utilities.formatDate(dl, "Asia/Ho_Chi_Minh", "dd/MM/yyyy")}.\nTiến độ: ${t[10]}%`
+            });
+          } catch(e) {}
+        }
+      });
     }
   });
 }
