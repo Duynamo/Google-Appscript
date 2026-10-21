@@ -251,3 +251,115 @@ function sendDeadlineReminders() {
     }
   });
 }
+
+/**
+ * Thêm hàng loạt nhiệm vụ vào một dự án (Tối ưu setValues 1 lần)
+ * @param {Object} payload { projectId: string, tasks: Array<Object> }
+ * @returns {Object} { success: boolean, message: string, count: number, tasks: Array<Object> }
+ */
+function addBulkTasks(payload) {
+  const user = getCurrentUser();
+  if (!user || !hasPermission(user.role, "manage_tasks")) {
+    return { success: false, error: "Không có quyền tạo nhiệm vụ" };
+  }
+  if (!payload || !payload.projectId || !Array.isArray(payload.tasks) || payload.tasks.length === 0) {
+    return { success: false, error: "Danh sách nhiệm vụ trống hoặc không hợp lệ" };
+  }
+
+  const project = getSheetData(CONFIG.SHEET_PROJECTS).find(p => p[0] === payload.projectId);
+  if (!project) return { success: false, error: "Dự án không tồn tại" };
+  if (user.role === "Manager" && project[3] !== user.email) {
+    return { success: false, error: "Không có quyền tạo task trong dự án này" };
+  }
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sh = ss.getSheetByName(CONFIG.SHEET_TASKS);
+  const existing = getSheetData(CONFIG.SHEET_TASKS).filter(t => t[1] === payload.projectId);
+  let maxOrder = existing.reduce((m, t) => Math.max(m, Number(t[19]) || 0), 0);
+
+  const now = new Date();
+  const tz = "Asia/Ho_Chi_Minh";
+  const todayMid = new Date(); todayMid.setHours(0, 0, 0, 0);
+
+  const rowsToAdd = [];
+  const clientTasks = [];
+  const allUsers = getSheetData(CONFIG.SHEET_USERS);
+
+  payload.tasks.forEach(item => {
+    const taskName = (item.name || "").trim();
+    if (!taskName) return;
+
+    const id = generateId();
+    maxOrder++;
+    const startD = item.startDate ? new Date(item.startDate) : now;
+    const deadD = item.deadline ? new Date(item.deadline) : "";
+    const priority = item.priority || "Trung bình";
+    const status = item.status || "Chờ thực hiện";
+    const assignee = item.assignee || "";
+    const desc = item.desc || "";
+    const progress = Number(item.progress) || 0;
+    const note = item.note || "";
+
+    rowsToAdd.push([
+      id, payload.projectId, project[1], taskName, desc,
+      assignee, priority, status,
+      startD, deadD, progress, note, now, user.email, now,
+      "", "", "", "[]", maxOrder
+    ]);
+
+    clientTasks.push({
+      id, projectId: payload.projectId, projectName: project[1], name: taskName,
+      desc, assignee, priority, status,
+      startDate: startD ? Utilities.formatDate(startD, tz, "dd/MM/yyyy") : "",
+      startRaw: startD ? Utilities.formatDate(startD, tz, "yyyy-MM-dd") : "",
+      deadline: deadD ? Utilities.formatDate(deadD, tz, "dd/MM/yyyy") : "",
+      deadlineRaw: deadD ? Utilities.formatDate(deadD, tz, "yyyy-MM-dd") : "",
+      progress, note,
+      created: Utilities.formatDate(now, tz, "dd/MM/yyyy HH:mm"),
+      createdBy: user.email,
+      updatedAt: Utilities.formatDate(now, tz, "dd/MM/yyyy HH:mm"),
+      target: "", linkResults: "", outputResult: "", reminders: [],
+      sortOrder: maxOrder,
+      isOverdue: deadD && (deadD < todayMid) && status !== "Hoàn thành" && status !== "Hủy"
+    });
+  });
+
+  if (rowsToAdd.length === 0) {
+    return { success: false, error: "Không có nhiệm vụ hợp lệ nào để thêm" };
+  }
+
+  const startRow = sh.getLastRow() + 1;
+  sh.getRange(startRow, 1, rowsToAdd.length, rowsToAdd[0].length).setValues(rowsToAdd);
+  SpreadsheetApp.flush();
+
+  invalidateCache([CONFIG.SHEET_TASKS, CONFIG.SHEET_PROJECTS]);
+  updateProjectProgress(payload.projectId);
+
+  try {
+    rowsToAdd.forEach(r => {
+      const asgn = r[5], tName = r[3], dLine = r[9];
+      if (asgn) {
+        const rawList = String(asgn).split(',').map(s => s.trim()).filter(Boolean);
+        rawList.forEach(item => {
+          let email = item;
+          if (!email.includes("@")) {
+            const u = allUsers.find(x => x[2] && x[2].toLowerCase() === item.toLowerCase());
+            if (u && u[1]) email = u[1];
+          }
+          if (email && email !== user.email && email.includes("@") && !email.endsWith(".local")) {
+            sendAssignmentEmail(email, tName, project[1], dLine ? Utilities.formatDate(new Date(dLine), tz, "dd/MM/yyyy") : "");
+          }
+        });
+      }
+    });
+  } catch(e) {}
+
+  writeLog("ADD_BULK_TASKS", `Tạo hàng loạt ${rowsToAdd.length} task trong DA: "${project[1]}"`);
+
+  return {
+    success: true,
+    message: `Đã tạo thành công ${rowsToAdd.length} nhiệm vụ!`,
+    count: rowsToAdd.length,
+    tasks: clientTasks
+  };
+}

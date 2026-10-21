@@ -361,6 +361,26 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .info-box{border-radius:7px;padding:8px 10px;margin-bottom:10px;font-size:11px}
 .info-box-green{background:#f0fff4;border:1px solid #86efac;color:#166534}
 
+/* ── BULK TASK CREATION STYLES ── */
+.qtk-tab-btn{padding:9px 18px;border:none;background:transparent;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;outline:none;display:inline-flex;align-items:center;gap:6px}
+.qtk-tab-btn:hover{color:var(--tx)}
+.qtk-tab-btn.active{color:var(--p);border-bottom-color:var(--p);font-weight:700}
+.bulk-presets-bar{background:#f8fafc;border:1px solid var(--bdr);border-radius:var(--r2);padding:10px 12px;margin-bottom:12px}
+.bulk-prow{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 0.9fr;gap:8px;align-items:flex-end}
+@media(max-width:768px){.bulk-prow{grid-template-columns:1fr 1fr}}
+.bulk-ta{width:100%;font-family:inherit;font-size:12px;padding:9px 11px;border:1.5px solid var(--bdr);border-radius:7px;outline:none;resize:vertical;min-height:85px;line-height:1.5}
+.bulk-ta:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(79,110,247,.12)}
+.bulk-preview-wrap{margin-top:10px;border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;background:#fff}
+.bulk-preview-head{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f8fafc;border-bottom:1px solid var(--bdr);font-size:11px;font-weight:700;color:var(--tx)}
+.bulk-tbl-container{max-height:210px;overflow-y:auto}
+.bulk-tbl{width:100%;border-collapse:collapse;font-size:11px;text-align:left}
+.bulk-tbl th{background:#f1f5f9;color:var(--t2);font-weight:700;padding:7px 8px;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:2}
+.bulk-tbl td{padding:5px 6px;border-bottom:1px solid var(--bdr);vertical-align:middle}
+.bulk-tbl tr:hover td{background:#fafbfc}
+.bulk-cell-inp{width:100%;padding:5px 7px;border:1px solid var(--bdr);border-radius:5px;font-size:11px;outline:none;background:#fff;transition:.15s}
+.bulk-cell-inp:focus{border-color:var(--p);box-shadow:0 0 0 2px rgba(79,110,247,.1)}
+.bulk-hint-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:7px 11px;font-size:11px;color:#1e40af;margin-bottom:10px;display:flex;align-items:center;gap:6px;line-height:1.4}
+
 @media(max-width:900px){.srow{grid-template-columns:repeat(2,1fr)}.d2col,.d3col,.d32{grid-template-columns:1fr}.tp-body{grid-template-columns:1fr}}
 </style>
 </head>
@@ -564,6 +584,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
       <h3 id="m-pd-ti">Chi tiết dự án</h3>
       <div style="display:flex;gap:7px;align-items:center">
         <button class="btn bg2" onclick="openTkMod(null,_pdPjId)">+ Thêm nhiệm vụ</button>
+        <button class="btn bp" style="font-size:12px;padding:6px 11px;display:inline-flex;align-items:center;gap:4px" onclick="openTkMod(null,_pdPjId,'bulk')">⚡ Tạo hàng loạt</button>
         <button class="mcl" onclick="closeModal('m-pd')">✕</button>
       </div>
     </div>
@@ -653,11 +674,21 @@ input[type=range]{width:100%;accent-color:var(--p)}
   </div>
 </div>
 
-<!-- ══ MODAL: QUICK ADD TASK ══ -->
+<!-- ══ MODAL: QUICK ADD TASK (HỖ TRỢ ĐƠN LẺ & HÀNG LOẠT) ══ -->
 <div class="ov" id="m-qtk">
-  <div class="modal">
-    <div class="mhd"><h3 id="mqtk-ti">Thêm Nhiệm Vụ</h3><button class="mcl" onclick="closeModal('m-qtk')">✕</button></div>
-    <div class="mbd">
+  <div class="modal" id="m-qtk-dialog">
+    <div class="mhd">
+      <h3 id="mqtk-ti">Thêm Nhiệm Vụ</h3>
+      <button class="mcl" onclick="closeModal('m-qtk')">✕</button>
+    </div>
+    <!-- Tab Switcher (chỉ hiện khi tạo mới) -->
+    <div id="qtk-tabs-wrap" style="display:flex;gap:4px;padding:0 20px;border-bottom:1px solid var(--bdr);margin-top:6px">
+      <button type="button" class="qtk-tab-btn active" id="tab-btn-single" onclick="switchQtkTab('single')">📝 Tạo đơn lẻ</button>
+      <button type="button" class="qtk-tab-btn" id="tab-btn-bulk" onclick="switchQtkTab('bulk')">⚡ Tạo nhanh hàng loạt</button>
+    </div>
+
+    <!-- TAB 1: TẠO ĐƠN LẺ (GIỮ NGUYÊN 100% CÁC ELEMENT HIỆN TẠI) -->
+    <div class="mbd" id="qtk-body-single">
       <input type="hidden" id="mqtk-id">
       <div class="fg"><label class="fl">Tên Nhiệm Vụ <span class="req">*</span></label><input class="fc" id="mqtk-nm" placeholder="Nhập tên..."></div>
       <div class="fg"><label class="fl">Dự Án <span class="req">*</span></label><select class="fc" id="mqtk-pj" onchange="refreshAsCombo('qtk')"></select></div>
@@ -687,6 +718,95 @@ input[type=range]{width:100%;accent-color:var(--p)}
       <div style="display:flex;align-items:center;gap:7px;margin-top:6px">
         <button class="btn bp" style="flex:1" onclick="saveQTk()">💾 Lưu nhanh</button>
         <button class="btn bs" onclick="openNewFullTask()" style="font-size:11px">✏ Chỉnh sửa đầy đủ</button>
+      </div>
+    </div>
+
+    <!-- TAB 2: TẠO NHANH HÀNG LOẠT (TÍNH NĂNG MỚI CHO PM) -->
+    <div class="mbd" id="qtk-body-bulk" style="display:none">
+      <!-- Cấu hình mặc định áp dụng chung -->
+      <div class="bulk-presets-bar">
+        <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">
+          ⚙️ Cấu hình mặc định áp dụng chung
+        </div>
+        <div class="bulk-prow">
+          <div>
+            <label class="fl">Dự Án <span class="req">*</span></label>
+            <select class="fc" id="mbulk-pj" onchange="syncBulkProject()"></select>
+          </div>
+          <div>
+            <label class="fl">Phụ Trách Chung</label>
+            <select class="fc" id="mbulk-as" onchange="applyBulkDefaults()"></select>
+          </div>
+          <div>
+            <label class="fl">Ngày Bắt Đầu</label>
+            <input type="date" class="fc" id="mbulk-sd" onchange="applyBulkDefaults()">
+          </div>
+          <div>
+            <label class="fl">Deadline Chung</label>
+            <input type="date" class="fc" id="mbulk-dl" onchange="applyBulkDefaults()">
+          </div>
+          <div>
+            <label class="fl">Ưu Tiên</label>
+            <select class="fc" id="mbulk-pr" onchange="applyBulkDefaults()">
+              <option>Thấp</option>
+              <option selected>Trung bình</option>
+              <option>Cao</option>
+              <option>Khẩn cấp</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khung hướng dẫn & dán danh sách -->
+      <div class="bulk-hint-box">
+        <span>💡</span>
+        <span><b>Mẹo dán:</b> Copy danh sách từ Excel, Google Sheets hoặc văn bản (mỗi dòng 1 việc). Hệ thống tự làm sạch số thứ tự <i>1., 2., •, -</i>. Dán từ Excel tự nhận diện cột <i>Tên | Người làm | Deadline | Ưu tiên</i>.</span>
+      </div>
+      <div class="fg">
+        <label class="fl">Dán hoặc nhập danh sách công việc (Mỗi dòng 1 việc):</label>
+        <textarea class="bulk-ta" id="mbulk-text" rows="4"
+          placeholder="Ví dụ dán vào đây:&#10;1. Khảo sát hiện trạng mặt bằng&#10;2. Lập bản vẽ sơ bộ kiến trúc&#10;3. Phối cảnh 3D nội ngoại thất&#10;4. Kiểm tra kết cấu và MEP"
+          oninput="handleBulkInput()"></textarea>
+      </div>
+
+      <!-- Bảng xem trước và tinh chỉnh trực tiếp -->
+      <div class="bulk-preview-wrap">
+        <div class="bulk-preview-head">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span>📋 Bảng xem trước & Hiệu chỉnh:</span>
+            <span class="badge" id="bulk-count-badge" style="background:#e0e7ff;color:#4f6ef7;font-weight:700">0 nhiệm vụ</span>
+          </div>
+          <button type="button" class="btn bs" style="font-size:11px;padding:3px 9px" onclick="addEmptyBulkRow()">+ Thêm dòng</button>
+        </div>
+        <div class="bulk-tbl-container">
+          <table class="bulk-tbl">
+            <thead>
+              <tr>
+                <th style="width:34px;text-align:center">#</th>
+                <th>Tên Nhiệm Vụ <span class="req">*</span></th>
+                <th style="width:130px">Người Làm</th>
+                <th style="width:125px">Ngày Bắt Đầu</th>
+                <th style="width:125px">Deadline</th>
+                <th style="width:105px">Ưu Tiên</th>
+                <th style="width:34px;text-align:center">✕</th>
+              </tr>
+            </thead>
+            <tbody id="bulk-tbl-body">
+              <tr>
+                <td colspan="7" style="text-align:center;padding:20px;color:var(--t3)">Chưa có dữ liệu. Hãy dán danh sách công việc vào ô trên hoặc bấm "+ Thêm dòng".</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Datalist gợi ý thành viên khi nhập ô người làm trong bảng -->
+      <datalist id="bulk-as-datalist"></datalist>
+
+      <!-- Thanh nút bấm hành động -->
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:14px">
+        <button type="button" class="btn bs" onclick="closeModal('m-qtk')">Hủy bỏ</button>
+        <button type="button" class="btn bp" id="btn-save-bulk" onclick="saveBulkTasks()" disabled>🚀 Tạo ngay (0 nhiệm vụ)</button>
       </div>
     </div>
   </div>
@@ -913,6 +1033,17 @@ function localAddTask(newTask) {
   newTask.isOverdue = isTaskOverdue(newTask);
   S.tasks.push(newTask);
   _refreshUI();
+}
+function localAddBulkTasks(newTasks, projectId) {
+  if (!Array.isArray(newTasks) || !newTasks.length) return;
+  newTasks.forEach(t => {
+    t.isOverdue = isTaskOverdue(t);
+    S.tasks.push(t);
+  });
+  _refreshUI();
+  if (_pdPjId && _pdPjId === projectId) {
+    openPjDetail(_pdPjId);
+  }
 }
 function localDeleteTask(taskId) {
   S.tasks = S.tasks.filter(t=>t.id!==taskId);
@@ -2503,25 +2634,374 @@ function doDupPj() {
 function expRpt(id) { toast("Đang xuất...","info"); google.script.run.withSuccessHandler(r=>r.success?toast(r.message,"success"):toast(r.error,"error")).exportProjectReport(id); }
 
 // ═══════════════════════════════════════
-//  TASK CRUD
+//  TASK CRUD & BULK ADD
 // ═══════════════════════════════════════
-function openTkMod(taskId, defaultPjId) {
-  document.getElementById("mqtk-ti").textContent=taskId?"Sửa Nhiệm Vụ":"Thêm Nhiệm Vụ";
-  document.getElementById("mqtk-id").value=taskId||"";
-  ["mqtk-nm","mqtk-sd","mqtk-dl"].forEach(x=>document.getElementById(x).value="");
-  document.getElementById("mqtk-st").value="Chờ thực hiện";
-  document.getElementById("mqtk-pr").value="Trung bình";
-  document.getElementById("mqtk-pj").disabled=!!taskId;
-  ldPjSel("mqtk-pj",defaultPjId||"");
-  // clear assignee combo
+let _bulkDraftList = [];
+
+function switchQtkTab(tab) {
+  const dialog = document.getElementById("m-qtk-dialog");
+  const tabSingle = document.getElementById("tab-btn-single");
+  const tabBulk = document.getElementById("tab-btn-bulk");
+  const bodySingle = document.getElementById("qtk-body-single");
+  const bodyBulk = document.getElementById("qtk-body-bulk");
+  const title = document.getElementById("mqtk-ti");
+  const taskId = document.getElementById("mqtk-id") ? document.getElementById("mqtk-id").value : "";
+
+  if (tab === 'bulk' && !taskId) {
+    if (tabSingle) tabSingle.classList.remove("active");
+    if (tabBulk) tabBulk.classList.add("active");
+    if (bodySingle) bodySingle.style.display = "none";
+    if (bodyBulk) bodyBulk.style.display = "block";
+    if (dialog) dialog.style.maxWidth = "880px";
+    if (title) title.textContent = "Thêm Nhanh Hàng Loạt Nhiệm Vụ";
+    const singlePj = document.getElementById("mqtk-pj") ? document.getElementById("mqtk-pj").value : "";
+    if (singlePj && document.getElementById("mbulk-pj")) {
+      document.getElementById("mbulk-pj").value = singlePj;
+    }
+    populateBulkMembers();
+    renderBulkPreview();
+    setTimeout(() => {
+      const ta = document.getElementById("mbulk-text");
+      if (ta) ta.focus();
+    }, 100);
+  } else {
+    if (tabBulk) tabBulk.classList.remove("active");
+    if (tabSingle) tabSingle.classList.add("active");
+    if (bodyBulk) bodyBulk.style.display = "none";
+    if (bodySingle) bodySingle.style.display = "block";
+    if (dialog) dialog.style.maxWidth = "520px";
+    if (title) title.textContent = taskId ? "Sửa Nhiệm Vụ" : "Thêm Nhiệm Vụ";
+  }
+}
+
+function syncBulkProject() {
+  const bulkPj = document.getElementById("mbulk-pj") ? document.getElementById("mbulk-pj").value : "";
+  const singlePj = document.getElementById("mqtk-pj");
+  if (singlePj && bulkPj) {
+    singlePj.value = bulkPj;
+    refreshAsCombo('qtk');
+  }
+}
+
+function populateBulkMembers() {
+  const sel = document.getElementById("mbulk-as");
+  const dl = document.getElementById("bulk-as-datalist");
+  if (!sel) return;
+  const currVal = sel.value;
+  sel.innerHTML = '<option value="">-- Tự động / Chưa gán --</option>';
+  if (dl) dl.innerHTML = '';
+
+  const members = S.members || [];
+  members.forEach(m => {
+    const o = document.createElement("option");
+    o.value = m.name || m.email;
+    o.textContent = `${m.name} (${m.role})`;
+    if (currVal && (m.name === currVal || m.email === currVal)) o.selected = true;
+    sel.appendChild(o);
+
+    if (dl) {
+      const opt = document.createElement("option");
+      opt.value = m.name || m.email;
+      dl.appendChild(opt);
+    }
+  });
+}
+
+function parseBulkTaskInput(rawText) {
+  if (!rawText) return [];
+  const lines = rawText.split(/\r?\n/);
+  const defAssignee = (document.getElementById("mbulk-as") ? document.getElementById("mbulk-as").value : "").trim();
+  const defDeadline = (document.getElementById("mbulk-dl") ? document.getElementById("mbulk-dl").value : "").trim();
+  const defPriority = (document.getElementById("mbulk-pr") ? document.getElementById("mbulk-pr").value : "Trung bình").trim() || "Trung bình";
+  const defStartDate = (document.getElementById("mbulk-sd") ? document.getElementById("mbulk-sd").value : "").trim();
+
+  const results = [];
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i].trim();
+    if (!line) continue;
+
+    let parts = [];
+    if (line.includes("\t")) {
+      parts = line.split("\t").map(s => s.trim());
+    } else if (line.includes("|")) {
+      parts = line.split("|").map(s => s.trim());
+    } else {
+      parts = [line];
+    }
+
+    let name = parts[0] || "";
+    name = name.replace(/^(\d+[\.\)\-:]\s*|[-*•]\s*|\[\s*\]\s*)/i, "").trim();
+    if (!name) continue;
+
+    let assignee = defAssignee;
+    let startDate = defStartDate;
+    let deadline = defDeadline;
+    let priority = defPriority;
+
+    const dateParts = [];
+    const otherParts = [];
+    for (let pIdx = 1; pIdx < parts.length; pIdx++) {
+      const p = parts[pIdx];
+      if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(p) || /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(p)) {
+        dateParts.push(_normalizeDateBulk(p));
+      } else {
+        otherParts.push(p);
+      }
+    }
+
+    if (dateParts.length >= 2) {
+      startDate = dateParts[0];
+      deadline = dateParts[1];
+    } else if (dateParts.length === 1) {
+      deadline = dateParts[0];
+    }
+
+    if (otherParts.length >= 1 && otherParts[0]) {
+      const p = otherParts[0];
+      if (["Thấp", "Trung bình", "Cao", "Khẩn cấp"].includes(p)) {
+        priority = p;
+      } else {
+        assignee = p;
+      }
+    }
+    if (otherParts.length >= 2 && otherParts[1]) {
+      const p = otherParts[1];
+      if (["Thấp", "Trung bình", "Cao", "Khẩn cấp"].includes(p)) {
+        priority = p;
+      } else if (!assignee) {
+        assignee = p;
+      }
+    }
+
+    results.push({
+      id: "bulk_" + Date.now() + "_" + i,
+      name,
+      assignee,
+      startDate,
+      deadline,
+      priority
+    });
+  }
+  return results;
+}
+
+function _normalizeDateBulk(dStr) {
+  if (!dStr) return "";
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(dStr)) {
+    const p = dStr.split("-");
+    return `${p[0]}-${p[1].padStart(2,"0")}-${p[2].padStart(2,"0")}`;
+  }
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dStr)) {
+    const p = dStr.split("/");
+    return `${p[2]}-${p[1].padStart(2,"0")}-${p[0].padStart(2,"0")}`;
+  }
+  return dStr;
+}
+
+function handleBulkInput() {
+  const text = document.getElementById("mbulk-text") ? document.getElementById("mbulk-text").value : "";
+  _bulkDraftList = parseBulkTaskInput(text);
+  renderBulkPreview();
+}
+
+function applyBulkDefaults() {
+  const defAssignee = (document.getElementById("mbulk-as") ? document.getElementById("mbulk-as").value : "").trim();
+  const defDeadline = (document.getElementById("mbulk-dl") ? document.getElementById("mbulk-dl").value : "").trim();
+  const defPriority = (document.getElementById("mbulk-pr") ? document.getElementById("mbulk-pr").value : "Trung bình").trim() || "Trung bình";
+  const defStartDate = (document.getElementById("mbulk-sd") ? document.getElementById("mbulk-sd").value : "").trim();
+
+  const text = document.getElementById("mbulk-text") ? document.getElementById("mbulk-text").value : "";
+  if (text.trim()) {
+    _bulkDraftList = parseBulkTaskInput(text);
+  } else if (_bulkDraftList.length) {
+    _bulkDraftList.forEach(item => {
+      if (!item.assignee && defAssignee) item.assignee = defAssignee;
+      if (!item.startDate && defStartDate) item.startDate = defStartDate;
+      if (!item.deadline && defDeadline) item.deadline = defDeadline;
+      if (defPriority) item.priority = defPriority;
+    });
+  }
+  renderBulkPreview();
+}
+
+function renderBulkPreview() {
+  const tbody = document.getElementById("bulk-tbl-body");
+  const countBadge = document.getElementById("bulk-count-badge");
+  const saveBtn = document.getElementById("btn-save-bulk");
+  if (!tbody) return;
+
+  const count = _bulkDraftList.length;
+  if (countBadge) countBadge.textContent = `${count} nhiệm vụ`;
+  if (saveBtn) {
+    saveBtn.disabled = count === 0;
+    saveBtn.textContent = `🚀 Tạo ngay (${count} nhiệm vụ)`;
+  }
+
+  if (count === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--t3)">Chưa có dữ liệu. Hãy dán danh sách công việc vào ô trên hoặc bấm "+ Thêm dòng".</td></tr>`;
+    return;
+  }
+
+  const safe = (s) => String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  tbody.innerHTML = _bulkDraftList.map((item, idx) => `
+    <tr>
+      <td style="text-align:center;color:var(--t2);font-weight:600">${idx + 1}</td>
+      <td>
+        <input class="bulk-cell-inp bulk-name-inp" value="${safe(item.name)}" placeholder="Nhập tên nhiệm vụ..." oninput="updateBulkDraft(${idx}, 'name', this.value)">
+      </td>
+      <td>
+        <input class="bulk-cell-inp" list="bulk-as-datalist" value="${safe(item.assignee)}" placeholder="Chưa gán" oninput="updateBulkDraft(${idx}, 'assignee', this.value)">
+      </td>
+      <td>
+        <input type="date" class="bulk-cell-inp" value="${safe(item.startDate)}" oninput="updateBulkDraft(${idx}, 'startDate', this.value)">
+      </td>
+      <td>
+        <input type="date" class="bulk-cell-inp" value="${safe(item.deadline)}" oninput="updateBulkDraft(${idx}, 'deadline', this.value)">
+      </td>
+      <td>
+        <select class="bulk-cell-inp" onchange="updateBulkDraft(${idx}, 'priority', this.value)">
+          <option ${item.priority==='Thấp'?'selected':''}>Thấp</option>
+          <option ${item.priority==='Trung bình'?'selected':''}>Trung bình</option>
+          <option ${item.priority==='Cao'?'selected':''}>Cao</option>
+          <option ${item.priority==='Khẩn cấp'?'selected':''}>Khẩn cấp</option>
+        </select>
+      </td>
+      <td style="text-align:center">
+        <button type="button" class="bic del" style="width:22px;height:22px;font-size:11px" title="Xóa dòng" onclick="removeBulkDraft(${idx})">✕</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function updateBulkDraft(idx, field, val) {
+  if (_bulkDraftList[idx]) {
+    _bulkDraftList[idx][field] = val;
+    const validCount = _bulkDraftList.filter(t => t.name && t.name.trim()).length;
+    const saveBtn = document.getElementById("btn-save-bulk");
+    if (saveBtn) {
+      saveBtn.disabled = validCount === 0;
+      saveBtn.textContent = `🚀 Tạo ngay (${validCount} nhiệm vụ)`;
+    }
+  }
+}
+
+function removeBulkDraft(idx) {
+  _bulkDraftList.splice(idx, 1);
+  renderBulkPreview();
+}
+
+function addEmptyBulkRow() {
+  const defAssignee = (document.getElementById("mbulk-as") ? document.getElementById("mbulk-as").value : "").trim();
+  const defDeadline = (document.getElementById("mbulk-dl") ? document.getElementById("mbulk-dl").value : "").trim();
+  const defPriority = (document.getElementById("mbulk-pr") ? document.getElementById("mbulk-pr").value : "Trung bình").trim() || "Trung bình";
+  const defStartDate = (document.getElementById("mbulk-sd") ? document.getElementById("mbulk-sd").value : "").trim();
+
+  _bulkDraftList.push({
+    id: "bulk_" + Date.now() + "_" + Math.random(),
+    name: "",
+    assignee: defAssignee,
+    deadline: defDeadline,
+    priority: defPriority,
+    startDate: defStartDate
+  });
+  renderBulkPreview();
+  setTimeout(() => {
+    const inputs = document.querySelectorAll(".bulk-name-inp");
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }, 50);
+}
+
+function saveBulkTasks() {
+  const projectId = document.getElementById("mbulk-pj") ? document.getElementById("mbulk-pj").value : "";
+  if (!projectId) {
+    toast("Vui lòng chọn Dự án", "error");
+    return;
+  }
+
+  const validTasks = _bulkDraftList.filter(t => t.name && t.name.trim().length > 0);
+  if (validTasks.length === 0) {
+    toast("Cần ít nhất một nhiệm vụ có tên", "error");
+    return;
+  }
+
+  const btn = document.getElementById("btn-save-bulk");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = `⏳ Đang tạo ${validTasks.length} nhiệm vụ...`;
+  }
+  toast(`Đang lưu ${validTasks.length} nhiệm vụ...`, "info");
+
+  const payload = {
+    projectId: projectId,
+    tasks: validTasks
+  };
+
+  google.script.run
+    .withSuccessHandler(r => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = `🚀 Tạo ngay (${validTasks.length} nhiệm vụ)`;
+      }
+      if (r && r.success) {
+        toast(r.message || `Đã tạo ${validTasks.length} nhiệm vụ!`, "success");
+        closeModal("m-qtk");
+        if (r.tasks && r.tasks.length) {
+          localAddBulkTasks(r.tasks, projectId);
+        } else {
+          loadApp();
+        }
+      } else {
+        toast((r && r.error) || "Lỗi tạo nhiệm vụ hàng loạt", "error");
+      }
+    })
+    .withFailureHandler(e => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = `🚀 Tạo ngay (${validTasks.length} nhiệm vụ)`;
+      }
+      toast(e.message || "Lỗi lưu dữ liệu", "error");
+    })
+    .addBulkTasks(payload);
+}
+
+function openTkMod(taskId, defaultPjId, initialTab) {
+  document.getElementById("mqtk-ti").textContent = taskId ? "Sửa Nhiệm Vụ" : "Thêm Nhiệm Vụ";
+  document.getElementById("mqtk-id").value = taskId || "";
+  ["mqtk-nm", "mqtk-sd", "mqtk-dl"].forEach(x => document.getElementById(x).value = "");
+  document.getElementById("mqtk-st").value = "Chờ thực hiện";
+  document.getElementById("mqtk-pr").value = "Trung bình";
+  document.getElementById("mqtk-pj").disabled = !!taskId;
+  ldPjSel("mqtk-pj", defaultPjId || "");
   setAssignees('qtk', '');
+
+  const tabsWrap = document.getElementById("qtk-tabs-wrap");
   if (taskId) {
-    const t=S.tasks.find(x=>x.id===taskId);
-    if(t){
-      document.getElementById("mqtk-nm").value=t.name;
-      document.getElementById("mqtk-st").value=t.status;
-      document.getElementById("mqtk-pr").value=t.priority;
+    if (tabsWrap) tabsWrap.style.display = "none";
+    switchQtkTab('single');
+    const t = S.tasks.find(x => x.id === taskId);
+    if (t) {
+      document.getElementById("mqtk-nm").value = t.name;
+      document.getElementById("mqtk-st").value = t.status;
+      document.getElementById("mqtk-pr").value = t.priority;
       setAssignees('qtk', t.assignee);
+    }
+  } else {
+    if (tabsWrap) tabsWrap.style.display = "flex";
+    _bulkDraftList = [];
+    if (document.getElementById("mbulk-text")) document.getElementById("mbulk-text").value = "";
+    ldPjSel("mbulk-pj", defaultPjId || "");
+    populateBulkMembers();
+    const todayStr = new Date().toISOString().split("T")[0];
+    if (document.getElementById("mbulk-sd")) document.getElementById("mbulk-sd").value = todayStr;
+    if (document.getElementById("mbulk-dl")) document.getElementById("mbulk-dl").value = "";
+    if (document.getElementById("mbulk-pr")) document.getElementById("mbulk-pr").value = "Trung bình";
+    renderBulkPreview();
+
+    if (initialTab === 'bulk') {
+      switchQtkTab('bulk');
+    } else {
+      switchQtkTab('single');
     }
   }
   openModal("m-qtk");
