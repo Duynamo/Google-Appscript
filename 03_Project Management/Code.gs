@@ -4,6 +4,7 @@
 // ============================================================
 const CONFIG = {
   APP_NAME      : "Quản Lý Dự Án v3.0",
+  DEFAULT_LANG  : "vi",
   SHEET_USERS   : "USERS",
   SHEET_PROJECTS: "PROJECTS",
   SHEET_TASKS   : "TASKS",
@@ -157,8 +158,14 @@ function getInitData() {
   mappedTasks.forEach(t=>{ if(taskByStatus[t.status]!==undefined) taskByStatus[t.status]++; });
   const overdue = mappedTasks.filter(t=>t.isOverdue).length;
 
+  const sysLang = PropertiesService.getScriptProperties().getProperty("SYS_DEFAULT_LANG") || CONFIG.DEFAULT_LANG || "vi";
+  let userLang = "";
+  try { userLang = PropertiesService.getUserProperties().getProperty("USER_LANG") || ""; } catch(e) {}
+
   return {
     success:true,
+    systemDefaultLang: sysLang,
+    userLang: userLang,
     user    : { email:user.email, name:user.name, role:user.role },
     projects: mappedProjects,
     tasks   : mappedTasks,
@@ -171,6 +178,32 @@ function getInitData() {
       taskByStatus,
     },
   };
+}
+
+// ── NGÔN NGỮ MẶC ĐỊNH (I18N SETTINGS) ──
+function setSystemDefaultLanguage(lang) {
+  const user = getCurrentUser();
+  if (!user || user.role !== "Admin") {
+    return { success: false, error: "Chỉ Admin mới có quyền đổi ngôn ngữ mặc định hệ thống" };
+  }
+  if (!["vi", "en", "ja"].includes(lang)) {
+    return { success: false, error: "Ngôn ngữ không hợp lệ" };
+  }
+  PropertiesService.getScriptProperties().setProperty("SYS_DEFAULT_LANG", lang);
+  writeLog("SYS_LANG", `Đổi ngôn ngữ mặc định hệ thống thành: ${lang}`);
+  return { success: true, lang: lang };
+}
+
+function setUserLanguagePreference(lang) {
+  if (!["vi", "en", "ja"].includes(lang)) {
+    return { success: false, error: "Ngôn ngữ không hợp lệ" };
+  }
+  try {
+    PropertiesService.getUserProperties().setProperty("USER_LANG", lang);
+    return { success: true, lang: lang };
+  } catch(e) {
+    return { success: false, error: e.message };
+  }
 }
 
 // Giữ lại để tương thích ngược

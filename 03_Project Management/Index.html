@@ -53,6 +53,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .btn-bell{width:36px;height:36px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;position:relative;transition:.15s}
 .btn-bell:hover{background:var(--bdr)}
 .bell-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--d);border-radius:50%;border:2px solid var(--card);display:none}
+.btn-lang{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--r2);padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer;position:relative;transition:.15s;color:var(--tx)}
+.btn-lang:hover{background:var(--bdr)}
+.lang-drop{min-width:210px;padding:5px 0}
+.lang-opt{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:12px;cursor:pointer;transition:.1s;color:var(--tx);user-select:none}
+.lang-opt:hover{background:var(--bg);color:var(--p)}
+.lang-opt.active{background:#eef2ff;color:var(--p);font-weight:700}
+.lang-opt .l-check{margin-left:auto;color:var(--p);font-weight:700}
+.lang-act{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:11px;color:var(--t2);cursor:pointer;transition:.1s;user-select:none}
+.lang-act:hover{background:var(--bg);color:var(--tx)}
 .drop-wrap{position:relative}
 .drop{position:absolute;top:44px;right:0;background:#fff;border:1px solid var(--bdr);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:500;display:none;overflow:hidden;min-width:190px}
 .drop.show{display:block}
@@ -391,50 +400,74 @@ input[type=range]{width:100%;accent-color:var(--p)}
 <nav id="sb">
   <div class="sb-logo">
     <div class="sb-li">PM</div>
-    <div class="sb-ln"><div class="t1">Quản Lý Dự Án</div><div class="t2">Quản lý thông minh</div></div>
+    <div class="sb-ln"><div class="t1" data-i18n="app_name">Quản Lý Dự Án</div><div class="t2" data-i18n="app_sub">Quản lý thông minh</div></div>
   </div>
   <div class="sb-usr">
     <div class="sb-av" id="sb-av">?</div>
     <div><div class="sb-un" id="sb-nm">Đang tải...</div><div class="sb-ur" id="sb-rl">-</div></div>
   </div>
   <div class="sb-nav">
-    <div class="sni active" data-p="dashboard" onclick="goPage('dashboard',this)"><span class="ic">🏠</span>Tổng quan</div>
-    <div class="sni" data-p="gantt" onclick="goPage('gantt',this)"><span class="ic">📅</span>Sơ đồ Gantt</div>
-    <div class="sni" data-p="projects" onclick="goPage('projects',this)"><span class="ic">📁</span>Dự án</div>
-    <div class="sni" data-p="tasks" onclick="goPage('tasks',this)"><span class="ic">☑️</span>Nhiệm vụ</div>
-    <div class="sni" id="ni-usr" style="display:none" data-p="users" onclick="goPage('users',this)"><span class="ic">👥</span>Người dùng</div>
-    <div class="sni" id="ni-log" style="display:none" data-p="log" onclick="goPage('log',this)"><span class="ic">📋</span>Nhật ký</div>
+    <div class="sni active" data-p="dashboard" onclick="goPage('dashboard',this)"><span class="ic">🏠</span><span data-i18n="nav_dashboard">Tổng quan</span></div>
+    <div class="sni" data-p="gantt" onclick="goPage('gantt',this)"><span class="ic">📅</span><span data-i18n="nav_gantt">Sơ đồ Gantt</span></div>
+    <div class="sni" data-p="projects" onclick="goPage('projects',this)"><span class="ic">📁</span><span data-i18n="nav_projects">Dự án</span></div>
+    <div class="sni" data-p="tasks" onclick="goPage('tasks',this)"><span class="ic">☑️</span><span data-i18n="nav_tasks">Nhiệm vụ</span></div>
+    <div class="sni" id="ni-usr" style="display:none" data-p="users" onclick="goPage('users',this)"><span class="ic">👥</span><span data-i18n="nav_users">Người dùng</span></div>
+    <div class="sni" id="ni-log" style="display:none" data-p="log" onclick="goPage('log',this)"><span class="ic">📋</span><span data-i18n="nav_log">Nhật ký</span></div>
   </div>
-  <div class="sb-out" onclick="doLogout()"><span class="ic" style="font-size:14px">🚪</span>Đăng xuất</div>
+  <div class="sb-out" onclick="doLogout()"><span class="ic" style="font-size:14px">🚪</span><span data-i18n="logout">Đăng xuất</span></div>
   <div class="sb-ft"><a href="https://vudinhduy.vn" target="_blank">vudinhduy.vn</a><div style="margin-top:2px">© V2D</div></div>
 </nav>
 <!-- ══ MAIN ══ -->
 <div id="main">
   <div id="topbar">
-    <div class="tb-l"><div class="pgt" id="pgt">Tổng Quan</div><div class="pgs" id="pgs">Chào mừng trở lại</div></div>
+    <div class="tb-l"><div class="pgt" id="pgt" data-i18n="page_dashboard_t">Tổng Quan</div><div class="pgs" id="pgs" data-i18n="page_dashboard_s">Chào mừng trở lại</div></div>
     <div class="tb-r">
       <div class="pj-filter">
         🔽 <select id="pj-filter-sel" onchange="applyPjFilter()">
           <option value="">Lọc theo dự án...</option>
         </select>
       </div>
-      <div class="tb-srch"><span style="color:var(--t3)">🔍</span><input id="g-srch" placeholder="Tìm kiếm..." oninput="gSearch(this.value)"></div>
+      <div class="tb-srch"><span style="color:var(--t3)">🔍</span><input id="g-srch" placeholder="Tìm kiếm..." data-i18n-ph="search_placeholder" oninput="gSearch(this.value)"></div>
       <div class="drop-wrap">
-        <button class="btn-mk" onclick="togDrop('d-mk')">+ Tạo mới ▾</button>
+        <button class="btn-mk" onclick="togDrop('d-mk')"><span data-i18n="create_new">+ Tạo mới ▾</span></button>
         <div class="drop" id="d-mk">
-          <div class="di" onclick="clDrop('d-mk');openPjMod()"><span>📁</span>Thêm dự án</div>
-          <div class="di" onclick="clDrop('d-mk');openTkMod(null)"><span>✅</span>Thêm nhiệm vụ</div>
-          <div class="di" id="d-usr-o" style="display:none" onclick="clDrop('d-mk');openUsrMod()"><span>👤</span>Thêm nhân viên</div>
+          <div class="di" onclick="clDrop('d-mk');openPjMod()"><span>📁</span><span data-i18n="add_project">Thêm dự án</span></div>
+          <div class="di" onclick="clDrop('d-mk');openTkMod(null)"><span>✅</span><span data-i18n="add_task">Thêm nhiệm vụ</span></div>
+          <div class="di" id="d-usr-o" style="display:none" onclick="clDrop('d-mk');openUsrMod()"><span>👤</span><span data-i18n="add_user">Thêm nhân viên</span></div>
+        </div>
+      </div>
+      <!-- ── LANGUAGE DROPDOWN ── -->
+      <div class="drop-wrap">
+        <button class="btn-lang" onclick="togDrop('d-lang')" title="Ngôn ngữ / Language / 言語">
+          <span id="cur-lang-flag">🇻🇳</span> <span id="cur-lang-text">VI</span> ▾
+        </button>
+        <div class="drop lang-drop" id="d-lang">
+          <div class="lang-opt active" id="lang-opt-vi" onclick="selectLanguage('vi')">
+            <span>🇻🇳</span> <span data-i18n="lang_vi">Tiếng Việt</span> <span class="l-check" id="chk-vi">✔</span>
+          </div>
+          <div class="lang-opt" id="lang-opt-en" onclick="selectLanguage('en')">
+            <span>🇺🇸</span> <span data-i18n="lang_en">English</span> <span class="l-check" id="chk-en" style="display:none">✔</span>
+          </div>
+          <div class="lang-opt" id="lang-opt-ja" onclick="selectLanguage('ja')">
+            <span>🇯🇵</span> <span data-i18n="lang_ja">日本語</span> <span class="l-check" id="chk-ja" style="display:none">✔</span>
+          </div>
+          <div style="border-top:1px solid var(--bdr);margin:4px 0"></div>
+          <div class="lang-act" onclick="setAsMyDefaultLang()">
+            <span>⭐</span> <span data-i18n="set_as_my_default">Đặt làm mặc định</span>
+          </div>
+          <div class="lang-act" id="lang-act-sys" style="display:none" onclick="openSysLangModal()">
+            <span>⚙️</span> <span data-i18n="set_sys_default">Mặc định hệ thống</span>
+          </div>
         </div>
       </div>
       <div class="drop-wrap">
         <div class="btn-bell" onclick="togDrop('d-notif')" style="background:var(--w);color:#fff;border-color:var(--w)">🔔<div class="bell-dot" id="bell-dot"></div></div>
         <div class="drop n-drop" id="d-notif">
-          <div class="n-hd">Thông báo<div class="notif-acts"><button class="nb nb-a" onclick="addNtfClick()">+Thêm</button><button class="nb nb-r" onclick="markRd()">Xóa đã đọc</button></div></div>
+          <div class="n-hd"><span data-i18n="notifications">Thông báo</span><div class="notif-acts"><button class="nb nb-a" onclick="addNtfClick()" data-i18n="btn_add">+Thêm</button><button class="nb nb-r" onclick="markRd()" data-i18n="mark_read">Xóa đã đọc</button></div></div>
           <div id="ntf-list"></div>
         </div>
       </div>
-      <button class="btn bs" onclick="reloadAll()" title="Làm mới">🔄</button>
+      <button class="btn bs" onclick="reloadAll()" title="Làm mới" data-i18n-title="reload">🔄</button>
     </div>
   </div>
   <div id="content">
@@ -445,84 +478,84 @@ input[type=range]{width:100%;accent-color:var(--p)}
         <div class="srow" id="srow"></div>
         <div class="d2col">
           <div class="card">
-            <div class="chd"><span class="cti">📋 Hoạt động gần đây</span><button class="btn bs" style="font-size:11px" onclick="renderActList()">↻</button></div>
+            <div class="chd"><span class="cti" data-i18n="dash_recent_activity">📋 Hoạt động gần đây</span><button class="btn bs" style="font-size:11px" onclick="renderActList()">↻</button></div>
             <div class="act-list" id="act-list"><div class="ldg"><div class="spn"></div></div></div>
           </div>
           <div class="card">
-            <div class="chd"><span class="cti">🔥 Nhiệm vụ ưu tiên cao</span><span style="font-size:11px;color:var(--p);cursor:pointer" onclick="goPage('tasks',document.querySelector('[data-p=tasks]'))">Xem tất cả ›</span></div>
+            <div class="chd"><span class="cti" data-i18n="dash_urgent_tasks">🔥 Nhiệm vụ ưu tiên cao</span><span style="font-size:11px;color:var(--p);cursor:pointer" onclick="goPage('tasks',document.querySelector('[data-p=tasks]'))">Xem tất cả ›</span></div>
             <div class="ptk-grid" id="ptk-grid"><div class="ldg"><div class="spn"></div></div></div>
           </div>
         </div>
         <div class="d3col">
-          <div class="ccrd"><div class="cc-ti">Trạng thái nhiệm vụ</div><div style="height:160px;position:relative"><canvas id="c-st"></canvas></div><div class="c-leg" id="c-leg"></div></div>
-          <div class="ccrd"><div class="cc-ti">Phân bổ tiến độ dự án</div><div style="height:180px"><canvas id="c-pg"></canvas></div></div>
-          <div class="ccrd"><div class="cc-ti">Phân bổ ưu tiên nhiệm vụ</div><div style="height:180px"><canvas id="c-pri"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_status">Trạng thái nhiệm vụ</div><div style="height:160px;position:relative"><canvas id="c-st"></canvas></div><div class="c-leg" id="c-leg"></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_progress">Phân bổ tiến độ dự án</div><div style="height:180px"><canvas id="c-pg"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_priority">Phân bổ ưu tiên nhiệm vụ</div><div style="height:180px"><canvas id="c-pri"></canvas></div></div>
         </div>
         <div class="d3col">
-          <div class="ccrd"><div class="cc-ti">Hiệu quả nhân viên</div><div style="height:180px"><canvas id="c-sf"></canvas></div></div>
-          <div class="ccrd"><div class="cc-ti">Xu hướng hoàn thành (30 ngày)</div><div style="height:180px"><canvas id="c-tr"></canvas></div></div>
-          <div class="ccrd"><div class="cc-ti">So sánh dự án</div><div style="height:180px"><canvas id="c-cmp"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_staff">Hiệu quả nhân viên</div><div style="height:180px"><canvas id="c-sf"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_trend">Xu hướng hoàn thành (15 ngày)</div><div style="height:180px"><canvas id="c-tr"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_compare">So sánh dự án</div><div style="height:180px"><canvas id="c-cmp"></canvas></div></div>
         </div>
       </div>
     </div>
     <!-- ══ GANTT ══ -->
     <div class="page" id="page-gantt">
       <div class="gantt-toolbar">
-        <span style="font-size:13px;font-weight:700">📅 Sơ đồ Gantt</span>
-        <label style="font-size:11px;color:var(--t2)">Từ:</label>
+        <span style="font-size:13px;font-weight:700" data-i18n="nav_gantt">📅 Sơ đồ Gantt</span>
+        <label style="font-size:11px;color:var(--t2)" data-i18n="gantt_from">Từ:</label>
         <input type="date" class="fc" id="g-from" style="width:130px;padding:5px 8px;font-size:11px">
-        <label style="font-size:11px;color:var(--t2)">Đến:</label>
+        <label style="font-size:11px;color:var(--t2)" data-i18n="gantt_to">Đến:</label>
         <input type="date" class="fc" id="g-to" style="width:130px;padding:5px 8px;font-size:11px">
         <div style="position:relative" id="staff-filter-wrap">
           <div class="staff-filter-btn" id="staff-filter-btn" onclick="togStaffDrop(event)">
-            <span id="staff-filter-label">👤 Tất cả nhân viên</span>
+            <span id="staff-filter-label" data-i18n="gantt_all_staff">👤 Tất cả nhân viên</span>
             <span style="color:var(--t3);font-size:10px">▾</span>
           </div>
           <div class="staff-filter-drop" id="staff-filter-drop">
             <label class="staff-cb-all">
               <input type="checkbox" id="staff-all" checked onchange="staffSelectAll(this)">
-              <span>Tất cả nhân viên</span>
+              <span data-i18n="gantt_all_staff">Tất cả nhân viên</span>
             </label>
             <div id="staff-checklist"></div>
             <div class="staff-filter-footer">
-              <button class="btn bp" style="flex:1;font-size:11px" onclick="applyStaffFilter()">✔ Áp dụng</button>
-              <button class="btn bs" style="font-size:11px" onclick="resetStaffFilter()">↺ Reset</button>
+              <button class="btn bp" style="flex:1;font-size:11px" onclick="applyStaffFilter()" data-i18n="btn_apply">✔ Áp dụng</button>
+              <button class="btn bs" style="font-size:11px" onclick="resetStaffFilter()" data-i18n="btn_reset">↺ Reset</button>
             </div>
           </div>
         </div>
         <div class="gantt-opt-group">
           <label class="gantt-cb-opt" title="Bật/Tắt cắm cờ mốc deadline">
             <input type="checkbox" id="g-cb-flag" checked onchange="updateGanttDisplayOpts()">
-            <span>🚩 Cờ mốc</span>
+            <span data-i18n="gantt_cb_flag">🚩 Cờ mốc</span>
           </label>
           <label class="gantt-cb-opt" title="Bật/Tắt nhãn ngày deadline">
             <input type="checkbox" id="g-cb-date" checked onchange="updateGanttDisplayOpts()">
-            <span>📅 Ngày hạn</span>
+            <span data-i18n="gantt_cb_date">📅 Ngày hạn</span>
           </label>
         </div>
-        <div class="psrch" style="min-width:160px"><span style="color:var(--t3)">🔍</span><input id="g-srch2" placeholder="Tìm task..." oninput="ganttSearch(this.value)"></div>
-        <button class="btn bp" onclick="loadGantt()">Xem</button>
+        <div class="psrch" style="min-width:160px"><span style="color:var(--t3)">🔍</span><input id="g-srch2" placeholder="Tìm task..." data-i18n-ph="search_placeholder" oninput="ganttSearch(this.value)"></div>
+        <button class="btn bp" onclick="loadGantt()" data-i18n="btn_view">Xem</button>
       </div>
       <div class="gantt-wrap" style="height:calc(100vh - 200px)">
         <div class="gantt-inner" id="gantt-inner">
-          <div class="ldg"><div class="spn"></div>Đang tải Gantt...</div>
+          <div class="ldg"><div class="spn"></div><span data-i18n="loading">Đang tải Gantt...</span></div>
         </div>
       </div>
     </div>
     <!-- ══ PROJECTS ══ -->
     <div class="page" id="page-projects">
       <div class="pcrd">
-        <div class="pcrd-hd"><span class="cti" style="font-size:14px">📁 Danh Sách Dự Án</span><button class="btn bp" onclick="openPjMod()">+ Thêm Dự Án</button></div>
+        <div class="pcrd-hd"><span class="cti" style="font-size:14px" data-i18n="pj_list_title">📁 Danh Sách Dự Án</span><button class="btn bp" onclick="openPjMod()" data-i18n="add_project">+ Thêm Dự Án</button></div>
         <div class="toolbar">
-          <div class="psrch" style="min-width:190px"><span style="color:var(--t3)">🔍</span><input id="pp-s" placeholder="Tìm dự án..." oninput="filterPgPj()"></div>
+          <div class="psrch" style="min-width:190px"><span style="color:var(--t3)">🔍</span><input id="pp-s" placeholder="Tìm dự án..." data-i18n-ph="search_placeholder" oninput="filterPgPj()"></div>
           <select class="fsel" id="pp-st" onchange="filterPgPj()">
             <option value="">-- Tất cả trạng thái --</option>
-            <option>Lên kế hoạch</option><option>Đang thực hiện</option><option>Hoàn thành</option><option>Tạm dừng</option><option>Hủy</option>
+            <option value="Lên kế hoạch">Lên kế hoạch</option><option value="Đang thực hiện">Đang thực hiện</option><option value="Hoàn thành">Hoàn thành</option><option value="Tạm dừng">Tạm dừng</option><option value="Hủy">Hủy</option>
           </select>
         </div>
         <div class="tblw">
           <table>
-            <thead><tr><th>#</th><th>Tên Dự Án</th><th>Manager</th><th>Trạng Thái</th><th>Tiến Độ</th><th>Deadline</th><th>Thao Tác</th></tr></thead>
+            <thead><tr><th>#</th><th data-i18n="pj_col_name">Tên Dự Án</th><th data-i18n="pj_col_pm">Manager</th><th data-i18n="pj_col_status">Trạng Thái</th><th data-i18n="pj_col_progress">Tiến Độ</th><th data-i18n="tk_col_deadline">Deadline</th><th data-i18n="pj_col_actions">Thao Tác</th></tr></thead>
             <tbody id="pp-tb"><tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr></tbody>
           </table>
         </div>
@@ -532,9 +565,9 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <div class="page" id="page-tasks">
       <div class="pcrd">
         <div class="pcrd-hd">
-          <span class="cti" style="font-size:14px">✅ Quản lý Nhiệm vụ</span>
+          <span class="cti" style="font-size:14px" data-i18n="page_tasks_t">✅ Quản lý Nhiệm vụ</span>
           <div style="display:flex;gap:7px;align-items:center">
-            <div class="psrch" style="min-width:180px"><span style="color:var(--t3)">🔍</span><input id="pt-s" placeholder="Tìm nhiệm vụ..." oninput="filterPgTk()"></div>
+            <div class="psrch" style="min-width:180px"><span style="color:var(--t3)">🔍</span><input id="pt-s" placeholder="Tìm nhiệm vụ..." data-i18n-ph="search_placeholder" oninput="filterPgTk()"></div>
             <select class="fsel" id="pt-st" onchange="filterPgTk()">
               <option value="">-- Trạng thái --</option>
               <option>Quá hạn</option><option>Chờ thực hiện</option><option>Đang thực hiện</option><option>Chờ duyệt</option><option>Hoàn thành</option><option>Tạm dừng</option><option>Hủy</option>
@@ -542,7 +575,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
             <select class="fsel" id="pt-pr" onchange="filterPgTk()">
               <option value="">-- Ưu tiên --</option><option>Khẩn cấp</option><option>Cao</option><option>Trung bình</option><option>Thấp</option>
             </select>
-            <button class="btn bp" id="btn-add-tk" onclick="openTkMod(null)">+ Tạo nhiệm vụ mới</button>
+            <button class="btn bp" id="btn-add-tk" onclick="openTkMod(null)" data-i18n="add_task">+ Tạo nhiệm vụ mới</button>
           </div>
         </div>
         <div class="tk-stats" id="tk-stats"></div>
@@ -552,10 +585,10 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <!-- ══ USERS ══ -->
     <div class="page" id="page-users">
       <div class="pcrd">
-        <div class="pcrd-hd"><span class="cti" style="font-size:14px">👥 Quản Lý Người Dùng</span><button class="btn bp" onclick="openUsrMod()">+ Thêm</button></div>
+        <div class="pcrd-hd"><span class="cti" style="font-size:14px" data-i18n="page_users_t">👥 Quản Lý Người Dùng</span><button class="btn bp" onclick="openUsrMod()" data-i18n="add_user">+ Thêm</button></div>
         <div class="tblw">
           <table>
-            <thead><tr><th>#</th><th>Tên / ID</th><th>Họ Tên</th><th>Vai Trò</th><th>Trạng Thái</th><th>Ngày Tạo</th><th>Thao Tác</th></tr></thead>
+            <thead><tr><th>#</th><th data-i18n="user_col_id">Tên / ID</th><th data-i18n="user_col_name">Họ Tên</th><th data-i18n="user_col_role">Vai Trò</th><th data-i18n="user_col_status">Trạng Thái</th><th data-i18n="user_col_created">Ngày Tạo</th><th data-i18n="pj_col_actions">Thao Tác</th></tr></thead>
             <tbody id="pu-tb"><tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr></tbody>
           </table>
         </div>
@@ -564,10 +597,10 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <!-- ══ LOG ══ -->
     <div class="page" id="page-log">
       <div class="pcrd">
-        <div class="pcrd-hd"><span class="cti" style="font-size:14px">📋 Nhật Ký Hoạt Động</span></div>
+        <div class="pcrd-hd"><span class="cti" style="font-size:14px" data-i18n="page_log_t">📋 Nhật Ký Hoạt Động</span></div>
         <div class="tblw">
           <table>
-            <thead><tr><th>Thời Gian</th><th>Email</th><th>Vai Trò</th><th>Hành Động</th><th>Chi Tiết</th></tr></thead>
+            <thead><tr><th data-i18n="log_col_time">Thời Gian</th><th data-i18n="log_col_email">Email</th><th data-i18n="log_col_role">Vai Trò</th><th data-i18n="log_col_action">Hành Động</th><th data-i18n="log_col_detail">Chi Tiết</th></tr></thead>
             <tbody id="pl-tb"><tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr></tbody>
           </table>
         </div>
@@ -583,8 +616,8 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <div class="mhd" style="padding:14px 18px 0">
       <h3 id="m-pd-ti">Chi tiết dự án</h3>
       <div style="display:flex;gap:7px;align-items:center">
-        <button class="btn bg2" onclick="openTkMod(null,_pdPjId)">+ Thêm nhiệm vụ</button>
-        <button class="btn bp" style="font-size:12px;padding:6px 11px;display:inline-flex;align-items:center;gap:4px" onclick="openTkMod(null,_pdPjId,'bulk')">⚡ Tạo hàng loạt</button>
+        <button class="btn bg2" onclick="openTkMod(null,_pdPjId)" data-i18n="add_task">+ Thêm nhiệm vụ</button>
+        <button class="btn bp" style="font-size:12px;padding:6px 11px;display:inline-flex;align-items:center;gap:4px" onclick="openTkMod(null,_pdPjId,'bulk')" data-i18n="btn_bulk_add">⚡ Tạo hàng loạt</button>
         <button class="mcl" onclick="closeModal('m-pd')">✕</button>
       </div>
     </div>
@@ -592,27 +625,27 @@ input[type=range]{width:100%;accent-color:var(--p)}
       <div class="pd-wrap">
         <!-- LEFT PANEL (stats + members) -->
         <div class="pd-left">
-          <div style="font-size:13px;font-weight:700;margin-bottom:6px">Tổng quan</div>
-          <div class="pd-stat"><div class="pd-stat-num" id="pd-total">-</div><div class="pd-stat-lbl">Tổng nhiệm vụ</div></div>
-          <div class="pd-stat" style="border-left:3px solid var(--g)"><div class="pd-stat-num" id="pd-done" style="color:var(--g)">-</div><div class="pd-stat-lbl">Hoàn thành</div></div>
-          <div class="pd-stat" style="border-left:3px solid var(--p)"><div class="pd-stat-num" id="pd-ip" style="color:var(--p)">-</div><div class="pd-stat-lbl">Đang thực hiện</div></div>
-          <div class="pd-stat" style="border-left:3px solid var(--d)"><div class="pd-stat-num" id="pd-ov" style="color:var(--d)">-</div><div class="pd-stat-lbl">Quá hạn</div></div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px" data-i18n="nav_dashboard">Tổng quan</div>
+          <div class="pd-stat"><div class="pd-stat-num" id="pd-total">-</div><div class="pd-stat-lbl" data-i18n="dash_card_total_tasks">Tổng nhiệm vụ</div></div>
+          <div class="pd-stat" style="border-left:3px solid var(--g)"><div class="pd-stat-num" id="pd-done" style="color:var(--g)">-</div><div class="pd-stat-lbl" data-i18n="dash_stat_completed">Hoàn thành</div></div>
+          <div class="pd-stat" style="border-left:3px solid var(--p)"><div class="pd-stat-num" id="pd-ip" style="color:var(--p)">-</div><div class="pd-stat-lbl" data-i18n="st_in_progress">Đang thực hiện</div></div>
+          <div class="pd-stat" style="border-left:3px solid var(--d)"><div class="pd-stat-num" id="pd-ov" style="color:var(--d)">-</div><div class="pd-stat-lbl" data-i18n="st_overdue">Quá hạn</div></div>
           <div class="pd-stat">
             <div class="pd-prog">
-              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--t2)">Tiến độ chung</span><span class="pd-prog-pct" id="pd-pct">0%</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--t2)" data-i18n="dash_chart_progress">Tiến độ chung</span><span class="pd-prog-pct" id="pd-pct">0%</span></div>
               <div class="pd-prog-bar"><div class="pd-prog-fill" id="pd-bar" style="width:0%"></div></div>
             </div>
           </div>
           <!-- ══ MEMBER SECTION ══ -->
           <div style="border-top:1px solid var(--bdr);padding-top:10px">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-              <span style="font-size:12px;font-weight:700">👥 Thành viên</span>
+              <span style="font-size:12px;font-weight:700" data-i18n="nav_users">👥 Thành viên</span>
               <span id="pd-mem-count" class="pd-mem-badge">0</span>
             </div>
             <div id="pd-mem-list" style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px">
-              <div style="font-size:10px;color:var(--t3)">Chưa có thành viên</div>
+              <div style="font-size:10px;color:var(--t3)" data-i18n="dash_no_act">Chưa có thành viên</div>
             </div>
-            <button class="pd-mem-btn" onclick="openMemMod()">
+            <button class="pd-mem-btn" onclick="openMemMod()" data-i18n="manage_members">
               ⚙ Quản lý thành viên
             </button>
           </div>
@@ -851,8 +884,8 @@ input[type=range]{width:100%;accent-color:var(--p)}
       </div>
     </div>
     <div class="mft">
-      <button class="btn bs" onclick="closeModal('m-mem')">Đóng</button>
-      <button class="btn bp" onclick="saveMembers()">💾 Lưu thành viên</button>
+      <button class="btn bs" onclick="closeModal('m-mem')" data-i18n="btn_close">Đóng</button>
+      <button class="btn bp" onclick="saveMembers()" data-i18n="btn_save">💾 Lưu thành viên</button>
     </div>
   </div>
 </div>
@@ -860,7 +893,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
 <!-- ══ MODAL: ADD USER ══ -->
 <div class="ov" id="m-usr">
   <div class="modal">
-    <div class="mhd"><h3 id="musr-ti">Thêm Người Dùng</h3><button class="mcl" onclick="closeModal('m-usr')">✕</button></div>
+    <div class="mhd"><h3 id="musr-ti" data-i18n="add_user">Thêm Người Dùng</h3><button class="mcl" onclick="closeModal('m-usr')">✕</button></div>
     <div class="mbd">
       <input type="hidden" id="musr-id">
       <!-- Mode tabs (only shown when adding) -->
@@ -888,16 +921,16 @@ input[type=range]{width:100%;accent-color:var(--p)}
         <div class="fg"><label class="fl">Ghi Chú</label><input class="fc" id="musr-nt" placeholder="Ghi chú..."></div>
       </div>
     </div>
-    <div class="mft"><button class="btn bs" onclick="closeModal('m-usr')">Hủy</button><button class="btn bp" onclick="saveUsr()">💾 Lưu</button></div>
+    <div class="mft"><button class="btn bs" onclick="closeModal('m-usr')" data-i18n="btn_cancel">Hủy</button><button class="btn bp" onclick="saveUsr()" data-i18n="btn_save">💾 Lưu</button></div>
   </div>
 </div>
 
 <!-- ══ MODAL: ADD NOTIF ══ -->
 <div class="ov" id="m-ntf">
   <div class="modal" style="max-width:380px">
-    <div class="mhd"><h3>Thêm Thông Báo</h3><button class="mcl" onclick="closeModal('m-ntf')">✕</button></div>
+    <div class="mhd"><h3 data-i18n="notifications">Thêm Thông Báo</h3><button class="mcl" onclick="closeModal('m-ntf')">✕</button></div>
     <div class="mbd"><div class="fg"><label class="fl">Nội dung</label><textarea class="fc" id="ntf-inp" rows="3" placeholder="Nhập nội dung..."></textarea></div></div>
-    <div class="mft"><button class="btn bs" onclick="closeModal('m-ntf')">Hủy</button><button class="btn bp" onclick="saveNtf()">Thêm</button></div>
+    <div class="mft"><button class="btn bs" onclick="closeModal('m-ntf')" data-i18n="btn_cancel">Hủy</button><button class="btn bp" onclick="saveNtf()" data-i18n="btn_add">Thêm</button></div>
   </div>
 </div>
 
@@ -905,9 +938,9 @@ input[type=range]{width:100%;accent-color:var(--p)}
 <div id="task-panel">
   <div id="task-panel-inner">
     <div class="tp-header">
-      <h3>✏ Chỉnh sửa nhiệm vụ</h3>
+      <h3 data-i18n="modal_task_detail">✏ Chỉnh sửa nhiệm vụ</h3>
       <div class="tp-hacts">
-        <button class="btn bp" onclick="saveFullTk()">💾 Cập nhật</button>
+        <button class="btn bp" onclick="saveFullTk()" data-i18n="btn_save">💾 Cập nhật</button>
         <div style="position:relative">
           <button class="btn" style="background:var(--w);color:#fff" onclick="togDrop('tp-rm-add')">🔔 Nhắc việc</button>
           <div class="drop" id="tp-rm-add" style="right:0;min-width:260px;padding:12px">
@@ -915,11 +948,11 @@ input[type=range]{width:100%;accent-color:var(--p)}
             <div style="display:flex;flex-direction:column;gap:6px">
               <input type="date" class="fc" id="rm-new-date" style="font-size:11px">
               <textarea class="fc" id="rm-new-text" rows="2" placeholder="Nội dung nhắc việc..." style="font-size:11px;min-height:60px"></textarea>
-              <button class="btn bp" onclick="addReminder()">+ Thêm</button>
+              <button class="btn bp" onclick="addReminder()" data-i18n="btn_add">+ Thêm</button>
             </div>
           </div>
         </div>
-        <button class="btn bs" onclick="closeTaskPanel()">✕ Đóng</button>
+        <button class="btn bs" onclick="closeTaskPanel()" data-i18n="btn_close">✕ Đóng</button>
       </div>
     </div>
     <div class="tp-body">
@@ -995,7 +1028,837 @@ input[type=range]{width:100%;accent-color:var(--p)}
   </div>
 </div>
 
+<!-- ══ MODAL CÀI ĐẶT NGÔN NGỮ MẶC ĐỊNH HỆ THỐNG (ADMIN) ══ -->
+<div class="ov" id="m-sys-lang">
+  <div class="modal" style="max-width:420px">
+    <div class="mhd">
+      <h3 data-i18n="modal_sys_lang">⚙️ Cài đặt ngôn ngữ mặc định hệ thống</h3>
+      <button class="mcl" onclick="closeModal('m-sys-lang')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5" data-i18n="sys_lang_desc">
+        Chọn ngôn ngữ mặc định cho toàn bộ hệ thống. Người dùng mới khi truy cập lần đầu sẽ được áp dụng ngôn ngữ này nếu chưa thiết lập tùy chọn cá nhân.
+      </div>
+      <div class="fg">
+        <label class="fl" data-i18n="sys_lang_select_lbl">Ngôn ngữ mặc định hệ thống</label>
+        <select class="fc" id="sys-lang-sel">
+          <option value="vi">🇻🇳 Tiếng Việt</option>
+          <option value="en">🇺🇸 English</option>
+          <option value="ja">🇯🇵 日本語</option>
+        </select>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bs" onclick="closeModal('m-sys-lang')" data-i18n="btn_cancel">Hủy</button>
+      <button class="btn bp" onclick="saveSysDefaultLang()" data-i18n="btn_save">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// ═══════════════════════════════════════════════════════════
+//  I18N DICTIONARY & MULTI-LANGUAGE ENGINE
+// ═══════════════════════════════════════════════════════════
+const I18N = {
+  vi: {
+    app_name: "Quản Lý Dự Án",
+    app_sub: "Quản lý thông minh",
+    nav_dashboard: "Tổng quan",
+    nav_gantt: "Sơ đồ Gantt",
+    nav_projects: "Dự án",
+    nav_tasks: "Nhiệm vụ",
+    nav_users: "Người dùng",
+    nav_log: "Nhật ký",
+    logout: "Đăng xuất",
+    loading: "Đang tải...",
+    no_permission: "Không có quyền",
+    contact_admin: "Liên hệ Admin để được cấp quyền",
+    
+    page_dashboard_t: "Tổng Quan",
+    page_dashboard_s: "Chào mừng trở lại",
+    page_gantt_t: "Sơ đồ Gantt",
+    page_gantt_s: "Quản lý tiến độ trực quan",
+    page_projects_t: "Dự Án",
+    page_projects_s: "Quản lý tất cả dự án",
+    page_tasks_t: "Nhiệm Vụ",
+    page_tasks_s: "Quản lý tất cả nhiệm vụ",
+    page_users_t: "Người Dùng",
+    page_users_s: "Phân quyền & quản lý",
+    page_log_t: "Nhật Ký",
+    page_log_s: "Lịch sử hoạt động",
+    filter_by_project: "Lọc theo dự án...",
+    filter_all_projects: "Tất cả dự án",
+    search_placeholder: "Tìm kiếm...",
+    create_new: "+ Tạo mới ▾",
+    add_project: "Thêm dự án",
+    add_task: "Thêm nhiệm vụ",
+    add_user: "Thêm nhân viên",
+    notifications: "Thông báo",
+    mark_read: "Xóa đã đọc",
+    reload: "Làm mới",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "Đặt làm mặc định",
+    set_sys_default: "Mặc định hệ thống",
+    modal_sys_lang: "⚙️ Cài đặt ngôn ngữ mặc định hệ thống",
+    sys_lang_desc: "Chọn ngôn ngữ mặc định cho toàn bộ hệ thống. Người dùng mới khi truy cập lần đầu sẽ được áp dụng ngôn ngữ này nếu chưa thiết lập tùy chọn cá nhân.",
+    sys_lang_select_lbl: "Ngôn ngữ mặc định hệ thống",
+    
+    dash_card_total_projects: "TỔNG DỰ ÁN",
+    dash_card_total_tasks: "TỔNG NHIỆM VỤ",
+    dash_card_in_progress: "NHIỆM VỤ ĐANG LÀM",
+    dash_card_overdue: "NHIỆM VỤ QUÁ HẠN",
+    dash_stat_completed: "Hoàn thành",
+    dash_stat_rate: "Tỷ lệ",
+    dash_stat_not_started: "Chưa bắt đầu",
+    dash_stat_paused: "Tạm dừng",
+    dash_stat_active_users: "Nhân viên active",
+    dash_click_detail: "Nhấn để xem chi tiết",
+    dash_chart_status: "Phân Bổ Trạng Thái",
+    dash_chart_priority: "Độ Ưu Tiên",
+    dash_chart_staff: "Phân Công Nhân Sự",
+    dash_chart_trend: "Tiến Độ Hoàn Thành (15 ngày)",
+    dash_chart_progress: "Tiến Độ Dự Án",
+    dash_chart_compare: "So Sánh Kế Hoạch & Thực Tế",
+    dash_recent_activity: "Hoạt Động Gần Đây",
+    dash_urgent_tasks: "Việc Khẩn Cấp / Quá Hạn",
+    dash_no_urgent: "Không có nhiệm vụ khẩn cấp cần xử lý",
+    dash_no_act: "Chưa có hoạt động nào",
+    
+    gantt_all_staff: "Tất cả nhân viên",
+    gantt_today: "Hôm nay",
+    gantt_zoom_week: "Tuần",
+    gantt_zoom_month: "Tháng",
+    gantt_zoom_quarter: "Quý",
+    
+    pj_list_title: "Danh Sách Dự Án",
+    pj_col_code: "Mã DA",
+    pj_col_name: "Tên Dự Án",
+    pj_col_pm: "Quản Lý (PM)",
+    pj_col_start: "Bắt Đầu",
+    pj_col_end: "Kết Thúc",
+    pj_col_progress: "Tiến Độ",
+    pj_col_status: "Trạng Thái",
+    pj_col_actions: "Thao Tác",
+    
+    tk_tab_kanban: "Bảng Kanban",
+    tk_tab_list: "Danh Sách",
+    tk_filter_staff: "Lọc nhân viên...",
+    tk_filter_priority: "Độ ưu tiên...",
+    tk_filter_status: "Trạng thái...",
+    tk_all_staff: "Tất cả nhân viên",
+    tk_all_priorities: "Tất cả độ ưu tiên",
+    tk_all_statuses: "Tất cả trạng thái",
+    tk_col_name: "Tên Công Việc",
+    tk_col_project: "Dự Án",
+    tk_col_assignee: "Người Phụ Trách",
+    tk_col_deadline: "Hạn Chót",
+    tk_col_priority: "Độ Ưu Tiên",
+    tk_col_progress: "Tiến Độ",
+    tk_col_status: "Trạng Thái",
+    
+    btn_save: "💾 Lưu",
+    btn_cancel: "Hủy",
+    btn_add: "+ Thêm",
+    btn_edit: "Sửa",
+    btn_delete: "Xóa",
+    btn_close: "Đóng",
+    btn_confirm: "Xác nhận",
+    btn_duplicate: "📋 Tạo bản sao",
+    btn_bulk_add: "⚡ Thêm nhanh hàng loạt",
+    btn_single_add: "📝 Thêm từng nhiệm vụ",
+    btn_filter: "Lọc",
+    btn_export: "Xuất dữ liệu",
+    
+    st_pending: "Chờ thực hiện",
+    st_in_progress: "Đang thực hiện",
+    st_review: "Chờ duyệt",
+    st_completed: "Hoàn thành",
+    st_paused: "Tạm dừng",
+    st_cancelled: "Hủy",
+    st_overdue: "Quá hạn",
+    st_planning: "Lên kế hoạch",
+    
+    pr_low: "Thấp",
+    pr_medium: "Trung bình",
+    pr_high: "Cao",
+    pr_urgent: "Khẩn cấp",
+    
+    role_admin: "Quản trị viên",
+    role_manager: "Quản lý",
+    role_member: "Thành viên",
+    role_viewer: "Người xem",
+    
+    msg_lang_changed: "Đã chuyển đổi sang Tiếng Việt",
+    msg_default_saved: "Đã lưu Tiếng Việt làm ngôn ngữ mặc định của bạn",
+    msg_sys_default_saved: "Đã lưu ngôn ngữ mặc định hệ thống thành công",
+    msg_save_success: "Lưu thành công!",
+    msg_delete_success: "Đã xóa thành công!",
+    msg_confirm_delete: "Bạn có chắc chắn muốn xóa không? Thao tác này không thể hoàn tác.",
+    msg_confirm_dup_pj: "Bạn có chắc muốn nhân bản dự án này?",
+
+    gantt_from: "Từ:",
+    gantt_to: "Đến:",
+    gantt_cb_flag: "🚩 Cờ mốc",
+    gantt_cb_date: "📅 Ngày hạn",
+    gantt_col_name: "Tên",
+    gantt_task_unit: "việc",
+    gantt_pj_deadline: "Hạn DA",
+    btn_apply: "✔ Áp dụng",
+    btn_reset: "↺ Reset",
+    btn_view: "Xem",
+    filter_all_statuses: "-- Tất cả trạng thái --",
+    filter_status_placeholder: "-- Trạng thái --",
+    filter_priority_placeholder: "-- Ưu tiên --",
+    user_col_id: "Tên / ID",
+    user_col_name: "Họ Tên",
+    user_col_role: "Vai Trò",
+    user_col_status: "Trạng Thái",
+    user_col_created: "Ngày Tạo",
+    log_col_time: "Thời Gian",
+    log_col_email: "Email",
+    log_col_role: "Vai Trò",
+    log_col_action: "Hành Động",
+    log_col_detail: "Chi Tiết",
+    empty_no_users: "Chưa có người dùng nào",
+    desc: "Mô tả",
+    note: "Ghi chú",
+    manage_members: "⚙ Quản lý thành viên",
+  },
+
+  en: {
+    app_name: "Project Manager",
+    app_sub: "Smart Management",
+    nav_dashboard: "Dashboard",
+    nav_gantt: "Gantt Chart",
+    nav_projects: "Projects",
+    nav_tasks: "Tasks",
+    nav_users: "Users",
+    nav_log: "Activity Log",
+    logout: "Log out",
+    loading: "Loading...",
+    no_permission: "Access Denied",
+    contact_admin: "Please contact an Administrator for access",
+    
+    page_dashboard_t: "Dashboard",
+    page_dashboard_s: "Welcome back",
+    page_gantt_t: "Gantt Chart",
+    page_gantt_s: "Visual timeline & progress",
+    page_projects_t: "Projects",
+    page_projects_s: "Manage all projects",
+    page_tasks_t: "Tasks",
+    page_tasks_s: "Manage all tasks",
+    page_users_t: "Users",
+    page_users_s: "Permissions & team members",
+    page_log_t: "Activity Log",
+    page_log_s: "System history & audit trail",
+    filter_by_project: "Filter by project...",
+    filter_all_projects: "All Projects",
+    search_placeholder: "Search...",
+    create_new: "+ Create ▾",
+    add_project: "New Project",
+    add_task: "New Task",
+    add_user: "New User",
+    notifications: "Notifications",
+    mark_read: "Clear read",
+    reload: "Refresh",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "Set as my default",
+    set_sys_default: "System default",
+    modal_sys_lang: "⚙️ System Default Language Settings",
+    sys_lang_desc: "Choose the default language for the entire system. New users visiting for the first time will use this language unless they set a personal preference.",
+    sys_lang_select_lbl: "System Default Language",
+    
+    dash_card_total_projects: "TOTAL PROJECTS",
+    dash_card_total_tasks: "TOTAL TASKS",
+    dash_card_in_progress: "IN PROGRESS",
+    dash_card_overdue: "OVERDUE TASKS",
+    dash_stat_completed: "Completed",
+    dash_stat_rate: "Rate",
+    dash_stat_not_started: "Not started",
+    dash_stat_paused: "On hold",
+    dash_stat_active_users: "Active members",
+    dash_click_detail: "Click to view details",
+    dash_chart_status: "Status Distribution",
+    dash_chart_priority: "Priority Breakdown",
+    dash_chart_staff: "Staff Workload",
+    dash_chart_trend: "Completion Trend (15 days)",
+    dash_chart_progress: "Project Progress",
+    dash_chart_compare: "Planned vs Actual",
+    dash_recent_activity: "Recent Activity",
+    dash_urgent_tasks: "Urgent & Overdue Tasks",
+    dash_no_urgent: "No urgent tasks pending",
+    dash_no_act: "No recent activity",
+    
+    gantt_all_staff: "All staff",
+    gantt_today: "Today",
+    gantt_zoom_week: "Week",
+    gantt_zoom_month: "Month",
+    gantt_zoom_quarter: "Quarter",
+    
+    pj_list_title: "Project List",
+    pj_col_code: "Code",
+    pj_col_name: "Project Name",
+    pj_col_pm: "Manager (PM)",
+    pj_col_start: "Start Date",
+    pj_col_end: "End Date",
+    pj_col_progress: "Progress",
+    pj_col_status: "Status",
+    pj_col_actions: "Actions",
+    
+    tk_tab_kanban: "Kanban Board",
+    tk_tab_list: "List View",
+    tk_filter_staff: "Filter staff...",
+    tk_filter_priority: "Priority...",
+    tk_filter_status: "Status...",
+    tk_all_staff: "All staff",
+    tk_all_priorities: "All priorities",
+    tk_all_statuses: "All statuses",
+    tk_col_name: "Task Name",
+    tk_col_project: "Project",
+    tk_col_assignee: "Assignee",
+    tk_col_deadline: "Deadline",
+    tk_col_priority: "Priority",
+    tk_col_progress: "Progress",
+    tk_col_status: "Status",
+    
+    btn_save: "💾 Save",
+    btn_cancel: "Cancel",
+    btn_add: "+ Add",
+    btn_edit: "Edit",
+    btn_delete: "Delete",
+    btn_close: "Close",
+    btn_confirm: "Confirm",
+    btn_duplicate: "📋 Duplicate",
+    btn_bulk_add: "⚡ Bulk Add Tasks",
+    btn_single_add: "📝 Single Task",
+    btn_filter: "Filter",
+    btn_export: "Export",
+    
+    st_pending: "To Do",
+    st_in_progress: "In Progress",
+    st_review: "Under Review",
+    st_completed: "Completed",
+    st_paused: "On Hold",
+    st_cancelled: "Cancelled",
+    st_overdue: "Overdue",
+    st_planning: "Planning",
+    
+    pr_low: "Low",
+    pr_medium: "Medium",
+    pr_high: "High",
+    pr_urgent: "Urgent",
+    
+    role_admin: "Admin",
+    role_manager: "Manager",
+    role_member: "Member",
+    role_viewer: "Viewer",
+    
+    msg_lang_changed: "Language changed to English",
+    msg_default_saved: "English set as your default language",
+    msg_sys_default_saved: "System default language saved successfully",
+    msg_save_success: "Saved successfully!",
+    msg_delete_success: "Deleted successfully!",
+    msg_confirm_delete: "Are you sure you want to delete this? This action cannot be undone.",
+    msg_confirm_dup_pj: "Are you sure you want to duplicate this project?",
+
+    gantt_from: "From:",
+    gantt_to: "To:",
+    gantt_cb_flag: "🚩 Milestone",
+    gantt_cb_date: "📅 Due Date",
+    gantt_col_name: "Name",
+    gantt_task_unit: "tasks",
+    gantt_pj_deadline: "Proj Due",
+    btn_apply: "✔ Apply",
+    btn_reset: "↺ Reset",
+    btn_view: "View",
+    filter_all_statuses: "-- All Statuses --",
+    filter_status_placeholder: "-- Status --",
+    filter_priority_placeholder: "-- Priority --",
+    user_col_id: "Name / ID",
+    user_col_name: "Full Name",
+    user_col_role: "Role",
+    user_col_status: "Status",
+    user_col_created: "Created Date",
+    log_col_time: "Time",
+    log_col_email: "Email",
+    log_col_role: "Role",
+    log_col_action: "Action",
+    log_col_detail: "Details",
+    empty_no_users: "No users found",
+    desc: "Description",
+    note: "Notes",
+    manage_members: "⚙ Manage Members",
+  },
+
+  ja: {
+    app_name: "プロジェクト管理",
+    app_sub: "スマート管理システム",
+    nav_dashboard: "ダッシュボード",
+    nav_gantt: "ガントチャート",
+    nav_projects: "プロジェクト",
+    nav_tasks: "タスク一覧",
+    nav_users: "ユーザー管理",
+    nav_log: "操作ログ",
+    logout: "ログアウト",
+    loading: "読み込み中...",
+    no_permission: "アクセス権限がありません",
+    contact_admin: "システム管理者に権限を申請してください",
+    
+    page_dashboard_t: "ダッシュボード",
+    page_dashboard_s: "おかえりなさい",
+    page_gantt_t: "ガントチャート",
+    page_gantt_s: "視覚的な進捗・工程管理",
+    page_projects_t: "プロジェクト",
+    page_projects_s: "全プロジェクトの管理",
+    page_tasks_t: "タスク一覧",
+    page_tasks_s: "全タスクの進捗管理",
+    page_users_t: "ユーザー管理",
+    page_users_s: "権限およびメンバー管理",
+    page_log_t: "操作ログ",
+    page_log_s: "システムの操作履歴",
+    filter_by_project: "プロジェクトで絞り込み...",
+    filter_all_projects: "すべてのプロジェクト",
+    search_placeholder: "検索...",
+    create_new: "+ 新規作成 ▾",
+    add_project: "プロジェクト追加",
+    add_task: "タスク追加",
+    add_user: "メンバー追加",
+    notifications: "通知",
+    mark_read: "既読をクリア",
+    reload: "更新",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "既定言語に設定",
+    set_sys_default: "システム既定言語",
+    modal_sys_lang: "⚙️ システム既定言語設定",
+    sys_lang_desc: "システム全体の標準言語を選択します。個別設定がない新規ユーザーにこの言語が適用されます。",
+    sys_lang_select_lbl: "システム標準言語",
+    
+    dash_card_total_projects: "総プロジェクト数",
+    dash_card_total_tasks: "総タスク数",
+    dash_card_in_progress: "進行中のタスク",
+    dash_card_overdue: "期限超過タスク",
+    dash_stat_completed: "完了",
+    dash_stat_rate: "達成率",
+    dash_stat_not_started: "未着手",
+    dash_stat_paused: "保留",
+    dash_stat_active_users: "アクティブ担当者",
+    dash_click_detail: "クリックして詳細を表示",
+    dash_chart_status: "ステータス別分布",
+    dash_chart_priority: "優先度別タスク",
+    dash_chart_staff: "担当者別タスク",
+    dash_chart_trend: "完了推移 (過去15日間)",
+    dash_chart_progress: "プロジェクト進捗率",
+    dash_chart_compare: "計画と実績の比較",
+    dash_recent_activity: "最近のアクティビティ",
+    dash_urgent_tasks: "緊急・期限切れタスク",
+    dash_no_urgent: "現在、至急対応のタスクはありません",
+    dash_no_act: "最近のアクティビティはありません",
+    
+    gantt_all_staff: "全担当者",
+    gantt_today: "今日",
+    gantt_zoom_week: "週表示",
+    gantt_zoom_month: "月表示",
+    gantt_zoom_quarter: "四半期表示",
+    
+    pj_list_title: "プロジェクト一覧",
+    pj_col_code: "コード",
+    pj_col_name: "プロジェクト名",
+    pj_col_pm: "管理者 (PM)",
+    pj_col_start: "開始日",
+    pj_col_end: "完了予定日",
+    pj_col_progress: "進捗率",
+    pj_col_status: "状態",
+    pj_col_actions: "操作",
+    
+    tk_tab_kanban: "カンバン形式",
+    tk_tab_list: "リスト形式",
+    tk_filter_staff: "担当者で絞り込み...",
+    tk_filter_priority: "優先度...",
+    tk_filter_status: "状態...",
+    tk_all_staff: "全担当者",
+    tk_all_priorities: "すべての優先度",
+    tk_all_statuses: "すべての状態",
+    tk_col_name: "タスク名",
+    tk_col_project: "プロジェクト",
+    tk_col_assignee: "担当者",
+    tk_col_deadline: "期限",
+    tk_col_priority: "優先度",
+    tk_col_progress: "進捗",
+    tk_col_status: "状態",
+    
+    btn_save: "💾 保存",
+    btn_cancel: "キャンセル",
+    btn_add: "+ 追加",
+    btn_edit: "編集",
+    btn_delete: "削除",
+    btn_close: "閉じる",
+    btn_confirm: "確認",
+    btn_duplicate: "📋 複製する",
+    btn_bulk_add: "⚡ タスク一括追加",
+    btn_single_add: "📝 個別タスク追加",
+    btn_filter: "フィルター",
+    btn_export: "エクスポート",
+    
+    st_pending: "未着手",
+    st_in_progress: "進行中",
+    st_review: "確認待ち",
+    st_completed: "完了",
+    st_paused: "保留",
+    st_cancelled: "中止",
+    st_overdue: "期限超過",
+    st_planning: "計画中",
+    
+    pr_low: "低",
+    pr_medium: "中",
+    pr_high: "高",
+    pr_urgent: "至急",
+    
+    role_admin: "管理者 (Admin)",
+    role_manager: "責任者 (Manager)",
+    role_member: "担当者 (Member)",
+    role_viewer: "閲覧者 (Viewer)",
+    
+    msg_lang_changed: "言語を日本語に変更しました",
+    msg_default_saved: "日本語を既定言語に設定しました",
+    msg_sys_default_saved: "システム既定言語を正常に保存しました",
+    msg_save_success: "正常に保存されました！",
+    msg_delete_success: "正常に削除されました！",
+    msg_confirm_delete: "本当に削除しますか？この操作は取り消せません。",
+    msg_confirm_dup_pj: "このプロジェクトを複製してもよろしいですか？",
+
+    gantt_from: "開始:",
+    gantt_to: "終了:",
+    gantt_cb_flag: "🚩 マイルストーン",
+    gantt_cb_date: "📅 期限日",
+    gantt_col_name: "名前",
+    gantt_task_unit: "件",
+    gantt_pj_deadline: "PJ期限",
+    btn_apply: "✔ 適用",
+    btn_reset: "↺ リセット",
+    btn_view: "表示",
+    filter_all_statuses: "-- すべてのステータス --",
+    filter_status_placeholder: "-- 状態 --",
+    filter_priority_placeholder: "-- 優先度 --",
+    user_col_id: "名前 / ID",
+    user_col_name: "氏名",
+    user_col_role: "権限",
+    user_col_status: "状態",
+    user_col_created: "作成日",
+    log_col_time: "日時",
+    log_col_email: "メール",
+    log_col_role: "権限",
+    log_col_action: "操作",
+    log_col_detail: "詳細",
+    empty_no_users: "登録されたユーザーはいません",
+    desc: "説明",
+    note: "備考",
+    manage_members: "⚙ メンバー管理",
+  }
+};
+
+const STATUS_I18N = {
+  "Chờ thực hiện": { vi: "Chờ thực hiện", en: "To Do", ja: "未着手" },
+  "Đang thực hiện": { vi: "Đang thực hiện", en: "In Progress", ja: "進行中" },
+  "Đang tiến hành": { vi: "Đang tiến hành", en: "In Progress", ja: "進行中" },
+  "Chờ duyệt": { vi: "Chờ duyệt", en: "Under Review", ja: "確認待ち" },
+  "Hoàn thành": { vi: "Hoàn thành", en: "Completed", ja: "完了" },
+  "Tạm dừng": { vi: "Tạm dừng", en: "On Hold", ja: "保留" },
+  "Hủy": { vi: "Hủy", en: "Cancelled", ja: "中止" },
+  "Quá hạn": { vi: "Quá hạn", en: "Overdue", ja: "期限超過" },
+  "Lên kế hoạch": { vi: "Lên kế hoạch", en: "Planning", ja: "計画中" }
+};
+
+const PRIORITY_I18N = {
+  "Thấp": { vi: "Thấp", en: "Low", ja: "低" },
+  "Trung bình": { vi: "Trung bình", en: "Medium", ja: "中" },
+  "Cao": { vi: "Cao", en: "High", ja: "高" },
+  "Khẩn cấp": { vi: "Khẩn cấp", en: "Urgent", ja: "至急" }
+};
+
+const ROLE_I18N = {
+  "Admin": { vi: "Quản trị viên", en: "Admin", ja: "管理者" },
+  "Manager": { vi: "Quản lý", en: "Manager", ja: "責任者" },
+  "Member": { vi: "Thành viên", en: "Member", ja: "担当者" },
+  "Viewer": { vi: "Người xem", en: "Viewer", ja: "閲覧者" }
+};
+
+function t(key, params) {
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  const dict = I18N[lang] || I18N['vi'];
+  let val = dict[key] || I18N['vi'][key] || key;
+  if (params && typeof params === 'object') {
+    Object.keys(params).forEach(k => {
+      val = val.replace(new RegExp(`{${k}}`, 'g'), params[k]);
+    });
+  }
+  return val;
+}
+
+function tStatus(status) {
+  if (!status) return "";
+  const item = STATUS_I18N[status];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return status;
+  return item[lang] || item['vi'] || status;
+}
+
+function tPriority(priority) {
+  if (!priority) return "";
+  const item = PRIORITY_I18N[priority];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return priority;
+  return item[lang] || item['vi'] || priority;
+}
+
+function tRole(role) {
+  if (!role) return "";
+  const item = ROLE_I18N[role];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return role;
+  return item[lang] || item['vi'] || role;
+}
+
+function formatDisplayDate(dStr) {
+  if (!dStr) return "";
+  try {
+    if (dStr instanceof Date) {
+      const y = dStr.getFullYear();
+      const m = String(dStr.getMonth() + 1).padStart(2, '0');
+      const d = String(dStr.getDate()).padStart(2, '0');
+      const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      return lang === 'ja' ? `${y}/${m}/${d}` : `${d}/${m}/${y}`;
+    }
+    const s = String(dStr).trim();
+    if (!s) return "";
+    const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+    if (lang === 'ja') {
+      if (s.includes('/')) {
+        const parts = s.split('/');
+        if (parts.length === 3 && parts[2].length === 4) {
+          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+      } else if (s.includes('-')) {
+        const parts = s.split('-');
+        if (parts.length === 3 && parts[0].length === 4) {
+          return `${parts[0]}/${parts[1]}/${parts[2].slice(0, 2)}`;
+        }
+      }
+    }
+    return s;
+  } catch(e) {
+    return String(dStr || "");
+  }
+}
+
+function setLanguage(lang, saveAsDefault) {
+  if (!['vi', 'en', 'ja'].includes(lang)) return;
+  S.lang = lang;
+  
+  if (saveAsDefault) {
+    localStorage.setItem('pm_user_lang', lang);
+    try { google.script.run.setUserLanguagePreference(lang); } catch(e) {}
+    toast(t('msg_default_saved'), 'success');
+  }
+  
+  applyTranslations();
+  updateLangDropdownUI();
+  
+  // Re-render current page title
+  const curPage = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
+  const [pt, ps] = PTITLES[curPage] || [curPage, ""];
+  const pgt = document.getElementById("pgt");
+  const pgs = document.getElementById("pgs");
+  if (pgt) pgt.textContent = t('page_' + curPage + '_t') || pt;
+  if (pgs) pgs.textContent = t('page_' + curPage + '_s') || ps;
+  
+  if (S.user) {
+    updateSbUser(S.user);
+  }
+  
+  // Re-render UI components
+  if (S.tasks && S.tasks.length) {
+    _refreshUI();
+  }
+  if (curPage === 'projects' && S.projects) {
+    renderPgPj(S.projects);
+  } else if (curPage === 'tasks' && S.tasks) {
+    loadPgTk();
+  } else if (curPage === 'gantt') {
+    loadGantt();
+  } else if (curPage === 'users') {
+    loadPgUsr();
+  } else if (curPage === 'log') {
+    loadPgLog();
+  }
+  popPjFilter();
+}
+
+function selectLanguage(lang) {
+  setLanguage(lang, false);
+  toast(t('msg_lang_changed'), 'info');
+  document.getElementById('d-lang')?.classList.remove('show');
+}
+
+function setAsMyDefaultLang() {
+  setLanguage(S.lang, true);
+  document.getElementById('d-lang')?.classList.remove('show');
+}
+
+function updateLangDropdownUI() {
+  const flags = { vi: '🇻🇳', en: '🇺🇸', ja: '🇯🇵' };
+  const codes = { vi: 'VI', en: 'EN', ja: 'JA' };
+  const curFlag = document.getElementById('cur-lang-flag');
+  const curText = document.getElementById('cur-lang-text');
+  if (curFlag) curFlag.textContent = flags[S.lang] || '🌐';
+  if (curText) curText.textContent = codes[S.lang] || S.lang.toUpperCase();
+  
+  ['vi', 'en', 'ja'].forEach(l => {
+    const opt = document.getElementById('lang-opt-' + l);
+    const chk = document.getElementById('chk-' + l);
+    if (opt) {
+      if (l === S.lang) opt.classList.add('active');
+      else opt.classList.remove('active');
+    }
+    if (chk) {
+      chk.style.display = (l === S.lang) ? 'inline-block' : 'none';
+    }
+  });
+}
+
+function applyTranslations() {
+  document.documentElement.lang = S.lang;
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.textContent = translated;
+      }
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.placeholder = translated;
+      }
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.title = translated;
+      }
+    }
+  });
+
+  updateFilterDropdowns();
+}
+
+function updateFilterDropdowns() {
+  // 1. Projects status filter (#pp-st)
+  const ppSt = document.getElementById('pp-st');
+  if (ppSt) {
+    const curVal = ppSt.value;
+    ppSt.innerHTML = `
+      <option value="">${t('filter_all_statuses')}</option>
+      <option value="Lên kế hoạch">${tStatus('Lên kế hoạch')}</option>
+      <option value="Đang thực hiện">${tStatus('Đang thực hiện')}</option>
+      <option value="Hoàn thành">${tStatus('Hoàn thành')}</option>
+      <option value="Tạm dừng">${tStatus('Tạm dừng')}</option>
+      <option value="Hủy">${tStatus('Hủy')}</option>
+    `;
+    ppSt.value = curVal;
+  }
+  
+  // 2. Tasks status filter (#pt-st)
+  const ptSt = document.getElementById('pt-st');
+  if (ptSt) {
+    const curVal = ptSt.value;
+    ptSt.innerHTML = `
+      <option value="">${t('filter_status_placeholder')}</option>
+      <option value="Quá hạn">${tStatus('Quá hạn')}</option>
+      <option value="Chờ thực hiện">${tStatus('Chờ thực hiện')}</option>
+      <option value="Đang thực hiện">${tStatus('Đang thực hiện')}</option>
+      <option value="Chờ duyệt">${tStatus('Chờ duyệt')}</option>
+      <option value="Hoàn thành">${tStatus('Hoàn thành')}</option>
+      <option value="Tạm dừng">${tStatus('Tạm dừng')}</option>
+      <option value="Hủy">${tStatus('Hủy')}</option>
+    `;
+    ptSt.value = curVal;
+  }
+  
+  // 3. Tasks priority filter (#pt-pr)
+  const ptPr = document.getElementById('pt-pr');
+  if (ptPr) {
+    const curVal = ptPr.value;
+    ptPr.innerHTML = `
+      <option value="">${t('filter_priority_placeholder')}</option>
+      <option value="Khẩn cấp">${tPriority('Khẩn cấp')}</option>
+      <option value="Cao">${tPriority('Cao')}</option>
+      <option value="Trung bình">${tPriority('Trung bình')}</option>
+      <option value="Thấp">${tPriority('Thấp')}</option>
+    `;
+    ptPr.value = curVal;
+  }
+
+  // 4. Update Staff dropdown label in Gantt
+  if (typeof updateStaffFilterLabel === 'function') {
+    updateStaffFilterLabel();
+  }
+}
+
+function openSysLangModal() {
+  document.getElementById('d-lang')?.classList.remove('show');
+  const sel = document.getElementById('sys-lang-sel');
+  if (sel) sel.value = S.systemDefaultLang || 'vi';
+  openModal('m-sys-lang');
+}
+
+function saveSysDefaultLang() {
+  const sel = document.getElementById('sys-lang-sel');
+  const val = sel ? sel.value : 'vi';
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        S.systemDefaultLang = val;
+        closeModal('m-sys-lang');
+        toast(t('msg_sys_default_saved'), 'success');
+      } else {
+        toast((res && res.error) || 'Lỗi khi lưu cài đặt', 'error');
+      }
+    })
+    .withFailureHandler(err => toast(err.message || 'Lỗi hệ thống', 'error'))
+    .setSystemDefaultLanguage(val);
+}
+
+function initI18n() {
+  const savedLang = localStorage.getItem('pm_user_lang');
+  if (savedLang && ['vi','en','ja'].includes(savedLang)) {
+    S.lang = savedLang;
+  } else {
+    const navLang = (navigator.language || '').slice(0, 2).toLowerCase();
+    S.lang = ['vi','en','ja'].includes(navLang) ? navLang : 'vi';
+  }
+  applyTranslations();
+  updateLangDropdownUI();
+}
+
 // ═══════════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════════
@@ -1006,6 +1869,8 @@ const S = {
   notifs: JSON.parse(localStorage.getItem('pm3ntf')||'[]'),
   charts:{}, pjFilter:'',
   _loading: false,
+  lang: 'vi',
+  systemDefaultLang: 'vi',
 };
 let _pdPjId = null;
 let _currTkReminders = [];
@@ -1113,6 +1978,7 @@ function _initProjectMembers() {
 //  INIT
 // ═══════════════════════════════════════
 document.addEventListener("DOMContentLoaded", () => {
+  initI18n();
   initGanttDates();
   renderNtfDot();
   loadApp();
@@ -1138,8 +2004,8 @@ function loadApp() {
       if (!res.success) {
         document.getElementById("d-ldg").innerHTML =
           '<div style="text-align:center;padding:60px"><div style="font-size:42px;margin-bottom:12px">🔒</div>'+
-          '<div style="color:#ef4444;font-size:14px;font-weight:600">'+( res.error||"Không có quyền")+'</div>'+
-          '<div style="color:#94a3b8;font-size:12px;margin-top:4px">Liên hệ Admin để được cấp quyền</div></div>';
+          '<div style="color:#ef4444;font-size:14px;font-weight:600">'+( res.error||t("no_permission"))+'</div>'+
+          '<div style="color:#94a3b8;font-size:12px;margin-top:4px">'+t("contact_admin")+'</div></div>';
         return;
       }
       S.user     = res.user;
@@ -1148,6 +2014,23 @@ function loadApp() {
       S.tasks    = res.tasks    || [];
       S.members  = res.members  || [];
       _usersCache = [...S.members];
+
+      if (res.systemDefaultLang) {
+        S.systemDefaultLang = res.systemDefaultLang;
+      }
+      if (!localStorage.getItem('pm_user_lang')) {
+        if (res.userLang && ['vi','en','ja'].includes(res.userLang)) {
+          S.lang = res.userLang;
+        } else if (res.systemDefaultLang && ['vi','en','ja'].includes(res.systemDefaultLang)) {
+          S.lang = res.systemDefaultLang;
+        }
+      }
+      if (res.user && res.user.role === 'Admin') {
+        const sysOpt = document.getElementById('lang-act-sys');
+        if (sysOpt) sysOpt.style.display = 'flex';
+      }
+      applyTranslations();
+      updateLangDropdownUI();
 
       // Merge extra name-only members from localStorage (if any)
       const extraMembers = JSON.parse(localStorage.getItem('pm3extra_members')||'[]');
@@ -1167,6 +2050,13 @@ function loadApp() {
       renderCharts(res.summary.taskByStatus);
       popPjFilter();
       popGanttStaff();
+
+      const curPageId = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
+      if (curPageId === "tasks") loadPgTk();
+      else if (curPageId === "projects") renderPgPj(S.projects);
+      else if (curPageId === "gantt") loadGantt();
+      else if (curPageId === "users") loadPgUsr();
+      else if (curPageId === "log") loadPgLog();
     })
     .withFailureHandler(e => toast(e.message||"Lỗi tải ứng dụng","error"))
     .getInitData();
@@ -1204,9 +2094,9 @@ function goPage(p, el) {
   document.querySelectorAll(".sni").forEach(x=>x.classList.remove("active"));
   document.getElementById("page-"+p).classList.add("active");
   if (el) el.classList.add("active");
-  const[t,s]=PTITLES[p]||[p,""];
-  document.getElementById("pgt").textContent=t;
-  document.getElementById("pgs").textContent=s;
+  const[tDef,sDef]=PTITLES[p]||[p,""];
+  document.getElementById("pgt").textContent = t('page_' + p + '_t') || tDef;
+  document.getElementById("pgs").textContent = t('page_' + p + '_s') || sDef;
   if (p==="projects") renderPgPj(S.projects);
   else if (p==="tasks") loadPgTk();
   else if (p==="users") loadPgUsr();
@@ -1220,7 +2110,7 @@ function goPage(p, el) {
 function updateSbUser(u) {
   document.getElementById("sb-av").textContent=(u.name||u.email).slice(0,2).toUpperCase();
   document.getElementById("sb-nm").textContent=u.name||u.email;
-  document.getElementById("sb-rl").textContent=u.role;
+  document.getElementById("sb-rl").textContent=tRole(u.role);
   if (u.role==="Admin") {
     document.getElementById("ni-usr").style.display="flex";
     document.getElementById("ni-log").style.display="flex";
@@ -1274,14 +2164,14 @@ function renderStats(s) {
   const pa=s.taskByStatus["Tạm dừng"]||0;
   const ov=s.overdue||0;
   const cards=[
-    {ic:"📁",icl:"ic-p",num:tPj,lbl:"TỔNG DỰ ÁN",s1:`Hoàn thành: <b>${cPj}</b>`,s2:`Tỷ lệ: <b>${tPj?Math.round(cPj/tPj*100):0}%</b>`,pct:tPj?cPj/tPj*100:0,cls:"sc-p",onclick:"onStatCard('projects')"},
-    {ic:"☑️",icl:"ic-g",num:tTk,lbl:"TỔNG NHIỆM VỤ",s1:`Hoàn thành: <b>${cTk}</b>`,s2:`Tỷ lệ: <b>${tTk?Math.round(cTk/tTk*100):0}%</b>`,pct:tTk?cTk/tTk*100:0,cls:"sc-g",onclick:"onStatCard('tasks')"},
-    {ic:"⚙️",icl:"ic-or",num:ip,lbl:"NHIỆM VỤ ĐANG LÀM",s1:`Chưa bắt đầu: <b>${ns}</b>`,s2:`Tạm dừng: <b>${pa}</b>`,pct:tTk?ip/tTk*100:0,cls:"sc-or",onclick:"onStatCard('inprogress')"},
-    {ic:"⚠️",icl:"ic-d",num:ov,lbl:"NHIỆM VỤ QUÁ HẠN",s1:`Tổng nhiệm vụ: <b>${tTk}</b>`,s2:`Tỷ lệ: <b>${tTk?Math.round(ov/tTk*100):0}%</b>`,pct:tTk?ov/tTk*100:0,cls:"sc-d",onclick:"onStatCard('overdue')"},
+    {ic:"📁",icl:"ic-p",num:tPj,lbl:t('dash_card_total_projects'),s1:`${t('dash_stat_completed')}: <b>${cPj}</b>`,s2:`${t('dash_stat_rate')}: <b>${tPj?Math.round(cPj/tPj*100):0}%</b>`,pct:tPj?cPj/tPj*100:0,cls:"sc-p",onclick:"onStatCard('projects')"},
+    {ic:"☑️",icl:"ic-g",num:tTk,lbl:t('dash_card_total_tasks'),s1:`${t('dash_stat_completed')}: <b>${cTk}</b>`,s2:`${t('dash_stat_rate')}: <b>${tTk?Math.round(cTk/tTk*100):0}%</b>`,pct:tTk?cTk/tTk*100:0,cls:"sc-g",onclick:"onStatCard('tasks')"},
+    {ic:"⚙️",icl:"ic-or",num:ip,lbl:t('dash_card_in_progress'),s1:`${t('dash_stat_not_started')}: <b>${ns}</b>`,s2:`${t('dash_stat_paused')}: <b>${pa}</b>`,pct:tTk?ip/tTk*100:0,cls:"sc-or",onclick:"onStatCard('inprogress')"},
+    {ic:"⚠️",icl:"ic-d",num:ov,lbl:t('dash_card_overdue'),s1:`${t('dash_card_total_tasks')}: <b>${tTk}</b>`,s2:`${t('dash_stat_rate')}: <b>${tTk?Math.round(ov/tTk*100):0}%</b>`,pct:tTk?ov/tTk*100:0,cls:"sc-d",onclick:"onStatCard('overdue')"},
   ];
-  if (s.totalUsers!==null&&s.totalUsers!==undefined) cards[3].s2=`Nhân viên active: <b>${s.totalUsers}</b>`;
+  if (s.totalUsers!==null&&s.totalUsers!==undefined) cards[3].s2=`${t('dash_stat_active_users')}: <b>${s.totalUsers}</b>`;
   document.getElementById("srow").innerHTML=cards.map(c=>`
-    <div class="sc ${c.cls}" onclick="${c.onclick}" title="Nhấn để xem chi tiết">
+    <div class="sc ${c.cls}" onclick="${c.onclick}" title="${t('dash_click_detail')}">
       <div class="sc-top">
         <div><div class="sc-num">${c.num}</div><div class="sc-lbl">${c.lbl}</div></div>
         <div class="sc-ic ${c.icl}">${c.ic}</div>
@@ -1292,9 +2182,9 @@ function renderStats(s) {
 }
 function onStatCard(type) {
   if (type==="projects")  openAllProjectsModal();
-  else if (type==="tasks")       openAllTasksModal(S.tasks,"📋 Tất cả nhiệm vụ");
-  else if (type==="inprogress")  openAllTasksModal(S.tasks.filter(t=>t.status==="Đang thực hiện"||t.status==="Đang tiến hành"),"⚙️ Nhiệm vụ đang thực hiện");
-  else if (type==="overdue")     openAllTasksModal(S.tasks.filter(t=>isTaskOverdue(t)),"⚠️ Nhiệm vụ quá hạn");
+  else if (type==="tasks")       openAllTasksModal(S.tasks, "📋 " + t('nav_tasks'));
+  else if (type==="inprogress")  openAllTasksModal(S.tasks.filter(t=>t.status==="Đang thực hiện"||t.status==="Đang tiến hành"), "⚙️ " + tStatus("Đang thực hiện"));
+  else if (type==="overdue")     openAllTasksModal(S.tasks.filter(t=>isTaskOverdue(t)), "⚠️ " + tStatus("Quá hạn"));
 }
 
 // ═══════════════════════════════════════
@@ -1304,7 +2194,7 @@ function renderActList() {
   const el=document.getElementById("act-list");
   el.innerHTML='<div class="ldg"><div class="spn"></div></div>';
   google.script.run.withSuccessHandler(data=>{
-    if (!data||!data.length) { el.innerHTML='<div style="text-align:center;padding:16px;color:#94a3b8;font-size:12px">Chưa có hoạt động nào</div>'; return; }
+    if (!data||!data.length) { el.innerHTML='<div style="text-align:center;padding:16px;color:#94a3b8;font-size:12px">' + t('dash_no_act') + '</div>'; return; }
     const ic={ADD_PROJECT:"📁",UPDATE_PROJECT:"✏️",DELETE_PROJECT:"🗑️",ADD_TASK:"✅",UPDATE_TASK:"🔄",DELETE_TASK:"🗑️",ADD_USER:"👤",EXPORT_REPORT:"📤",DUPLICATE_PROJECT:"📋",DUPLICATE_TASK:"📋"};
     el.innerHTML=data.slice().reverse().slice(0,15).map(r=>`
       <div class="act-it">
@@ -1325,15 +2215,15 @@ function renderPtkGrid(tasks) {
   tasks=tasks||S.tasks;
   const high=tasks.filter(t=>(t.priority==="Cao"||t.priority==="Khẩn cấp")&&t.status!=="Hoàn thành"&&t.status!=="Hủy").slice(0,6);
   const el=document.getElementById("ptk-grid");
-  if (!high.length) { el.innerHTML='<div class="empty" style="padding:20px"><div class="empty-ic">🎉</div>Không có nhiệm vụ ưu tiên cao</div>'; return; }
+  if (!high.length) { el.innerHTML='<div class="empty" style="padding:20px"><div class="empty-ic">🎉</div>' + t('dash_no_urgent') + '</div>'; return; }
   el.innerHTML=high.map(t=>`
     <div class="ptk ${isTaskOverdue(t)?'ov':''}" onclick="openFullTaskEdit('${t.id}')">
-      <div class="ptk-nm">${t.name}${isTaskOverdue(t)?'<span class="badge bg-rd" style="font-size:9px">QUÁ HẠN</span>':""}</div>
+      <div class="ptk-nm">${t.name}${isTaskOverdue(t)?`<span class="badge bg-rd" style="font-size:9px">${tStatus('Quá hạn').toUpperCase()}</span>`:""}</div>
       <div class="ptk-ds">${t.desc||t.projectName}</div>
       <div class="ptk-rows">
         <div class="ptk-row">📁 <b>${t.projectName}</b></div>
         ${t.assignee?`<div class="ptk-row">👤 ${_displayName(t.assignee)}</div>`:""}
-        ${t.deadline?`<div class="ptk-row" style="color:${isTaskOverdue(t)?"#ef4444":""}">📅 ${t.deadline}</div>`:""}
+        ${t.deadline?`<div class="ptk-row" style="color:${isTaskOverdue(t)?"#ef4444":""}">📅 ${formatDisplayDate(t.deadline)}</div>`:""}
       </div>
       <div class="ptk-bw"><div class="ptk-bf" style="width:${t.progress}%;background:${isTaskOverdue(t)?"#ef4444":"#f97316"}"></div></div>
       <div class="ptk-pct">${t.progress}%</div>
@@ -1413,11 +2303,11 @@ function renderChartStatus(bs, tasks) {
   const activeKeys = ALL_STATUS_KEYS.filter(k => statusCounts[k] > 0);
   let chartLabels, chartData, chartColors;
   if (activeKeys.length > 0) {
-    chartLabels = activeKeys;
+    chartLabels = activeKeys.map(k => tStatus(k));
     chartData = activeKeys.map(k => statusCounts[k]);
     chartColors = activeKeys.map(k => STCOL[k] || "#94a3b8");
   } else {
-    chartLabels = ["Chưa có nhiệm vụ"];
+    chartLabels = [t("dash_no_act")];
     chartData = [1];
     chartColors = ["#e2e8f0"];
   }
@@ -1530,8 +2420,9 @@ function renderChartProgress() {
 function renderChartPriority(tasks) {
   const pris=["Thấp","Trung bình","Cao","Khẩn cấp"];
   const counts=pris.map(p=>tasks.filter(t=>t.priority===p).length);
+  const displayLabels = pris.map(p => tPriority(p));
   if (S.charts.pr) S.charts.pr.destroy();
-  S.charts.pr=new Chart(document.getElementById("c-pri"),{type:"pie",data:{labels:pris,datasets:[{data:counts,backgroundColor:["#22c55e","#4f6ef7","#f59e0b","#ef4444"],borderWidth:2,borderColor:"#fff"}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:"bottom",labels:{font:{size:9},boxWidth:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw}`}}}}});
+  S.charts.pr=new Chart(document.getElementById("c-pri"),{type:"pie",data:{labels:displayLabels,datasets:[{data:counts,backgroundColor:["#22c55e","#4f6ef7","#f59e0b","#ef4444"],borderWidth:2,borderColor:"#fff"}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:"bottom",labels:{font:{size:9},boxWidth:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw}`}}}}});
 }
 function renderChartStaff(tasks) {
   const ms={};
@@ -1546,7 +2437,7 @@ function renderChartStaff(tasks) {
   const labels=Object.keys(ms).slice(0,8);
   if (!labels.length) return;
   if (S.charts.sf) S.charts.sf.destroy();
-  S.charts.sf=new Chart(document.getElementById("c-sf"),{data:{labels,datasets:[{type:"bar",label:"Tổng nhiệm vụ",data:labels.map(l=>ms[l].total),backgroundColor:"#22c55e88",borderRadius:4,yAxisID:"y"},{type:"line",label:"% Hoàn thành",data:labels.map(l=>ms[l].rate),borderColor:"#4f6ef7",backgroundColor:"#4f6ef718",tension:.4,pointRadius:3,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{font:{size:9},boxWidth:8}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}},grid:{color:"#f1f5f9"},position:"left"},y2:{beginAtZero:true,max:100,ticks:{callback:v=>v+"%",font:{size:9}},grid:{display:false},position:"right"},x:{ticks:{font:{size:9}},grid:{display:false}}}}});
+  S.charts.sf=new Chart(document.getElementById("c-sf"),{data:{labels,datasets:[{type:"bar",label:t("dash_card_total_tasks"),data:labels.map(l=>ms[l].total),backgroundColor:"#22c55e88",borderRadius:4,yAxisID:"y"},{type:"line",label:"% " + t("dash_stat_completed"),data:labels.map(l=>ms[l].rate),borderColor:"#4f6ef7",backgroundColor:"#4f6ef718",tension:.4,pointRadius:3,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{font:{size:9},boxWidth:8}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}},grid:{color:"#f1f5f9"},position:"left"},y2:{beginAtZero:true,max:100,ticks:{callback:v=>v+"%",font:{size:9}},grid:{display:false},position:"right"},x:{ticks:{font:{size:9}},grid:{display:false}}}}});
 }
 function renderChartTrend(tasks) {
   tasks = tasks || S.tasks;
@@ -2159,7 +3050,7 @@ function popGanttStaff() {
     <label class="staff-cb-row">
       <input type="checkbox" class="staff-cb" value="${m.email}" checked>
       <span style="flex:1">${m.name}</span>
-      <span style="font-size:10px;color:var(--t3)">${m.role}</span>
+      <span style="font-size:10px;color:var(--t3)">${tRole(m.role)}</span>
     </label>`).join('');
   document.querySelectorAll('.staff-cb').forEach(cb=>cb.addEventListener('change',syncStaffAllCheckbox));
   updateStaffFilterLabel();
@@ -2170,10 +3061,10 @@ function syncStaffAllCheckbox() { document.getElementById('staff-all').checked=[
 function updateStaffFilterLabel() {
   const all=[...document.querySelectorAll('.staff-cb')], checked=all.filter(c=>c.checked);
   const lbl=document.getElementById('staff-filter-label'); if (!lbl) return;
-  if (!all.length||checked.length===all.length) lbl.textContent='👤 Tất cả nhân viên';
-  else if (checked.length===0) lbl.textContent='👤 Chưa chọn nhân viên';
+  if (!all.length||checked.length===all.length) lbl.textContent='👤 ' + t('gantt_all_staff');
+  else if (checked.length===0) lbl.textContent='👤 ' + (S.lang==='ja'?'未選択':(S.lang==='en'?'No staff selected':'Chưa chọn nhân viên'));
   else if (checked.length===1) { const m=S.members.find(x=>x.email===checked[0].value); lbl.textContent='👤 '+(m?m.name:checked[0].value); }
-  else lbl.textContent=`👤 ${checked.length} nhân viên`;
+  else lbl.textContent=`👤 ${checked.length} ${t('nav_users').toLowerCase()}`;
 }
 function getSelectedStaff() {
   const all=[...document.querySelectorAll('.staff-cb')]; if (!all.length) return null;
@@ -2190,24 +3081,88 @@ function parseLocalDate(val) {
   if (parts.length === 3) return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 0, 0, 0);
   const d = new Date(val); d.setHours(0,0,0,0); return d;
 }
-function loadGantt() {
-  const selectedStaff=getSelectedStaff();
-  const el=document.getElementById("gantt-inner");
-  el.innerHTML='<div class="ldg"><div class="spn"></div>Đang tải...</div>';
-  google.script.run.withSuccessHandler(res=>{
-    if (!res.success) { el.innerHTML=`<div class="empty">${res.error}</div>`; return; }
-    let data=res.data;
-    if (selectedStaff&&selectedStaff.length>0)
-      data=data.map(g=>({project:g.project,tasks:g.tasks.filter(t=>{
-        if (!t.assignee) return false;
-        const parts = String(t.assignee).split(',').map(s=>s.trim());
-        return parts.some(p => selectedStaff.includes(p));
-      })})).filter(g=>g.tasks.length>0);
-    GANTT.data=data;
-    GANTT.startDate=parseLocalDate(document.getElementById("g-from").value);
-    GANTT.endDate=parseLocalDate(document.getElementById("g-to").value);
-    renderGantt();
-  }).withFailureHandler(e=>el.innerHTML=`<div class="empty">Lỗi: ${e.message}</div>`).getGanttData('all');
+function buildGanttDataFromMemory(selectedStaff) {
+  if (!S.projects || !S.tasks) return [];
+  let tasks = [...S.tasks];
+  if (selectedStaff && selectedStaff.length > 0) {
+    tasks = tasks.filter(t => {
+      if (!t.assignee) return false;
+      const parts = String(t.assignee).split(',').map(s => s.trim());
+      return parts.some(p => selectedStaff.includes(p));
+    });
+  }
+  return S.projects.map(p => ({
+    project: p,
+    tasks: tasks.filter(t => t.projectId === p.id)
+  })).filter(g => g.tasks.length > 0 || !selectedStaff || selectedStaff.length === 0);
+}
+
+function loadGantt(forceServer) {
+  const selectedStaff = getSelectedStaff();
+  const el = document.getElementById("gantt-inner");
+  if (!el) return;
+
+  const fromVal = document.getElementById("g-from") ? document.getElementById("g-from").value : "";
+  const toVal = document.getElementById("g-to") ? document.getElementById("g-to").value : "";
+  const parsedStart = parseLocalDate(fromVal);
+  const parsedEnd = parseLocalDate(toVal);
+
+  // 1. Tải tức thì 0ms từ bộ nhớ S nếu đã có dữ liệu
+  if (!forceServer && S.projects && S.projects.length && S.tasks && S.tasks.length) {
+    try {
+      GANTT.data = buildGanttDataFromMemory(selectedStaff);
+      GANTT.startDate = parsedStart || new Date();
+      GANTT.endDate = parsedEnd || new Date();
+      renderGantt();
+      return;
+    } catch(err) {
+      console.warn("Gantt local render fallback:", err);
+    }
+  }
+
+  // 2. Gọi server nếu chưa có cache hoặc forceServer
+  el.innerHTML = '<div class="ldg"><div class="spn"></div>' + t('loading') + '</div>';
+  google.script.run
+    .withSuccessHandler(res => {
+      if (!res || !res.success) {
+        if (S.projects && S.projects.length) {
+          GANTT.data = buildGanttDataFromMemory(selectedStaff);
+          GANTT.startDate = parsedStart || new Date();
+          GANTT.endDate = parsedEnd || new Date();
+          renderGantt();
+          return;
+        }
+        el.innerHTML = `<div class="empty">${(res && res.error) || t('dash_no_act')}</div>`;
+        return;
+      }
+      let data = res.data || [];
+      if (selectedStaff && selectedStaff.length > 0) {
+        data = data.map(g => ({
+          project: g.project,
+          tasks: (g.tasks || []).filter(t => {
+            if (!t.assignee) return false;
+            const parts = String(t.assignee).split(',').map(s => s.trim());
+            return parts.some(p => selectedStaff.includes(p));
+          })
+        })).filter(g => g.tasks.length > 0);
+      }
+      GANTT.data = data;
+      GANTT.startDate = parsedStart || new Date();
+      GANTT.endDate = parsedEnd || new Date();
+      renderGantt();
+    })
+    .withFailureHandler(e => {
+      if (S.projects && S.projects.length) {
+        GANTT.data = buildGanttDataFromMemory(selectedStaff);
+        GANTT.startDate = parsedStart || new Date();
+        GANTT.endDate = parsedEnd || new Date();
+        renderGantt();
+        return;
+      }
+      const errMsg = (e && (e.message || (typeof e === 'string' ? e : JSON.stringify(e)))) || "Lỗi tải Gantt";
+      el.innerHTML = `<div class="empty">${errMsg}</div>`;
+    })
+    .getGanttData('all');
 }
 function renderGantt() {
   const el=document.getElementById("gantt-inner");
@@ -2223,18 +3178,34 @@ function renderGantt() {
   }
   const monthGroups=[];
   let curKey=null,curCount=0,curLabel='';
+  const mNamesEn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   dateHeaders.forEach(h=>{
     const mk=`${h.d.getFullYear()}-${h.d.getMonth()}`;
-    if (mk!==curKey) { if(curKey!==null) monthGroups.push({label:curLabel,count:curCount}); curKey=mk; curCount=0; curLabel=`Tháng ${h.d.getMonth()+1} / ${h.d.getFullYear()}`; }
+    if (mk!==curKey) {
+      if(curKey!==null) monthGroups.push({label:curLabel,count:curCount});
+      curKey=mk; curCount=0;
+      if (S.lang==='ja') {
+        curLabel=`${h.d.getFullYear()}年${h.d.getMonth()+1}月`;
+      } else if (S.lang==='en') {
+        curLabel=`${mNamesEn[h.d.getMonth()]} ${h.d.getFullYear()}`;
+      } else {
+        curLabel=`Tháng ${h.d.getMonth()+1} / ${h.d.getFullYear()}`;
+      }
+    }
     curCount++;
   });
   if (curCount>0) monthGroups.push({label:curLabel,count:curCount});
   const monthRowHtml=monthGroups.map(mg=>`<div class="gantt-month-cell" style="min-width:${mg.count*ppd}px">${mg.label}</div>`).join('');
-  const dayRowHtml=dateHeaders.map(h=>`<div class="gantt-day${h.isToday?' today':''} ${h.isWeekend?'weekend':''}" style="min-width:${ppd}px">${h.d.getDate()}<br><span style="font-size:8px">${['CN','T2','T3','T4','T5','T6','T7'][h.d.getDay()]}</span></div>`).join('');
+  const dowLabels=S.lang==='ja'
+    ?['日','月','火','水','木','金','土']
+    : (S.lang==='en'
+      ?['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+      :['CN','T2','T3','T4','T5','T6','T7']);
+  const dayRowHtml=dateHeaders.map(h=>`<div class="gantt-day${h.isToday?' today':''} ${h.isWeekend?'weekend':''}" style="min-width:${ppd}px">${h.d.getDate()}<br><span style="font-size:8px">${dowLabels[h.d.getDay()]}</span></div>`).join('');
   let rowsL='',rowsR='';
   GANTT.data.forEach(g=>{
     const pjId="gpj-"+g.project.id;
-    rowsL+=`<div class="gantt-pj-row" onclick="togGPj('${pjId}')"><span class="gantt-pj-ic open" id="${pjId}-ic">▶</span><span class="gantt-pj-nm">${g.project.name}</span><span class="gantt-pj-cnt">${g.tasks.length} NV</span></div>`;
+    rowsL+=`<div class="gantt-pj-row" onclick="togGPj('${pjId}')"><span class="gantt-pj-ic open" id="${pjId}-ic">▶</span><span class="gantt-pj-nm">${g.project.name}</span><span class="gantt-pj-cnt">${g.tasks.length} ${t('gantt_task_unit')}</span></div>`;
     
     // Project timeline: Project Bar + Project Deadline Flag
     let pjBarHtml='', pjFlagHtml='';
@@ -2257,9 +3228,9 @@ function renderGantt() {
         const pjFlagCls=isPjDone?"flag-done":isPjOver?"flag-overdue":"flag-pj";
         const pjFlagIcon=isPjDone?"🏁":"🚩";
         const pjDateLabel=g.project.endDate?g.project.endDate.substring(0,5):(g.project.endRaw?g.project.endRaw.substring(5):"");
-        pjFlagHtml=`<div class="gantt-deadline-flag gantt-pj-flag ${pjFlagCls}" style="left:${pjFlagX}px" title="Deadline dự án: ${g.project.endDate||g.project.endRaw} | ${g.project.name}">`
+        pjFlagHtml=`<div class="gantt-deadline-flag gantt-pj-flag ${pjFlagCls}" style="left:${pjFlagX}px" title="${t('gantt_pj_deadline')}: ${g.project.endDate||g.project.endRaw} | ${g.project.name}">`
           +`<span class="gantt-flag-icon">${pjFlagIcon}</span>`
-          +`<span class="gantt-flag-date">Hạn DA: ${pjDateLabel}</span>`
+          +`<span class="gantt-flag-date">${t('gantt_pj_deadline')}: ${pjDateLabel}</span>`
           +`</div>`;
       }
     }
@@ -2295,12 +3266,15 @@ function renderGantt() {
     rowsR+=`<div class="gantt-pj-tasks-r open" id="${pjId}-tasks-r">${tkR}</div>`;
   });
   if (todayOffsetDays>=0 && todayOffsetDays<totalDays) {
-    rowsR=`<div style="position:absolute;left:${todayCenterPx}px;top:0;bottom:0;width:2px;background:#ef4444;z-index:9;pointer-events:none" title="Hôm nay: ${today.getDate()}/${today.getMonth()+1}">`
-      +`<span style="position:sticky;top:62px;display:inline-block;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.3);white-space:nowrap">Hôm nay</span>`
+    const todayFormatted = S.lang === 'ja'
+      ? `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`
+      : `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`;
+    rowsR=`<div style="position:absolute;left:${todayCenterPx}px;top:0;bottom:0;width:2px;background:#ef4444;z-index:9;pointer-events:none" title="${t('gantt_today')}: ${todayFormatted}">`
+      +`<span style="position:sticky;top:62px;display:inline-block;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.3);white-space:nowrap">${t('gantt_today')}</span>`
       +`</div>`+rowsR;
   }
   el.innerHTML=`
-    <div class="gantt-left" id="gantt-left"><div class="gantt-header-left">Tên</div>${rowsL}</div>
+    <div class="gantt-left" id="gantt-left"><div class="gantt-header-left">${t('gantt_col_name')}</div>${rowsL}</div>
     <div class="gantt-right" id="gantt-right" style="position:relative">
       <div class="gantt-header-right"><div class="gantt-month-row">${monthRowHtml}</div><div class="gantt-day-row">${dayRowHtml}</div></div>
       <div style="position:relative">${rowsR}</div>
@@ -2342,19 +3316,19 @@ function gDragEnd(e) { e.currentTarget.classList.remove("dragging"); document.qu
 function loadPgPj() { renderPgPj(S.projects); }
 function renderPgPj(data) {
   const tb=document.getElementById("pp-tb");
-  if (!data.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ic">📁</div>Chưa có dự án</div></td></tr>'; return; }
+  if (!data.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ic">📁</div>' + t('pj_list_title') + ': 0</div></td></tr>'; return; }
   tb.innerHTML=data.map((p,i)=>`<tr>
     <td>${i+1}</td>
     <td><b style="cursor:pointer;color:var(--p)" onclick="openPjDetail('${p.id}')">${p.name}</b><br><small style="color:#64748b">${p.desc||""}</small></td>
     <td><small>${_displayName(p.manager)}</small></td>
-    <td><span class="badge ${sBadge(p.status)}">${p.status}</span></td>
+    <td><span class="badge ${sBadge(p.status)}">${tStatus(p.status)}</span></td>
     <td><div class="progc"><div class="pm"><div class="pmb" style="width:${p.progress}%"></div></div><small>${p.progress}%</small></div></td>
-    <td><small>${p.endDate||"—"}</small></td>
+    <td><small>${formatDisplayDate(p.endDate)||"—"}</small></td>
     <td><div style="display:flex;gap:3px">
-      ${canEd()?`<button class="bic" onclick="editPj('${p.id}')" title="Sửa">✏</button>`:""}
-      <button class="bic dup" onclick="openDupPj('${p.id}')">📋</button>
-      <button class="bic grn" onclick="expRpt('${p.id}')">📤</button>
-      ${S.role==="Admin"?`<button class="bic del" onclick="delPj('${p.id}')">🗑</button>`:""}
+      ${canEd()?`<button class="bic" onclick="editPj('${p.id}')" title="${t('btn_edit')}">✏</button>`:""}
+      <button class="bic dup" onclick="openDupPj('${p.id}')" title="${t('btn_duplicate')}">📋</button>
+      <button class="bic grn" onclick="expRpt('${p.id}')" title="${t('btn_export')}">📤</button>
+      ${S.role==="Admin"?`<button class="bic del" onclick="delPj('${p.id}')" title="${t('btn_delete')}">🗑</button>`:""}
     </div></td>
   </tr>`).join("");
 }
@@ -2369,56 +3343,89 @@ function filterPgPj() {
 function loadPgTk() { renderTkStats(); renderPgTkGroups(S.tasks); }
 function renderTkStats() {
   document.getElementById("tk-stats").innerHTML=[
-    {num:S.tasks.filter(t=>isTaskOverdue(t)).length,lbl:"Quá hạn",col:"var(--d)"},
-    {num:S.tasks.filter(t=>t.status==="Chờ thực hiện"&&!isTaskOverdue(t)).length,lbl:"Chưa bắt đầu",col:"var(--t3)"},
-    {num:S.tasks.filter(t=>(t.status==="Đang thực hiện"||t.status==="Đang tiến hành")&&!isTaskOverdue(t)).length,lbl:"Đang thực hiện",col:"var(--p)"},
-    {num:S.tasks.filter(t=>t.status==="Hoàn thành").length,lbl:"Hoàn thành",col:"var(--g)"},
-    {num:S.tasks.filter(t=>t.status==="Tạm dừng").length,lbl:"Tạm dừng",col:"var(--w)"},
+    {num:S.tasks.filter(t=>isTaskOverdue(t)).length,lbl:tStatus("Quá hạn"),col:"var(--d)"},
+    {num:S.tasks.filter(t=>t.status==="Chờ thực hiện"&&!isTaskOverdue(t)).length,lbl:tStatus("Chờ thực hiện"),col:"var(--t3)"},
+    {num:S.tasks.filter(t=>(t.status==="Đang thực hiện"||t.status==="Đang tiến hành")&&!isTaskOverdue(t)).length,lbl:tStatus("Đang thực hiện"),col:"var(--p)"},
+    {num:S.tasks.filter(t=>t.status==="Hoàn thành").length,lbl:tStatus("Hoàn thành"),col:"var(--g)"},
+    {num:S.tasks.filter(t=>t.status==="Tạm dừng").length,lbl:tStatus("Tạm dừng"),col:"var(--w)"},
   ].map(s=>`<div class="tk-stat"><div class="tk-snum" style="color:${s.col}">${s.num}</div><div class="tk-slbl">${s.lbl}</div></div>`).join("");
 }
 function renderPgTkGroups(tasks) {
-  const el=document.getElementById("pt-groups");
-  if (!tasks.length) { el.innerHTML='<div class="empty"><div class="empty-ic">✅</div>Không có nhiệm vụ</div>'; return; }
-  const groups={};
-  tasks.forEach(t=>{ if(!groups[t.projectId]) groups[t.projectId]={name:t.projectName,tasks:[]}; groups[t.projectId].tasks.push(t); });
-  el.innerHTML=Object.entries(groups).map(([pjId,g])=>`
-    <div class="pjg">
-      <div class="pjg-hd" onclick="togPjG('pg-${pjId}')">
-        <span class="pjg-arr open" id="pg-${pjId}-ic">▶</span>
-        <span class="pjg-nm">${g.name}</span>
-        <span class="badge ${sBadge(S.projects.find(p=>p.id===pjId)?.status||'')}">
-          ${S.projects.find(p=>p.id===pjId)?.status||''}</span>
-        <span class="pjg-cnt">${g.tasks.length} nhiệm vụ</span>
-        ${canMgTk()?`<button class="btn bp" style="font-size:10px;padding:4px 8px;margin-left:auto" onclick="event.stopPropagation();openTkMod(null,'${pjId}')">+ Thêm</button>`:""}
-      </div>
-      <div class="pjg-body open" id="pg-${pjId}">
-        <div class="tblw"><table>
-          <thead><tr><th></th><th>Nhiệm vụ</th><th>Người TH</th><th>Trạng Thái</th><th>Ưu tiên</th><th>Tiến độ</th><th>Link KQ</th><th>Bắt đầu</th><th>Hạn chót</th><th>Thao tác</th></tr></thead>
-          <tbody>${g.tasks.map(t=>`
-            <tr class="${isTaskOverdue(t)?'row-ov':''}">
-              <td><input type="checkbox" ${t.status==="Hoàn thành"?"checked":""} onchange="toggleTaskDone('${t.id}', this.checked)"></td>
-              <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${t.id}')"><b>${t.name}</b>${isTaskOverdue(t)?'<br><span style="font-size:9px;color:#ef4444">⚠ Quá hạn</span>':""}</td>
-              <td><small>${_displayName(t.assignee)}</small></td>
-              <td><span class="badge ${sBadge(t.status)}">${t.status}</span></td>
-              <td><span class="badge ${pBadge(t.priority)}">${t.priority}</span></td>
-              <td><div class="progc"><div class="pm"><div class="pmb" style="width:${t.progress}%"></div></div><small>${t.progress}%</small></div></td>
-              <td>${t.linkResults?`<a href="${t.linkResults.split('\n')[0]}" target="_blank" style="font-size:10px;color:var(--p)">🔗 ${t.linkResults.split('\n').length} link</a>`:'<small style="color:#94a3b8">Chưa có</small>'}</td>
-              <td><small>${t.startDate||"—"}</small></td>
-              <td><small style="color:${isTaskOverdue(t)?"#ef4444":""}">${t.deadline||"—"}</small></td>
-              <td><div style="display:flex;gap:3px">
-                <button class="bic" onclick="openFullTaskEdit('${t.id}')">✏</button>
-                <button class="bic dup" onclick="doDupTk('${t.id}')">📋</button>
-                ${canMgTk()?`<button class="bic del" onclick="delTk('${t.id}')">🗑</button>`:""}
-              </div></td>
-            </tr>`).join("")}
-          </tbody>
-        </table></div>
-      </div>
-    </div>`).join("");
+  const el = document.getElementById("pt-groups");
+  if (!el) return;
+  try {
+    if (!tasks || !tasks.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-ic">✅</div>' + t('dash_no_act') + '</div>';
+      return;
+    }
+    const groups = {};
+    tasks.forEach(tk => {
+      const pid = tk.projectId || 'other';
+      const pname = tk.projectName || (S.projects.find(p => p.id === pid)?.name) || t('dash_card_total_projects');
+      if (!groups[pid]) groups[pid] = { name: pname, tasks: [] };
+      groups[pid].tasks.push(tk);
+    });
+
+    const unitLabel = (t('nav_tasks') || 'tasks').toLowerCase();
+    el.innerHTML = Object.entries(groups).map(([pjId, g]) => {
+      const pjObj = (S.projects || []).find(p => p.id === pjId);
+      const pjStatus = pjObj ? pjObj.status : '';
+      return `
+      <div class="pjg">
+        <div class="pjg-hd" onclick="togPjG('pg-${pjId}')">
+          <span class="pjg-arr open" id="pg-${pjId}-ic">▶</span>
+          <span class="pjg-nm">${g.name || ""}</span>
+          ${pjStatus ? `<span class="badge ${sBadge(pjStatus)}">${tStatus(pjStatus)}</span>` : ""}
+          <span class="pjg-cnt">${g.tasks.length} ${unitLabel}</span>
+          ${canMgTk() ? `<button class="btn bp" style="font-size:10px;padding:4px 8px;margin-left:auto" onclick="event.stopPropagation();openTkMod(null,'${pjId}')">+ ${t('btn_add')}</button>` : ""}
+        </div>
+        <div class="pjg-body open" id="pg-${pjId}">
+          <div class="tblw"><table>
+            <thead><tr><th></th><th>${t('tk_col_name')}</th><th>${t('tk_col_assignee')}</th><th>${t('tk_col_status')}</th><th>${t('tk_col_priority')}</th><th>${t('tk_col_progress')}</th><th>Link KQ</th><th>${t('pj_col_start')}</th><th>${t('tk_col_deadline')}</th><th>${t('pj_col_actions')}</th></tr></thead>
+            <tbody>${g.tasks.map(tk => {
+              const isOver = isTaskOverdue(tk);
+              const lr = (tk.linkResults != null) ? String(tk.linkResults).trim() : "";
+              const firstLink = lr ? lr.split('\n')[0].trim() : "";
+              const linkCount = lr ? lr.split('\n').filter(Boolean).length : 0;
+              return `
+              <tr class="${isOver ? 'row-ov' : ''}">
+                <td><input type="checkbox" ${tk.status === "Hoàn thành" ? "checked" : ""} onchange="toggleTaskDone('${tk.id}', this.checked)"></td>
+                <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${tk.id}')"><b>${tk.name || ""}</b>${isOver ? `<br><span style="font-size:9px;color:#ef4444">⚠ ${tStatus('Quá hạn')}</span>` : ""}</td>
+                <td><small>${_displayName(tk.assignee)}</small></td>
+                <td><span class="badge ${sBadge(tk.status)}">${tStatus(tk.status)}</span></td>
+                <td><span class="badge ${pBadge(tk.priority)}">${tPriority(tk.priority)}</span></td>
+                <td><div class="progc"><div class="pm"><div class="pmb" style="width:${tk.progress || 0}%"></div></div><small>${tk.progress || 0}%</small></div></td>
+                <td>${firstLink ? `<a href="${firstLink}" target="_blank" style="font-size:10px;color:var(--p)">🔗 ${linkCount} link</a>` : '<small style="color:#94a3b8">—</small>'}</td>
+                <td><small>${formatDisplayDate(tk.startDate) || "—"}</small></td>
+                <td><small style="color:${isOver ? "#ef4444" : ""}">${formatDisplayDate(tk.deadline) || "—"}</small></td>
+                <td><div style="display:flex;gap:3px">
+                  <button class="bic" onclick="openFullTaskEdit('${tk.id}')" title="${t('btn_edit')}">✏</button>
+                  <button class="bic dup" onclick="doDupTk('${tk.id}')" title="${t('btn_duplicate')}">📋</button>
+                  ${canMgTk() ? `<button class="bic del" onclick="delTk('${tk.id}')" title="${t('btn_delete')}">🗑</button>` : ""}
+                </div></td>
+              </tr>`;
+            }).join("")}
+            </tbody>
+          </table></div>
+        </div>
+      </div>`;
+    }).join("");
+  } catch(err) {
+    console.error("renderPgTkGroups error:", err);
+    el.innerHTML = `<div class="empty" style="color:var(--d)">Lỗi hiển thị: ${err.message || err}</div>`;
+  }
 }
 function filterPgTk() {
-  const q=document.getElementById("pt-s").value.toLowerCase(), st=document.getElementById("pt-st").value, pr=document.getElementById("pt-pr").value;
-  renderPgTkGroups(S.tasks.filter(t=>(!q||t.name.toLowerCase().includes(q)||(t.assignee||"").toLowerCase().includes(q))&&(st==='Quá hạn'?isTaskOverdue(t):(!st||t.status===st))&&(!pr||t.priority===pr)));
+  const q = (document.getElementById("pt-s")?.value || "").toLowerCase().trim();
+  const st = document.getElementById("pt-st")?.value || "";
+  const pr = document.getElementById("pt-pr")?.value || "";
+  const filtered = (S.tasks || []).filter(tk => {
+    const nameMatch = !q || String(tk.name || "").toLowerCase().includes(q) || String(tk.assignee || "").toLowerCase().includes(q);
+    const statusMatch = !st || (st === 'Quá hạn' ? isTaskOverdue(tk) : tk.status === st);
+    const prioMatch = !pr || tk.priority === pr;
+    return nameMatch && statusMatch && prioMatch;
+  });
+  renderPgTkGroups(filtered);
 }
 function togPjG(id) { const el=document.getElementById(id),ic=document.getElementById(id+"-ic"); el.classList.toggle("open"); if(ic) ic.classList.toggle("open"); }
 
@@ -2566,7 +3573,7 @@ function delReminder(id) { _currTkReminders=_currTkReminders.filter(r=>r.id!==id
 //  PROJECT CRUD
 // ═══════════════════════════════════════
 function openPjMod() {
-  document.getElementById("mpj-ti").textContent="Thêm Dự Án";
+  document.getElementById("mpj-ti").textContent = t("add_project");
   document.getElementById("mpj-id").value="";
   ["mpj-nm","mpj-ds","mpj-sd","mpj-ed"].forEach(x=>document.getElementById(x).value="");
   document.getElementById("mpj-st").value="Lên kế hoạch";
@@ -2574,7 +3581,7 @@ function openPjMod() {
 }
 function editPj(id) {
   const p=S.projects.find(x=>x.id===id); if (!p) return;
-  document.getElementById("mpj-ti").textContent="Sửa Dự Án";
+  document.getElementById("mpj-ti").textContent = t("btn_edit") + " " + t("nav_projects");
   document.getElementById("mpj-id").value=id;
   document.getElementById("mpj-nm").value=p.name;
   document.getElementById("mpj-ds").value=p.desc||"";
@@ -2611,8 +3618,8 @@ function savePj() {
 function delPj(id) {
   const p = S.projects.find(x => x.id === id);
   const name = p ? p.name : id;
-  if (!confirm(`Xóa dự án "${name}" và toàn bộ nhiệm vụ liên quan?`)) return;
-  localDeleteProject(id); toast("Đã xóa dự án","success");
+  if (!confirm(`${t("btn_delete")} "${name}"? ${t("msg_confirm_delete")}`)) return;
+  localDeleteProject(id); toast(t("msg_delete_success"),"success");
   google.script.run.withSuccessHandler(r=>{ if(!r.success) { toast(r.error,"error"); loadApp(); } }).deleteProject(id);
 }
 function openDupPj(id) {
@@ -2966,7 +3973,7 @@ function saveBulkTasks() {
 }
 
 function openTkMod(taskId, defaultPjId, initialTab) {
-  document.getElementById("mqtk-ti").textContent = taskId ? "Sửa Nhiệm Vụ" : "Thêm Nhiệm Vụ";
+  document.getElementById("mqtk-ti").textContent = taskId ? (t("btn_edit") + " " + t("nav_tasks")) : t("add_task");
   document.getElementById("mqtk-id").value = taskId || "";
   ["mqtk-nm", "mqtk-sd", "mqtk-dl"].forEach(x => document.getElementById(x).value = "");
   document.getElementById("mqtk-st").value = "Chờ thực hiện";
@@ -3035,12 +4042,12 @@ function saveQTk() {
 function delTk(id) {
   const t = S.tasks.find(x => x.id === id);
   const name = t ? t.name : id;
-  if (!confirm(`Xóa "${name}"?`)) return;
-  localDeleteTask(id); toast("Đã xóa nhiệm vụ","success");
+  if (!confirm(`${t("btn_delete")} "${name}"?`)) return;
+  localDeleteTask(id); toast(t("msg_delete_success"),"success");
   google.script.run.withSuccessHandler(r=>{ if(!r.success){toast(r.error,"error");loadApp();} }).deleteTask(id);
 }
 function doDupTk(id) {
-  if (!confirm("Tạo bản sao nhiệm vụ này?")) return;
+  if (!confirm(t("msg_confirm_dup_pj") || "Tạo bản sao?")) return;
   google.script.run.withSuccessHandler(r=>{ if(r.success){toast(r.message,"success");reloadAll();}else toast(r.error,"error"); }).duplicateTask(id);
 }
 
@@ -3071,7 +4078,7 @@ function renderPgUsr(data) {
   const tbody = document.getElementById("pu-tb");
   if (!tbody) return;
   if (!data || data.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:24px">Chưa có người dùng nào</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:24px">${t('empty_no_users')}</td></tr>`;
     return;
   }
   tbody.innerHTML = data.map((u, i) => {
@@ -3084,14 +4091,14 @@ function renderPgUsr(data) {
     </td>
     <td>
       <span style="font-weight:700">${u.name}</span>
-      ${isLocal ? `<button class="bic" style="width:20px;height:20px;font-size:10px;margin-left:6px;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center" onclick="quickRenameLocalUsr('${u.id}','${u.email}','${safeName}')" title="Đổi tên nhanh">✏</button>` : ''}
+      ${isLocal ? `<button class="bic" style="width:20px;height:20px;font-size:10px;margin-left:6px;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center" onclick="quickRenameLocalUsr('${u.id}','${u.email}','${safeName}')" title="${t('btn_edit')}">✏</button>` : ''}
     </td>
-    <td><span class="badge" style="background:${rc[u.role] || '#94a3b8'}22;color:${rc[u.role] || '#94a3b8'}">${u.role}</span></td>
-    <td><span class="badge ${u.status === "Active" ? "bg-gr" : "bg-gy"}" style="cursor:pointer" onclick="toggleUsrStatus('${u.id}','${u.email}')" title="Nhấn để đổi trạng thái Active / Inactive">${u.status} ⇄</span></td>
-    <td><small>${u.created || '—'}</small></td>
+    <td><span class="badge" style="background:${rc[u.role] || '#94a3b8'}22;color:${rc[u.role] || '#94a3b8'}">${tRole(u.role)}</span></td>
+    <td><span class="badge ${u.status === "Active" ? "bg-gr" : "bg-gy"}" style="cursor:pointer" onclick="toggleUsrStatus('${u.id}','${u.email}')" title="Active / Inactive">${u.status} ⇄</span></td>
+    <td><small>${formatDisplayDate(u.created) || '—'}</small></td>
     <td><div style="display:flex;gap:3px">
-      <button class="bic" onclick="editUsr('${u.id}','${u.email}')" title="Sửa tên & thông tin">✏</button>
-      <button class="bic del" onclick="delUsr('${u.id}','${u.email}')" title="Xóa người dùng vĩnh viễn">🗑</button>
+      <button class="bic" onclick="editUsr('${u.id}','${u.email}')" title="${t('btn_edit')}">✏</button>
+      <button class="bic del" onclick="delUsr('${u.id}','${u.email}')" title="${t('btn_delete')}">🗑</button>
     </div></td>
   </tr>`;
   }).join("");
@@ -3184,7 +4191,7 @@ function delUsr(id, email) {
   const targetUser = _usersCache.find(x => (id && x.id === id) || (email && x.email === email) || x.id === email);
   const displayName = targetUser ? (targetUser.name || targetUser.email) : (email || id);
 
-  if (!confirm(`Bạn có chắc chắn muốn XÓA VĨNH VIỄN người dùng "${displayName}" khỏi hệ thống?`)) return;
+  if (!confirm(`${t("btn_delete")} "${displayName}"? ${t("msg_confirm_delete")}`)) return;
 
   // 1. Sao lưu danh sách để rollback nếu server báo lỗi
   const backupCache = [..._usersCache];
@@ -3226,7 +4233,7 @@ function delUsr(id, email) {
 }
 
 function openUsrMod() {
-  document.getElementById("musr-ti").textContent = "Thêm Người Dùng";
+  document.getElementById("musr-ti").textContent = t("add_user");
   document.getElementById("musr-id").value = "";
   ["musr-em", "musr-nm", "musr-nt"].forEach(x => document.getElementById(x).value = "");
   document.getElementById("musr-rl").value = "Member";
@@ -3255,7 +4262,7 @@ function editUsr(id, email) {
 
 function _fillUsrModal(u) {
   const isLocal = u.email && u.email.startsWith('member_');
-  document.getElementById("musr-ti").textContent = isLocal ? "Sửa Tên & Thông Tin Thành Viên" : "Sửa Người Dùng";
+  document.getElementById("musr-ti").textContent = isLocal ? (t("btn_edit") + " " + t("nav_users")) : (t("btn_edit") + " " + t("nav_users"));
   document.getElementById("musr-id").value = u.id || u.email;
   document.getElementById("musr-em").value = u.email;
   document.getElementById("musr-em").disabled = true;
@@ -3401,8 +4408,16 @@ function saveUsr() {
 // ═══════════════════════════════════════
 function loadPgLog() {
   google.script.run.withSuccessHandler(data=>{
-    document.getElementById("pl-tb").innerHTML=(data||[]).slice().reverse().slice(0,100).map(r=>`<tr>
-      <td><small>${r[0]||""}</small></td><td><small>${r[1]||""}</small></td><td><small>${r[2]||""}</small></td>
+    const tb = document.getElementById("pl-tb");
+    if (!tb) return;
+    if (!data || !data.length) {
+      tb.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px">${t('dash_no_act')}</td></tr>`;
+      return;
+    }
+    tb.innerHTML=data.slice().reverse().slice(0,100).map(r=>`<tr>
+      <td><small>${formatDisplayDate(r[0])||""}</small></td>
+      <td><small>${r[1]||""}</small></td>
+      <td><small><span class="badge bg-bl">${tRole(r[2])}</span></small></td>
       <td><code style="font-size:10px;background:#f1f5f9;padding:1px 5px;border-radius:3px">${r[3]||""}</code></td>
       <td><small style="color:#64748b">${r[4]||""}</small></td>
     </tr>`).join("");
@@ -3424,14 +4439,16 @@ function ldMgSel(id, sel) {
 }
 function popPjFilter() {
   const sel=document.getElementById("pj-filter-sel");
-  sel.innerHTML='<option value="">Lọc theo dự án...</option>';
-  S.projects.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; sel.appendChild(o); });
+  if (!sel) return;
+  const curVal = sel.value;
+  sel.innerHTML=`<option value="">${t("filter_by_project")}</option>`;
+  S.projects.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; if(p.id===curVal) o.selected=true; sel.appendChild(o); });
 }
 
 // ═══════════════════════════════════════
 //  RELOAD
 // ═══════════════════════════════════════
-function reloadAll() { toast("Đang làm mới...", "info"); loadApp(); }
+function reloadAll() { toast(t("loading"), "info"); loadApp(); }
 
 // ═══════════════════════════════════════
 //  HELPERS
@@ -3441,7 +4458,7 @@ function pBadge(p){return{Thấp:"bg-gr","Trung bình":"bg-bl",Cao:"bg-yw","Kh�
 function canEd()   { return ["Admin","Manager"].includes(S.role); }
 function canMgTk() { return ["Admin","Manager"].includes(S.role); }
 function doLogout(){
-  if(confirm("Đăng xuất?")) {
+  if(confirm(t("logout") + "?")) {
     google.script.run.withSuccessHandler(u => {
       if (u) {
         try { window.top.location.href = u; }
