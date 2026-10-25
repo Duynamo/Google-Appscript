@@ -448,6 +448,37 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .tax-preview-box{padding:10px 14px;background:#f8fafc;border:1.5px dashed var(--bdr);border-radius:var(--r2);margin:8px 0;display:flex;align-items:center;gap:10px}
 .tax-meta-tag{display:inline-block;padding:2px 7px;background:#e2e8f0;border-radius:4px;font-size:10px;font-weight:700;color:#334155;margin-right:4px}
 
+/* ── TIMESHEET STYLES ── */
+.ts-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:16px}
+.ts-topbar{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--bdr)}
+.ts-ctrl-grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ts-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--r2);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--bdr);background:var(--bg);color:var(--tx);transition:.15s;user-select:none}
+.ts-btn:hover{background:var(--bdr)}
+.ts-btn-pri{background:var(--p);color:#fff;border-color:var(--pd);box-shadow:0 2px 6px rgba(79,110,247,.25)}
+.ts-btn-pri:hover{background:var(--pd)}
+.ts-btn-warn{background:#f59e0b;color:#fff;border-color:#d97706;box-shadow:0 2px 6px rgba(245,158,11,.25)}
+.ts-btn-warn:hover{background:#d97706}
+.ts-btn-dang{background:#ef4444;color:#fff;border-color:#dc2626;box-shadow:0 2px 6px rgba(239,68,68,.25)}
+.ts-btn-dang:hover{background:#dc2626}
+.ts-btn-sec{background:#f1f5f9;color:var(--tx);border-color:#cbd5e1}
+.ts-btn-sec:hover{background:#e2e8f0}
+.ts-banner{padding:10px 16px;font-size:12px;display:flex;align-items:center;gap:10px;line-height:1.4}
+.ts-banner-warn{background:#fffbeb;border-bottom:1px solid #fde68a;color:#92400e}
+.ts-banner-edit{background:#eff6ff;border-bottom:1px solid #bfdbfe;color:#1e40af;font-weight:600}
+.ts-toolbar{padding:10px 18px;background:#f8fafc;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ts-time-badge{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-weight:700;font-size:11px;padding:4px 8px;border-radius:6px;background:#eef2ff;color:var(--p);display:inline-block;white-space:nowrap}
+.ts-time-badge.ot{background:#fff7ed;color:#ea580c}
+.ts-lunch-row{background:#fef3c7 !important;color:#92400e;font-weight:700;font-size:12px}
+.ts-lunch-row td{border-top:1px dashed #fcd34d !important;border-bottom:1px dashed #fcd34d !important}
+.ts-ot-header-row{background:#f1f5f9;font-weight:700;font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.5px}
+.ts-select,.ts-input{width:100%;height:32px;padding:4px 8px;border:1px solid var(--bdr);border-radius:6px;font-size:12px;background:#fff;color:var(--tx);transition:border-color .15s}
+.ts-select:focus,.ts-input:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 2px rgba(79,110,247,.15)}
+.ts-select.readonly,.ts-input.readonly{background:#f8fafc;color:#64748b;cursor:not-allowed}
+.ts-footer-bar{padding:12px 18px;background:#f8fafc;border-top:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.ts-stat-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#fff;border:1px solid var(--bdr);border-radius:8px;font-size:12px}
+.ts-stat-num{font-weight:800;color:var(--p);font-size:13px}
+.ts-row-highlight{background:#f0fdf4 !important;transition:background 0.5s}
+
 @media(max-width:1100px){.an-chart-grid{grid-template-columns:1fr}.an-kpi-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.srow{grid-template-columns:repeat(2,1fr)}.d2col,.d3col,.d32{grid-template-columns:1fr}.tp-body{grid-template-columns:1fr}}
 </style>
@@ -471,6 +502,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <div class="sni" data-p="analytics" onclick="goPage('analytics',this)"><span class="ic">📊</span><span data-i18n="nav_analytics">Biểu đồ chuyên sâu</span></div>
     <div class="sni" data-p="projects" onclick="goPage('projects',this)"><span class="ic">📁</span><span data-i18n="nav_projects">Dự án</span></div>
     <div class="sni" data-p="tasks" onclick="goPage('tasks',this)"><span class="ic">☑️</span><span data-i18n="nav_tasks">Nhiệm vụ</span></div>
+    <div class="sni" id="ni-timesheet" data-p="timesheet" onclick="goPage('timesheet',this)"><span class="ic">⏱️</span><span data-i18n="nav_timesheet">Quản lý thời gian</span></div>
     <div class="sni" id="ni-usr" style="display:none" data-p="users" onclick="goPage('users',this)"><span class="ic">👥</span><span data-i18n="nav_users">Người dùng</span></div>
     <div class="sni" id="ni-tax" style="display:none" data-p="taxonomy" onclick="goPage('taxonomy',this)"><span class="ic">📐</span><span data-i18n="nav_taxonomy">Danh mục tiêu chuẩn</span></div>
     <div class="sni" id="ni-log" style="display:none" data-p="log" onclick="goPage('log',this)"><span class="ic">📋</span><span data-i18n="nav_log">Nhật ký</span></div>
@@ -845,6 +877,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
             <button type="button" class="tax-tab-btn" id="tax-subtab-phase" onclick="switchTaxSubTab('PHASE')" data-i18n="tax_tab_phase">2. Phase dự án</button>
             <button type="button" class="tax-tab-btn" id="tax-subtab-disc" onclick="switchTaxSubTab('DISCIPLINE')" data-i18n="tax_tab_disc">3. Chi tiết công việc</button>
             <button type="button" class="tax-tab-btn" id="tax-subtab-pjcode" onclick="switchTaxSubTab('PROJECT_CODE')" data-i18n="tax_tab_pjcode">4. Mã dự án</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-emp" onclick="switchTaxSubTab('EMPLOYEE')" data-i18n="tax_tab_emp">5. Nhân viên</button>
           </div>
 
           <!-- Filter & Search Bar -->
@@ -883,6 +916,105 @@ input[type=range]{width:100%;accent-color:var(--p)}
         </div>
       </div>
     </div>
+    <!-- ══ TIMESHEET (QUẢN LÝ THỜI GIAN) ══ -->
+    <div class="page" id="page-timesheet">
+      <div class="ts-card">
+        <!-- Topbar Controls -->
+        <div class="ts-topbar">
+          <div class="ts-ctrl-grp">
+            <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_date">Ngày làm việc</label>
+            <button type="button" class="ts-btn" onclick="stepTimesheetDate(-1)" data-i18n="ts_prev_day">◀ Ngày trước</button>
+            <input type="date" id="ts-date-inp" class="fc" style="height:32px;font-size:12px;font-weight:700;padding:2px 8px;width:145px" onchange="onTimesheetDateChange(this.value)">
+            <button type="button" class="ts-btn" onclick="stepTimesheetDate(1)" data-i18n="ts_next_day">Ngày sau ▶</button>
+            <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('today')" data-i18n="ts_today">Hôm nay</button>
+            <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('yesterday')" data-i18n="ts_yesterday">Hôm qua</button>
+          </div>
+
+          <div class="ts-ctrl-grp">
+            <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_staff_code">Nhân viên</label>
+            <select id="ts-staff-sel" class="fc" style="height:32px;font-size:12px;font-weight:600;min-width:180px" onchange="onTimesheetStaffChange(this.value)"></select>
+            <span id="ts-staff-rank-badge" class="badge bg-bl" style="font-size:11px">-</span>
+            <span id="ts-sheet-link-wrap" style="margin-left:6px">
+              <a id="ts-sheet-link-btn" href="#" target="_blank" class="ts-btn" style="text-decoration:none;color:var(--p);font-weight:700">📊 <span data-i18n="ts_sheet_open">Mở Sheet lưu trữ ↗</span></a>
+            </span>
+          </div>
+
+          <div class="ts-ctrl-grp" style="margin-left:auto">
+            <button type="button" class="ts-btn ts-btn-sec" onclick="loadTimesheetData(true)"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
+            <button type="button" class="ts-btn ts-btn-warn" id="ts-btn-edit-mode" style="display:none" onclick="enableTimesheetEditMode()"><span data-i18n="ts_btn_edit_mode">✏️ Bật Chế Độ Chỉnh Sửa</span></button>
+            <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-cancel-edit" style="display:none" onclick="cancelTimesheetEditMode()"><span data-i18n="ts_btn_cancel_edit">❌ Hủy chỉnh sửa</span></button>
+            <button type="button" class="ts-btn ts-btn-pri" id="ts-btn-save" onclick="saveTimesheetClick()"><span data-i18n="ts_btn_save">💾 Lưu thời gian</span></button>
+            <button type="button" class="ts-btn ts-btn-dang" id="ts-btn-overwrite" style="display:none" onclick="confirmOverwriteClick()"><span data-i18n="ts_btn_overwrite">🔄 Cập Nhật & Ghi Đè (Overwrite)</span></button>
+          </div>
+        </div>
+
+        <!-- Notification / Warning Banners -->
+        <div id="ts-existing-banner" class="ts-banner ts-banner-warn" style="display:none">
+          <span style="font-size:15px">⚠️</span>
+          <span data-i18n="ts_existing_data_warning">Ngày này đã có dữ liệu lưu trữ. Nút Lưu đã bị khóa để bảo vệ dữ liệu. Vui lòng bấm 'Bật Chế Độ Chỉnh Sửa' nếu muốn ghi đè.</span>
+        </div>
+        <div id="ts-edit-banner" class="ts-banner ts-banner-edit" style="display:none">
+          <span style="font-size:15px">🔔</span>
+          <span data-i18n="ts_edit_mode_active">Chế độ chỉnh sửa đang BẬT. Khi nhấn 'Cập Nhật & Ghi Đè', dữ liệu ngày này trên Google Sheet sẽ được thay thế hoàn toàn.</span>
+        </div>
+
+        <!-- Fast Bulk Tools Toolbar -->
+        <div class="ts-toolbar">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <button type="button" class="ts-btn" onclick="copyFromYesterdayClick()"><span data-i18n="ts_copy_yesterday">📋 Sao chép từ Hôm Qua</span></button>
+            <button type="button" class="ts-btn" onclick="bulkFillMorning()"><span data-i18n="ts_fill_morning">☀️ Điền cả buổi sáng</span></button>
+            <button type="button" class="ts-btn" onclick="bulkFillAfternoon()"><span data-i18n="ts_fill_afternoon">🌤️ Điền cả buổi chiều</span></button>
+            <button type="button" class="ts-btn" id="btn-ts-morning-ot" onclick="toggleMorningOt()"><span data-i18n="ts_morning_ot">🌅 TĂNG CA SÁNG</span> <span id="ts-m-ot-badge">(Ẩn)</span></button>
+            <button type="button" class="ts-btn" id="btn-ts-evening-ot" onclick="toggleEveningOt()"><span data-i18n="ts_evening_ot">🌙 TĂNG CA TỐI</span> <span id="ts-e-ot-badge">(Ẩn)</span></button>
+            <button type="button" class="ts-btn" onclick="clearTimesheetInputs()"><span data-i18n="ts_clear_all">🧹 Xóa trắng</span></button>
+          </div>
+          <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:4px">
+            <span>💡</span> <span data-i18n="ts_copy_hint">Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets</span>
+          </div>
+        </div>
+
+        <!-- Table Grid Container -->
+        <div class="tblw" style="max-height:calc(100vh - 280px);overflow-y:auto">
+          <table id="ts-table">
+            <thead style="position:sticky;top:0;background:var(--card);z-index:2">
+              <tr>
+                <th style="width:36px;text-align:center">#</th>
+                <th style="width:125px" data-i18n="ts_col_time">Khung Giờ</th>
+                <th style="width:140px" data-i18n="ts_col_project">Mã Dự Án</th>
+                <th style="width:115px" data-i18n="ts_col_category">Mã Category</th>
+                <th style="width:105px" data-i18n="ts_col_phase">Phase</th>
+                <th style="width:125px" data-i18n="ts_col_discipline">Mã Công Việc</th>
+                <th data-i18n="ts_col_note">Ghi Chú Công Việc</th>
+                <th style="width:110px;text-align:center" data-i18n="ts_col_actions">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="ts-tbody">
+              <tr><td colspan="8"><div class="ldg"><div class="spn"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Footer Stats Bar -->
+        <div class="ts-footer-bar">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <div class="ts-stat-chip">
+              <span data-i18n="ts_stat_official">Giờ chính thức</span>: <span class="ts-stat-num" id="ts-stat-reg">0.0h / 8.0h</span>
+            </div>
+            <div class="ts-stat-chip">
+              <span data-i18n="ts_stat_ot">Giờ tăng ca</span>: <span class="ts-stat-num" id="ts-stat-ot" style="color:#ea580c">0.0h</span>
+            </div>
+            <div class="ts-stat-chip" style="background:#eef2ff">
+              <span data-i18n="ts_stat_total">Tổng cộng</span>: <span class="ts-stat-num" id="ts-stat-total" style="color:var(--p)">0.0h</span>
+            </div>
+            <div class="ts-stat-chip">
+              <span data-i18n="ts_stat_slots">Khung giờ đã nhập</span>: <span class="ts-stat-num" id="ts-stat-slots">0</span>
+            </div>
+          </div>
+          <div id="ts-sync-status" style="font-size:11px;color:var(--t3)">Đã sẵn sàng</div>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ LOG ══ -->
     <div class="page" id="page-log">
       <div class="pcrd">
@@ -1441,23 +1573,24 @@ input[type=range]{width:100%;accent-color:var(--p)}
           <option value="PHASE">2. Phase dự án (Giai đoạn: BD, DD, IS...)</option>
           <option value="DISCIPLINE">3. Chi tiết công việc (Discipline: AR, STR, MP, ELE...)</option>
           <option value="PROJECT_CODE">4. Mã dự án (Project Code: HAG01, JJK01...)</option>
+          <option value="EMPLOYEE">5. Nhân viên (Mã NV, Tên, Cấp bậc, Sheet...)</option>
         </select>
       </div>
 
       <div class="frow">
         <div class="fg" style="flex:1">
-          <label class="fl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
-          <input type="text" class="fc" id="mtax-code" placeholder="VD: AR, STR, M3..." maxlength="10" oninput="this.value=this.value.toUpperCase(); updateTaxPreview()" style="font-weight:700;letter-spacing:1px">
-          <div style="font-size:10px;color:var(--t3);margin-top:2px" data-i18n="tax_code_hint">2-5 ký tự in hoa</div>
+          <label class="fl" id="mtax-code-lbl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-code" placeholder="VD: AR, STR, M3..." maxlength="20" oninput="this.value=this.value.toUpperCase(); updateTaxPreview()" style="font-weight:700;letter-spacing:1px">
+          <div style="font-size:10px;color:var(--t3);margin-top:2px" id="mtax-code-hint" data-i18n="tax_code_hint">2-5 ký tự in hoa</div>
         </div>
         <div class="fg" style="flex:2">
-          <label class="fl"><span data-i18n="tax_col_name">Tên phân loại</span> <span class="req">*</span></label>
+          <label class="fl" id="mtax-name-lbl"><span data-i18n="tax_col_name">Tên phân loại</span> <span class="req">*</span></label>
           <input type="text" class="fc" id="mtax-name" placeholder="VD: Dựng hình kiến trúc..." oninput="updateTaxPreview()">
         </div>
       </div>
 
       <div class="fg">
-        <label class="fl" data-i18n="tax_col_desc">Giải thích phạm vi / Nội dung</label>
+        <label class="fl" id="mtax-desc-lbl" data-i18n="tax_col_desc">Giải thích phạm vi / Nội dung</label>
         <textarea class="fc" id="mtax-desc" rows="2" placeholder="Mô tả phạm vi áp dụng, chi tiết nội dung đầu việc..."></textarea>
       </div>
 
@@ -1479,10 +1612,19 @@ input[type=range]{width:100%;accent-color:var(--p)}
           </div>
         </div>
 
-        <div class="fg" style="flex:1">
+        <div class="fg" style="flex:1" id="mtax-extra2-wrap">
           <label class="fl" id="mtax-extra2-lbl">Ghi chú tiếng Nhật (Tùy chọn)</label>
           <input type="text" class="fc" id="mtax-extra2" placeholder="VD: 建築モデリング..." style="height:34px">
+          <button type="button" class="btn bs" id="btn-create-staff-sheet" onclick="createStaffSheetClick()" style="display:none;margin-top:6px;width:100%;font-size:11px" data-i18n="tax_create_sheet">🪄 Tự động tạo Google Sheet cho nhân sự này</button>
         </div>
+      </div>
+
+      <div class="fg" id="mtax-extra3-wrap" style="display:none">
+        <label class="fl" data-i18n="tax_col_perm">Phân quyền</label>
+        <select class="fc" id="mtax-extra3">
+          <option value="Level2" data-i18n="tax_perm_level2">Cấp 2 - Chỉ nhập thời gian</option>
+          <option value="Admin" data-i18n="tax_perm_level1">Cấp 1 - Toàn quyền (Admin)</option>
+        </select>
       </div>
 
       <div class="fg">
@@ -1558,6 +1700,30 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <div class="mft">
       <button class="btn bs" onclick="closeModal('m-batch-tax')" data-i18n="btn_cancel">Hủy</button>
       <button class="btn bp" id="mbatch-submit-btn" onclick="applyBatchTaskMigration()" disabled>⚡ Áp dụng chuẩn hóa</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL CONFIRM OVERWRITE TIMESHEET ══ -->
+<div class="ov" id="m-confirm-overwrite">
+  <div class="modal" style="max-width:440px">
+    <div class="mhd">
+      <h3 style="color:var(--d);display:flex;align-items:center;gap:6px">
+        <span>⚠️</span> <span data-i18n="ts_confirm_overwrite_title">Xác nhận ghi đè dữ liệu</span>
+      </h3>
+      <button class="mcl" onclick="closeModal('m-confirm-overwrite')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <div style="font-size:13px;line-height:1.5;color:var(--tx);margin-bottom:12px" id="m-confirm-overwrite-msg">
+        Ngày này đã có dữ liệu trên Google Sheet. Bạn có chắc chắn muốn ghi đè toàn bộ dữ liệu ngày này?
+      </div>
+      <div style="padding:10px 14px;background:#fff5f5;border:1px solid #fee2e2;border-radius:8px;font-size:11px;color:#b91c1c;line-height:1.4">
+        ⚠️ <strong>Lưu ý:</strong> Hành động này sẽ thay thế toàn bộ dữ liệu cũ của ngày được chọn bằng dữ liệu mới bạn vừa nhập.
+      </div>
+    </div>
+    <div class="mft">
+      <button type="button" class="btn bs" onclick="closeModal('m-confirm-overwrite')" data-i18n="btn_cancel">Hủy</button>
+      <button type="button" class="btn" style="background:#ef4444;color:#fff;border-color:#dc2626" onclick="submitTimesheetData(true)"><span data-i18n="ts_btn_overwrite">🔄 Cập Nhật & Ghi Đè (Overwrite)</span></button>
     </div>
   </div>
 </div>
@@ -1816,6 +1982,56 @@ const I18N = {
     tax_custom_pj_name: "-- Tự nhập nội dung xxxxx --",
     tax_prefix_badge: "Ký tự phân loại chuẩn",
     tax_prefix_none: "[CHƯA GÁN MÃ]",
+    nav_timesheet: "Quản lý thời gian",
+    page_timesheet_t: "Quản Lý Thời Gian",
+    page_timesheet_s: "Ghi nhận và kiểm soát thời gian làm việc chi tiết 30 phút",
+    ts_date: "Ngày làm việc",
+    ts_today: "Hôm nay",
+    ts_yesterday: "Hôm qua",
+    ts_prev_day: "◀ Ngày trước",
+    ts_next_day: "Ngày sau ▶",
+    ts_staff_code: "Nhân viên",
+    ts_staff_rank: "Cấp bậc",
+    ts_sheet_link: "Google Sheet cá nhân",
+    ts_sheet_open: "Mở Sheet lưu trữ ↗",
+    ts_sheet_none: "Chưa cấu hình Sheet",
+    ts_col_time: "Khung Giờ",
+    ts_col_project: "Mã Dự Án",
+    ts_col_category: "Mã Category",
+    ts_col_phase: "Phase",
+    ts_col_discipline: "Mã Công Việc",
+    ts_col_note: "Ghi Chú Công Việc",
+    ts_col_actions: "Thao tác",
+    ts_lunch_break: "☕ NGHỈ TRƯA (12:00 - 13:00) — Không tính giờ làm việc",
+    ts_morning_ot: "🌅 TĂNG CA SÁNG (06:00 - 08:00)",
+    ts_evening_ot: "🌙 TĂNG CA TỐI (17:00 - 22:00)",
+    ts_toggle_ot: "Mở rộng tăng ca",
+    ts_btn_save: "💾 Lưu thời gian",
+    ts_btn_saving: "⏳ Đang lưu...",
+    ts_btn_reload: "🔄 Tải lại",
+    ts_btn_edit_mode: "✏️ Bật Chế Độ Chỉnh Sửa",
+    ts_btn_overwrite: "🔄 Cập Nhật & Ghi Đè (Overwrite)",
+    ts_btn_cancel_edit: "❌ Hủy chỉnh sửa",
+    ts_existing_data_warning: "⚠️ Ngày này đã có dữ liệu lưu trữ. Nút Lưu đã bị khóa để bảo vệ dữ liệu. Vui lòng bấm 'Bật Chế Độ Chỉnh Sửa' nếu muốn ghi đè.",
+    ts_edit_mode_active: "🔔 Chế độ chỉnh sửa đang BẬT. Khi nhấn 'Cập Nhật & Ghi Đè', dữ liệu ngày này trên Google Sheet sẽ được thay thế hoàn toàn.",
+    ts_copy_down: "Sao chép xuống dòng dưới",
+    ts_copy_yesterday: "📋 Sao chép từ Hôm Qua",
+    ts_fill_morning: "☀️ Áp dụng cho cả buổi sáng",
+    ts_fill_afternoon: "🌤️ Áp dụng cho cả buổi chiều",
+    ts_clear_all: "🧹 Xóa trắng",
+    ts_confirm_overwrite_title: "Xác nhận ghi đè dữ liệu",
+    ts_confirm_overwrite_msg: "Ngày {date} đã có {count} bản ghi trên Google Sheet của bạn. Bạn có chắc chắn muốn ghi đè toàn bộ dữ liệu ngày này?",
+    ts_stat_official: "Giờ chính thức",
+    ts_stat_ot: "Giờ tăng ca",
+    ts_stat_total: "Tổng cộng",
+    ts_stat_slots: "Khung giờ đã nhập",
+    ts_copy_hint: "Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets",
+    tax_tab_emp: "5. Nhân viên",
+    tax_create_sheet: "🪄 Tự động tạo Google Sheet cho nhân sự này",
+    tax_create_sheet_success: "Đã tạo bảng tính Google Sheet thành công!",
+    tax_col_perm: "Phân quyền",
+    tax_perm_level1: "Cấp 1 - Toàn quyền (Admin)",
+    tax_perm_level2: "Cấp 2 - Chỉ nhập thời gian",
   },
 
   en: {
@@ -2067,6 +2283,56 @@ const I18N = {
     tax_custom_pj_name: "-- Custom project content xxxxx --",
     tax_prefix_badge: "Standard Taxonomy Prefix",
     tax_prefix_none: "[NO CODE ASSIGNED]",
+    nav_timesheet: "Timesheet",
+    page_timesheet_t: "Timesheet Management",
+    page_timesheet_s: "Detailed 30-minute block work time tracking & control",
+    ts_date: "Work Date",
+    ts_today: "Today",
+    ts_yesterday: "Yesterday",
+    ts_prev_day: "◀ Prev Day",
+    ts_next_day: "Next Day ▶",
+    ts_staff_code: "Employee",
+    ts_staff_rank: "Rank / Title",
+    ts_sheet_link: "Personal Google Sheet",
+    ts_sheet_open: "Open Google Sheet ↗",
+    ts_sheet_none: "No Sheet Configured",
+    ts_col_time: "Time Slot",
+    ts_col_project: "Project Code",
+    ts_col_category: "Category",
+    ts_col_phase: "Phase",
+    ts_col_discipline: "Discipline",
+    ts_col_note: "Task Notes",
+    ts_col_actions: "Actions",
+    ts_lunch_break: "☕ LUNCH BREAK (12:00 - 13:00) — Excluded from work hours",
+    ts_morning_ot: "🌅 MORNING OVERTIME (06:00 - 08:00)",
+    ts_evening_ot: "🌙 EVENING OVERTIME (17:00 - 22:00)",
+    ts_toggle_ot: "Toggle Overtime",
+    ts_btn_save: "💾 Save Timesheet",
+    ts_btn_saving: "⏳ Saving...",
+    ts_btn_reload: "🔄 Refresh",
+    ts_btn_edit_mode: "✏️ Enable Edit Mode",
+    ts_btn_overwrite: "🔄 Update & Overwrite",
+    ts_btn_cancel_edit: "❌ Cancel Edit",
+    ts_existing_data_warning: "⚠️ Data already exists for this date. Save is locked to protect data. Click 'Enable Edit Mode' to overwrite.",
+    ts_edit_mode_active: "🔔 Edit Mode is ON. Clicking 'Update & Overwrite' will completely replace this date's records on Google Sheet.",
+    ts_copy_down: "Copy to row below",
+    ts_copy_yesterday: "📋 Copy from Yesterday",
+    ts_fill_morning: "☀️ Fill Entire Morning",
+    ts_fill_afternoon: "🌤️ Fill Entire Afternoon",
+    ts_clear_all: "🧹 Clear All",
+    ts_confirm_overwrite_title: "Confirm Overwrite Data",
+    ts_confirm_overwrite_msg: "Date {date} already has {count} records in your Google Sheet. Are you sure you want to overwrite all records for this date?",
+    ts_stat_official: "Regular Hours",
+    ts_stat_ot: "Overtime Hours",
+    ts_stat_total: "Total Hours",
+    ts_stat_slots: "Slots Logged",
+    ts_copy_hint: "Tip: Use Ctrl+C / Ctrl+V to copy rows or paste multiple lines from Excel/Google Sheets",
+    tax_tab_emp: "5. Employees",
+    tax_create_sheet: "🪄 Auto-generate Google Sheet for this staff",
+    tax_create_sheet_success: "Google Sheet created successfully!",
+    tax_col_perm: "Access Level",
+    tax_perm_level1: "Level 1 - Full Access (Admin)",
+    tax_perm_level2: "Level 2 - Timesheet Only",
   },
 
   ja: {
@@ -2318,6 +2584,56 @@ const I18N = {
     tax_custom_pj_name: "-- 自由入力（コード外）xxxxx --",
     tax_prefix_badge: "標準分類プレフィックス",
     tax_prefix_none: "[コード未設定]",
+    nav_timesheet: "工数・勤務管理",
+    page_timesheet_t: "工数・勤務時間管理",
+    page_timesheet_s: "30分単位での詳細な業務実績・工数入力",
+    ts_date: "勤務日",
+    ts_today: "今日",
+    ts_yesterday: "昨日",
+    ts_prev_day: "◀ 前日",
+    ts_next_day: "翌日 ▶",
+    ts_staff_code: "社員番号・氏名",
+    ts_staff_rank: "等級・役職",
+    ts_sheet_link: "個人用Googleスプレッドシート",
+    ts_sheet_open: "シートを開く ↗",
+    ts_sheet_none: "シート未設定",
+    ts_col_time: "時間帯",
+    ts_col_project: "案件コード",
+    ts_col_category: "大分類コード",
+    ts_col_phase: "フェーズ",
+    ts_col_discipline: "作業詳細コード",
+    ts_col_note: "作業メモ・備考",
+    ts_col_actions: "操作",
+    ts_lunch_break: "☕ 昼休憩 (12:00 - 13:00) — 勤務時間外",
+    ts_morning_ot: "🌅 早朝残業 (06:00 - 08:00)",
+    ts_evening_ot: "🌙 夜間残業 (17:00 - 22:00)",
+    ts_toggle_ot: "残業枠を表示/非表示",
+    ts_btn_save: "💾 工数を保存",
+    ts_btn_saving: "⏳ 保存中...",
+    ts_btn_reload: "🔄 再読込",
+    ts_btn_edit_mode: "✏️ 編集モードを有効化",
+    ts_btn_overwrite: "🔄 更新・上書き保存 (Overwrite)",
+    ts_btn_cancel_edit: "❌ 編集キャンセル",
+    ts_existing_data_warning: "⚠️ この日のデータは保存済みです。誤操作防止のため保存ボタンはロックされています。上書きする場合は「編集モードを有効化」してください。",
+    ts_edit_mode_active: "🔔 編集モード有効中。「更新・上書き保存」を実行するとGoogleシート上のデータが完全に置換されます。",
+    ts_copy_down: "下の行にコピー",
+    ts_copy_yesterday: "📋 前日データから複写",
+    ts_fill_morning: "☀️ 午前の全枠に適用",
+    ts_fill_afternoon: "🌤️ 午後の全枠に適用",
+    ts_clear_all: "🧹 全てクリア",
+    ts_confirm_overwrite_title: "データ上書きの確認",
+    ts_confirm_overwrite_msg: "{date} にはすでに {count} 件の記録があります。この日のデータを完全に上書きしてよろしいですか？",
+    ts_stat_official: "定時勤務",
+    ts_stat_ot: "残業時間",
+    ts_stat_total: "合計時間",
+    ts_stat_slots: "入力済み枠数",
+    ts_copy_hint: "ヒント: Ctrl+C / Ctrl+V で行コピーまたはExcel/Googleスプレッドシートから複数行貼り付け可能",
+    tax_tab_emp: "5. 社員・スタッフ",
+    tax_create_sheet: "🪄 この社員用スプレッドシートを自動作成",
+    tax_create_sheet_success: "Googleスプレッドシートを正常に作成しました！",
+    tax_col_perm: "権限区分",
+    tax_perm_level1: "第1階層 - フル権限 (管理者)",
+    tax_perm_level2: "第2階層 - 工数入力のみ",
   }
 };
 
@@ -2344,7 +2660,8 @@ const ROLE_I18N = {
   "Admin": { vi: "Quản trị viên", en: "Admin", ja: "管理者" },
   "Manager": { vi: "Quản lý", en: "Manager", ja: "責任者" },
   "Member": { vi: "Thành viên", en: "Member", ja: "担当者" },
-  "Viewer": { vi: "Người xem", en: "Viewer", ja: "閲覧者" }
+  "Viewer": { vi: "Người xem", en: "Viewer", ja: "閲覧者" },
+  "Level2": { vi: "Nhân viên (Cấp 2)", en: "Staff (Level 2)", ja: "一般社員 (第2階層)" }
 };
 
 function t(key, params) {
@@ -2458,6 +2775,8 @@ function setLanguage(lang, saveAsDefault) {
     loadPgUsr();
   } else if (curPage === 'log') {
     loadPgLog();
+  } else if (curPage === 'timesheet') {
+    if (typeof renderTimesheetGrid === 'function') renderTimesheetGrid();
   }
   popPjFilter();
 }
@@ -2817,6 +3136,11 @@ function loadApp() {
       }
       popTaskTaxonomySelects();
 
+      if (res.user && (res.user.permissionLevel === 2 || res.user.role === 'Level2')) {
+        goPage('timesheet', document.getElementById('ni-timesheet'));
+        return;
+      }
+
       const curPageId = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
       if (curPageId === "tasks") loadPgTk();
       else if (curPageId === "projects") renderPgPj(S.projects);
@@ -2825,6 +3149,7 @@ function loadApp() {
       else if (curPageId === "taxonomy") loadPgTaxonomy();
       else if (curPageId === "users") loadPgUsr();
       else if (curPageId === "log") loadPgLog();
+      else if (curPageId === "timesheet") loadPgTimesheet();
     })
     .withFailureHandler(e => toast(e.message||"Lỗi tải ứng dụng","error"))
     .getInitData();
@@ -2855,6 +3180,7 @@ const PTITLES = {
   analytics:["Biểu đồ chuyên sâu","Phân tích hiệu suất & mức độ đóng góp"],
   projects :["Dự Án","Quản lý tất cả dự án"],
   tasks    :["Nhiệm Vụ","Quản lý tất cả nhiệm vụ"],
+  timesheet:["Quản Lý Thời Gian","Ghi nhận và kiểm soát thời gian làm việc chi tiết 30 phút"],
   taxonomy :["Danh Mục Tiêu Chuẩn","Quy định mã hóa & phân loại công việc chuẩn"],
   users    :["Người Dùng","Phân quyền & quản lý"],
   log      :["Nhật Ký","Lịch sử hoạt động"],
@@ -2862,7 +3188,8 @@ const PTITLES = {
 function goPage(p, el) {
   document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
   document.querySelectorAll(".sni").forEach(x=>x.classList.remove("active"));
-  document.getElementById("page-"+p).classList.add("active");
+  const targetPage = document.getElementById("page-"+p);
+  if (targetPage) targetPage.classList.add("active");
   if (el) el.classList.add("active");
   const[tDef,sDef]=PTITLES[p]||[p,""];
   document.getElementById("pgt").textContent = t('page_' + p + '_t') || tDef;
@@ -2874,6 +3201,7 @@ function goPage(p, el) {
   else if (p==="gantt") loadGantt();
   else if (p==="analytics") loadAnalytics();
   else if (p==="taxonomy") loadPgTaxonomy();
+  else if (p==="timesheet") loadPgTimesheet();
 }
 
 // ═══════════════════════════════════════
@@ -2883,6 +3211,30 @@ function updateSbUser(u) {
   document.getElementById("sb-av").textContent=(u.name||u.email).slice(0,2).toUpperCase();
   document.getElementById("sb-nm").textContent=u.name||u.email;
   document.getElementById("sb-rl").textContent=tRole(u.role);
+
+  const isLevel2 = (u.permissionLevel === 2 || u.role === "Level2");
+  if (isLevel2) {
+    // Level 2: Only allow Timesheet, hide everything else
+    document.querySelectorAll(".sni").forEach(el => {
+      if (el.id === "ni-timesheet") {
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    });
+    const pjFilter = document.querySelector(".pj-filter");
+    if (pjFilter) pjFilter.style.display = "none";
+    const tbSrch = document.querySelector(".tb-srch");
+    if (tbSrch) tbSrch.style.display = "none";
+    const btnMk = document.querySelector(".btn-mk");
+    if (btnMk) btnMk.style.display = "none";
+    return;
+  }
+
+  // Level 1 / Standard Roles
+  const niTimesheet = document.getElementById("ni-timesheet");
+  if (niTimesheet) niTimesheet.style.display = "flex";
+
   if (u.role==="Admin") {
     document.getElementById("ni-usr").style.display="flex";
     document.getElementById("ni-log").style.display="flex";
@@ -6113,12 +6465,12 @@ function loadPgTaxonomy(force) {
 
 function switchTaxSubTab(subTab) {
   _activeTaxSubTab = subTab;
-  ['cat', 'phase', 'disc', 'pjcode'].forEach(id => {
+  ['cat', 'phase', 'disc', 'pjcode', 'emp'].forEach(id => {
     const el = document.getElementById('tax-subtab-' + id);
     if (el) el.classList.remove('active');
   });
   
-  const map = { CATEGORY: 'cat', PHASE: 'phase', DISCIPLINE: 'disc', PROJECT_CODE: 'pjcode' };
+  const map = { CATEGORY: 'cat', PHASE: 'phase', DISCIPLINE: 'disc', PROJECT_CODE: 'pjcode', EMPLOYEE: 'emp' };
   const curBtn = document.getElementById('tax-subtab-' + (map[subTab] || 'cat'));
   if (curBtn) curBtn.classList.add('active');
 
@@ -6129,11 +6481,12 @@ function switchTaxSubTab(subTab) {
 }
 
 function getActiveTaxonomyList() {
-  if (!S.taxonomy) S.taxonomy = { categories: [], phases: [], disciplines: [], projectCodes: [] };
+  if (!S.taxonomy) S.taxonomy = { categories: [], phases: [], disciplines: [], projectCodes: [], employees: [] };
   if (_activeTaxSubTab === 'CATEGORY') return S.taxonomy.categories || [];
   if (_activeTaxSubTab === 'PHASE') return S.taxonomy.phases || [];
   if (_activeTaxSubTab === 'DISCIPLINE') return S.taxonomy.disciplines || [];
   if (_activeTaxSubTab === 'PROJECT_CODE') return S.taxonomy.projectCodes || [];
+  if (_activeTaxSubTab === 'EMPLOYEE') return S.taxonomy.employees || [];
   return [];
 }
 
@@ -6154,7 +6507,8 @@ function renderTaxonomyTable() {
       (item.name || '').toLowerCase().includes(srchText) ||
       (item.desc || '').toLowerCase().includes(srchText) ||
       (item.extra1 || '').toLowerCase().includes(srchText) ||
-      (item.extra2 || '').toLowerCase().includes(srchText)
+      (item.extra2 || '').toLowerCase().includes(srchText) ||
+      (item.extra3 || '').toLowerCase().includes(srchText)
     );
   });
 
@@ -6189,6 +6543,20 @@ function renderTaxonomyTable() {
         <div style="display:flex;align-items:center;gap:6px">
           <span class="badge bg-pu">${item.extra1 || '2026'}</span>
           ${item.extra2 ? `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>` : ''}
+        </div>
+      `;
+    } else if (_activeTaxSubTab === 'EMPLOYEE') {
+      const sheetBtn = item.extra2
+        ? `<a href="${item.extra2}" target="_blank" style="color:var(--p);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:3px">📊 Sheet ↗</a>`
+        : `<span style="color:var(--t3);font-size:11px">${t('ts_sheet_none')}</span>`;
+      const isLevel1 = (item.extra3 === 'Admin' || item.extra3 === 'Cấp 1' || item.extra3 === '1');
+      const permBadge = isLevel1
+        ? `<span class="badge bg-re" style="font-size:10px">${t('tax_perm_level1')}</span>`
+        : `<span class="badge bg-bl" style="font-size:10px">${t('tax_perm_level2')}</span>`;
+      extraDisplay = `
+        <div style="font-size:11px;line-height:1.4">
+          <div>📧 <span style="color:var(--tx);font-weight:600">${item.extra1 || '-'}</span></div>
+          <div style="margin-top:2px;display:flex;align-items:center;gap:6px">${sheetBtn} ${permBadge}</div>
         </div>
       `;
     } else if (item.extra2) {
@@ -6232,6 +6600,7 @@ function openTaxonomyMod(id) {
   const extra1Inp = document.getElementById('mtax-extra1');
   const colorInp = document.getElementById('mtax-color-inp');
   const extra2Inp = document.getElementById('mtax-extra2');
+  const extra3Sel = document.getElementById('mtax-extra3');
   const statusSel = document.getElementById('mtax-status');
 
   idInp.value = id || '';
@@ -6242,7 +6611,8 @@ function openTaxonomyMod(id) {
       ...(S.taxonomy.categories || []),
       ...(S.taxonomy.phases || []),
       ...(S.taxonomy.disciplines || []),
-      ...(S.taxonomy.projectCodes || [])
+      ...(S.taxonomy.projectCodes || []),
+      ...(S.taxonomy.employees || [])
     ];
     const item = all.find(x => x.id === id);
     if (item) {
@@ -6253,6 +6623,10 @@ function openTaxonomyMod(id) {
       extra1Inp.value = item.extra1 || '';
       if (colorInp && item.extra1 && item.extra1.startsWith('#')) colorInp.value = item.extra1;
       extra2Inp.value = item.extra2 || '';
+      if (extra3Sel) {
+        const isL1 = ["admin", "cấp 1", "level1", "1"].includes(String(item.extra3 || "").toLowerCase().trim());
+        extra3Sel.value = isL1 ? "Admin" : "Level2";
+      }
       statusSel.value = item.status || 'Active';
     }
   } else {
@@ -6261,9 +6635,10 @@ function openTaxonomyMod(id) {
     codeInp.value = '';
     nameInp.value = '';
     descInp.value = '';
-    extra1Inp.value = '#4f6ef7';
+    extra1Inp.value = _activeTaxSubTab === 'EMPLOYEE' ? '' : '#4f6ef7';
     if (colorInp) colorInp.value = '#4f6ef7';
     extra2Inp.value = '';
+    if (extra3Sel) extra3Sel.value = 'Level2';
     statusSel.value = 'Active';
   }
 
@@ -6274,24 +6649,78 @@ function openTaxonomyMod(id) {
 
 function onTaxModalTypeChange() {
   const type = document.getElementById('mtax-type')?.value || 'CATEGORY';
+  const codeLbl = document.getElementById('mtax-code-lbl');
+  const codeHint = document.getElementById('mtax-code-hint');
+  const codeInp = document.getElementById('mtax-code');
+  const nameLbl = document.getElementById('mtax-name-lbl');
+  const nameInp = document.getElementById('mtax-name');
+  const descLbl = document.getElementById('mtax-desc-lbl');
+  const descInp = document.getElementById('mtax-desc');
   const extra1Lbl = document.getElementById('mtax-extra1-lbl');
   const colorInp = document.getElementById('mtax-color-inp');
   const extra1Inp = document.getElementById('mtax-extra1');
   const pickerGroup = document.querySelector('.tax-color-picker-group');
+  const extra2Lbl = document.getElementById('mtax-extra2-lbl');
+  const extra2Inp = document.getElementById('mtax-extra2');
+  const sheetBtn = document.getElementById('btn-create-staff-sheet');
+  const extra3Wrap = document.getElementById('mtax-extra3-wrap');
 
-  if (type === 'CATEGORY' || type === 'DISCIPLINE') {
+  if (type === 'EMPLOYEE') {
+    if (codeLbl) codeLbl.innerHTML = `<span>Mã nhân viên (Staff Code)</span> <span class="req">*</span>`;
+    if (codeHint) codeHint.textContent = "VD: NV01, NV02...";
+    if (codeInp) codeInp.placeholder = "VD: NV01";
+    if (nameLbl) nameLbl.innerHTML = `<span>Họ và tên</span> <span class="req">*</span>`;
+    if (nameInp) nameInp.placeholder = "VD: Nguyễn Văn A";
+    if (descLbl) descLbl.textContent = "Cấp bậc / Vị trí chuyên môn";
+    if (descInp) descInp.placeholder = "VD: Kỹ sư kết cấu, Kiến trúc sư...";
+    if (extra1Lbl) extra1Lbl.textContent = "Email Google đăng nhập *";
+    if (extra1Inp) extra1Inp.placeholder = "VD: nv01@v2d.com";
+    if (colorInp) colorInp.style.display = 'none';
+    if (pickerGroup) pickerGroup.style.display = 'none';
+    if (extra2Lbl) extra2Lbl.textContent = "Link Google Sheet cá nhân";
+    if (extra2Inp) extra2Inp.placeholder = "https://docs.google.com/spreadsheets/d/...";
+    if (sheetBtn) sheetBtn.style.display = 'block';
+    if (extra3Wrap) extra3Wrap.style.display = 'block';
+  } else if (type === 'CATEGORY' || type === 'DISCIPLINE') {
+    if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
+    if (codeHint) codeHint.textContent = "2-5 ký tự in hoa";
+    if (codeInp) codeInp.placeholder = "VD: AR, STR, M3...";
+    if (nameLbl) nameLbl.innerHTML = `<span>${t('tax_col_name')}</span> <span class="req">*</span>`;
+    if (nameInp) nameInp.placeholder = "VD: Dựng hình kiến trúc...";
+    if (descLbl) descLbl.textContent = t('tax_col_desc');
+    if (descInp) descInp.placeholder = "Mô tả phạm vi áp dụng, chi tiết nội dung đầu việc...";
     if (extra1Lbl) extra1Lbl.textContent = 'Màu nhận diện (Hex)';
     if (colorInp) colorInp.style.display = 'block';
     if (pickerGroup) pickerGroup.style.display = 'flex';
+    if (extra2Lbl) extra2Lbl.textContent = 'Ghi chú tiếng Nhật (Tùy chọn)';
+    if (extra2Inp) extra2Inp.placeholder = "VD: 建築モデリング...";
+    if (sheetBtn) sheetBtn.style.display = 'none';
+    if (extra3Wrap) extra3Wrap.style.display = 'none';
   } else if (type === 'PROJECT_CODE') {
+    if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
+    if (codeHint) codeHint.textContent = "Mã dự án chuẩn";
+    if (codeInp) codeInp.placeholder = "VD: HAG01, JJK01...";
+    if (nameLbl) nameLbl.innerHTML = `<span>${t('tax_col_name')}</span> <span class="req">*</span>`;
+    if (nameInp) nameInp.placeholder = "VD: Khách sạn Grand Plaza...";
+    if (descLbl) descLbl.textContent = t('tax_col_desc');
     if (extra1Lbl) extra1Lbl.textContent = 'Năm triển khai (VD: 2026)';
     if (colorInp) colorInp.style.display = 'none';
     if (pickerGroup) pickerGroup.style.display = 'none';
+    if (extra2Lbl) extra2Lbl.textContent = 'Ghi chú bổ sung';
+    if (sheetBtn) sheetBtn.style.display = 'none';
+    if (extra3Wrap) extra3Wrap.style.display = 'none';
     if (extra1Inp && !extra1Inp.value.trim()) extra1Inp.value = new Date().getFullYear().toString();
   } else {
+    if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
+    if (codeHint) codeHint.textContent = "2-5 ký tự in hoa";
+    if (nameLbl) nameLbl.innerHTML = `<span>${t('tax_col_name')}</span> <span class="req">*</span>`;
+    if (descLbl) descLbl.textContent = t('tax_col_desc');
     if (extra1Lbl) extra1Lbl.textContent = 'Thông tin bổ sung (Tùy chọn)';
     if (colorInp) colorInp.style.display = 'none';
     if (pickerGroup) pickerGroup.style.display = 'none';
+    if (extra2Lbl) extra2Lbl.textContent = 'Ghi chú tiếng Nhật (Tùy chọn)';
+    if (sheetBtn) sheetBtn.style.display = 'none';
+    if (extra3Wrap) extra3Wrap.style.display = 'none';
   }
   updateTaxPreview();
 }
@@ -6333,12 +6762,13 @@ function submitTaxonomyItem() {
   const desc = (document.getElementById('mtax-desc')?.value || '').trim();
   const extra1 = (document.getElementById('mtax-extra1')?.value || '').trim();
   const extra2 = (document.getElementById('mtax-extra2')?.value || '').trim();
+  const extra3 = (document.getElementById('mtax-extra3')?.value || '').trim();
   const status = document.getElementById('mtax-status')?.value || 'Active';
 
   if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
   if (!name) { toast("Vui lòng nhập tên phân loại", "error"); return; }
 
-  const payload = { id, type, code, name, desc, extra1, extra2, status };
+  const payload = { id, type, code, name, desc, extra1, extra2, extra3, status };
 
   toast("Đang lưu tiêu chuẩn...", "info");
   google.script.run
@@ -6355,6 +6785,47 @@ function submitTaxonomyItem() {
       toast(err.message || "Lỗi kết nối máy chủ", "error");
     })
     .saveTaxonomyItem(payload);
+}
+
+function createStaffSheetClick() {
+  const code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
+  const name = (document.getElementById('mtax-name')?.value || '').trim();
+  const email = (document.getElementById('mtax-extra1')?.value || '').trim();
+
+  if (!code || !name) {
+    toast("Vui lòng nhập Mã nhân viên và Họ tên trước khi tạo bảng tính", "error");
+    return;
+  }
+
+  const btn = document.getElementById('btn-create-staff-sheet');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "⏳ Đang tạo bảng tính...";
+  }
+
+  toast("Đang khởi tạo Google Sheet mới cho nhân sự...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = t('tax_create_sheet');
+      }
+      if (res && res.success && res.sheetUrl) {
+        const extra2Inp = document.getElementById('mtax-extra2');
+        if (extra2Inp) extra2Inp.value = res.sheetUrl;
+        toast(t('tax_create_sheet_success'), "success");
+      } else {
+        toast((res && res.error) || "Lỗi khi tạo Google Sheet", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = t('tax_create_sheet');
+      }
+      toast(err.message || "Lỗi hệ thống", "error");
+    })
+    .createNewStaffSpreadsheet(code, name, email);
 }
 
 function deleteTaxonomyItemClick(id, code) {
@@ -6647,6 +7118,790 @@ function applyBatchTaskMigration() {
       if (submitBtn) submitBtn.disabled = false;
     })
     .batchUpdateLegacyTasks(updates);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TIMESHEET (QUẢN LÝ THỜI GIAN) CONTROLLER
+// ═══════════════════════════════════════════════════════════
+
+const TS_SLOT_DEFINITIONS = [
+  // Morning OT (06:00 - 08:00)
+  { start: "06:00", end: "06:30", type: "ot_morning", isOT: true },
+  { start: "06:30", end: "07:00", type: "ot_morning", isOT: true },
+  { start: "07:00", end: "07:30", type: "ot_morning", isOT: true },
+  { start: "07:30", end: "08:00", type: "ot_morning", isOT: true },
+
+  // Official Morning (08:00 - 12:00)
+  { start: "08:00", end: "08:30", type: "official_morning", isOT: false },
+  { start: "08:30", end: "09:00", type: "official_morning", isOT: false },
+  { start: "09:00", end: "09:30", type: "official_morning", isOT: false },
+  { start: "09:30", end: "10:00", type: "official_morning", isOT: false },
+  { start: "10:00", end: "10:30", type: "official_morning", isOT: false },
+  { start: "10:30", end: "11:00", type: "official_morning", isOT: false },
+  { start: "11:00", end: "11:30", type: "official_morning", isOT: false },
+  { start: "11:30", end: "12:00", type: "official_morning", isOT: false },
+
+  // Lunch Break (12:00 - 13:00) - 2 locked slots
+  { start: "12:00", end: "12:30", type: "lunch", isLunch: true },
+  { start: "12:30", end: "13:00", type: "lunch", isLunch: true },
+
+  // Official Afternoon (13:00 - 17:00)
+  { start: "13:00", end: "13:30", type: "official_afternoon", isOT: false },
+  { start: "13:30", end: "14:00", type: "official_afternoon", isOT: false },
+  { start: "14:00", end: "14:30", type: "official_afternoon", isOT: false },
+  { start: "14:30", end: "15:00", type: "official_afternoon", isOT: false },
+  { start: "15:00", end: "15:30", type: "official_afternoon", isOT: false },
+  { start: "15:30", end: "16:00", type: "official_afternoon", isOT: false },
+  { start: "16:00", end: "16:30", type: "official_afternoon", isOT: false },
+  { start: "16:30", end: "17:00", type: "official_afternoon", isOT: false },
+
+  // Evening OT (17:00 - 22:00)
+  { start: "17:00", end: "17:30", type: "ot_evening", isOT: true },
+  { start: "17:30", end: "18:00", type: "ot_evening", isOT: true },
+  { start: "18:00", end: "18:30", type: "ot_evening", isOT: true },
+  { start: "18:30", end: "19:00", type: "ot_evening", isOT: true },
+  { start: "19:00", end: "19:30", type: "ot_evening", isOT: true },
+  { start: "19:30", end: "20:00", type: "ot_evening", isOT: true },
+  { start: "20:00", end: "20:30", type: "ot_evening", isOT: true },
+  { start: "20:30", end: "21:00", type: "ot_evening", isOT: true },
+  { start: "21:00", end: "21:30", type: "ot_evening", isOT: true },
+  { start: "21:30", end: "22:00", type: "ot_evening", isOT: true }
+];
+
+let _tsCurrentStaff = null;
+let _tsStaffList = [];
+let _tsSelectedDate = "";
+let _tsHasExistingData = false;
+let _tsExistingCount = 0;
+let _tsEditModeActive = false;
+let _tsServerLoadedSlots = [];
+let _tsShowMorningOt = false;
+let _tsShowEveningOt = false;
+let _tsCopiedRow = null;
+
+function _formatDateYMD(d) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function loadPgTimesheet() {
+  if (!_tsSelectedDate) {
+    _tsSelectedDate = _formatDateYMD(new Date());
+  }
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+
+  // Fetch staff list if not loaded yet
+  if (!_tsStaffList || !_tsStaffList.length) {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success) {
+          _tsStaffList = res.staffList || [];
+          _initTimesheetStaffDropdown(res.currentStaffCode, res.isLevel2);
+          loadTimesheetData();
+        } else {
+          toast((res && res.error) || "Lỗi tải danh sách nhân sự", "error");
+        }
+      })
+      .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+      .getStaffListForTimesheet();
+  } else {
+    loadTimesheetData();
+  }
+}
+
+function _initTimesheetStaffDropdown(defaultStaffCode, isLevel2) {
+  const sel = document.getElementById('ts-staff-sel');
+  if (!sel) return;
+
+  sel.innerHTML = _tsStaffList.map(st => `
+    <option value="${st.code}">${st.code} - ${st.name}</option>
+  `).join('');
+
+  if (defaultStaffCode) {
+    sel.value = defaultStaffCode;
+  }
+  if (isLevel2) {
+    sel.disabled = true;
+    sel.title = "Quyền Cấp 2: Chỉ được xem và nhập thời gian cho chính mình";
+  } else {
+    sel.disabled = false;
+  }
+
+  _updateStaffInfoDisplay(sel.value);
+}
+
+function _updateStaffInfoDisplay(staffCode) {
+  const st = _tsStaffList.find(x => x.code === staffCode) || {};
+  _tsCurrentStaff = st;
+
+  const rankBadge = document.getElementById('ts-staff-rank-badge');
+  if (rankBadge) {
+    rankBadge.textContent = st.rank || 'Nhân viên';
+  }
+
+  const linkBtn = document.getElementById('ts-sheet-link-btn');
+  const linkWrap = document.getElementById('ts-sheet-link-wrap');
+  if (linkBtn && linkWrap) {
+    if (st.sheetUrl) {
+      linkBtn.href = st.sheetUrl;
+      linkBtn.style.display = 'inline-flex';
+    } else {
+      linkBtn.href = '#';
+      linkBtn.style.display = 'none';
+    }
+  }
+}
+
+function onTimesheetStaffChange(staffCode) {
+  _updateStaffInfoDisplay(staffCode);
+  loadTimesheetData();
+}
+
+function onTimesheetDateChange(val) {
+  if (!val) return;
+  _tsSelectedDate = val;
+  loadTimesheetData();
+}
+
+function stepTimesheetDate(delta) {
+  const cur = _tsSelectedDate ? new Date(_tsSelectedDate) : new Date();
+  cur.setDate(cur.getDate() + delta);
+  _tsSelectedDate = _formatDateYMD(cur);
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+  loadTimesheetData();
+}
+
+function setTimesheetQuickDate(type) {
+  const d = new Date();
+  if (type === 'yesterday') {
+    d.setDate(d.getDate() - 1);
+  }
+  _tsSelectedDate = _formatDateYMD(d);
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+  loadTimesheetData();
+}
+
+function toggleMorningOt() {
+  _tsShowMorningOt = !_tsShowMorningOt;
+  const badge = document.getElementById('ts-m-ot-badge');
+  if (badge) badge.textContent = _tsShowMorningOt ? '(Hiện)' : '(Ẩn)';
+  renderTimesheetGrid();
+}
+
+function toggleEveningOt() {
+  _tsShowEveningOt = !_tsShowEveningOt;
+  const badge = document.getElementById('ts-e-ot-badge');
+  if (badge) badge.textContent = _tsShowEveningOt ? '(Hiện)' : '(Ẩn)';
+  renderTimesheetGrid();
+}
+
+function loadTimesheetData(forceRefresh) {
+  const staffSel = document.getElementById('ts-staff-sel');
+  const staffCode = staffSel ? staffSel.value : '';
+  if (!staffCode || !_tsSelectedDate) return;
+
+  const tbody = document.getElementById('ts-tbody');
+  if (tbody) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="ldg"><div class="spn"></div></div></td></tr>`;
+  }
+  const syncStatus = document.getElementById('ts-sync-status');
+  if (syncStatus) syncStatus.textContent = "⏳ Đang tải dữ liệu...";
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (syncStatus) syncStatus.textContent = "✅ Đã đồng bộ";
+      if (res && res.success) {
+        _tsHasExistingData = !!res.hasData;
+        _tsExistingCount = res.count || 0;
+        _tsServerLoadedSlots = res.records || [];
+        _tsEditModeActive = false;
+
+        // Auto-show OT if existing records contain OT slots
+        const hasMorningOt = _tsServerLoadedSlots.some(r => r.isOT && (r.startTime < "08:00"));
+        const hasEveningOt = _tsServerLoadedSlots.some(r => r.isOT && (r.startTime >= "17:00"));
+        if (hasMorningOt) _tsShowMorningOt = true;
+        if (hasEveningOt) _tsShowEveningOt = true;
+
+        const mBadge = document.getElementById('ts-m-ot-badge');
+        if (mBadge) mBadge.textContent = _tsShowMorningOt ? '(Hiện)' : '(Ẩn)';
+        const eBadge = document.getElementById('ts-e-ot-badge');
+        if (eBadge) eBadge.textContent = _tsShowEveningOt ? '(Hiện)' : '(Ẩn)';
+
+        _updateTimesheetToolbarState();
+        renderTimesheetGrid(_tsServerLoadedSlots);
+      } else {
+        toast((res && res.error) || "Lỗi tải bảng chấm công", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (syncStatus) syncStatus.textContent = "❌ Lỗi tải";
+      toast(err.message || "Lỗi máy chủ", "error");
+    })
+    .getTimesheetData(staffCode, _tsSelectedDate);
+}
+
+function _updateTimesheetToolbarState() {
+  const existingBanner = document.getElementById('ts-existing-banner');
+  const editBanner = document.getElementById('ts-edit-banner');
+  const btnSave = document.getElementById('ts-btn-save');
+  const btnEditMode = document.getElementById('ts-btn-edit-mode');
+  const btnCancelEdit = document.getElementById('ts-btn-cancel-edit');
+  const btnOverwrite = document.getElementById('ts-btn-overwrite');
+
+  if (_tsHasExistingData) {
+    if (_tsEditModeActive) {
+      if (existingBanner) existingBanner.style.display = 'none';
+      if (editBanner) editBanner.style.display = 'flex';
+      if (btnSave) btnSave.style.display = 'none';
+      if (btnEditMode) btnEditMode.style.display = 'none';
+      if (btnCancelEdit) btnCancelEdit.style.display = 'inline-flex';
+      if (btnOverwrite) btnOverwrite.style.display = 'inline-flex';
+    } else {
+      if (existingBanner) existingBanner.style.display = 'flex';
+      if (editBanner) editBanner.style.display = 'none';
+      if (btnSave) {
+        btnSave.style.display = 'inline-flex';
+        btnSave.disabled = true;
+        btnSave.style.opacity = '0.5';
+        btnSave.style.cursor = 'not-allowed';
+        btnSave.title = t('ts_existing_data_warning');
+      }
+      if (btnEditMode) btnEditMode.style.display = 'inline-flex';
+      if (btnCancelEdit) btnCancelEdit.style.display = 'none';
+      if (btnOverwrite) btnOverwrite.style.display = 'none';
+    }
+  } else {
+    if (existingBanner) existingBanner.style.display = 'none';
+    if (editBanner) editBanner.style.display = 'none';
+    if (btnSave) {
+      btnSave.style.display = 'inline-flex';
+      btnSave.disabled = false;
+      btnSave.style.opacity = '1';
+      btnSave.style.cursor = 'pointer';
+      btnSave.title = "";
+    }
+    if (btnEditMode) btnEditMode.style.display = 'none';
+    if (btnCancelEdit) btnCancelEdit.style.display = 'none';
+    if (btnOverwrite) btnOverwrite.style.display = 'none';
+  }
+}
+
+function enableTimesheetEditMode() {
+  _tsEditModeActive = true;
+  _updateTimesheetToolbarState();
+  renderTimesheetGrid();
+  toast(t('ts_edit_mode_active'), 'info');
+}
+
+function cancelTimesheetEditMode() {
+  _tsEditModeActive = false;
+  _updateTimesheetToolbarState();
+  renderTimesheetGrid(_tsServerLoadedSlots);
+}
+
+function renderTimesheetGrid(prefillData) {
+  const tbody = document.getElementById('ts-tbody');
+  if (!tbody) return;
+
+  const currentValues = {};
+  if (!prefillData) {
+    // Preserve current input values from DOM before re-rendering
+    TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+      const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+      const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+      const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+      const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+      const note = document.getElementById(`ts-note-${idx}`)?.value || '';
+      if (pj || cat || ph || disc || note) {
+        currentValues[`${slot.start}-${slot.end}`] = { pj, cat, ph, disc, note };
+      }
+    });
+  } else {
+    prefillData.forEach(r => {
+      currentValues[`${r.startTime}-${r.endTime}`] = {
+        pj: r.projectCode || '',
+        cat: r.categoryCode || '',
+        ph: r.phaseCode || '',
+        disc: r.disciplineCode || '',
+        note: r.note || ''
+      };
+    });
+  }
+
+  // Build taxonomy dropdown options (concise code only)
+  const pjOptions = `<option value="">-</option>` + (S.taxonomy?.projectCodes || []).map(p =>
+    `<option value="${p.code}">${p.code}</option>`
+  ).join('');
+
+  const catOptions = `<option value="">-</option>` + (S.taxonomy?.categories || []).map(c =>
+    `<option value="${c.code}">${c.code}</option>`
+  ).join('');
+
+  const phOptions = `<option value="">-</option>` + (S.taxonomy?.phases || []).map(ph =>
+    `<option value="${ph.code}">${ph.code}</option>`
+  ).join('');
+
+  const discOptions = `<option value="">-</option>` + (S.taxonomy?.disciplines || []).map(d =>
+    `<option value="${d.code}">${d.code}</option>`
+  ).join('');
+
+  const isReadOnly = _tsHasExistingData && !_tsEditModeActive;
+  const roClass = isReadOnly ? ' readonly' : '';
+  const roAttr = isReadOnly ? ' disabled' : '';
+
+  let html = '';
+  let rowSeq = 1;
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    // Overtime visibility toggles
+    if (slot.type === 'ot_morning' && !_tsShowMorningOt) return;
+    if (slot.type === 'ot_evening' && !_tsShowEveningOt) return;
+
+    // OT section divider banners
+    if (slot.type === 'ot_morning' && slot.start === '06:00') {
+      html += `<tr class="ts-ot-header-row"><td colspan="8" style="padding:6px 12px">🌅 ${t('ts_morning_ot')}</td></tr>`;
+    }
+    if (slot.type === 'ot_evening' && slot.start === '17:00') {
+      html += `<tr class="ts-ot-header-row"><td colspan="8" style="padding:6px 12px">🌙 ${t('ts_evening_ot')}</td></tr>`;
+    }
+
+    if (slot.isLunch) {
+      html += `
+        <tr class="ts-lunch-row">
+          <td style="text-align:center;font-size:11px;opacity:0.7">${rowSeq++}</td>
+          <td><span class="ts-time-badge" style="background:#fef08a;color:#854d0e">${slot.start} - ${slot.end}</span></td>
+          <td colspan="5" style="padding:6px 14px">☕ ${t('ts_lunch_break')}</td>
+          <td style="text-align:center"><span style="font-size:11px;opacity:0.7">🔒</span></td>
+        </tr>
+      `;
+      return;
+    }
+
+    const val = currentValues[`${slot.start}-${slot.end}`] || {};
+    const badgeClass = slot.isOT ? 'ts-time-badge ot' : 'ts-time-badge';
+
+    html += `
+      <tr id="ts-row-${idx}" data-slot-idx="${idx}">
+        <td style="text-align:center;font-size:11px;color:var(--t3)">${rowSeq++}</td>
+        <td>
+          <span class="${badgeClass}">${slot.start} - ${slot.end}</span>
+          ${slot.isOT ? '<span style="font-size:9px;color:#ea580c;font-weight:700;margin-left:2px">OT</span>' : ''}
+        </td>
+        <td>
+          <select id="ts-pj-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${pjOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-cat-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${catOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-ph-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${phOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-disc-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${discOptions}
+          </select>
+        </td>
+        <td>
+          <input type="text" id="ts-note-${idx}" class="ts-input${roClass}"${roAttr} placeholder="Ghi chú công việc..." value="${(val.note || '').replace(/"/g, '&quot;')}" oninput="onTimesheetInputChange(${idx})">
+        </td>
+        <td style="text-align:center">
+          <div style="display:flex;align-items:center;justify-content:center;gap:4px">
+            <button type="button" class="btn bs" style="padding:2px 6px;font-size:11px" title="${t('ts_copy_down')}" onclick="copyRowDown(${idx})"${roAttr}>⬇️</button>
+            <button type="button" class="btn bs" style="padding:2px 6px;font-size:11px;color:var(--d);border-color:#fee2e2" title="Xóa dòng" onclick="clearSlotRow(${idx})"${roAttr}>✕</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+
+  // Restore selected dropdown values
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const val = currentValues[`${slot.start}-${slot.end}`];
+    if (val) {
+      const pjEl = document.getElementById(`ts-pj-${idx}`);
+      const catEl = document.getElementById(`ts-cat-${idx}`);
+      const phEl = document.getElementById(`ts-ph-${idx}`);
+      const discEl = document.getElementById(`ts-disc-${idx}`);
+      if (pjEl && val.pj) pjEl.value = val.pj;
+      if (catEl && val.cat) catEl.value = val.cat;
+      if (phEl && val.ph) phEl.value = val.ph;
+      if (discEl && val.disc) discEl.value = val.disc;
+    }
+  });
+
+  updateTimesheetStats();
+  _attachTimesheetClipboardListeners();
+}
+
+function onTimesheetInputChange(idx) {
+  updateTimesheetStats();
+}
+
+function updateTimesheetStats() {
+  let officialHours = 0;
+  let otHours = 0;
+  let filledSlots = 0;
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+    const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+    const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+    const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+    const note = document.getElementById(`ts-note-${idx}`)?.value || '';
+
+    if (pj || cat || ph || disc || note.trim()) {
+      filledSlots++;
+      if (slot.isOT) {
+        otHours += 0.5;
+      } else {
+        officialHours += 0.5;
+      }
+    }
+  });
+
+  const regEl = document.getElementById('ts-stat-reg');
+  const otEl = document.getElementById('ts-stat-ot');
+  const totalEl = document.getElementById('ts-stat-total');
+  const slotsEl = document.getElementById('ts-stat-slots');
+
+  if (regEl) regEl.textContent = `${officialHours.toFixed(1)}h / 8.0h`;
+  if (otEl) otEl.textContent = `${otHours.toFixed(1)}h`;
+  if (totalEl) totalEl.textContent = `${(officialHours + otHours).toFixed(1)}h`;
+  if (slotsEl) slotsEl.textContent = `${filledSlots}`;
+}
+
+function copyRowDown(idx) {
+  const source = _getSlotData(idx);
+  if (!source) return;
+
+  // Find next valid row (skipping lunch break)
+  let targetIdx = idx + 1;
+  while (targetIdx < TS_SLOT_DEFINITIONS.length && TS_SLOT_DEFINITIONS[targetIdx].isLunch) {
+    targetIdx++;
+  }
+
+  if (targetIdx < TS_SLOT_DEFINITIONS.length) {
+    _setSlotData(targetIdx, source);
+    _highlightRow(targetIdx);
+    updateTimesheetStats();
+  }
+}
+
+function clearSlotRow(idx) {
+  _setSlotData(idx, { pj: '', cat: '', ph: '', disc: '', note: '' });
+  updateTimesheetStats();
+}
+
+function clearTimesheetInputs() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  if (!confirm(t('ts_clear_all') + "?")) return;
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (!slot.isLunch) {
+      _setSlotData(idx, { pj: '', cat: '', ph: '', disc: '', note: '' });
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_clear_all'), 'info');
+}
+
+function _getSlotData(idx) {
+  return {
+    pj: document.getElementById(`ts-pj-${idx}`)?.value || '',
+    cat: document.getElementById(`ts-cat-${idx}`)?.value || '',
+    ph: document.getElementById(`ts-ph-${idx}`)?.value || '',
+    disc: document.getElementById(`ts-disc-${idx}`)?.value || '',
+    note: document.getElementById(`ts-note-${idx}`)?.value || ''
+  };
+}
+
+function _setSlotData(idx, data) {
+  const pj = document.getElementById(`ts-pj-${idx}`);
+  const cat = document.getElementById(`ts-cat-${idx}`);
+  const ph = document.getElementById(`ts-ph-${idx}`);
+  const disc = document.getElementById(`ts-disc-${idx}`);
+  const note = document.getElementById(`ts-note-${idx}`);
+
+  if (pj && data.pj !== undefined) pj.value = data.pj;
+  if (cat && data.cat !== undefined) cat.value = data.cat;
+  if (ph && data.ph !== undefined) ph.value = data.ph;
+  if (disc && data.disc !== undefined) disc.value = data.disc;
+  if (note && data.note !== undefined) note.value = data.note;
+}
+
+function _highlightRow(idx) {
+  const row = document.getElementById(`ts-row-${idx}`);
+  if (row) {
+    row.classList.add('ts-row-highlight');
+    setTimeout(() => row.classList.remove('ts-row-highlight'), 600);
+  }
+}
+
+function bulkFillMorning() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  // Source is 08:00 slot
+  const sourceIdx = TS_SLOT_DEFINITIONS.findIndex(s => s.start === "08:00");
+  if (sourceIdx < 0) return;
+  const sourceData = _getSlotData(sourceIdx);
+  if (!sourceData.pj && !sourceData.cat && !sourceData.disc) {
+    toast("Vui lòng nhập dữ liệu khung giờ 08:00 - 08:30 trước khi điền cả buổi sáng", "error");
+    return;
+  }
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.type === 'official_morning' && idx !== sourceIdx) {
+      _setSlotData(idx, sourceData);
+      _highlightRow(idx);
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_fill_morning'), 'success');
+}
+
+function bulkFillAfternoon() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  // Source is 13:00 slot
+  const sourceIdx = TS_SLOT_DEFINITIONS.findIndex(s => s.start === "13:00");
+  if (sourceIdx < 0) return;
+  const sourceData = _getSlotData(sourceIdx);
+  if (!sourceData.pj && !sourceData.cat && !sourceData.disc) {
+    toast("Vui lòng nhập dữ liệu khung giờ 13:00 - 13:30 trước khi điền cả buổi chiều", "error");
+    return;
+  }
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.type === 'official_afternoon' && idx !== sourceIdx) {
+      _setSlotData(idx, sourceData);
+      _highlightRow(idx);
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_fill_afternoon'), 'success');
+}
+
+function copyFromYesterdayClick() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+
+  const staffCode = document.getElementById('ts-staff-sel')?.value || '';
+  if (!staffCode || !_tsSelectedDate) return;
+
+  toast("Đang nạp dữ liệu ngày hôm trước...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        if (!res.hasData || !res.records || !res.records.length) {
+          toast(`Không tìm thấy dữ liệu ngày hôm trước (${res.prevDate})`, "info");
+          return;
+        }
+
+        renderTimesheetGrid(res.records);
+        toast(`Đã sao chép ${res.records.length} khung giờ từ ngày ${res.prevDate}!`, "success");
+      } else {
+        toast((res && res.error) || "Lỗi sao chép từ hôm qua", "error");
+      }
+    })
+    .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+    .copyTimesheetFromYesterday(staffCode, _tsSelectedDate);
+}
+
+// ── Multi-level Clipboard Copy/Paste Engine (Excel & Hotkeys) ──
+function _attachTimesheetClipboardListeners() {
+  const table = document.getElementById('ts-table');
+  if (!table) return;
+
+  table.onpaste = function(e) {
+    const clipboardData = (e.clipboardData || window.clipboardData);
+    if (!clipboardData) return;
+    const text = clipboardData.getData('text');
+    if (!text) return;
+
+    // Check if pasted content is multi-column or multi-row from Excel/Sheets
+    const isTabbed = text.includes('\t');
+    const isMultiLine = text.includes('\n');
+
+    if (isTabbed || isMultiLine) {
+      e.preventDefault();
+      _handleExcelPaste(e.target, text);
+    }
+  };
+
+  table.onkeydown = function(e) {
+    // Hotkey Ctrl+C: Copy current row
+    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+      const activeRow = e.target.closest('tr[data-slot-idx]');
+      if (activeRow) {
+        const idx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+        _tsCopiedRow = _getSlotData(idx);
+        toast("Đã sao chép dòng vào bộ nhớ tạm", "info");
+      }
+    }
+    // Hotkey Ctrl+V: Paste copied row
+    else if ((e.ctrlKey || e.metaKey) && e.key === 'v' && _tsCopiedRow) {
+      const activeRow = e.target.closest('tr[data-slot-idx]');
+      if (activeRow) {
+        const idx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+        if (!TS_SLOT_DEFINITIONS[idx].isLunch) {
+          _setSlotData(idx, _tsCopiedRow);
+          _highlightRow(idx);
+          updateTimesheetStats();
+        }
+      }
+    }
+  };
+}
+
+function _handleExcelPaste(targetEl, rawText) {
+  const activeRow = targetEl.closest('tr[data-slot-idx]');
+  if (!activeRow) return;
+
+  let currentSlotIdx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+  const rows = rawText.trim().split(/\r?\n/).map(r => r.split('\t'));
+
+  let pastedCount = 0;
+  for (let r = 0; r < rows.length; r++) {
+    // Skip to next non-lunch slot
+    while (currentSlotIdx < TS_SLOT_DEFINITIONS.length && TS_SLOT_DEFINITIONS[currentSlotIdx].isLunch) {
+      currentSlotIdx++;
+    }
+    if (currentSlotIdx >= TS_SLOT_DEFINITIONS.length) break;
+
+    const cols = rows[r];
+    // Expected Excel columns: [Project, Category, Phase, Discipline, Note]
+    const data = {
+      pj: (cols[0] || '').trim().toUpperCase(),
+      cat: (cols[1] || '').trim().toUpperCase(),
+      ph: (cols[2] || '').trim().toUpperCase(),
+      disc: (cols[3] || '').trim().toUpperCase(),
+      note: (cols[4] || '').trim()
+    };
+
+    _setSlotData(currentSlotIdx, data);
+    _highlightRow(currentSlotIdx);
+    pastedCount++;
+    currentSlotIdx++;
+  }
+
+  updateTimesheetStats();
+  toast(`Đã dán ${pastedCount} dòng từ bảng tính (đã tự động bỏ qua giờ nghỉ trưa)!`, 'success');
+}
+
+// ── Save & Safe Overwrite Protocol ──
+function saveTimesheetClick() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  submitTimesheetData(false);
+}
+
+function confirmOverwriteClick() {
+  const msgEl = document.getElementById('m-confirm-overwrite-msg');
+  if (msgEl) {
+    msgEl.textContent = t('ts_confirm_overwrite_msg', { date: _tsSelectedDate, count: _tsExistingCount });
+  }
+  openModal('m-confirm-overwrite');
+}
+
+function submitTimesheetData(isOverwrite) {
+  if (isOverwrite) {
+    closeModal('m-confirm-overwrite');
+  }
+
+  const staffCode = document.getElementById('ts-staff-sel')?.value || '';
+  if (!staffCode || !_tsSelectedDate) {
+    toast("Vui lòng chọn nhân viên và ngày làm việc", "error");
+    return;
+  }
+
+  const entries = [];
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+    const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+    const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+    const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+    const note = (document.getElementById(`ts-note-${idx}`)?.value || '').trim();
+
+    if (pj || cat || ph || disc || note) {
+      entries.push({
+        startTime: slot.start,
+        endTime: slot.end,
+        isOT: !!slot.isOT,
+        projectCode: pj,
+        categoryCode: cat,
+        phaseCode: ph,
+        disciplineCode: disc,
+        note: note
+      });
+    }
+  });
+
+  if (!entries.length) {
+    toast("Vui lòng nhập ít nhất một khung giờ làm việc", "error");
+    return;
+  }
+
+  const payload = {
+    staffCode: staffCode,
+    dateStr: _tsSelectedDate,
+    entries: entries,
+    isOverwrite: !!isOverwrite
+  };
+
+  const btnSave = document.getElementById('ts-btn-save');
+  const btnOverwrite = document.getElementById('ts-btn-overwrite');
+  if (btnSave) btnSave.textContent = t('ts_btn_saving');
+  if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_saving');
+
+  toast("Đang lưu thời gian làm việc vào Google Sheet cá nhân...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (btnSave) btnSave.textContent = t('ts_btn_save');
+      if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_overwrite');
+
+      if (res && res.success) {
+        toast(`Đã lưu thành công ${res.savedCount || entries.length} khung giờ vào Sheet!`, "success");
+        loadTimesheetData(true);
+      } else if (res && res.requireOverwriteConfirm) {
+        // Safe check caught on server
+        _tsHasExistingData = true;
+        _tsExistingCount = res.existingCount || entries.length;
+        _updateTimesheetToolbarState();
+        confirmOverwriteClick();
+      } else {
+        toast((res && res.error) || "Lỗi khi lưu thời gian làm việc", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (btnSave) btnSave.textContent = t('ts_btn_save');
+      if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_overwrite');
+      toast(err.message || "Lỗi máy chủ", "error");
+    })
+    .saveTimesheetData(payload);
 }
 </script>
 </body>

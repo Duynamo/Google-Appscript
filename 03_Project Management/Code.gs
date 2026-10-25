@@ -62,21 +62,178 @@ function generateId() { return Utilities.getUuid().split("-")[0].toUpperCase(); 
 
 function getCurrentUser() {
   let email = Session.getActiveUser().getEmail();
+  const effectiveEmail = Session.getEffectiveUser() ? Session.getEffectiveUser().getEmail() : "";
+  let ownerEmail = "";
+  try {
+    const owner = SpreadsheetApp.getActiveSpreadsheet().getOwner();
+    if (owner) ownerEmail = owner.getEmail();
+  } catch(e) {}
+
   if (!email) {
-    email = Session.getEffectiveUser().getEmail();
+    email = effectiveEmail || ownerEmail;
   }
   if (!email) return null;
+
+  const emailLower = email.toLowerCase().trim();
+  const effectiveLower = effectiveEmail.toLowerCase().trim();
+  const ownerLower = ownerEmail.toLowerCase().trim();
+
+  // 1. Luôn tra cứu vai trò trong USERS sheet
   const users = getSheetData(CONFIG.SHEET_USERS);
-  const user  = users.find(u => u[1] && u[1].toLowerCase() === email.toLowerCase() && u[4] === "Active");
-  if (!user) return { email, role:null, name:email, registered:false };
-  return { id:user[0], email:user[1], name:user[2], role:user[3], status:user[4], registered:true };
+  const userRow = users.find(u => u[1] && u[1].toLowerCase().trim() === emailLower);
+
+  // 2. Tra cứu thông tin trong TAXONOMY (EMPLOYEE)
+  let emp = null;
+  try {
+    const taxData = getTaxonomyDataInternal();
+    const employees = (taxData && taxData.employees) || [];
+    emp = employees.find(e => e.extra1 && e.extra1.toLowerCase().trim() === emailLower);
+  } catch(e) {
+    console.warn("Taxonomy lookup error in getCurrentUser:", e);
+  }
+
+  // NGUYÊN TẮC BẢO VỆ TOÀN QUYỀN ADMIN (ROOT ADMIN & CREATOR GUARANTEE):
+  // 1) Là người sở hữu bảng tính (Owner) HOẶC người chạy script (Effective User)
+  // 2) HOẶC có tên/email chứa "Vũ Đình Duy" / "vudinhduy"
+  // 3) HOẶC có vai trò Admin / Manager trong USERS sheet
+  // 4) HOẶC có cấp bậc Admin / Cấp 1 / Level1 trong Taxonomy
+  const isOwnerOrEffective = (ownerLower && emailLower === ownerLower) || (effectiveLower && emailLower === effectiveLower);
+  const isNamedAdmin = (userRow && userRow[2] && String(userRow[2]).toLowerCase().includes("vũ đình duy")) ||
+                       (emp && emp.name && String(emp.name).toLowerCase().includes("vũ đình duy")) ||
+                       emailLower.includes("vudinhduy");
+  const isMasterAdmin = Boolean(userRow && (String(userRow[3]).toLowerCase() === "admin" || String(userRow[3]).toLowerCase() === "manager"));
+  const isTaxAdmin = Boolean(emp && ["cấp 1", "admin", "level1", "1"].includes(String(emp.extra3 || "").toLowerCase().trim()));
+
+  const isFullAdmin = isOwnerOrEffective || isNamedAdmin || isMasterAdmin || isTaxAdmin;
+
+  if (isFullAdmin) {
+    // Tự động khôi phục quyền Admin trên Google Sheet nếu trước đó bị ghi đè nhầm
+    ensureAdminPersistence(email, userRow, emp);
+
+    const displayName = (emp && emp.name) ? emp.name : ((userRow && userRow[2]) ? userRow[2] : (emailLower.includes("vudinhduy") ? "Vũ Đình Duy" : "Quản trị viên"));
+    const staffCode = (emp && emp.code) ? emp.code : ((userRow && userRow[0]) ? userRow[0] : "NV001");
+    const role = (userRow && String(userRow[3]).toLowerCase() === "manager") ? "Manager" : "Admin";
+
+    return {
+      id: emp ? emp.id : (userRow ? userRow[0] : "ADMIN_ROOT"),
+      staffCode: staffCode,
+      email: email,
+      name: displayName,
+      rank: (emp && emp.desc) ? emp.desc : ((userRow && userRow[6]) ? userRow[6] : "Quản trị viên"),
+      role: role,
+      permissionLevel: 1,
+      sheetUrl: (emp && emp.extra2) ? emp.extra2 : "",
+      status: "Active",
+      registered: true
+    };
+  }
+
+  // Nếu là nhân sự Cấp 2 trong Taxonomy
+  if (emp) {
+    if (emp.status && emp.status.toLowerCase() !== "active" && emp.status !== "Đang hoạt động") {
+      return { email, role: null, name: emp.name || email, registered: false, locked: true };
+    }
+    const isEmpL1 = ["cấp 1", "admin", "level1", "1"].includes(String(emp.extra3 || "").toLowerCase().trim());
+    const permLevel = isEmpL1 ? 1 : 2;
+    return {
+      id: emp.id,
+      staffCode: emp.code,
+      email: emp.extra1,
+      name: emp.name,
+      rank: emp.desc || (isEmpL1 ? "Quản trị viên" : "Nhân viên"),
+      role: isEmpL1 ? "Admin" : "Level2",
+      permissionLevel: permLevel,
+      sheetUrl: emp.extra2 || "",
+      status: emp.status || "Active",
+      registered: true
+    };
+  }
+
+  // Fallback sang USERS sheet nếu không có trong Taxonomy
+  if (userRow) {
+    const rawRole = String(userRow[3] || "Member");
+    const isL1 = (rawRole.toLowerCase() === "admin" || rawRole.toLowerCase() === "manager");
+    const permLevel = isL1 ? 1 : 2;
+    return {
+      id: userRow[0],
+      staffCode: userRow[0],
+      email: userRow[1],
+      name: userRow[2],
+      rank: userRow[6] || (isL1 ? "Quản lý" : "Thành viên"),
+      role: isL1 ? rawRole : "Level2",
+      permissionLevel: permLevel,
+      sheetUrl: "",
+      status: userRow[4] || "Active",
+      registered: true
+    };
+  }
+
+  return { email: email, role: null, name: email, registered: false };
+}
+
+/** Tự động khôi phục và bảo vệ quyền Admin trong Google Sheet */
+function ensureAdminPersistence(email, userRow, emp) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const emailLower = email.toLowerCase().trim();
+    // 1. Khôi phục USERS sheet
+    const shUsers = ss.getSheetByName(CONFIG.SHEET_USERS);
+    if (shUsers) {
+      const rows = shUsers.getDataRange().getValues();
+      let found = false;
+      for (let i = 1; i < rows.length; i++) {
+        if (String(rows[i][1]).toLowerCase().trim() === emailLower) {
+          found = true;
+          let changed = false;
+          if (rows[i][3] !== "Admin" && rows[i][3] !== "Manager") {
+            shUsers.getRange(i + 1, 4).setValue("Admin");
+            changed = true;
+          }
+          if (rows[i][4] !== "Active") {
+            shUsers.getRange(i + 1, 5).setValue("Active");
+            changed = true;
+          }
+          if (changed) {
+            SpreadsheetApp.flush();
+            invalidateCache([CONFIG.SHEET_USERS]);
+          }
+          break;
+        }
+      }
+      if (!found) {
+        shUsers.appendRow([generateId(), email, "Vũ Đình Duy", "Admin", "Active", new Date(), "Tài khoản Quản trị"]);
+        SpreadsheetApp.flush();
+        invalidateCache([CONFIG.SHEET_USERS]);
+      }
+    }
+
+    // 2. Khôi phục TAXONOMY sheet
+    const shTax = ss.getSheetByName(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
+    if (shTax) {
+      const rows = shTax.getDataRange().getValues();
+      for (let i = 1; i < rows.length; i++) {
+        if (String(rows[i][1]).toUpperCase() === "EMPLOYEE" && String(rows[i][5]).toLowerCase().trim() === emailLower) {
+          const curVal = String(rows[i][9] || "").trim();
+          if (!["cấp 1", "admin", "level1", "1"].includes(curVal.toLowerCase())) {
+            shTax.getRange(i + 1, 10).setValue("Admin");
+            SpreadsheetApp.flush();
+            invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
+          }
+          break;
+        }
+      }
+    }
+  } catch(e) {
+    console.warn("ensureAdminPersistence warning:", e);
+  }
 }
 
 function hasPermission(role, action) {
   const perms = {
-    Admin  :["view","create","edit","delete","manage_users","manage_projects","manage_tasks","report"],
-    Manager:["view","create","edit","manage_projects","manage_tasks","report"],
-    Member :["view","edit_own_tasks","report_own"],
+    Admin  :["view","create","edit","delete","manage_users","manage_projects","manage_tasks","report","timesheet_all","timesheet_own"],
+    Manager:["view","create","edit","manage_projects","manage_tasks","report","timesheet_all","timesheet_own"],
+    Member :["view","edit_own_tasks","report_own","timesheet_own"],
+    Level2 :["timesheet_own"], // Phân quyền Cấp 2: Chỉ nhập thời gian trong tab Quản lý thời gian
     Viewer :["view"],
   };
   return perms[role] && perms[role].includes(action);
@@ -167,7 +324,16 @@ function getInitData() {
     success:true,
     systemDefaultLang: sysLang,
     userLang: userLang,
-    user    : { email:user.email, name:user.name, role:user.role },
+    user    : {
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      permissionLevel: user.permissionLevel || 1,
+      staffCode: user.staffCode || "",
+      rank: user.rank || "",
+      sheetUrl: user.sheetUrl || ""
+    },
+    isTimesheetOnly: (user.permissionLevel === 2),
     projects: mappedProjects,
     tasks   : mappedTasks,
     members,

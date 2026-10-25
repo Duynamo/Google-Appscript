@@ -1,6 +1,7 @@
 # KẾ HOẠCH NÂNG CẤP LIÊN KẾT DANH MỤC TIÊU CHUẨN & QUY CHUẨN ĐẶT TÊN DỰ ÁN DẠNG [NĂM]-[STT]-[TÊN]
-> **Dự án:** Quản Lý Dự Án & Tiến Độ Google Apps Script WebApp  
-> **Phiên bản:** v3.7  
+
+> **Dự án:** Quản Lý Dự Án & Tiến Độ Google Apps Script WebApp
+> **Phiên bản:** v3.7
 > **Trạng thái:** Kế hoạch cập nhật theo yêu cầu chuẩn hóa định dạng (Chờ duyệt, chưa sửa code)
 
 ---
@@ -8,12 +9,11 @@
 ## I. MỤC TIÊU VÀ BỐI CẢNH YÊU CẦU
 
 Dựa trên yêu cầu chuẩn xác và thực tế từ bạn:
+
 1. **Quy chuẩn định dạng Tên/Mã dự án:**
-   - Trường thông tin dự án sẽ có định dạng chuẩn cấu trúc:  
-     👉 **`[Năm]-[Số Thứ Tự]-[Tên / Mã]`**  
-     Ví dụ:  
-     - `2026-01-HAG01_花見川終末処理場` (hoặc `2026-01-花見川終末処理場`)  
-     - `2026-02-JJK01_十字会` (hoặc `2026-02-十字会`)  
+   - Trường thông tin dự án sẽ có định dạng chuẩn cấu trúc:👉 **`[Năm]-[Số Thứ Tự]-[Tên / Mã]`**Ví dụ:
+     - `2026-01-HAG01_花見川終末処理場` (hoặc `2026-01-花見川終末処理場`)
+     - `2026-02-JJK01_十字会` (hoặc `2026-02-十字会`)
      - `2026-03-Addin Revit Auto Joint`
 2. **Cơ chế nhập Số Thứ Tự (STT):**
    - **Số thứ tự phải được nhập trực tiếp** bởi người dùng (ví dụ: người dùng gõ `01`, `02`... hoặc gõ `1`, `2` hệ thống tự động chuẩn hóa dạng `01`, `02`).
@@ -56,6 +56,7 @@ Dựa trên yêu cầu chuẩn xác và thực tế từ bạn:
 ```
 
 ### 1. Bố trí các trường nhập liệu trong Modal `#m-pj`:
+
 1. **Năm (`#mpj-year`):**
    - Input số (hoặc dropdown), mặc định hiển thị năm hiện tại (ví dụ: `2026`).
 2. **Số Thứ Tự (`#mpj-order-str`):**
@@ -71,10 +72,8 @@ Dựa trên yêu cầu chuẩn xác và thực tế từ bạn:
      - `[SKM01] 新・小松原浄化センター`
 4. **Tên Dự Án (`#mpj-nm`):**
    - Khi người dùng nhập Năm, STT, hoặc chọn Mã tiêu chuẩn, ô Tên dự án **tự động sinh trong thời gian thực**:
-     `Tên = [Năm]-[STT]-[Mã_Tên tiếng Nhật]`  
-     Ví dụ: `2026-01-HAG01_花見川終末処理場`
-   - Nếu là dự án ngoài danh mục, người dùng gõ nội dung vào thì tên ghép thành:  
-     Ví dụ: `2026-02-Triển khai tool Revit`
+     `Tên = [Năm]-[STT]-[Mã_Tên tiếng Nhật]`Ví dụ: `2026-01-HAG01_花見川終末処理場`
+   - Nếu là dự án ngoài danh mục, người dùng gõ nội dung vào thì tên ghép thành:Ví dụ: `2026-02-Triển khai tool Revit`
    - Người dùng vẫn có thể click vào ô `#mpj-nm` để chỉnh sửa/bổ sung hậu tố (ví dụ: thêm `- Giai đoạn 1`).
 5. **Mô tả (`#mpj-ds`):**
    - Tự động điền chi tiết từ Danh mục tiêu chuẩn.
@@ -84,13 +83,16 @@ Dựa trên yêu cầu chuẩn xác và thực tế từ bạn:
 ## III. THIẾT KẾ PANEL CHỈNH SỬA NHIỆM VỤ CHI TIẾT (`#task-panel`)
 
 ### 1. Bổ sung khối chọn ký tự tiêu chuẩn
+
 Đặt ngay trên trường `Tên nhiệm vụ *` (`#tp-nm`):
+
 - **Category (Nhóm lớn):** `GE`, `DE`, `PC`, `M3`, `RP`, `MTG`...
 - **Phase (Giai đoạn):** `BD` (Cơ sở), `DD` (Chi tiết), `IS` (Nghiệm thu)...
 - **Discipline (Chi tiết công việc):** `AR`, `STR`, `MP`, `ELE`, `PCP`, `PCL`...
 - **Huy hiệu xem trước:** Hiển thị trực quan mã tiền tố chuẩn `[M3-BD-AR]` hoặc `[CHƯA GÁN MÃ]` nếu là task cũ chưa phân loại.
 
 ### 2. Logic đồng bộ 2 chiều:
+
 - Mở task cũ có sẵn `[M3-BD-AR]`: Tự động nhận diện và gán đúng 3 dropdown.
 - Người dùng chọn dropdown: Tự động đổi tiền tố trong ô Tên nhiệm vụ mà **giữ nguyên 100% nội dung tên gốc** phía sau (VD: `Triển khai logic` ➔ `[DE-BD-AR] Triển khai logic`).
 - Tránh hoàn toàn việc thành viên gõ tự do hoặc gõ sai quy tắc tiền tố.

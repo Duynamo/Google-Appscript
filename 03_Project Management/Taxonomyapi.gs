@@ -27,7 +27,11 @@ const DEFAULT_TAXONOMY_LIST = [
 
   // PROJECT CODES (Mã dự án)
   { id:"PJC_HAG01", type:"PROJECT_CODE", code:"HAG01", name:"2026_HAG01", desc:"花見川終末処理場", extra1:"2026", extra2:"花見川終末処理場", status:"Active" },
-  { id:"PJC_JJK01", type:"PROJECT_CODE", code:"JJK01", name:"2026_JJK01", desc:"十字会", extra1:"2026", extra2:"十字会", status:"Active" }
+  { id:"PJC_JJK01", type:"PROJECT_CODE", code:"JJK01", name:"2026_JJK01", desc:"十字会", extra1:"2026", extra2:"十字会", status:"Active" },
+
+  // EMPLOYEES (Nhân sự tiêu chuẩn & Phân quyền)
+  { id:"EMP_NV001", type:"EMPLOYEE", code:"NV001", name:"Vũ Đình Duy (Admin)", desc:"Quản trị viên / Leader", extra1:Session.getActiveUser().getEmail() || Session.getEffectiveUser().getEmail() || "admin@example.com", extra2:"", extra3:"Admin", status:"Active" },
+  { id:"EMP_NV002", type:"EMPLOYEE", code:"NV002", name:"Nguyễn Văn Modeler", desc:"Senior BIM Modeler", extra1:"modeler@example.com", extra2:"", extra3:"Cấp 2", status:"Active" }
 ];
 
 function initTaxonomySheet() {
@@ -35,16 +39,22 @@ function initTaxonomySheet() {
   let sh = ss.getSheetByName(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
   if (!sh) {
     sh = ss.insertSheet(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
-    sh.appendRow(["ID", "Type", "Code", "Name", "Description", "Extra1", "Extra2", "Status", "CreatedAt"]);
-    sh.getRange(1, 1, 1, 9).setFontWeight("bold").setBackground("#6366f1").setFontColor("white");
+    sh.appendRow(["ID", "Type", "Code", "Name", "Description", "Extra1", "Extra2", "Status", "CreatedAt", "Extra3"]);
+    sh.getRange(1, 1, 1, 10).setFontWeight("bold").setBackground("#6366f1").setFontColor("white");
     
     // Nạp dữ liệu mẫu ban đầu
     const now = new Date();
     DEFAULT_TAXONOMY_LIST.forEach(item => {
-      sh.appendRow([item.id, item.type, item.code, item.name, item.desc, item.extra1, item.extra2, item.status, now]);
+      sh.appendRow([item.id, item.type, item.code, item.name, item.desc, item.extra1, item.extra2, item.status, now, item.extra3 || ""]);
     });
     SpreadsheetApp.flush();
     invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
+  } else {
+    // Đảm bảo có đủ 10 cột
+    const lastCol = sh.getLastColumn();
+    if (lastCol < 10) {
+      sh.getRange(1, 10).setValue("Extra3").setFontWeight("bold").setBackground("#6366f1").setFontColor("white");
+    }
   }
 }
 
@@ -55,6 +65,7 @@ function getTaxonomyDataInternal() {
   const phases = [];
   const disciplines = [];
   const projectCodes = [];
+  const employees = [];
 
   rows.forEach(r => {
     if (!r[0]) return;
@@ -66,15 +77,17 @@ function getTaxonomyDataInternal() {
       desc: String(r[4] || "").trim(),
       extra1: String(r[5] || "").trim(),
       extra2: String(r[6] || "").trim(),
-      status: String(r[7] || "Active").trim()
+      status: String(r[7] || "Active").trim(),
+      extra3: String(r[9] || "Cấp 2").trim()
     };
     if (item.type === "CATEGORY") categories.push(item);
     else if (item.type === "PHASE") phases.push(item);
     else if (item.type === "DISCIPLINE") disciplines.push(item);
     else if (item.type === "PROJECT_CODE") projectCodes.push(item);
+    else if (item.type === "EMPLOYEE") employees.push(item);
   });
 
-  return { categories, phases, disciplines, projectCodes };
+  return { categories, phases, disciplines, projectCodes, employees };
 }
 
 function getTaxonomyData() {
@@ -104,6 +117,7 @@ function saveTaxonomyItem(payload) {
     const data = sh.getDataRange().getValues();
     const code = String(payload.code).toUpperCase().trim();
     const type = String(payload.type).toUpperCase().trim();
+    const extra3 = String(payload.extra3 || (type === "EMPLOYEE" ? "Cấp 2" : "")).trim();
 
     // Check duplicate code within the same type if new item
     if (!payload.id) {
@@ -111,6 +125,18 @@ function saveTaxonomyItem(payload) {
         if (String(data[i][1]).toUpperCase() === type && String(data[i][2]).toUpperCase() === code) {
           return { success: false, error: `Mã [${code}] đã tồn tại trong nhóm ${type}` };
         }
+      }
+    }
+
+    // Tự động khởi tạo Google Sheet nếu là EMPLOYEE mà link (extra2) để trống
+    if (type === "EMPLOYEE" && !payload.extra2) {
+      try {
+        const createRes = createNewStaffSpreadsheet(code, payload.name, payload.extra1);
+        if (createRes && createRes.success && createRes.sheetUrl) {
+          payload.extra2 = createRes.sheetUrl;
+        }
+      } catch(errCreate) {
+        console.warn("Auto create sheet for employee failed:", errCreate);
       }
     }
 
@@ -122,10 +148,25 @@ function saveTaxonomyItem(payload) {
           sh.getRange(i + 1, 2, 1, 7).setValues([[
             type, code, payload.name, payload.desc || "", payload.extra1 || "", payload.extra2 || "", payload.status || "Active"
           ]]);
+          sh.getRange(i + 1, 10).setValue(extra3);
           SpreadsheetApp.flush();
           invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
+
+          // Đồng bộ với USERS sheet nếu là EMPLOYEE
+          if (type === "EMPLOYEE" && payload.extra1) {
+            const isEmpL1 = ["cấp 1", "admin", "level1", "1"].includes(extra3.toLowerCase());
+            syncEmployeeToUsersSheet({
+              id: payload.code,
+              email: payload.extra1,
+              name: payload.name,
+              role: isEmpL1 ? "Admin" : "Level2",
+              status: payload.status || "Active",
+              rank: payload.desc || ""
+            });
+          }
+
           writeLog("UPDATE_TAXONOMY", `Cập nhật ${type} [${code}]: ${payload.name}`);
-          return { success: true, item: payload };
+          return { success: true, item: Object.assign({}, payload, { extra3 }) };
         }
       }
     }
@@ -133,14 +174,67 @@ function saveTaxonomyItem(payload) {
     // Insert new item
     const newId = (type.slice(0, 3) + "_" + generateId()).toUpperCase();
     sh.appendRow([
-      newId, type, code, payload.name, payload.desc || "", payload.extra1 || "", payload.extra2 || "", payload.status || "Active", now
+      newId, type, code, payload.name, payload.desc || "", payload.extra1 || "", payload.extra2 || "", payload.status || "Active", now, extra3
     ]);
     SpreadsheetApp.flush();
     invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
+
+    // Đồng bộ với USERS sheet nếu là EMPLOYEE
+    if (type === "EMPLOYEE" && payload.extra1) {
+      const isEmpL1 = ["cấp 1", "admin", "level1", "1"].includes(extra3.toLowerCase());
+      syncEmployeeToUsersSheet({
+        id: code,
+        email: payload.extra1,
+        name: payload.name,
+        role: isEmpL1 ? "Admin" : "Level2",
+        status: payload.status || "Active",
+        rank: payload.desc || ""
+      });
+    }
+
     writeLog("ADD_TAXONOMY", `Thêm mới ${type} [${code}]: ${payload.name}`);
-    return { success: true, item: Object.assign({}, payload, { id: newId }) };
+    return { success: true, item: Object.assign({}, payload, { id: newId, extra3 }) };
   } catch (err) {
     return { success: false, error: err.message };
+  }
+}
+
+/** Đồng bộ thông tin EMPLOYEE từ Taxonomy sang USERS sheet để tương thích ngược */
+function syncEmployeeToUsersSheet(emp) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let shUsers = ss.getSheetByName(CONFIG.SHEET_USERS);
+    if (!shUsers) return;
+    const rows = shUsers.getDataRange().getValues();
+    const emailTarget = String(emp.email).toLowerCase().trim();
+    let foundIndex = -1;
+    let existingRole = "";
+    for (let i = 1; i < rows.length; i++) {
+      if (String(rows[i][1]).toLowerCase().trim() === emailTarget) {
+        foundIndex = i + 1;
+        existingRole = String(rows[i][3] || "").trim();
+        break;
+      }
+    }
+
+    let roleToSet = emp.role;
+    // BẢO VỆ ADMIN: Nếu tài khoản đang là Admin hoặc Manager, tuyệt đối không bị hạ cấp
+    if ((existingRole === "Admin" || existingRole === "Manager") && emp.role === "Level2") {
+      roleToSet = existingRole;
+    }
+
+    if (foundIndex !== -1) {
+      shUsers.getRange(foundIndex, 3).setValue(emp.name);
+      shUsers.getRange(foundIndex, 4).setValue(roleToSet);
+      shUsers.getRange(foundIndex, 5).setValue(emp.status);
+      shUsers.getRange(foundIndex, 7).setValue(emp.rank || "");
+    } else {
+      shUsers.appendRow([emp.id, emp.email, emp.name, roleToSet, emp.status, new Date(), emp.rank || ""]);
+    }
+    SpreadsheetApp.flush();
+    invalidateCache([CONFIG.SHEET_USERS]);
+  } catch(e) {
+    console.warn("syncEmployeeToUsersSheet warning:", e);
   }
 }
 
