@@ -29,7 +29,8 @@ function addUser(payload) {
     return { success: false, error: "Không có quyền thực hiện" };
   if (!payload.name || !payload.role)
     return { success: false, error: "Thiếu thông tin bắt buộc" };
-  if (!CONFIG.ROLES.includes(payload.role))
+  const validRoles = [...CONFIG.ROLES, "Manager", "Viewer", "Level2"];
+  if (!validRoles.includes(payload.role))
     return { success: false, error: "Vai trò không hợp lệ" };
 
   const id = generateId();

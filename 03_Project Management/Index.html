@@ -448,6 +448,14 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .tax-preview-box{padding:10px 14px;background:#f8fafc;border:1.5px dashed var(--bdr);border-radius:var(--r2);margin:8px 0;display:flex;align-items:center;gap:10px}
 .tax-meta-tag{display:inline-block;padding:2px 7px;background:#e2e8f0;border-radius:4px;font-size:10px;font-weight:700;color:#334155;margin-right:4px}
 
+/* ══ PERMISSION MATRIX STYLES ══ */
+.matrix-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.matrix-tbl th{background:#f8fafc;padding:10px 12px;font-weight:700;color:var(--tx);border-bottom:2px solid var(--bdr);font-size:12px}
+.matrix-tbl td{padding:9px 12px;border-bottom:1px solid var(--bdr);vertical-align:middle}
+.matrix-module-hdr td{background:#f1f5f9;font-weight:800;font-size:12px;color:#334155;text-transform:uppercase;letter-spacing:0.4px;padding:9px 12px}
+.matrix-sel{width:100%;padding:5px 8px;font-size:12px;font-weight:600;border-radius:6px;border:1px solid var(--bdr);background:var(--card);cursor:pointer;outline:none;transition:.15s}
+.matrix-sel:focus{border-color:var(--p);box-shadow:0 0 0 2px rgba(79,110,247,.15)}
+
 /* ── TIMESHEET STYLES ── */
 .ts-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:16px}
 .ts-topbar{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--bdr)}
@@ -878,40 +886,79 @@ input[type=range]{width:100%;accent-color:var(--p)}
             <button type="button" class="tax-tab-btn" id="tax-subtab-disc" onclick="switchTaxSubTab('DISCIPLINE')" data-i18n="tax_tab_disc">3. Chi tiết công việc</button>
             <button type="button" class="tax-tab-btn" id="tax-subtab-pjcode" onclick="switchTaxSubTab('PROJECT_CODE')" data-i18n="tax_tab_pjcode">4. Mã dự án</button>
             <button type="button" class="tax-tab-btn" id="tax-subtab-emp" onclick="switchTaxSubTab('EMPLOYEE')" data-i18n="tax_tab_emp">5. Nhân viên</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-matrix" onclick="switchTaxSubTab('MATRIX')" data-i18n="tax_tab_matrix">6. Ma trận phân quyền</button>
           </div>
 
-          <!-- Filter & Search Bar -->
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
-            <div style="flex:1;min-width:220px;max-width:320px;position:relative">
-              <input type="text" id="tax-srch" class="fc" placeholder="Tìm theo mã, tên, mô tả..." oninput="filterTaxonomyTable()" style="padding-left:30px;height:34px;font-size:12px">
-              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:12px">🔍</span>
+          <!-- STANDARD TAXONOMY LIST CONTAINER (Tabs 1-5) -->
+          <div id="tax-standard-container">
+            <!-- Filter & Search Bar -->
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+              <div style="flex:1;min-width:220px;max-width:320px;position:relative">
+                <input type="text" id="tax-srch" class="fc" placeholder="Tìm theo mã, tên, mô tả..." oninput="filterTaxonomyTable()" style="padding-left:30px;height:34px;font-size:12px">
+                <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:12px">🔍</span>
+              </div>
+              <select id="tax-st-filter" class="fc" onchange="filterTaxonomyTable()" style="max-width:160px;height:34px;font-size:12px">
+                <option value="">Tất cả trạng thái</option>
+                <option value="Active">Đang dùng (Active)</option>
+                <option value="Archived">Tạm ngưng</option>
+              </select>
+              <span id="tax-count-badge" class="an-badge an-badge-blue" style="margin-left:auto;font-size:11px">0 mục</span>
             </div>
-            <select id="tax-st-filter" class="fc" onchange="filterTaxonomyTable()" style="max-width:160px;height:34px;font-size:12px">
-              <option value="">Tất cả trạng thái</option>
-              <option value="Active">Đang dùng (Active)</option>
-              <option value="Archived">Tạm ngưng</option>
-            </select>
-            <span id="tax-count-badge" class="an-badge an-badge-blue" style="margin-left:auto;font-size:11px">0 mục</span>
+
+            <!-- Table -->
+            <div class="tblw">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:40px">#</th>
+                    <th data-i18n="tax_col_code">Mã viết tắt</th>
+                    <th data-i18n="tax_col_name">Tên phân loại</th>
+                    <th data-i18n="tax_col_fullname">Tên đầy đủ</th>
+                    <th data-i18n="tax_col_notes">Ghi chú bổ sung</th>
+                    <th data-i18n="user_col_status">Trạng thái</th>
+                    <th style="width:110px" data-i18n="pj_col_actions">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="tax-tbody">
+                  <tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          <!-- Table -->
-          <div class="tblw">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width:40px">#</th>
-                  <th data-i18n="tax_col_code">Mã viết tắt</th>
-                  <th data-i18n="tax_col_name">Tên phân loại</th>
-                  <th data-i18n="tax_col_desc">Giải thích phạm vi</th>
-                  <th data-i18n="tax_col_extra">Thông tin bổ sung</th>
-                  <th data-i18n="user_col_status">Trạng thái</th>
-                  <th style="width:110px" data-i18n="pj_col_actions">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody id="tax-tbody">
-                <tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr>
-              </tbody>
-            </table>
+          <!-- SUB-TAB 6: MA TRẬN PHÂN QUYỀN (DYNAMIC RBAC MATRIX) -->
+          <div id="tax-matrix-container" style="display:none">
+            <div class="matrix-topbar" style="background:#f8fafc;padding:12px 16px;border-radius:8px;border:1px solid var(--bdr);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+              <div>
+                <div style="font-weight:700;font-size:13px;color:var(--tx);display:flex;align-items:center;gap:8px">
+                  <span data-i18n="matrix_title">🛡️ Ma trận phân quyền hệ thống</span>
+                  <span id="matrix-status-badge" class="an-badge an-badge-blue" data-i18n="matrix_badge_default">🛡️ Đang áp dụng: Cấu hình chuẩn hệ thống</span>
+                </div>
+                <div style="font-size:11px;color:var(--t2);margin-top:3px" data-i18n="matrix_subtitle">Cấu hình trực tiếp mức quyền chi tiết cho từng vai trò trên từng phân hệ</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <button type="button" class="btn bs" onclick="resetPermissionMatrixClick()" data-i18n="matrix_btn_reset">↺ Khôi phục mặc định</button>
+                <button type="button" class="btn bp" onclick="savePermissionMatrixClick()" data-i18n="matrix_btn_save">💾 Lưu ma trận phân quyền</button>
+              </div>
+            </div>
+
+            <div class="tblw" style="max-height:calc(100vh - 320px);overflow-y:auto">
+              <table id="matrix-table" class="matrix-tbl">
+                <thead style="position:sticky;top:0;background:var(--card);z-index:3">
+                  <tr>
+                    <th style="width:36px;text-align:center">#</th>
+                    <th style="min-width:240px" data-i18n="matrix_col_module">Phân hệ & Chức năng</th>
+                    <th style="width:160px;text-align:center" data-i18n="tax_perm_level1">Cấp 1 - Admin</th>
+                    <th style="width:170px;text-align:center" data-i18n="tax_perm_level2">Cấp 2 - Leader</th>
+                    <th style="width:170px;text-align:center" data-i18n="tax_perm_level3">Cấp 3 - PJ Lead</th>
+                    <th style="width:170px;text-align:center" data-i18n="tax_perm_level4">Cấp 4 - Member</th>
+                  </tr>
+                </thead>
+                <tbody id="matrix-tbody">
+                  <tr><td colspan="6"><div class="ldg"><div class="spn"></div></div></td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -1097,31 +1144,34 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <div class="mhd"><h3 id="mpj-ti">Thêm Dự Án</h3><button class="mcl" onclick="closeModal('m-pj')">✕</button></div>
     <div class="mbd">
       <input type="hidden" id="mpj-id">
-      <!-- Khối định dạng chuẩn: [Năm]-[STT]-[Nội dung xxxxx] -->
-      <div class="fg" style="background:#f8fafc;padding:12px;border-radius:8px;border:1.5px dashed #cbd5e1;margin-bottom:12px">
+      <!-- Khối chọn dự án từ Danh mục tiêu chuẩn -->
+      <div class="fg" style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1.5px dashed #cbd5e1;margin-bottom:12px">
         <div style="font-size:11px;font-weight:700;color:var(--p);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
-          <span>📐 Quy chuẩn mã hóa: [Năm]-[STT]-[Tên/Mã dự án]</span>
-          <span style="font-size:10px;color:var(--t3);font-weight:normal" id="mpj-format-hint">VD: 2026-01-xxxxx</span>
+          <span data-i18n="tax_select_pj_code">📁 Chọn từ Danh mục tiêu chuẩn</span>
+          <span style="font-size:10px;color:var(--t3);font-weight:normal" id="mpj-format-hint">Quy chuẩn: [Năm]_[STT]_[Mã]_[Tên đầy đủ]</span>
         </div>
-        <div class="frow" style="gap:8px;margin-bottom:2px">
-          <div style="flex:1;max-width:110px">
-            <label class="fl" style="font-size:11px" data-i18n="pj_year_lbl">Năm</label>
-            <input type="text" class="fc" id="mpj-year" placeholder="2026" maxlength="4" style="font-size:12px;font-weight:700;text-align:center" oninput="syncProjectNameFromTaxonomy()">
-          </div>
-          <div style="flex:1;max-width:110px">
-            <label class="fl" style="font-size:11px" data-i18n="pj_seq_lbl">Số TT (STT)</label>
-            <input type="text" class="fc" id="mpj-seq" placeholder="01" maxlength="4" style="font-size:12px;font-weight:700;text-align:center" oninput="syncProjectNameFromTaxonomy()" onblur="formatProjectSeq()">
-          </div>
-          <div style="flex:2">
-            <label class="fl" style="font-size:11px" data-i18n="tax_select_pj_code">Chọn từ Danh mục tiêu chuẩn</label>
-            <select class="fc" id="mpj-tax-sel" onchange="onProjectTaxonomySelect(this.value)" style="font-size:12px;font-weight:600">
-              <option value="">-- Tự nhập nội dung xxxxx --</option>
+        <div class="frow" style="gap:8px;align-items:center">
+          <div style="flex:1">
+            <select class="fc" id="mpj-tax-sel" onchange="onProjectTaxonomyControlChange()" style="font-size:12px;font-weight:600">
+              <option value="">-- Chọn dự án từ Danh mục tiêu chuẩn --</option>
             </select>
+          </div>
+          <div>
+            <button type="button" class="btn bs" id="btn-update-pj-name" onclick="applyProjectNameFromTaxonomy(true)" style="height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--p);border-color:var(--p);background:#eef2ff">
+              <span data-i18n="btn_update_pj_name">🔄 Cập nhật</span>
+            </button>
           </div>
         </div>
       </div>
-      <div class="fg"><label class="fl">Tên Dự Án <span class="req">*</span></label><input class="fc" id="mpj-nm" placeholder="2026-01-xxxxx..." style="font-weight:600" oninput="onCustomProjectNameInput()"></div>
-      <div class="fg"><label class="fl">Mô Tả</label><textarea class="fc" id="mpj-ds" placeholder="Mô tả..."></textarea></div>
+      <div class="fg">
+        <label class="fl"><span data-i18n="pj_col_name">Tên Dự Án</span> <span class="req">*</span></label>
+        <input class="fc" id="mpj-nm" placeholder="Chọn dự án từ danh mục tiêu chuẩn..." style="font-weight:700;background:#f8fafc;cursor:not-allowed;color:var(--tx)" readonly>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px" data-i18n="pj_name_readonly_hint">ℹ️ Tên dự án được sinh tự động theo chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]</div>
+      </div>
+      <div class="fg">
+        <label class="fl"><span data-i18n="ts_col_note">Ghi Chú Công Việc</span> <span style="font-size:10px;font-weight:normal;color:var(--t3)" data-i18n="pj_desc_readonly_hint">(Chế độ chỉ xem - Liên kết từ Danh mục tiêu chuẩn)</span></label>
+        <textarea class="fc" id="mpj-ds" placeholder="Ghi chú từ danh mục tiêu chuẩn..." readonly style="background:#f8fafc;cursor:not-allowed;color:var(--tx);min-height:56px"></textarea>
+      </div>
       <div class="frow">
         <div class="fg"><label class="fl">Ngày Bắt Đầu</label><input type="date" class="fc" id="mpj-sd"></div>
         <div class="fg"><label class="fl">Ngày Kết Thúc</label><input type="date" class="fc" id="mpj-ed"></div>
@@ -1577,54 +1627,93 @@ input[type=range]{width:100%;accent-color:var(--p)}
         </select>
       </div>
 
-      <div class="frow">
-        <div class="fg" style="flex:1">
-          <label class="fl" id="mtax-code-lbl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
-          <input type="text" class="fc" id="mtax-code" placeholder="VD: AR, STR, M3..." maxlength="20" oninput="this.value=this.value.toUpperCase(); updateTaxPreview()" style="font-weight:700;letter-spacing:1px">
-          <div style="font-size:10px;color:var(--t3);margin-top:2px" id="mtax-code-hint" data-i18n="tax_code_hint">2-5 ký tự in hoa</div>
-        </div>
-        <div class="fg" style="flex:2">
-          <label class="fl" id="mtax-name-lbl"><span data-i18n="tax_col_name">Tên phân loại</span> <span class="req">*</span></label>
-          <input type="text" class="fc" id="mtax-name" placeholder="VD: Dựng hình kiến trúc..." oninput="updateTaxPreview()">
-        </div>
-      </div>
-
-      <div class="fg">
-        <label class="fl" id="mtax-desc-lbl" data-i18n="tax_col_desc">Giải thích phạm vi / Nội dung</label>
-        <textarea class="fc" id="mtax-desc" rows="2" placeholder="Mô tả phạm vi áp dụng, chi tiết nội dung đầu việc..."></textarea>
-      </div>
-
-      <div class="frow" id="mtax-extra-row">
-        <div class="fg" style="flex:1" id="mtax-extra1-wrap">
-          <label class="fl" id="mtax-extra1-lbl">Màu nhận diện (Hex)</label>
-          <div style="display:flex;align-items:center;gap:6px">
-            <input type="color" id="mtax-color-inp" value="#4f6ef7" onchange="pickTaxColor(this.value)" style="width:34px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:0">
-            <input type="text" class="fc" id="mtax-extra1" value="#4f6ef7" placeholder="#4f6ef7" oninput="pickTaxColor(this.value)" style="font-size:12px;height:34px">
+      <!-- KHỐI NHẬP LIỆU RIÊNG CHO 4. MÃ DỰ ÁN (PROJECT_CODE) -->
+      <div id="mtax-pjc-section" style="display:none">
+        <div class="frow" style="gap:8px">
+          <div class="fg" style="flex:1">
+            <label class="fl"><span data-i18n="pj_year_lbl">Năm triển khai</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-pjc-year" placeholder="2026" maxlength="4" style="font-weight:700;text-align:center" oninput="syncTaxProjectName()">
           </div>
-          <div class="tax-color-picker-group">
-            <span class="tax-color-opt" style="background:#4f6ef7" onclick="pickTaxColor('#4f6ef7')"></span>
-            <span class="tax-color-opt" style="background:#06b6d4" onclick="pickTaxColor('#06b6d4')"></span>
-            <span class="tax-color-opt" style="background:#8b5cf6" onclick="pickTaxColor('#8b5cf6')"></span>
-            <span class="tax-color-opt" style="background:#10b981" onclick="pickTaxColor('#10b981')"></span>
-            <span class="tax-color-opt" style="background:#f59e0b" onclick="pickTaxColor('#f59e0b')"></span>
-            <span class="tax-color-opt" style="background:#ec4899" onclick="pickTaxColor('#ec4899')"></span>
-            <span class="tax-color-opt" style="background:#64748b" onclick="pickTaxColor('#64748b')"></span>
+          <div class="fg" style="flex:1">
+            <label class="fl"><span data-i18n="pj_seq_lbl">STT</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-pjc-seq" placeholder="01" maxlength="4" style="font-weight:700;text-align:center" oninput="syncTaxProjectName()" onblur="formatTaxProjectSeq()">
+          </div>
+          <div class="fg" style="flex:1.5">
+            <label class="fl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-pjc-code" placeholder="VD: JJK01" maxlength="20" style="font-weight:700;letter-spacing:1px" oninput="this.value=this.value.toUpperCase(); syncTaxProjectName()">
           </div>
         </div>
 
-        <div class="fg" style="flex:1" id="mtax-extra2-wrap">
-          <label class="fl" id="mtax-extra2-lbl">Ghi chú tiếng Nhật (Tùy chọn)</label>
-          <input type="text" class="fc" id="mtax-extra2" placeholder="VD: 建築モデリング..." style="height:34px">
-          <button type="button" class="btn bs" id="btn-create-staff-sheet" onclick="createStaffSheetClick()" style="display:none;margin-top:6px;width:100%;font-size:11px" data-i18n="tax_create_sheet">🪄 Tự động tạo Google Sheet cho nhân sự này</button>
+        <div class="fg">
+          <label class="fl"><span data-i18n="tax_col_fullname">Tên đầy đủ</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-pjc-desc" placeholder="VD: 十字会工房ヴィレッジ新築工事..." oninput="syncTaxProjectName()">
+        </div>
+
+        <div class="fg">
+          <label class="fl"><span data-i18n="tax_col_name">Tên phân loại</span> <span style="font-size:10px;font-weight:normal;color:var(--t3)">(Tự động ghép từ 4 trường trên)</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-pjc-name" placeholder="2026_01_JJK01_十字会工房ヴィレッジ新築工事..." readonly style="font-weight:700;background:#f8fafc;color:var(--tx);cursor:not-allowed">
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">ℹ️ Định dạng: [Năm]_[STT]_[Mã viết tắt]_[Tên đầy đủ]</div>
+        </div>
+
+        <div class="fg">
+          <label class="fl" data-i18n="tax_col_notes">Ghi chú bổ sung</label>
+          <input type="text" class="fc" id="mtax-pjc-extra2" placeholder="VD: 十字会...">
         </div>
       </div>
 
-      <div class="fg" id="mtax-extra3-wrap" style="display:none">
-        <label class="fl" data-i18n="tax_col_perm">Phân quyền</label>
-        <select class="fc" id="mtax-extra3">
-          <option value="Level2" data-i18n="tax_perm_level2">Cấp 2 - Chỉ nhập thời gian</option>
-          <option value="Admin" data-i18n="tax_perm_level1">Cấp 1 - Toàn quyền (Admin)</option>
-        </select>
+      <!-- KHỐI NHẬP LIỆU CHUẨN CHO CÁC NHÓM KHÁC (CATEGORY, PHASE, DISCIPLINE, EMPLOYEE) -->
+      <div id="mtax-std-section">
+        <div class="frow">
+          <div class="fg" style="flex:1">
+            <label class="fl" id="mtax-code-lbl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-code" placeholder="VD: AR, STR, M3..." maxlength="20" oninput="this.value=this.value.toUpperCase(); updateTaxPreview()" style="font-weight:700;letter-spacing:1px">
+            <div style="font-size:10px;color:var(--t3);margin-top:2px" id="mtax-code-hint" data-i18n="tax_code_hint">2-5 ký tự in hoa</div>
+          </div>
+          <div class="fg" style="flex:2">
+            <label class="fl" id="mtax-name-lbl"><span data-i18n="tax_col_name">Tên phân loại</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-name" placeholder="VD: Dựng hình kiến trúc..." oninput="updateTaxPreview()">
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl" id="mtax-desc-lbl" data-i18n="tax_col_fullname">Tên đầy đủ / Nội dung</label>
+          <textarea class="fc" id="mtax-desc" rows="2" placeholder="Tên đầy đủ hoặc mô tả nội dung..."></textarea>
+        </div>
+
+        <div class="frow" id="mtax-extra-row">
+          <div class="fg" style="flex:1" id="mtax-extra1-wrap">
+            <label class="fl" id="mtax-extra1-lbl">Màu nhận diện (Hex)</label>
+            <div style="display:flex;align-items:center;gap:6px">
+              <input type="color" id="mtax-color-inp" value="#4f6ef7" onchange="pickTaxColor(this.value)" style="width:34px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:0">
+              <input type="text" class="fc" id="mtax-extra1" value="#4f6ef7" placeholder="#4f6ef7" oninput="pickTaxColor(this.value)" style="font-size:12px;height:34px">
+            </div>
+            <div class="tax-color-picker-group">
+              <span class="tax-color-opt" style="background:#4f6ef7" onclick="pickTaxColor('#4f6ef7')"></span>
+              <span class="tax-color-opt" style="background:#06b6d4" onclick="pickTaxColor('#06b6d4')"></span>
+              <span class="tax-color-opt" style="background:#8b5cf6" onclick="pickTaxColor('#8b5cf6')"></span>
+              <span class="tax-color-opt" style="background:#10b981" onclick="pickTaxColor('#10b981')"></span>
+              <span class="tax-color-opt" style="background:#f59e0b" onclick="pickTaxColor('#f59e0b')"></span>
+              <span class="tax-color-opt" style="background:#ec4899" onclick="pickTaxColor('#ec4899')"></span>
+              <span class="tax-color-opt" style="background:#64748b" onclick="pickTaxColor('#64748b')"></span>
+            </div>
+          </div>
+
+          <div class="fg" style="flex:1" id="mtax-extra2-wrap">
+            <label class="fl" id="mtax-extra2-lbl" data-i18n="tax_col_notes">Ghi chú bổ sung</label>
+            <input type="text" class="fc" id="mtax-extra2" placeholder="VD: 十字会..." style="height:34px">
+            <button type="button" class="btn bs" id="btn-create-staff-sheet" onclick="createStaffSheetClick()" style="display:none;margin-top:6px;width:100%;font-size:11px" data-i18n="tax_create_sheet">🪄 Tự động tạo Google Sheet cho nhân sự này</button>
+          </div>
+        </div>
+
+        <div class="fg" id="mtax-extra3-wrap" style="display:none">
+          <label class="fl" data-i18n="tax_col_perm">Phân quyền</label>
+          <select class="fc" id="mtax-extra3">
+            <option value="Admin" data-i18n="tax_perm_level1">Cấp 1 - Quản trị viên (Admin)</option>
+            <option value="Leader" data-i18n="tax_perm_level2">Cấp 2 - Trưởng bộ phận (Leader)</option>
+            <option value="PJ_Lead" data-i18n="tax_perm_level3">Cấp 3 - Quản lý dự án (PJ Lead)</option>
+            <option value="Member" selected data-i18n="tax_perm_level4">Cấp 4 - Thành viên (Member)</option>
+          </select>
+        </div>
       </div>
 
       <div class="fg">
@@ -1957,8 +2046,10 @@ const I18N = {
     tax_tab_pjcode: "4. Mã dự án",
     tax_col_code: "Mã viết tắt",
     tax_col_name: "Tên phân loại",
-    tax_col_desc: "Giải thích phạm vi",
-    tax_col_extra: "Thông tin bổ sung",
+    tax_col_desc: "Tên đầy đủ",
+    tax_col_fullname: "Tên đầy đủ",
+    tax_col_extra: "Ghi chú bổ sung",
+    tax_col_notes: "Ghi chú bổ sung",
     tax_btn_add: "+ Thêm Tiêu Chuẩn",
     tax_btn_reload_sheet: "Nạp mẫu chuẩn",
     tax_btn_batch: "Chuẩn hóa task cũ",
@@ -1980,6 +2071,14 @@ const I18N = {
     pj_seq_hint: "VD: 01, 02...",
     tax_select_pj_code: "Chọn từ Danh mục tiêu chuẩn",
     tax_custom_pj_name: "-- Tự nhập nội dung xxxxx --",
+    btn_update_pj_name: "🔄 Cập nhật",
+    pj_naming_rule: "📐 Quy chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]",
+    pj_name_readonly_hint: "ℹ️ Tên dự án được sinh tự động theo chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]",
+    pj_select_code_hint: "-- Chọn dự án từ Danh mục tiêu chuẩn --",
+    pj_name_updated_toast: "Đã cập nhật tên và mô tả dự án theo chuẩn!",
+    pj_desc_hint: "(Tự động lấy từ Ghi chú bổ sung trong danh mục tiêu chuẩn)",
+    pj_desc_readonly_hint: "(Chế độ chỉ xem - Liên kết từ Danh mục tiêu chuẩn)",
+    pj_select_taxonomy_warn: "Vui lòng chọn dự án từ Danh mục tiêu chuẩn trước khi cập nhật",
     tax_prefix_badge: "Ký tự phân loại chuẩn",
     tax_prefix_none: "[CHƯA GÁN MÃ]",
     nav_timesheet: "Quản lý thời gian",
@@ -2027,11 +2126,34 @@ const I18N = {
     ts_stat_slots: "Khung giờ đã nhập",
     ts_copy_hint: "Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets",
     tax_tab_emp: "5. Nhân viên",
+    tax_tab_matrix: "6. Ma trận phân quyền",
     tax_create_sheet: "🪄 Tự động tạo Google Sheet cho nhân sự này",
     tax_create_sheet_success: "Đã tạo bảng tính Google Sheet thành công!",
     tax_col_perm: "Phân quyền",
-    tax_perm_level1: "Cấp 1 - Toàn quyền (Admin)",
-    tax_perm_level2: "Cấp 2 - Chỉ nhập thời gian",
+    tax_perm_level1: "Cấp 1 - Quản trị viên (Admin)",
+    tax_perm_level2: "Cấp 2 - Trưởng bộ phận (Leader)",
+    tax_perm_level3: "Cấp 3 - Quản lý dự án (PJ Lead)",
+    tax_perm_level4: "Cấp 4 - Thành viên (Member)",
+    matrix_title: "Ma trận phân quyền hệ thống",
+    matrix_subtitle: "Cấu hình trực tiếp mức quyền chi tiết cho từng vai trò trên từng phân hệ",
+    matrix_btn_save: "💾 Lưu ma trận phân quyền",
+    matrix_btn_reset: "↺ Khôi phục mặc định",
+    matrix_badge_custom: "⚙️ Đang áp dụng: Cấu hình tùy biến",
+    matrix_badge_default: "🛡️ Đang áp dụng: Cấu hình chuẩn hệ thống",
+    matrix_col_module: "Phân hệ & Chức năng",
+    perm_full: "🟢 Toàn quyền",
+    perm_lead_scope: "🟡 Quản trị dự án Lead",
+    perm_view_all: "⚪ Xem toàn cảnh (Chỉ xem)",
+    perm_own: "🔵 Việc cá nhân",
+    perm_deny: "❌ Không có quyền (Ẩn)",
+    matrix_saved_success: "Đã lưu cấu hình ma trận phân quyền thành công!",
+    matrix_reset_confirm: "Bạn có chắc muốn khôi phục ma trận về thiết lập mặc định chuẩn?",
+    pj_badge_mylead: "👑 Tôi phụ trách",
+    pj_badge_viewonly: "👁️ Chế độ tham chiếu",
+    matrix_saving: "Đang lưu ma trận phân quyền...",
+    matrix_resetting: "Đang khôi phục ma trận về mặc định...",
+    matrix_admin_only_save: "Chỉ Admin mới có quyền lưu ma trận phân quyền",
+    matrix_admin_only_reset: "Chỉ Admin mới có quyền khôi phục ma trận phân quyền",
   },
 
   en: {
@@ -2258,8 +2380,10 @@ const I18N = {
     tax_tab_pjcode: "4. Project Codes",
     tax_col_code: "Short Code",
     tax_col_name: "Classification Name",
-    tax_col_desc: "Scope Description",
-    tax_col_extra: "Extra Info",
+    tax_col_desc: "Full Name",
+    tax_col_fullname: "Full Name",
+    tax_col_extra: "Additional Notes",
+    tax_col_notes: "Additional Notes",
     tax_btn_add: "+ Add Standard",
     tax_btn_reload_sheet: "Load Defaults",
     tax_btn_batch: "Standardize Tasks",
@@ -2281,6 +2405,14 @@ const I18N = {
     pj_seq_hint: "e.g. 01, 02...",
     tax_select_pj_code: "Select from Standard Project Codes",
     tax_custom_pj_name: "-- Custom project content xxxxx --",
+    btn_update_pj_name: "🔄 Update",
+    pj_naming_rule: "📐 Standard: [Year]_[Seq]_[Short Code]_[Full Name]",
+    pj_name_readonly_hint: "ℹ️ Project name is auto-generated: [Year]_[Seq]_[Short Code]_[Full Name]",
+    pj_select_code_hint: "-- Select project from Standard Taxonomy --",
+    pj_name_updated_toast: "Project name and description updated to standard!",
+    pj_desc_hint: "(Auto-filled from Additional Notes in standard taxonomy)",
+    pj_desc_readonly_hint: "(Read-only - Linked from Standard Taxonomy)",
+    pj_select_taxonomy_warn: "Please select a project from standard taxonomy before updating",
     tax_prefix_badge: "Standard Taxonomy Prefix",
     tax_prefix_none: "[NO CODE ASSIGNED]",
     nav_timesheet: "Timesheet",
@@ -2328,11 +2460,34 @@ const I18N = {
     ts_stat_slots: "Slots Logged",
     ts_copy_hint: "Tip: Use Ctrl+C / Ctrl+V to copy rows or paste multiple lines from Excel/Google Sheets",
     tax_tab_emp: "5. Employees",
+    tax_tab_matrix: "6. Permission Matrix",
     tax_create_sheet: "🪄 Auto-generate Google Sheet for this staff",
     tax_create_sheet_success: "Google Sheet created successfully!",
     tax_col_perm: "Access Level",
-    tax_perm_level1: "Level 1 - Full Access (Admin)",
-    tax_perm_level2: "Level 2 - Timesheet Only",
+    tax_perm_level1: "Level 1 - Administrator (Admin)",
+    tax_perm_level2: "Level 2 - Department Leader (Leader)",
+    tax_perm_level3: "Level 3 - Project Lead (PJ Lead)",
+    tax_perm_level4: "Level 4 - Team Member (Member)",
+    matrix_title: "System Permission Matrix",
+    matrix_subtitle: "Configure granular permissions dynamically per role across all system modules",
+    matrix_btn_save: "💾 Save Permission Matrix",
+    matrix_btn_reset: "↺ Reset to Default",
+    matrix_badge_custom: "⚙️ Active: Custom Configuration",
+    matrix_badge_default: "🛡️ Active: Standard Default",
+    matrix_col_module: "Module & Action",
+    perm_full: "🟢 Full Access",
+    perm_lead_scope: "🟡 Lead Project Scope",
+    perm_view_all: "⚪ View All (Read Only)",
+    perm_own: "🔵 Own Items Only",
+    perm_deny: "❌ Denied (Hidden)",
+    matrix_saved_success: "Permission matrix saved successfully!",
+    matrix_reset_confirm: "Are you sure you want to reset the matrix to default settings?",
+    pj_badge_mylead: "👑 My Lead",
+    pj_badge_viewonly: "👁️ Reference View",
+    matrix_saving: "Saving permission matrix...",
+    matrix_resetting: "Resetting matrix to default...",
+    matrix_admin_only_save: "Only Admin can save the permission matrix",
+    matrix_admin_only_reset: "Only Admin can reset the permission matrix",
   },
 
   ja: {
@@ -2559,8 +2714,10 @@ const I18N = {
     tax_tab_pjcode: "4. プロジェクトコード",
     tax_col_code: "略称コード",
     tax_col_name: "区分・名称",
-    tax_col_desc: "作業内容・説明",
-    tax_col_extra: "補足情報",
+    tax_col_desc: "正式名称",
+    tax_col_fullname: "正式名称",
+    tax_col_extra: "補足メモ",
+    tax_col_notes: "補足メモ",
     tax_btn_add: "+ 基準を追加",
     tax_btn_reload_sheet: "標準読込",
     tax_btn_batch: "既存タスク標準化",
@@ -2582,6 +2739,14 @@ const I18N = {
     pj_seq_hint: "例: 01, 02...",
     tax_select_pj_code: "標準プロジェクトコードから選択",
     tax_custom_pj_name: "-- 自由入力（コード外）xxxxx --",
+    btn_update_pj_name: "🔄 反映・更新",
+    pj_naming_rule: "📐 命名規則: [年]_[連番]_[略称コード]_[正式名称]",
+    pj_name_readonly_hint: "ℹ️ プロジェクト名は標準規約に従い自動生成されます: [年]_[連番]_[略称コード]_[正式名称]",
+    pj_select_code_hint: "-- 基準マスタからプロジェクトを選択 --",
+    pj_name_updated_toast: "プロジェクト名と説明を標準形式に更新しました！",
+    pj_desc_hint: "(基準マスタの補足メモから自動取得)",
+    pj_desc_readonly_hint: "(閲覧のみ - 基準マスタと連携)",
+    pj_select_taxonomy_warn: "反映する前に基準マスタからプロジェクトを選択してください",
     tax_prefix_badge: "標準分類プレフィックス",
     tax_prefix_none: "[コード未設定]",
     nav_timesheet: "工数・勤務管理",
@@ -2629,11 +2794,34 @@ const I18N = {
     ts_stat_slots: "入力済み枠数",
     ts_copy_hint: "ヒント: Ctrl+C / Ctrl+V で行コピーまたはExcel/Googleスプレッドシートから複数行貼り付け可能",
     tax_tab_emp: "5. 社員・スタッフ",
+    tax_tab_matrix: "6. 権限マトリクス",
     tax_create_sheet: "🪄 この社員用スプレッドシートを自動作成",
     tax_create_sheet_success: "Googleスプレッドシートを正常に作成しました！",
     tax_col_perm: "権限区分",
-    tax_perm_level1: "第1階層 - フル権限 (管理者)",
-    tax_perm_level2: "第2階層 - 工数入力のみ",
+    tax_perm_level1: "第1階層 - システム管理者 (Admin)",
+    tax_perm_level2: "第2階層 - 部門リーダー (Leader)",
+    tax_perm_level3: "第3階層 - PJリーダー (PJ Lead)",
+    tax_perm_level4: "第4階層 - 一般メンバー (Member)",
+    matrix_title: "システム権限マトリクス",
+    matrix_subtitle: "各業務モジュールにおけるロール別の詳細な操作権限を設定",
+    matrix_btn_save: "💾 権限マトリクスを保存",
+    matrix_btn_reset: "↺ デフォルトに戻す",
+    matrix_badge_custom: "⚙️ 適用中: カスタム設定",
+    matrix_badge_default: "🛡️ 適用中: 標準デフォルト設定",
+    matrix_col_module: "機能・操作区分",
+    perm_full: "🟢 フル権限",
+    perm_lead_scope: "🟡 担当PJ管理",
+    perm_view_all: "⚪ 全体参照のみ",
+    perm_own: "🔵 自身の業務のみ",
+    perm_deny: "❌ 権限なし (非表示)",
+    matrix_saved_success: "権限マトリクスが正常に保存されました！",
+    matrix_reset_confirm: "権限マトリクスをデフォルト設定に初期化しますか？",
+    pj_badge_mylead: "👑 担当案件",
+    pj_badge_viewonly: "👁️ 参照のみ",
+    matrix_saving: "権限マトリクスを保存中...",
+    matrix_resetting: "マトリクスをデフォルトに初期化中...",
+    matrix_admin_only_save: "システム管理者のみが権限マトリクスを保存できます",
+    matrix_admin_only_reset: "システム管理者のみが権限マトリクスを初期化できます",
   }
 };
 
@@ -2657,11 +2845,13 @@ const PRIORITY_I18N = {
 };
 
 const ROLE_I18N = {
-  "Admin": { vi: "Quản trị viên", en: "Admin", ja: "管理者" },
-  "Manager": { vi: "Quản lý", en: "Manager", ja: "責任者" },
-  "Member": { vi: "Thành viên", en: "Member", ja: "担当者" },
-  "Viewer": { vi: "Người xem", en: "Viewer", ja: "閲覧者" },
-  "Level2": { vi: "Nhân viên (Cấp 2)", en: "Staff (Level 2)", ja: "一般社員 (第2階層)" }
+  "Admin":   { vi: "Quản trị viên (Cấp 1)", en: "Administrator (Level 1)", ja: "システム管理者 (第1階層)" },
+  "Leader":  { vi: "Trưởng bộ phận (Cấp 2)", en: "Department Leader (Level 2)", ja: "部門リーダー (第2階層)" },
+  "PJ_Lead": { vi: "Quản lý dự án (Cấp 3)", en: "Project Lead (Level 3)", ja: "PJリーダー (第3階層)" },
+  "Manager": { vi: "Quản lý dự án (Cấp 3)", en: "Project Lead (Level 3)", ja: "PJリーダー (第3階層)" },
+  "Member":  { vi: "Thành viên (Cấp 4)", en: "Team Member (Level 4)", ja: "一般メンバー (第4階層)" },
+  "Viewer":  { vi: "Người xem", en: "Viewer", ja: "閲覧者" },
+  "Level2":  { vi: "Thành viên (Cấp 4)", en: "Team Member (Level 4)", ja: "一般メンバー (第4階層)" }
 };
 
 function t(key, params) {
@@ -2735,9 +2925,9 @@ function formatDisplayDate(dStr) {
 function setLanguage(lang, saveAsDefault) {
   if (!['vi', 'en', 'ja'].includes(lang)) return;
   S.lang = lang;
+  localStorage.setItem('pm_user_lang', lang);
   
   if (saveAsDefault) {
-    localStorage.setItem('pm_user_lang', lang);
     try { google.script.run.setUserLanguagePreference(lang); } catch(e) {}
     toast(t('msg_default_saved'), 'success');
   }
@@ -2770,7 +2960,11 @@ function setLanguage(lang, saveAsDefault) {
   } else if (curPage === 'analytics') {
     loadAnalytics();
   } else if (curPage === 'taxonomy') {
-    loadPgTaxonomy();
+    if (typeof _activeTaxSubTab !== 'undefined' && _activeTaxSubTab === 'MATRIX') {
+      if (typeof renderPermissionMatrixTable === 'function') renderPermissionMatrixTable();
+    } else {
+      loadPgTaxonomy();
+    }
   } else if (curPage === 'users') {
     loadPgUsr();
   } else if (curPage === 'log') {
@@ -2847,6 +3041,10 @@ function applyTranslations() {
   });
 
   updateFilterDropdowns();
+
+  if (typeof renderPermissionMatrixTable === 'function' && document.getElementById('matrix-tbody')) {
+    renderPermissionMatrixTable();
+  }
 }
 
 function updateFilterDropdowns() {
@@ -3134,9 +3332,12 @@ function loadApp() {
       if (res.taxonomy) {
         S.taxonomy = res.taxonomy;
       }
+      if (res.permissionMatrix) {
+        S.permissionMatrix = res.permissionMatrix;
+      }
       popTaskTaxonomySelects();
 
-      if (res.user && (res.user.permissionLevel === 2 || res.user.role === 'Level2')) {
+      if (res.isTimesheetOnly) {
         goPage('timesheet', document.getElementById('ni-timesheet'));
         return;
       }
@@ -3212,41 +3413,68 @@ function updateSbUser(u) {
   document.getElementById("sb-nm").textContent=u.name||u.email;
   document.getElementById("sb-rl").textContent=tRole(u.role);
 
-  const isLevel2 = (u.permissionLevel === 2 || u.role === "Level2");
-  if (isLevel2) {
-    // Level 2: Only allow Timesheet, hide everything else
+  const role = u.role || "Member";
+  const permLevel = Number(u.permissionLevel) || 4;
+
+  const btnMk = document.querySelector(".btn-mk");
+  const dUsrO = document.getElementById("d-usr-o");
+  const pjFilter = document.querySelector(".pj-filter");
+  const tbSrch = document.querySelector(".tb-srch");
+
+  if (pjFilter) pjFilter.style.display = "flex";
+  if (tbSrch) tbSrch.style.display = "flex";
+
+  // CẤP 4: Member (Thành viên)
+  if (role === "Member" || role === "Viewer" || role === "Level2" || permLevel === 4) {
     document.querySelectorAll(".sni").forEach(el => {
-      if (el.id === "ni-timesheet") {
+      const p = el.getAttribute('data-p');
+      if (['dashboard', 'projects', 'tasks', 'timesheet'].includes(p)) {
         el.style.display = "flex";
       } else {
         el.style.display = "none";
       }
     });
-    const pjFilter = document.querySelector(".pj-filter");
-    if (pjFilter) pjFilter.style.display = "none";
-    const tbSrch = document.querySelector(".tb-srch");
-    if (tbSrch) tbSrch.style.display = "none";
-    const btnMk = document.querySelector(".btn-mk");
     if (btnMk) btnMk.style.display = "none";
+    if (dUsrO) dUsrO.style.display = "none";
     return;
   }
 
-  // Level 1 / Standard Roles
-  const niTimesheet = document.getElementById("ni-timesheet");
-  if (niTimesheet) niTimesheet.style.display = "flex";
+  // CẤP 3: PJ Lead (Quản lý dự án)
+  if (role === "PJ_Lead" || role === "Manager" || permLevel === 3) {
+    document.querySelectorAll(".sni").forEach(el => {
+      const p = el.getAttribute('data-p');
+      if (['dashboard', 'gantt', 'projects', 'tasks', 'timesheet'].includes(p)) {
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    });
+    if (btnMk) btnMk.style.display = "flex";
+    if (dUsrO) dUsrO.style.display = "none";
+    return;
+  }
 
-  if (u.role==="Admin") {
-    document.getElementById("ni-usr").style.display="flex";
-    document.getElementById("ni-log").style.display="flex";
-    document.getElementById("d-usr-o").style.display="flex";
+  // CẤP 2: Leader (Trưởng bộ phận)
+  if (role === "Leader" || permLevel === 2) {
+    document.querySelectorAll(".sni").forEach(el => {
+      const p = el.getAttribute('data-p');
+      if (['dashboard', 'gantt', 'analytics', 'projects', 'tasks', 'timesheet', 'taxonomy'].includes(p)) {
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    });
+    if (btnMk) btnMk.style.display = "flex";
+    if (dUsrO) dUsrO.style.display = "none";
+    return;
   }
-  if (u.role==="Admin" || u.role==="Manager") {
-    const niTax = document.getElementById("ni-tax");
-    if (niTax) niTax.style.display="flex";
-  }
-  if (u.role==="Viewer"||u.role==="Member") {
-    const b=document.getElementById("btn-add-tk"); if(b) b.style.display="none";
-  }
+
+  // CẤP 1: Admin (Quản trị viên)
+  document.querySelectorAll(".sni").forEach(el => {
+    el.style.display = "flex";
+  });
+  if (btnMk) btnMk.style.display = "flex";
+  if (dUsrO) dUsrO.style.display = "flex";
 }
 
 // ═══════════════════════════════════════
@@ -4447,14 +4675,23 @@ function renderPgPj(data) {
   if (!data || !data.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ic">📁</div>' + t('pj_list_title') + ': 0</div></td></tr>'; return; }
   const sorted = data.slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
   tb.innerHTML=sorted.map((p,i)=>{
-    const seqMatch = (p.name || "").match(/^(\d{4})-(\d{1,3})-(.*)$/);
-    const seqBadge = seqMatch ? `<span class="badge bg-bl" style="margin-right:6px;font-size:10px;font-weight:700">#${seqMatch[2]}</span>` : "";
+    const seqMatch = (p.name || "").match(/^(\d{4})[-_](\d{1,3})[-_](.*)$/);
+    const seqBadge = seqMatch ? `<span class="badge bg-bl" style="margin-right:6px;font-size:10px;font-weight:700">#${seqMatch[2].padStart(2, '0')}</span>` : "";
+    const isPjLead = (S.role === "PJ_Lead" || S.role === "Manager");
+    const myEmail = (S.user?.email || "").toLowerCase().trim();
+    const isMyLead = isPjLead && (p.manager || "").toLowerCase().trim() === myEmail;
+    const isOtherLead = isPjLead && !isMyLead;
+    const roleBadge = isMyLead
+      ? `<span class="badge bg-yw" style="margin-left:6px;font-size:10px">${t('pj_badge_mylead')}</span>`
+      : (isOtherLead ? `<span class="badge bg-gy" style="margin-left:6px;font-size:10px">${t('pj_badge_viewonly')}</span>` : '');
+
     return `<tr>
     <td>${i+1}</td>
     <td>
       <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">
         ${seqBadge}
         <b style="cursor:pointer;color:var(--p)" onclick="openPjDetail('${p.id}')">${p.name}</b>
+        ${roleBadge}
       </div>
       <small style="color:#64748b">${p.desc||""}</small>
     </td>
@@ -4463,7 +4700,7 @@ function renderPgPj(data) {
     <td><div class="progc"><div class="pm"><div class="pmb" style="width:${p.progress}%"></div></div><small>${p.progress}%</small></div></td>
     <td><small>${formatDisplayDate(p.endDate)||"—"}</small></td>
     <td><div style="display:flex;gap:3px">
-      ${canEd()?`<button class="bic" onclick="editPj('${p.id}')" title="${t('btn_edit')}">✏</button>`:""}
+      ${canEd(p)?`<button class="bic" onclick="editPj('${p.id}')" title="${t('btn_edit')}">✏</button>`:""}
       <button class="bic dup" onclick="openDupPj('${p.id}')" title="${t('btn_duplicate')}">📋</button>
       <button class="bic grn" onclick="expRpt('${p.id}')" title="${t('btn_export')}">📤</button>
       ${S.role==="Admin"?`<button class="bic del" onclick="delPj('${p.id}')" title="${t('btn_delete')}">🗑</button>`:""}
@@ -4516,7 +4753,7 @@ function renderPgTkGroups(tasks) {
           <span class="pjg-nm">${g.name || ""}</span>
           ${pjStatus ? `<span class="badge ${sBadge(pjStatus)}">${tStatus(pjStatus)}</span>` : ""}
           <span class="pjg-cnt">${g.tasks.length} ${unitLabel}</span>
-          ${canMgTk() ? `<button class="btn bp" style="font-size:10px;padding:4px 8px;margin-left:auto" onclick="event.stopPropagation();openTkMod(null,'${pjId}')">+ ${t('btn_add')}</button>` : ""}
+          ${canMgTk(pjId) ? `<button class="btn bp" style="font-size:10px;padding:4px 8px;margin-left:auto" onclick="event.stopPropagation();openTkMod(null,'${pjId}')">+ ${t('btn_add')}</button>` : ""}
         </div>
         <div class="pjg-body open" id="pg-${pjId}">
           <div class="tblw"><table>
@@ -4540,7 +4777,7 @@ function renderPgTkGroups(tasks) {
                 <td><div style="display:flex;gap:3px">
                   <button class="bic" onclick="openFullTaskEdit('${tk.id}')" title="${t('btn_edit')}">✏</button>
                   <button class="bic dup" onclick="doDupTk('${tk.id}')" title="${t('btn_duplicate')}">📋</button>
-                  ${canMgTk() ? `<button class="bic del" onclick="delTk('${tk.id}')" title="${t('btn_delete')}">🗑</button>` : ""}
+                  ${canMgTk(tk) ? `<button class="bic del" onclick="delTk('${tk.id}')" title="${t('btn_delete')}">🗑</button>` : ""}
                 </div></td>
               </tr>`;
             }).join("")}
@@ -4770,133 +5007,109 @@ function delReminder(id) { _currTkReminders=_currTkReminders.filter(r=>r.id!==id
 // ═══════════════════════════════════════
 let _isCustomProjectName = false;
 
-function popProjectTaxonomySelect() {
+function popProjectYearSelect(selectedYear) {
+  const sel = document.getElementById("mpj-year");
+  if (!sel) return;
+  const currentYear = new Date().getFullYear();
+  const yearSet = new Set();
+  
+  for (let y = currentYear - 2; y <= currentYear + 4; y++) {
+    yearSet.add(y);
+  }
+  
+  (S.projects || []).forEach(p => {
+    const m = (p.name || "").match(/^(\d{4})[-_]/);
+    if (m) yearSet.add(parseInt(m[1], 10));
+  });
+
+  ((S.taxonomy && S.taxonomy.projectCodes) || []).forEach(c => {
+    if (c.extra1 && /^\d{4}$/.test(c.extra1.trim())) {
+      yearSet.add(parseInt(c.extra1.trim(), 10));
+    }
+  });
+
+  if (selectedYear && !isNaN(parseInt(selectedYear, 10))) {
+    yearSet.add(parseInt(selectedYear, 10));
+  }
+
+  const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
+  sel.innerHTML = sortedYears.map(y => `<option value="${y}">${y}</option>`).join('');
+  sel.value = selectedYear ? String(selectedYear) : String(currentYear);
+}
+
+function popProjectTaxonomySelect(selectedCode) {
   const sel = document.getElementById("mpj-tax-sel");
   if (!sel) return;
-  const cur = sel.value;
-  sel.innerHTML = `<option value="">-- ${t('tax_custom_pj_name')} --</option>` +
+  const cur = selectedCode !== undefined ? selectedCode : sel.value;
+  sel.innerHTML = `<option value="">-- ${t('pj_select_code_hint')} --</option>` +
     ((S.taxonomy && S.taxonomy.projectCodes) || []).filter(c => c.status === 'Active').map(c => `
-      <option value="${c.code}">[${c.code}] ${c.desc || c.name || c.extra2 || ''}</option>
+      <option value="${c.code}">[${c.code}] ${c.name} ${c.extra2 ? '(' + c.extra2 + ')' : ''}</option>
     `).join('');
   if (cur) sel.value = cur;
 }
 
-function formatProjectSeq() {
-  const seqInp = document.getElementById("mpj-seq");
-  if (!seqInp) return;
-  let val = seqInp.value.trim();
-  if (val && !isNaN(val)) {
-    seqInp.value = String(parseInt(val, 10)).padStart(2, '0');
-  }
-  syncProjectNameFromTaxonomy();
-}
-
-function onProjectTaxonomySelect(val) {
-  _isCustomProjectName = false;
-  const descInp = document.getElementById("mpj-ds");
-  if (val) {
-    const item = (S.taxonomy && S.taxonomy.projectCodes || []).find(c => c.code === val);
-    if (item && descInp && !descInp.value.trim()) {
-      descInp.value = item.desc || item.extra2 || "";
-    }
-  }
-  syncProjectNameFromTaxonomy();
-}
-
-function syncProjectNameFromTaxonomy() {
-  if (_isCustomProjectName) return;
-  const year = (document.getElementById("mpj-year")?.value || new Date().getFullYear().toString()).trim();
-  const seq = (document.getElementById("mpj-seq")?.value || "").trim();
-  const taxCode = document.getElementById("mpj-tax-sel")?.value || "";
+function applyProjectNameFromTaxonomy(showToast) {
+  const taxSel = document.getElementById("mpj-tax-sel");
   const nameInp = document.getElementById("mpj-nm");
+  const descInp = document.getElementById("mpj-ds");
   if (!nameInp) return;
 
-  let contentPart = "";
-  if (taxCode) {
-    const item = (S.taxonomy?.projectCodes || []).find(c => c.code === taxCode);
-    if (item) {
-      contentPart = item.desc ? `${item.code}_${item.desc}` : item.name;
-    } else {
-      contentPart = taxCode;
+  const taxCode = taxSel?.value || "";
+  if (!taxCode) {
+    if (showToast) {
+      toast(t('pj_select_taxonomy_warn'), 'warning');
     }
+    return;
   }
 
-  if (seq && contentPart) {
-    nameInp.value = `${year}-${seq}-${contentPart}`;
-  } else if (seq) {
-    const curVal = nameInp.value.trim();
-    const oldSuffix = curVal.replace(/^\d{4}-\d{1,3}-?/, '');
-    nameInp.value = oldSuffix ? `${year}-${seq}-${oldSuffix}` : `${year}-${seq}-`;
+  const item = ((S.taxonomy && S.taxonomy.projectCodes) || []).find(c => c.code === taxCode);
+  if (item) {
+    nameInp.value = item.name || `${item.extra1 || '2026'}_${item.extra3 || '01'}_${item.code}_${item.desc || ''}`;
+    if (descInp) {
+      descInp.value = item.extra2 || "";
+    }
+    if (showToast) {
+      toast(t('pj_name_updated_toast'), 'success');
+    }
   }
 }
 
-function onCustomProjectNameInput() {
-  _isCustomProjectName = true;
+function onProjectTaxonomyControlChange() {
+  applyProjectNameFromTaxonomy(false);
 }
 
 function openPjMod() {
   document.getElementById("mpj-ti").textContent = t("add_project");
-  document.getElementById("mpj-id").value="";
-  ["mpj-nm","mpj-ds","mpj-sd","mpj-ed"].forEach(x=>document.getElementById(x).value="");
-  document.getElementById("mpj-st").value="Lên kế hoạch";
-  ldMgSel("mpj-mg","");
+  document.getElementById("mpj-id").value = "";
+  ["mpj-nm", "mpj-ds", "mpj-sd", "mpj-ed"].forEach(x => document.getElementById(x).value = "");
+  document.getElementById("mpj-st").value = "Lên kế hoạch";
+  ldMgSel("mpj-mg", "");
 
-  _isCustomProjectName = false;
-  const curYear = new Date().getFullYear().toString();
-  const yrInp = document.getElementById("mpj-year");
-  if (yrInp) yrInp.value = curYear;
-  
-  // Suggest next STT in that year
-  const seqInp = document.getElementById("mpj-seq");
-  if (seqInp) {
-    const existingNums = (S.projects || []).map(p => {
-      const m = (p.name || "").match(new RegExp(`^${curYear}-(\\d{1,3})-`));
-      return m ? parseInt(m[1], 10) : 0;
-    }).filter(n => n > 0);
-    const nextSeq = existingNums.length ? (Math.max(...existingNums) + 1) : 1;
-    seqInp.value = String(nextSeq).padStart(2, '0');
-  }
-
-  popProjectTaxonomySelect();
-  const taxSel = document.getElementById("mpj-tax-sel");
-  if (taxSel) taxSel.value = "";
-  
-  syncProjectNameFromTaxonomy();
+  popProjectTaxonomySelect("");
   openModal("m-pj");
 }
-function editPj(id) {
-  const p=S.projects.find(x=>x.id===id); if (!p) return;
-  document.getElementById("mpj-ti").textContent = t("btn_edit") + " " + t("nav_projects");
-  document.getElementById("mpj-id").value=id;
-  document.getElementById("mpj-nm").value=p.name;
-  document.getElementById("mpj-ds").value=p.desc||"";
-  document.getElementById("mpj-st").value=p.status;
-  document.getElementById("mpj-sd").value=p.startRaw||"";
-  document.getElementById("mpj-ed").value=p.endRaw||"";
-  ldMgSel("mpj-mg",p.manager);
 
-  _isCustomProjectName = false;
-  popProjectTaxonomySelect();
-  
-  const yrInp = document.getElementById("mpj-year");
-  const seqInp = document.getElementById("mpj-seq");
-  const taxSel = document.getElementById("mpj-tax-sel");
-  
-  // Parse [Năm]-[STT]-[xxxxx]
-  const m = (p.name || "").match(/^(\d{4})-(\d{1,3})-(.*)$/);
-  if (m) {
-    if (yrInp) yrInp.value = m[1];
-    if (seqInp) seqInp.value = m[2].padStart(2, '0');
-    if (taxSel) {
-      const found = (S.taxonomy?.projectCodes || []).find(it => m[3].startsWith(it.code) || (it.desc && m[3].includes(it.desc)));
-      taxSel.value = found ? found.code : "";
-    }
-  } else {
-    if (yrInp) yrInp.value = new Date().getFullYear().toString();
-    if (seqInp) seqInp.value = "";
-    if (taxSel) taxSel.value = "";
-    _isCustomProjectName = true;
-  }
+function editPj(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById("mpj-ti").textContent = t("btn_edit") + " " + t("nav_projects");
+  document.getElementById("mpj-id").value = id;
+  document.getElementById("mpj-nm").value = p.name;
+  document.getElementById("mpj-ds").value = p.desc || "";
+  document.getElementById("mpj-st").value = p.status;
+  document.getElementById("mpj-sd").value = p.startRaw || "";
+  document.getElementById("mpj-ed").value = p.endRaw || "";
+  ldMgSel("mpj-mg", p.manager);
+
+  let matchedCode = "";
+  const found = ((S.taxonomy && S.taxonomy.projectCodes) || []).find(it => 
+    (p.name || "") === it.name ||
+    (p.name || "").includes(it.code) ||
+    (it.desc && (p.name || "").includes(it.desc))
+  );
+  if (found) matchedCode = found.code;
+
+  popProjectTaxonomySelect(matchedCode);
   openModal("m-pj");
 }
 function savePj() {
@@ -5786,8 +5999,35 @@ function reloadAll() { toast(t("loading"), "info"); loadApp(); }
 // ═══════════════════════════════════════
 function sBadge(s){const m={"Hoàn thành":"bg-gr","Đang thực hiện":"bg-bl","Đang tiến hành":"bg-cy","Chờ thực hiện":"bg-gy","Chờ duyệt":"bg-pu","Tạm dừng":"bg-yw","Hủy":"bg-rd","Lên kế hoạch":"bg-gy","Quá hạn":"bg-rd"};return m[s]||"bg-gy";}
 function pBadge(p){return{Thấp:"bg-gr","Trung bình":"bg-bl",Cao:"bg-yw","Khẩn cấp":"bg-rd"}[p]||"bg-gy";}
-function canEd()   { return ["Admin","Manager"].includes(S.role); }
-function canMgTk() { return ["Admin","Manager"].includes(S.role); }
+function canEd(pj) {
+  if (S.role === "Admin" || S.role === "Leader") return true;
+  if (S.role === "PJ_Lead" || S.role === "Manager") {
+    if (!pj) return true;
+    const pjObj = typeof pj === "object" ? pj : (S.projects || []).find(p => p.id === pj);
+    if (!pjObj) return false;
+    const myEmail = (S.user?.email || "").toLowerCase().trim();
+    return (pjObj.manager || "").toLowerCase().trim() === myEmail;
+  }
+  return false;
+}
+function canMgTk(tkOrPj) {
+  if (S.role === "Admin" || S.role === "Leader") return true;
+  if (S.role === "PJ_Lead" || S.role === "Manager") {
+    if (!tkOrPj) return true;
+    let pjId = "";
+    if (typeof tkOrPj === "string") {
+      const isTk = (S.tasks || []).find(t => t.id === tkOrPj);
+      pjId = isTk ? isTk.projectId : tkOrPj;
+    } else if (typeof tkOrPj === "object") {
+      pjId = tkOrPj.projectId || tkOrPj.id || "";
+    }
+    const pjObj = (S.projects || []).find(p => p.id === pjId);
+    if (!pjObj) return false;
+    const myEmail = (S.user?.email || "").toLowerCase().trim();
+    return (pjObj.manager || "").toLowerCase().trim() === myEmail;
+  }
+  return false;
+}
 function doLogout(){
   if(confirm(t("logout") + "?")) {
     google.script.run.withSuccessHandler(u => {
@@ -6439,6 +6679,10 @@ let _taxFilteredData = [];
 let _batchLegacyTasksList = [];
 
 function loadPgTaxonomy(force) {
+  if (typeof _activeTaxSubTab !== 'undefined' && _activeTaxSubTab === 'MATRIX') {
+    if (typeof renderPermissionMatrixTable === 'function') renderPermissionMatrixTable();
+    return;
+  }
   if (!force && S.taxonomy && (S.taxonomy.categories?.length || S.taxonomy.phases?.length || S.taxonomy.disciplines?.length || S.taxonomy.projectCodes?.length)) {
     renderTaxonomyTable();
     return;
@@ -6465,19 +6709,29 @@ function loadPgTaxonomy(force) {
 
 function switchTaxSubTab(subTab) {
   _activeTaxSubTab = subTab;
-  ['cat', 'phase', 'disc', 'pjcode', 'emp'].forEach(id => {
+  ['cat', 'phase', 'disc', 'pjcode', 'emp', 'matrix'].forEach(id => {
     const el = document.getElementById('tax-subtab-' + id);
     if (el) el.classList.remove('active');
   });
   
-  const map = { CATEGORY: 'cat', PHASE: 'phase', DISCIPLINE: 'disc', PROJECT_CODE: 'pjcode', EMPLOYEE: 'emp' };
+  const map = { CATEGORY: 'cat', PHASE: 'phase', DISCIPLINE: 'disc', PROJECT_CODE: 'pjcode', EMPLOYEE: 'emp', MATRIX: 'matrix' };
   const curBtn = document.getElementById('tax-subtab-' + (map[subTab] || 'cat'));
   if (curBtn) curBtn.classList.add('active');
 
-  const srch = document.getElementById('tax-srch');
-  if (srch) srch.value = '';
-  
-  renderTaxonomyTable();
+  const standardContainer = document.getElementById('tax-standard-container');
+  const matrixContainer = document.getElementById('tax-matrix-container');
+
+  if (subTab === 'MATRIX') {
+    if (standardContainer) standardContainer.style.display = 'none';
+    if (matrixContainer) matrixContainer.style.display = 'block';
+    renderPermissionMatrixTable();
+  } else {
+    if (standardContainer) standardContainer.style.display = 'block';
+    if (matrixContainer) matrixContainer.style.display = 'none';
+    const srch = document.getElementById('tax-srch');
+    if (srch) srch.value = '';
+    renderTaxonomyTable();
+  }
 }
 
 function getActiveTaxonomyList() {
@@ -6539,9 +6793,13 @@ function renderTaxonomyTable() {
         </div>
       `;
     } else if (_activeTaxSubTab === 'PROJECT_CODE') {
+      const yr = item.extra1 || '2026';
+      const seqMatch = (item.name || '').match(/^(\d{4})[-_](\d{1,3})[-_]/);
+      const seqVal = item.extra3 || (seqMatch ? seqMatch[2] : '01');
       extraDisplay = `
-        <div style="display:flex;align-items:center;gap:6px">
-          <span class="badge bg-pu">${item.extra1 || '2026'}</span>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span class="badge bg-pu" title="Năm">${yr}</span>
+          <span class="badge bg-bl" title="STT">#${String(seqVal).padStart(2, '0')}</span>
           ${item.extra2 ? `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>` : ''}
         </div>
       `;
@@ -6549,10 +6807,15 @@ function renderTaxonomyTable() {
       const sheetBtn = item.extra2
         ? `<a href="${item.extra2}" target="_blank" style="color:var(--p);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:3px">📊 Sheet ↗</a>`
         : `<span style="color:var(--t3);font-size:11px">${t('ts_sheet_none')}</span>`;
-      const isLevel1 = (item.extra3 === 'Admin' || item.extra3 === 'Cấp 1' || item.extra3 === '1');
-      const permBadge = isLevel1
-        ? `<span class="badge bg-re" style="font-size:10px">${t('tax_perm_level1')}</span>`
-        : `<span class="badge bg-bl" style="font-size:10px">${t('tax_perm_level2')}</span>`;
+      const rawRole = String(item.extra3 || "").toLowerCase().trim();
+      let permBadge = `<span class="badge bg-gr" style="font-size:10px">${t('tax_perm_level4')}</span>`;
+      if (["admin", "cấp 1", "level1", "1"].includes(rawRole)) {
+        permBadge = `<span class="badge bg-re" style="font-size:10px">${t('tax_perm_level1')}</span>`;
+      } else if (["leader", "cấp 2", "level2", "2"].includes(rawRole)) {
+        permBadge = `<span class="badge bg-pu" style="font-size:10px">${t('tax_perm_level2')}</span>`;
+      } else if (["pj_lead", "pj lead", "cấp 3", "level3", "3", "manager"].includes(rawRole)) {
+        permBadge = `<span class="badge bg-bl" style="font-size:10px">${t('tax_perm_level3')}</span>`;
+      }
       extraDisplay = `
         <div style="font-size:11px;line-height:1.4">
           <div>📧 <span style="color:var(--tx);font-weight:600">${item.extra1 || '-'}</span></div>
@@ -6590,6 +6853,33 @@ function filterTaxonomyTable() {
   renderTaxonomyTable();
 }
 
+function formatTaxProjectSeq() {
+  const seqInp = document.getElementById('mtax-pjc-seq');
+  if (!seqInp) return;
+  const val = seqInp.value.trim();
+  if (val && !isNaN(val)) {
+    seqInp.value = String(parseInt(val, 10)).padStart(2, '0');
+  }
+  syncTaxProjectName();
+}
+
+function syncTaxProjectName() {
+  const yr = (document.getElementById('mtax-pjc-year')?.value || '').trim();
+  const seq = (document.getElementById('mtax-pjc-seq')?.value || '').trim();
+  const code = (document.getElementById('mtax-pjc-code')?.value || '').trim().toUpperCase();
+  const desc = (document.getElementById('mtax-pjc-desc')?.value || '').trim();
+  const nameInp = document.getElementById('mtax-pjc-name');
+  if (nameInp) {
+    const parts = [];
+    if (yr) parts.push(yr);
+    if (seq) parts.push(seq);
+    if (code) parts.push(code);
+    if (desc) parts.push(desc);
+    nameInp.value = parts.join('_');
+  }
+  updateTaxPreview();
+}
+
 function openTaxonomyMod(id) {
   const modalTi = document.getElementById('mtax-modal-ti');
   const idInp = document.getElementById('mtax-id');
@@ -6617,15 +6907,43 @@ function openTaxonomyMod(id) {
     const item = all.find(x => x.id === id);
     if (item) {
       typeSel.value = item.type;
-      codeInp.value = item.code;
-      nameInp.value = item.name;
-      descInp.value = item.desc || '';
-      extra1Inp.value = item.extra1 || '';
-      if (colorInp && item.extra1 && item.extra1.startsWith('#')) colorInp.value = item.extra1;
-      extra2Inp.value = item.extra2 || '';
-      if (extra3Sel) {
-        const isL1 = ["admin", "cấp 1", "level1", "1"].includes(String(item.extra3 || "").toLowerCase().trim());
-        extra3Sel.value = isL1 ? "Admin" : "Level2";
+      if (item.type === 'PROJECT_CODE') {
+        const pjcYear = document.getElementById('mtax-pjc-year');
+        const pjcSeq = document.getElementById('mtax-pjc-seq');
+        const pjcCode = document.getElementById('mtax-pjc-code');
+        const pjcDesc = document.getElementById('mtax-pjc-desc');
+        const pjcName = document.getElementById('mtax-pjc-name');
+        const pjcExtra2 = document.getElementById('mtax-pjc-extra2');
+
+        const seqMatch = (item.name || '').match(/^(\d{4})[-_](\d{1,3})[-_]/);
+        const yr = item.extra1 || (seqMatch ? seqMatch[1] : new Date().getFullYear().toString());
+        const seq = item.extra3 || (seqMatch ? seqMatch[2] : '01');
+
+        if (pjcYear) pjcYear.value = yr;
+        if (pjcSeq) pjcSeq.value = String(seq).padStart(2, '0');
+        if (pjcCode) pjcCode.value = item.code || '';
+        if (pjcDesc) pjcDesc.value = item.desc || '';
+        if (pjcExtra2) pjcExtra2.value = item.extra2 || '';
+        if (pjcName) pjcName.value = item.name || '';
+      } else {
+        codeInp.value = item.code;
+        nameInp.value = item.name;
+        descInp.value = item.desc || '';
+        extra1Inp.value = item.extra1 || '';
+        if (colorInp && item.extra1 && item.extra1.startsWith('#')) colorInp.value = item.extra1;
+        extra2Inp.value = item.extra2 || '';
+        if (extra3Sel) {
+          const raw = String(item.extra3 || "").toLowerCase().trim();
+          if (["admin", "cấp 1", "level1", "1"].includes(raw)) {
+            extra3Sel.value = "Admin";
+          } else if (["leader", "cấp 2", "level2", "2"].includes(raw)) {
+            extra3Sel.value = "Leader";
+          } else if (["pj_lead", "pj lead", "cấp 3", "level3", "3", "manager"].includes(raw)) {
+            extra3Sel.value = "PJ_Lead";
+          } else {
+            extra3Sel.value = "Member";
+          }
+        }
       }
       statusSel.value = item.status || 'Active';
     }
@@ -6638,17 +6956,53 @@ function openTaxonomyMod(id) {
     extra1Inp.value = _activeTaxSubTab === 'EMPLOYEE' ? '' : '#4f6ef7';
     if (colorInp) colorInp.value = '#4f6ef7';
     extra2Inp.value = '';
-    if (extra3Sel) extra3Sel.value = 'Level2';
+    if (extra3Sel) extra3Sel.value = 'Member';
     statusSel.value = 'Active';
+
+    if (_activeTaxSubTab === 'PROJECT_CODE') {
+      const curYear = new Date().getFullYear().toString();
+      const existingSeqs = ((S.taxonomy && S.taxonomy.projectCodes) || []).map(c => {
+        if (c.extra3 && /^\d+$/.test(c.extra3)) return parseInt(c.extra3, 10);
+        const m = (c.name || '').match(new RegExp(`^${curYear}[-_](\\d{1,3})[-_]`));
+        return m ? parseInt(m[1], 10) : 0;
+      }).filter(n => n > 0);
+      const nextSeq = String(existingSeqs.length ? (Math.max(...existingSeqs) + 1) : 1).padStart(2, '0');
+
+      const pjcYear = document.getElementById('mtax-pjc-year');
+      const pjcSeq = document.getElementById('mtax-pjc-seq');
+      const pjcCode = document.getElementById('mtax-pjc-code');
+      const pjcDesc = document.getElementById('mtax-pjc-desc');
+      const pjcName = document.getElementById('mtax-pjc-name');
+      const pjcExtra2 = document.getElementById('mtax-pjc-extra2');
+
+      if (pjcYear) pjcYear.value = curYear;
+      if (pjcSeq) pjcSeq.value = nextSeq;
+      if (pjcCode) pjcCode.value = '';
+      if (pjcDesc) pjcDesc.value = '';
+      if (pjcExtra2) pjcExtra2.value = '';
+      if (pjcName) pjcName.value = '';
+    }
   }
 
   onTaxModalTypeChange();
-  updateTaxPreview();
   openModal('m-tax');
 }
 
 function onTaxModalTypeChange() {
   const type = document.getElementById('mtax-type')?.value || 'CATEGORY';
+  const pjcSection = document.getElementById('mtax-pjc-section');
+  const stdSection = document.getElementById('mtax-std-section');
+
+  if (type === 'PROJECT_CODE') {
+    if (pjcSection) pjcSection.style.display = 'block';
+    if (stdSection) stdSection.style.display = 'none';
+    syncTaxProjectName();
+    return;
+  }
+
+  if (pjcSection) pjcSection.style.display = 'none';
+  if (stdSection) stdSection.style.display = 'block';
+
   const codeLbl = document.getElementById('mtax-code-lbl');
   const codeHint = document.getElementById('mtax-code-hint');
   const codeInp = document.getElementById('mtax-code');
@@ -6681,44 +7035,19 @@ function onTaxModalTypeChange() {
     if (extra2Inp) extra2Inp.placeholder = "https://docs.google.com/spreadsheets/d/...";
     if (sheetBtn) sheetBtn.style.display = 'block';
     if (extra3Wrap) extra3Wrap.style.display = 'block';
-  } else if (type === 'CATEGORY' || type === 'DISCIPLINE') {
+  } else {
     if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
     if (codeHint) codeHint.textContent = "2-5 ký tự in hoa";
     if (codeInp) codeInp.placeholder = "VD: AR, STR, M3...";
     if (nameLbl) nameLbl.innerHTML = `<span>${t('tax_col_name')}</span> <span class="req">*</span>`;
     if (nameInp) nameInp.placeholder = "VD: Dựng hình kiến trúc...";
-    if (descLbl) descLbl.textContent = t('tax_col_desc');
+    if (descLbl) descLbl.textContent = t('tax_col_fullname');
     if (descInp) descInp.placeholder = "Mô tả phạm vi áp dụng, chi tiết nội dung đầu việc...";
     if (extra1Lbl) extra1Lbl.textContent = 'Màu nhận diện (Hex)';
     if (colorInp) colorInp.style.display = 'block';
     if (pickerGroup) pickerGroup.style.display = 'flex';
-    if (extra2Lbl) extra2Lbl.textContent = 'Ghi chú tiếng Nhật (Tùy chọn)';
+    if (extra2Lbl) extra2Lbl.textContent = t('tax_col_notes');
     if (extra2Inp) extra2Inp.placeholder = "VD: 建築モデリング...";
-    if (sheetBtn) sheetBtn.style.display = 'none';
-    if (extra3Wrap) extra3Wrap.style.display = 'none';
-  } else if (type === 'PROJECT_CODE') {
-    if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
-    if (codeHint) codeHint.textContent = "Mã dự án chuẩn";
-    if (codeInp) codeInp.placeholder = "VD: HAG01, JJK01...";
-    if (nameLbl) nameLbl.innerHTML = `<span>${t('tax_col_name')}</span> <span class="req">*</span>`;
-    if (nameInp) nameInp.placeholder = "VD: Khách sạn Grand Plaza...";
-    if (descLbl) descLbl.textContent = t('tax_col_desc');
-    if (extra1Lbl) extra1Lbl.textContent = 'Năm triển khai (VD: 2026)';
-    if (colorInp) colorInp.style.display = 'none';
-    if (pickerGroup) pickerGroup.style.display = 'none';
-    if (extra2Lbl) extra2Lbl.textContent = 'Ghi chú bổ sung';
-    if (sheetBtn) sheetBtn.style.display = 'none';
-    if (extra3Wrap) extra3Wrap.style.display = 'none';
-    if (extra1Inp && !extra1Inp.value.trim()) extra1Inp.value = new Date().getFullYear().toString();
-  } else {
-    if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
-    if (codeHint) codeHint.textContent = "2-5 ký tự in hoa";
-    if (nameLbl) nameLbl.innerHTML = `<span>${t('tax_col_name')}</span> <span class="req">*</span>`;
-    if (descLbl) descLbl.textContent = t('tax_col_desc');
-    if (extra1Lbl) extra1Lbl.textContent = 'Thông tin bổ sung (Tùy chọn)';
-    if (colorInp) colorInp.style.display = 'none';
-    if (pickerGroup) pickerGroup.style.display = 'none';
-    if (extra2Lbl) extra2Lbl.textContent = 'Ghi chú tiếng Nhật (Tùy chọn)';
     if (sheetBtn) sheetBtn.style.display = 'none';
     if (extra3Wrap) extra3Wrap.style.display = 'none';
   }
@@ -6742,14 +7071,21 @@ function updateTaxPreview() {
   const previewBox = document.getElementById('mtax-preview-badge');
   if (!previewBox) return;
 
-  const code = (document.getElementById('mtax-code')?.value || 'CODE').toUpperCase();
-  const name = document.getElementById('mtax-name')?.value || 'Tên hiển thị';
-  const color = document.getElementById('mtax-extra1')?.value || '#4f6ef7';
-  const isHex = color.startsWith('#');
-  const c = isHex ? color : '#4f6ef7';
+  const type = document.getElementById('mtax-type')?.value;
+  let code, name, color;
+  if (type === 'PROJECT_CODE') {
+    code = (document.getElementById('mtax-pjc-code')?.value || 'CODE').toUpperCase();
+    name = document.getElementById('mtax-pjc-name')?.value || 'Tên hiển thị';
+    color = '#6366f1';
+  } else {
+    code = (document.getElementById('mtax-code')?.value || 'CODE').toUpperCase();
+    name = document.getElementById('mtax-name')?.value || 'Tên hiển thị';
+    const c = document.getElementById('mtax-extra1')?.value || '#4f6ef7';
+    color = (c && c.startsWith('#')) ? c : '#4f6ef7';
+  }
 
   previewBox.innerHTML = `
-    <span class="tax-code-badge" style="background:${c}15;color:${c};border:1px solid ${c}40">${code}</span>
+    <span class="tax-code-badge" style="background:${color}15;color:${color};border:1px solid ${color}40">${code}</span>
     <span style="font-weight:600;font-size:12px;color:var(--tx)">${name}</span>
   `;
 }
@@ -6757,16 +7093,33 @@ function updateTaxPreview() {
 function submitTaxonomyItem() {
   const id = document.getElementById('mtax-id')?.value;
   const type = document.getElementById('mtax-type')?.value;
-  const code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
-  const name = (document.getElementById('mtax-name')?.value || '').trim();
-  const desc = (document.getElementById('mtax-desc')?.value || '').trim();
-  const extra1 = (document.getElementById('mtax-extra1')?.value || '').trim();
-  const extra2 = (document.getElementById('mtax-extra2')?.value || '').trim();
-  const extra3 = (document.getElementById('mtax-extra3')?.value || '').trim();
   const status = document.getElementById('mtax-status')?.value || 'Active';
+  let code, name, desc, extra1, extra2, extra3;
 
-  if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
-  if (!name) { toast("Vui lòng nhập tên phân loại", "error"); return; }
+  if (type === 'PROJECT_CODE') {
+    extra1 = (document.getElementById('mtax-pjc-year')?.value || '').trim();
+    extra3 = (document.getElementById('mtax-pjc-seq')?.value || '').trim();
+    code = (document.getElementById('mtax-pjc-code')?.value || '').trim().toUpperCase();
+    desc = (document.getElementById('mtax-pjc-desc')?.value || '').trim();
+    name = (document.getElementById('mtax-pjc-name')?.value || '').trim();
+    extra2 = (document.getElementById('mtax-pjc-extra2')?.value || '').trim();
+
+    if (!extra1) { toast("Vui lòng nhập năm triển khai", "error"); return; }
+    if (!extra3) { toast("Vui lòng nhập số thứ tự (STT)", "error"); return; }
+    if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
+    if (!desc) { toast("Vui lòng nhập tên đầy đủ dự án", "error"); return; }
+    if (!name) name = `${extra1}_${extra3}_${code}_${desc}`;
+  } else {
+    code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
+    name = (document.getElementById('mtax-name')?.value || '').trim();
+    desc = (document.getElementById('mtax-desc')?.value || '').trim();
+    extra1 = (document.getElementById('mtax-extra1')?.value || '').trim();
+    extra2 = (document.getElementById('mtax-extra2')?.value || '').trim();
+    extra3 = (document.getElementById('mtax-extra3')?.value || '').trim();
+
+    if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
+    if (!name) { toast("Vui lòng nhập tên phân loại", "error"); return; }
+  }
 
   const payload = { id, type, code, name, desc, extra1, extra2, extra3, status };
 
@@ -6786,6 +7139,7 @@ function submitTaxonomyItem() {
     })
     .saveTaxonomyItem(payload);
 }
+
 
 function createStaffSheetClick() {
   const code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
@@ -7118,6 +7472,260 @@ function applyBatchTaskMigration() {
       if (submitBtn) submitBtn.disabled = false;
     })
     .batchUpdateLegacyTasks(updates);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PERMISSION MATRIX (MA TRẬN PHÂN QUYỀN) CONTROLLER
+// ═══════════════════════════════════════════════════════════
+
+const DEFAULT_PERM_MATRIX = {
+  // 1. Dashboard
+  "dash_view":        { module: "dashboard", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "dash_filter_pj":   { module: "dashboard", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  // 2. Dự án (Projects)
+  "pj_view":          { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "pj_create":        { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "DENY",     member: "DENY" },
+  "pj_edit":          { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "pj_members":       { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "pj_delete":        { module: "projects",  admin: "FULL", leader: "DENY", pj_lead: "DENY",     member: "DENY" },
+  // 3. Nhiệm vụ (Tasks)
+  "tk_view":          { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "tk_create":        { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_edit":          { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_update_prog":   { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "OWN" },
+  "tk_approve":       { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_delete":        { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 4. Sơ đồ Gantt
+  "gantt_view":       { module: "gantt",     admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "gantt_edit":       { module: "gantt",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 5. Báo cáo & Phân tích (Analytics)
+  "ana_view":         { module: "analytics", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "ana_export":       { module: "analytics", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 6. Quản lý thời gian (Timesheet)
+  "ts_entry":         { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "FULL",     member: "FULL" },
+  "ts_view_others":   { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "ts_export":        { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 7. Danh mục tiêu chuẩn (Taxonomy)
+  "tax_view":         { module: "taxonomy",  admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "VIEW_ALL" },
+  "tax_edit":         { module: "taxonomy",  admin: "FULL", leader: "FULL", pj_lead: "DENY",     member: "DENY" },
+  "tax_matrix_edit":  { module: "taxonomy",  admin: "FULL", leader: "DENY", pj_lead: "DENY",     member: "DENY" },
+  // 8. Người dùng (Users)
+  "usr_view":         { module: "users",     admin: "FULL", leader: "VIEW_ALL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "usr_manage":       { module: "users",     admin: "FULL", leader: "DENY", pj_lead: "DENY",     member: "DENY" },
+  // 9. Nhật ký hoạt động (Audit Log)
+  "log_view":         { module: "log",       admin: "FULL", leader: "VIEW_ALL", pj_lead: "DENY", member: "DENY" }
+};
+
+const MATRIX_ACTION_META = {
+  dash_view:      { module: "dashboard", vi: "Xem Dashboard tổng quan", en: "View general Dashboard", ja: "ダッシュボード全般閲覧" },
+  dash_filter_pj: { module: "dashboard", vi: "Lọc thống kê theo Dự án", en: "Filter statistics by Project", ja: "プロジェクト別統計絞り込み" },
+  pj_view:        { module: "projects",  vi: "Xem danh sách dự án", en: "View project list", ja: "プロジェクト一覧閲覧" },
+  pj_create:      { module: "projects",  vi: "Tạo dự án mới", en: "Create new project", ja: "新規プロジェクト作成" },
+  pj_edit:        { module: "projects",  vi: "Sửa thông tin dự án", en: "Edit project info", ja: "プロジェクト情報編集" },
+  pj_members:     { module: "projects",  vi: "Thêm/bớt thành viên dự án", en: "Manage project members", ja: "PJメンバーの追加・削除" },
+  pj_delete:      { module: "projects",  vi: "Xóa / Lưu trữ dự án", en: "Delete / Archive project", ja: "プロジェクト削除・アーカイブ" },
+  tk_view:        { module: "tasks",     vi: "Xem danh sách / Kanban task", en: "View task list / Kanban", ja: "タスク一覧・カンバン閲覧" },
+  tk_create:      { module: "tasks",     vi: "Tạo nhiệm vụ (Đơn/Hàng loạt)", en: "Create tasks (Single/Bulk)", ja: "タスク作成（個別・一括）" },
+  tk_edit:        { module: "tasks",     vi: "Sửa thông tin / Deadline / Gán người", en: "Edit details / Deadline / Assign", ja: "詳細編集・期日・担当割当" },
+  tk_update_prog: { module: "tasks",     vi: "Cập nhật % tiến độ & Link kết quả", en: "Update % progress & Result links", ja: "進捗率更新・成果物リンク" },
+  tk_approve:     { module: "tasks",     vi: "Duyệt hoàn thành nhiệm vụ", en: "Approve task completion", ja: "タスク完了承認" },
+  tk_delete:      { module: "tasks",     vi: "Xóa nhiệm vụ", en: "Delete task", ja: "タスク削除" },
+  gantt_view:     { module: "gantt",     vi: "Xem tiến độ trên Gantt", en: "View progress on Gantt chart", ja: "ガントチャート閲覧" },
+  gantt_edit:     { module: "gantt",     vi: "Kéo đổi ngày trên Gantt", en: "Drag & drop dates on Gantt", ja: "ガント上での日程変更" },
+  ana_view:       { module: "analytics", vi: "Xem báo cáo hiệu suất & KPI", en: "View performance & KPI reports", ja: "成果・KPI分析レポート閲覧" },
+  ana_export:     { module: "analytics", vi: "Xuất dữ liệu báo cáo", en: "Export report data", ja: "レポートデータ出力" },
+  ts_entry:       { module: "timesheet", vi: "Nhập giờ công cá nhân (30p slot)", en: "Log personal timesheet (30m slots)", ja: "個人工数入力（30分単位）" },
+  ts_view_others: { module: "timesheet", vi: "Xem Timesheet nhân sự khác", en: "View other members' timesheets", ja: "他メンバーの工数閲覧" },
+  ts_export:      { module: "timesheet", vi: "Xuất bảng chấm công", en: "Export timesheets", ja: "工数集計データ出力" },
+  tax_view:       { module: "taxonomy",  vi: "Xem danh mục tiêu chuẩn", en: "View standard taxonomy", ja: "基準マスタ閲覧" },
+  tax_edit:       { module: "taxonomy",  vi: "Thêm/Sửa Category, Phase, Discipline", en: "Add/Edit Category, Phase, Discipline", ja: "カテゴリ・フェーズ・専門工種編集" },
+  tax_matrix_edit:{ module: "taxonomy",  vi: "Cấu hình Ma trận phân quyền", en: "Configure Permission Matrix", ja: "権限マトリクス設定" },
+  usr_view:       { module: "users",     vi: "Xem danh bạ người dùng", en: "View user directory", ja: "ユーザー名簿閲覧" },
+  usr_manage:     { module: "users",     vi: "Thêm/Sửa/Khóa người dùng", en: "Add/Edit/Block users", ja: "ユーザー作成・編集・無効化" },
+  log_view:       { module: "log",       vi: "Xem nhật ký hệ thống (Audit Log)", en: "View system audit logs", ja: "システム監査ログ閲覧" }
+};
+
+const MATRIX_MODULE_NAMES = {
+  dashboard: { vi: "1. Tổng quan (Dashboard)", en: "1. Dashboard", ja: "1. ダッシュボード" },
+  projects:  { vi: "2. Quản lý Dự án (Projects)", en: "2. Projects", ja: "2. プロジェクト管理" },
+  tasks:     { vi: "3. Quản lý Nhiệm vụ (Tasks)", en: "3. Tasks", ja: "3. タスク管理" },
+  gantt:     { vi: "4. Sơ đồ Gantt (Gantt Chart)", en: "4. Gantt Chart", ja: "4. ガントチャート" },
+  analytics: { vi: "5. Báo cáo & Phân tích (Analytics)", en: "5. Analytics", ja: "5. 分析・レポート" },
+  timesheet: { vi: "6. Quản lý Thời gian (Timesheet)", en: "6. Timesheet", ja: "6. 工数・タイムシート" },
+  taxonomy:  { vi: "7. Danh mục tiêu chuẩn (Taxonomy)", en: "7. Standards & Taxonomy", ja: "7. 基準マスタ・規約" },
+  users:     { vi: "8. Quản trị Người dùng (Users)", en: "8. User Management", ja: "8. ユーザー管理" },
+  log:       { vi: "9. Nhật ký hoạt động (Audit Log)", en: "9. Audit Logs", ja: "9. 監査ログ" }
+};
+
+function _normalizePermVal(v) {
+  if (!v) return "DENY";
+  const s = String(v).toUpperCase().trim();
+  if (s === "FULL" || s.includes("TOÀN QUYỀN") || s.includes("TOAN QUYEN")) return "FULL";
+  if (s === "LEAD_SCOPE" || s.includes("LEAD") || s.includes("PHẠM VI") || s.includes("PHAM VI")) return "LEAD_SCOPE";
+  if (s === "VIEW_ALL" || s.includes("VIEW") || s.includes("XEM TOÀN CẢNH") || s.includes("XEM TOAN CANH") || s.includes("CHỈ XEM") || s.includes("CHI XEM")) return "VIEW_ALL";
+  if (s === "OWN" || s.includes("CÁ NHÂN") || s.includes("CA NHAN")) return "OWN";
+  if (s === "DENY" || s.includes("KHÔNG") || s.includes("KHONG") || s.includes("ẨN") || s.includes("AN")) return "DENY";
+  return s;
+}
+
+function _renderPermSelect(actionKey, role, currentVal, isAdmin) {
+  const normVal = _normalizePermVal(currentVal);
+  const options = [
+    { val: "FULL", text: t('perm_full') },
+    { val: "LEAD_SCOPE", text: t('perm_lead_scope') },
+    { val: "VIEW_ALL", text: t('perm_view_all') },
+    { val: "OWN", text: t('perm_own') },
+    { val: "DENY", text: t('perm_deny') }
+  ];
+  if (!isAdmin) {
+    const opt = options.find(o => o.val === normVal) || { text: normVal };
+    return `<div style="text-align:center"><span style="font-size:11px;font-weight:600">${opt.text}</span></div>`;
+  }
+  return `
+    <select class="matrix-sel" data-action="${actionKey}" data-role="${role}" data-val="${normVal}" onchange="this.dataset.val=this.value">
+      ${options.map(o => `<option value="${o.val}" ${o.val === normVal ? 'selected' : ''}>${o.text}</option>`).join('')}
+    </select>
+  `;
+}
+
+function renderPermissionMatrixTable() {
+  const tbody = document.getElementById('matrix-tbody');
+  const badgeEl = document.getElementById('matrix-status-badge');
+  if (!tbody) return;
+
+  const curMatrix = S.permissionMatrix || DEFAULT_PERM_MATRIX;
+  const isAdmin = S.user && S.user.role === 'Admin';
+
+  // Read currently selected values in DOM before re-rendering so we don't lose unsaved choices
+  document.querySelectorAll('#matrix-tbody select.matrix-sel').forEach(sel => {
+    const action = sel.dataset.action;
+    const role = sel.dataset.role;
+    if (action && role && curMatrix[action]) {
+      curMatrix[action][role] = sel.value;
+    }
+  });
+
+  // Check if custom or default
+  let isCustom = false;
+  try {
+    for (const k in DEFAULT_PERM_MATRIX) {
+      if (curMatrix[k]) {
+        if (_normalizePermVal(curMatrix[k].leader) !== DEFAULT_PERM_MATRIX[k].leader ||
+            _normalizePermVal(curMatrix[k].pj_lead) !== DEFAULT_PERM_MATRIX[k].pj_lead ||
+            _normalizePermVal(curMatrix[k].member) !== DEFAULT_PERM_MATRIX[k].member) {
+          isCustom = true;
+          break;
+        }
+      }
+    }
+  } catch(e) {}
+
+  if (badgeEl) {
+    badgeEl.textContent = isCustom ? t('matrix_badge_custom') : t('matrix_badge_default');
+    badgeEl.className = isCustom ? 'an-badge an-badge-warn' : 'an-badge an-badge-blue';
+  }
+
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+
+  // Group by module
+  const moduleOrder = ["dashboard", "projects", "tasks", "gantt", "analytics", "timesheet", "taxonomy", "users", "log"];
+  let rowsHtml = '';
+  let rowIdx = 0;
+
+  moduleOrder.forEach(modKey => {
+    const modTitle = (MATRIX_MODULE_NAMES[modKey] && MATRIX_MODULE_NAMES[modKey][lang]) || MATRIX_MODULE_NAMES[modKey]?.en || MATRIX_MODULE_NAMES[modKey]?.vi || modKey;
+    rowsHtml += `
+      <tr class="matrix-module-hdr">
+        <td colspan="6">${modTitle}</td>
+      </tr>
+    `;
+
+    Object.keys(MATRIX_ACTION_META).forEach(actionKey => {
+      const meta = MATRIX_ACTION_META[actionKey];
+      if (meta.module !== modKey) return;
+      rowIdx++;
+
+      const actionTitle = (meta && meta[lang]) || (meta && meta.en) || (meta && meta.vi) || actionKey;
+      const rowData = curMatrix[actionKey] || DEFAULT_PERM_MATRIX[actionKey] || { admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" };
+
+      rowsHtml += `
+        <tr>
+          <td style="text-align:center;color:var(--t3);font-size:11px">${rowIdx}</td>
+          <td style="font-weight:600;color:var(--tx)">${actionTitle}</td>
+          <td style="text-align:center"><span class="badge bg-re" style="font-size:10px">${t('perm_full')}</span></td>
+          <td>${_renderPermSelect(actionKey, 'leader', rowData.leader || 'FULL', isAdmin)}</td>
+          <td>${_renderPermSelect(actionKey, 'pj_lead', rowData.pj_lead || 'VIEW_ALL', isAdmin)}</td>
+          <td>${_renderPermSelect(actionKey, 'member', rowData.member || 'DENY', isAdmin)}</td>
+        </tr>
+      `;
+    });
+  });
+
+  tbody.innerHTML = rowsHtml;
+}
+
+function savePermissionMatrixClick() {
+  const isAdmin = S.user && S.user.role === 'Admin';
+  if (!isAdmin) {
+    toast(t('matrix_admin_only_save'), "error");
+    return;
+  }
+
+  const matrix = JSON.parse(JSON.stringify(S.permissionMatrix || DEFAULT_PERM_MATRIX));
+  document.querySelectorAll('#matrix-tbody select.matrix-sel').forEach(sel => {
+    const action = sel.dataset.action;
+    const role = sel.dataset.role;
+    if (matrix[action]) {
+      matrix[action][role] = sel.value;
+    }
+  });
+
+  // Ensure Admin is always FULL
+  Object.keys(matrix).forEach(k => {
+    if (matrix[k]) matrix[k].admin = "FULL";
+  });
+
+  toast(t('matrix_saving'), "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        S.permissionMatrix = res.matrix;
+        toast(t('matrix_saved_success'), "success");
+        renderPermissionMatrixTable();
+      } else {
+        toast((res && res.error) || "Lỗi lưu ma trận phân quyền", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .savePermissionMatrix(matrix);
+}
+
+function resetPermissionMatrixClick() {
+  const isAdmin = S.user && S.user.role === 'Admin';
+  if (!isAdmin) {
+    toast(t('matrix_admin_only_reset'), "error");
+    return;
+  }
+
+  if (!confirm(t('matrix_reset_confirm'))) return;
+
+  toast(t('matrix_resetting'), "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        S.permissionMatrix = res.matrix;
+        toast(t('msg_save_success'), "success");
+        renderPermissionMatrixTable();
+      } else {
+        toast((res && res.error) || "Lỗi khôi phục ma trận", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .resetPermissionMatrix();
 }
 
 // ═══════════════════════════════════════════════════════════

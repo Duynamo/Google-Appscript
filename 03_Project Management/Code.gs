@@ -10,7 +10,7 @@ const CONFIG = {
   SHEET_TASKS   : "TASKS",
   SHEET_LOG     : "ACTIVITY_LOG",
   SHEET_TAXONOMY: "TAXONOMY",
-  ROLES         : ["Admin","Manager","Member","Viewer"],
+  ROLES         : ["Admin","Leader","PJ_Lead","Member"],
   TASK_STATUS   : ["Chờ thực hiện","Đang thực hiện","Chờ duyệt","Hoàn thành","Tạm dừng","Hủy"],
   TASK_PRIORITY : ["Thấp","Trung bình","Cao","Khẩn cấp"],
   PROJECT_STATUS: ["Lên kế hoạch","Đang thực hiện","Hoàn thành","Tạm dừng","Hủy"],
@@ -128,20 +128,36 @@ function getCurrentUser() {
     };
   }
 
-  // Nếu là nhân sự Cấp 2 trong Taxonomy
+  // Nếu là nhân sự có trong Taxonomy
   if (emp) {
     if (emp.status && emp.status.toLowerCase() !== "active" && emp.status !== "Đang hoạt động") {
       return { email, role: null, name: emp.name || email, registered: false, locked: true };
     }
-    const isEmpL1 = ["cấp 1", "admin", "level1", "1"].includes(String(emp.extra3 || "").toLowerCase().trim());
-    const permLevel = isEmpL1 ? 1 : 2;
+    const extra3Str = String(emp.extra3 || "").toLowerCase().trim();
+    let role = "Member";
+    let permLevel = 4;
+    let rank = emp.desc || "Thành viên";
+    if (["cấp 1", "admin", "level1", "1"].includes(extra3Str)) {
+      role = "Admin";
+      permLevel = 1;
+      rank = emp.desc || "Quản trị viên";
+    } else if (["leader", "cấp 2", "level2", "2"].includes(extra3Str)) {
+      role = "Leader";
+      permLevel = 2;
+      rank = emp.desc || "Trưởng bộ phận";
+    } else if (["pj_lead", "pj lead", "cấp 3", "level3", "3", "manager"].includes(extra3Str)) {
+      role = "PJ_Lead";
+      permLevel = 3;
+      rank = emp.desc || "Quản lý dự án";
+    }
+
     return {
       id: emp.id,
       staffCode: emp.code,
       email: emp.extra1,
       name: emp.name,
-      rank: emp.desc || (isEmpL1 ? "Quản trị viên" : "Nhân viên"),
-      role: isEmpL1 ? "Admin" : "Level2",
+      rank: rank,
+      role: role,
       permissionLevel: permLevel,
       sheetUrl: emp.extra2 || "",
       status: emp.status || "Active",
@@ -151,16 +167,32 @@ function getCurrentUser() {
 
   // Fallback sang USERS sheet nếu không có trong Taxonomy
   if (userRow) {
-    const rawRole = String(userRow[3] || "Member");
-    const isL1 = (rawRole.toLowerCase() === "admin" || rawRole.toLowerCase() === "manager");
-    const permLevel = isL1 ? 1 : 2;
+    const rawRole = String(userRow[3] || "Member").trim();
+    let role = "Member";
+    let permLevel = 4;
+    let rank = userRow[6] || "Thành viên";
+
+    if (rawRole.toLowerCase() === "admin") {
+      role = "Admin";
+      permLevel = 1;
+      rank = userRow[6] || "Quản trị viên";
+    } else if (rawRole.toLowerCase() === "leader") {
+      role = "Leader";
+      permLevel = 2;
+      rank = userRow[6] || "Trưởng bộ phận";
+    } else if (rawRole === "PJ_Lead" || rawRole.toLowerCase() === "manager") {
+      role = "PJ_Lead";
+      permLevel = 3;
+      rank = userRow[6] || "Quản lý dự án";
+    }
+
     return {
       id: userRow[0],
       staffCode: userRow[0],
       email: userRow[1],
       name: userRow[2],
-      rank: userRow[6] || (isL1 ? "Quản lý" : "Thành viên"),
-      role: isL1 ? rawRole : "Level2",
+      rank: rank,
+      role: role,
       permissionLevel: permLevel,
       sheetUrl: "",
       status: userRow[4] || "Active",
@@ -228,13 +260,122 @@ function ensureAdminPersistence(email, userRow, emp) {
   }
 }
 
+// ============================================================
+//  MA TRẬN PHÂN QUYỀN HỆ THỐNG (DYNAMIC RBAC MATRIX)
+// ============================================================
+const DEFAULT_PERM_MATRIX = {
+  // 1. Dashboard
+  "dash_view":        { module: "dashboard", name: "Xem Dashboard tổng quan", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "dash_filter_pj":   { module: "dashboard", name: "Lọc thống kê theo Dự án", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+
+  // 2. Dự án (Projects)
+  "pj_view":          { module: "projects",  name: "Xem danh sách dự án",     admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "pj_create":        { module: "projects",  name: "Tạo dự án mới",           admin: "FULL", leader: "FULL", pj_lead: "DENY",     member: "DENY" },
+  "pj_edit":          { module: "projects",  name: "Sửa thông tin dự án",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "pj_members":       { module: "projects",  name: "Thêm/bớt thành viên dự án", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "pj_delete":        { module: "projects",  name: "Xóa / Lưu trữ dự án",     admin: "FULL", leader: "DENY", pj_lead: "DENY",     member: "DENY" },
+
+  // 3. Nhiệm vụ (Tasks)
+  "tk_view":          { module: "tasks",     name: "Xem danh sách/Kanban task", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "tk_create":        { module: "tasks",     name: "Tạo nhiệm vụ (Đơn/Hàng loạt)", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_edit":          { module: "tasks",     name: "Sửa thông tin / Deadline / Gán người", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_update_prog":   { module: "tasks",     name: "Cập nhật % tiến độ & Link kết quả", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "OWN" },
+  "tk_approve":       { module: "tasks",     name: "Duyệt hoàn thành nhiệm vụ", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_delete":        { module: "tasks",     name: "Xóa nhiệm vụ",            admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+
+  // 4. Sơ đồ Gantt
+  "gantt_view":       { module: "gantt",     name: "Xem tiến độ trên Gantt",  admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "gantt_edit":       { module: "gantt",     name: "Kéo đổi ngày trên Gantt", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+
+  // 5. Báo cáo & Phân tích (Analytics)
+  "ana_view":         { module: "analytics", name: "Xem báo cáo hiệu suất & KPI", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "ana_export":       { module: "analytics", name: "Xuất dữ liệu báo cáo",    admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+
+  // 6. Quản lý thời gian (Timesheet)
+  "ts_entry":         { module: "timesheet", name: "Nhập giờ công cá nhân (30p slot)", admin: "FULL", leader: "FULL", pj_lead: "FULL", member: "FULL" },
+  "ts_view_others":   { module: "timesheet", name: "Xem Timesheet nhân sự khác", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "ts_export":        { module: "timesheet", name: "Xuất bảng chấm công",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+
+  // 7. Danh mục tiêu chuẩn (Taxonomy)
+  "tax_view":         { module: "taxonomy",  name: "Xem danh mục tiêu chuẩn", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "VIEW_ALL" },
+  "tax_edit":         { module: "taxonomy",  name: "Thêm/Sửa Category, Phase, Discipline", admin: "FULL", leader: "FULL", pj_lead: "DENY", member: "DENY" },
+  "tax_matrix_edit":  { module: "taxonomy",  name: "Cấu hình Ma trận phân quyền", admin: "FULL", leader: "DENY", pj_lead: "DENY", member: "DENY" },
+
+  // 8. Người dùng (Users)
+  "usr_view":         { module: "users",     name: "Xem danh bạ thành viên",  admin: "FULL", leader: "VIEW_ALL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "usr_manage":       { module: "users",     name: "Thêm/Sửa/Khóa người dùng", admin: "FULL", leader: "DENY", pj_lead: "DENY", member: "DENY" },
+
+  // 9. Nhật ký hoạt động (Audit Log)
+  "log_view":         { module: "log",       name: "Xem nhật ký hệ thống",    admin: "FULL", leader: "VIEW_ALL", pj_lead: "DENY", member: "DENY" }
+};
+
+function getPermissionMatrixInternal() {
+  try {
+    const raw = PropertiesService.getScriptProperties().getProperty("PERMISSION_MATRIX_CONFIG");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return Object.assign({}, DEFAULT_PERM_MATRIX, parsed);
+    }
+  } catch(e) {}
+  return DEFAULT_PERM_MATRIX;
+}
+
+function getPermissionMatrix() {
+  return { success: true, matrix: getPermissionMatrixInternal() };
+}
+
+function savePermissionMatrix(matrix) {
+  try {
+    const user = getCurrentUser();
+    if (!user || user.role !== "Admin") {
+      return { success: false, error: "Chỉ Admin mới có quyền lưu ma trận phân quyền" };
+    }
+    if (!matrix || typeof matrix !== "object") {
+      return { success: false, error: "Dữ liệu ma trận không hợp lệ" };
+    }
+    PropertiesService.getScriptProperties().setProperty("PERMISSION_MATRIX_CONFIG", JSON.stringify(matrix));
+    writeLog("UPDATE_MATRIX", "Cập nhật cấu hình Ma trận phân quyền hệ thống");
+    return { success: true, matrix: matrix };
+  } catch(e) {
+    return { success: false, error: e.message };
+  }
+}
+
+function resetPermissionMatrix() {
+  try {
+    const user = getCurrentUser();
+    if (!user || user.role !== "Admin") {
+      return { success: false, error: "Chỉ Admin mới có quyền khôi phục ma trận phân quyền" };
+    }
+    PropertiesService.getScriptProperties().deleteProperty("PERMISSION_MATRIX_CONFIG");
+    writeLog("RESET_MATRIX", "Khôi phục Ma trận phân quyền về mặc định chuẩn");
+    return { success: true, matrix: DEFAULT_PERM_MATRIX };
+  } catch(e) {
+    return { success: false, error: e.message };
+  }
+}
+
 function hasPermission(role, action) {
+  if (!role) return false;
+  if (role === "Admin") return true;
+
+  const matrix = getPermissionMatrixInternal();
+  let roleKey = "member";
+  if (role === "Leader") roleKey = "leader";
+  else if (role === "PJ_Lead" || role === "Manager") roleKey = "pj_lead";
+
+  if (matrix && matrix[action]) {
+    const val = matrix[action][roleKey];
+    return val === "FULL" || val === "LEAD_SCOPE" || val === "VIEW_ALL";
+  }
+
+  // Fallback map
   const perms = {
     Admin  :["view","create","edit","delete","manage_users","manage_projects","manage_tasks","report","timesheet_all","timesheet_own"],
-    Manager:["view","create","edit","manage_projects","manage_tasks","report","timesheet_all","timesheet_own"],
+    Leader :["view","create","edit","manage_projects","manage_tasks","report","timesheet_all","timesheet_own"],
+    PJ_Lead:["view","create","edit","manage_tasks","report","timesheet_own"],
+    Manager:["view","create","edit","manage_tasks","report","timesheet_own"],
     Member :["view","edit_own_tasks","report_own","timesheet_own"],
-    Level2 :["timesheet_own"], // Phân quyền Cấp 2: Chỉ nhập thời gian trong tab Quản lý thời gian
-    Viewer :["view"],
   };
   return perms[role] && perms[role].includes(action);
 }
@@ -293,18 +434,15 @@ function getInitData() {
   const allTasks    = getSheetData(CONFIG.SHEET_TASKS);
   const allUsers    = getSheetData(CONFIG.SHEET_USERS);
 
-  let projects = allProjects;
-  let tasks    = allTasks;
-  if (user.role === "Manager") {
-    const managedProjects = allProjects.filter(p => p[3] === user.email);
-    const managedPjIds    = new Set(managedProjects.map(p => p[0]));
-    tasks = allTasks.filter(t => managedPjIds.has(t[1]) || userMatchesAssignee(t[5], user.email, user.name));
-    const relatedPjIds    = new Set([...managedPjIds, ...tasks.map(t => t[1])]);
-    projects = allProjects.filter(p => relatedPjIds.has(p[0]));
-  } else if (user.role === "Member") {
+  if (user.role === "Member") {
+    // Thành viên: lọc nhiệm vụ được giao và các dự án tham gia
     tasks = allTasks.filter(t => userMatchesAssignee(t[5], user.email, user.name));
     const memberPjIds = new Set(tasks.map(t => t[1]));
-    projects = allProjects.filter(p => memberPjIds.has(p[0]));
+    projects = allProjects.filter(p => memberPjIds.has(p[0]) || userMatchesAssignee(p[3], user.email, user.name));
+  } else {
+    // Admin, Leader, PJ_Lead: Xem toàn bộ dự án và nhiệm vụ để phối hợp
+    projects = allProjects;
+    tasks = allTasks;
   }
 
   const mappedProjects = projects.map(r=>mapProject(r));
@@ -333,11 +471,12 @@ function getInitData() {
       rank: user.rank || "",
       sheetUrl: user.sheetUrl || ""
     },
-    isTimesheetOnly: (user.permissionLevel === 2),
+    isTimesheetOnly: false,
     projects: mappedProjects,
     tasks   : mappedTasks,
     members,
     taxonomy: getTaxonomyDataInternal(),
+    permissionMatrix: getPermissionMatrixInternal(),
     summary : {
       totalProjects: mappedProjects.length,
       totalTasks   : mappedTasks.length,

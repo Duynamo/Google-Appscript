@@ -26,8 +26,8 @@ const DEFAULT_TAXONOMY_LIST = [
   { id:"DISC_PCL", type:"DISCIPLINE", code:"PCL", name:"Point cloud layering", desc:"Point cloud layering: chia layer point cloud", extra1:"#0284c7", extra2:"点群レイヤー分け", status:"Active" },
 
   // PROJECT CODES (Mã dự án)
-  { id:"PJC_HAG01", type:"PROJECT_CODE", code:"HAG01", name:"2026_HAG01", desc:"花見川終末処理場", extra1:"2026", extra2:"花見川終末処理場", status:"Active" },
-  { id:"PJC_JJK01", type:"PROJECT_CODE", code:"JJK01", name:"2026_JJK01", desc:"十字会", extra1:"2026", extra2:"十字会", status:"Active" },
+  { id:"PJC_HAG01", type:"PROJECT_CODE", code:"HAG01", name:"2026_01_HAG01_花見川終末処理場", desc:"花見川終末処理場", extra1:"2026", extra2:"花見川終末処理場", extra3:"01", status:"Active" },
+  { id:"PJC_JJK01", type:"PROJECT_CODE", code:"JJK01", name:"2026_01_JJK01_十字会工房ヴィレッジ新築工事", desc:"十字会工房ヴィレッジ新築工事", extra1:"2026", extra2:"十字会", extra3:"01", status:"Active" },
 
   // EMPLOYEES (Nhân sự tiêu chuẩn & Phân quyền)
   { id:"EMP_NV001", type:"EMPLOYEE", code:"NV001", name:"Vũ Đình Duy (Admin)", desc:"Quản trị viên / Leader", extra1:Session.getActiveUser().getEmail() || Session.getEffectiveUser().getEmail() || "admin@example.com", extra2:"", extra3:"Admin", status:"Active" },
@@ -78,8 +78,9 @@ function getTaxonomyDataInternal() {
       extra1: String(r[5] || "").trim(),
       extra2: String(r[6] || "").trim(),
       status: String(r[7] || "Active").trim(),
-      extra3: String(r[9] || "Cấp 2").trim()
+      extra3: (r[9] !== undefined && r[9] !== null) ? String(r[9]).trim() : ""
     };
+    if (item.type === "EMPLOYEE" && !item.extra3) item.extra3 = "Member";
     if (item.type === "CATEGORY") categories.push(item);
     else if (item.type === "PHASE") phases.push(item);
     else if (item.type === "DISCIPLINE") disciplines.push(item);
@@ -87,7 +88,7 @@ function getTaxonomyDataInternal() {
     else if (item.type === "EMPLOYEE") employees.push(item);
   });
 
-  return { categories, phases, disciplines, projectCodes, employees };
+  return { categories, phases, disciplines, projectCodes, employees, permissionMatrix: getPermissionMatrixInternal() };
 }
 
 function getTaxonomyData() {
@@ -154,12 +155,17 @@ function saveTaxonomyItem(payload) {
 
           // Đồng bộ với USERS sheet nếu là EMPLOYEE
           if (type === "EMPLOYEE" && payload.extra1) {
-            const isEmpL1 = ["cấp 1", "admin", "level1", "1"].includes(extra3.toLowerCase());
+            let targetRole = "Member";
+            const ex3 = extra3.toLowerCase();
+            if (["cấp 1", "admin", "level1", "1"].includes(ex3)) targetRole = "Admin";
+            else if (["cấp 2", "leader", "level2", "2"].includes(ex3)) targetRole = "Leader";
+            else if (["cấp 3", "pj_lead", "pj lead", "level3", "3", "manager"].includes(ex3)) targetRole = "PJ_Lead";
+            
             syncEmployeeToUsersSheet({
               id: payload.code,
               email: payload.extra1,
               name: payload.name,
-              role: isEmpL1 ? "Admin" : "Level2",
+              role: targetRole,
               status: payload.status || "Active",
               rank: payload.desc || ""
             });
@@ -181,12 +187,17 @@ function saveTaxonomyItem(payload) {
 
     // Đồng bộ với USERS sheet nếu là EMPLOYEE
     if (type === "EMPLOYEE" && payload.extra1) {
-      const isEmpL1 = ["cấp 1", "admin", "level1", "1"].includes(extra3.toLowerCase());
+      let targetRole = "Member";
+      const ex3 = extra3.toLowerCase();
+      if (["cấp 1", "admin", "level1", "1"].includes(ex3)) targetRole = "Admin";
+      else if (["cấp 2", "leader", "level2", "2"].includes(ex3)) targetRole = "Leader";
+      else if (["cấp 3", "pj_lead", "pj lead", "level3", "3", "manager"].includes(ex3)) targetRole = "PJ_Lead";
+
       syncEmployeeToUsersSheet({
         id: code,
         email: payload.extra1,
         name: payload.name,
-        role: isEmpL1 ? "Admin" : "Level2",
+        role: targetRole,
         status: payload.status || "Active",
         rank: payload.desc || ""
       });
@@ -218,8 +229,8 @@ function syncEmployeeToUsersSheet(emp) {
     }
 
     let roleToSet = emp.role;
-    // BẢO VỆ ADMIN: Nếu tài khoản đang là Admin hoặc Manager, tuyệt đối không bị hạ cấp
-    if ((existingRole === "Admin" || existingRole === "Manager") && emp.role === "Level2") {
+    // BẢO VỆ ADMIN: Nếu tài khoản đang là Admin, tuyệt đối không bị hạ cấp
+    if (existingRole === "Admin" && emp.role !== "Admin") {
       roleToSet = existingRole;
     }
 
