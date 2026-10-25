@@ -9,6 +9,7 @@ const CONFIG = {
   SHEET_PROJECTS: "PROJECTS",
   SHEET_TASKS   : "TASKS",
   SHEET_LOG     : "ACTIVITY_LOG",
+  SHEET_TAXONOMY: "TAXONOMY",
   ROLES         : ["Admin","Manager","Member","Viewer"],
   TASK_STATUS   : ["Chờ thực hiện","Đang thực hiện","Chờ duyệt","Hoàn thành","Tạm dừng","Hủy"],
   TASK_PRIORITY : ["Thấp","Trung bình","Cao","Khẩn cấp"],
@@ -170,6 +171,7 @@ function getInitData() {
     projects: mappedProjects,
     tasks   : mappedTasks,
     members,
+    taxonomy: getTaxonomyDataInternal(),
     summary : {
       totalProjects: mappedProjects.length,
       totalTasks   : mappedTasks.length,
@@ -244,4 +246,5 @@ function initSheets() {
     s.appendRow(["Thời Gian","Email","Vai Trò","Hành Động","Chi Tiết","Session"]);
     s.getRange(1,1,1,6).setFontWeight("bold").setBackground("#fbbc04").setFontColor("#333");
   }
+  initTaxonomySheet();
 }

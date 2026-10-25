@@ -390,6 +390,65 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .bulk-cell-inp:focus{border-color:var(--p);box-shadow:0 0 0 2px rgba(79,110,247,.1)}
 .bulk-hint-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:7px 11px;font-size:11px;color:#1e40af;margin-bottom:10px;display:flex;align-items:center;gap:6px;line-height:1.4}
 
+/* ══ ADVANCED ANALYTICS STYLES ══ */
+.an-wrap{padding:14px 20px;display:flex;flex-direction:column;gap:16px}
+.an-toolbar{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:var(--sh)}
+.an-tb-item{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.an-tb-lbl{font-size:12px;font-weight:700;color:var(--tx)}
+.an-date-inputs{display:flex;align-items:center;gap:6px}
+.an-date-inp{width:125px;padding:5px 7px;font-size:11px;border:1px solid var(--bdr);border-radius:6px;background:var(--bg);color:var(--tx)}
+.an-presets{display:flex;gap:4px;flex-wrap:wrap}
+.an-preset-btn{background:var(--bg);border:1px solid var(--bdr);border-radius:20px;padding:3px 9px;font-size:11px;cursor:pointer;color:var(--t2);font-weight:600;transition:.15s}
+.an-preset-btn:hover{background:var(--bdr);color:var(--tx)}
+.an-preset-btn.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 2px 6px rgba(79,110,247,.25)}
+.an-tb-divider{width:1px;height:22px;background:var(--bdr);margin:0 2px}
+.an-sel{font-size:12px;padding:5px 8px;border:1px solid var(--bdr);border-radius:6px;background:var(--bg);color:var(--tx);min-width:150px;cursor:pointer}
+.an-filter-summary-badge{margin-left:auto;font-size:11px;font-weight:600;padding:4px 10px;background:#eef2ff;color:var(--p);border-radius:20px;border:1px solid rgba(79,110,247,.2)}
+
+.an-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.an-kpi-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh);transition:transform .15s}
+.an-kpi-card:hover{transform:translateY(-2px)}
+.an-kpi-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.an-kpi-val{font-size:20px;font-weight:800;color:var(--tx);line-height:1.2}
+.an-kpi-lbl{font-size:11px;color:var(--t2);font-weight:600;margin-top:2px}
+
+.an-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.an-chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);display:flex;flex-direction:column}
+.an-chart-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;border-bottom:1px solid #f1f5f9;padding-bottom:8px}
+.an-chart-ti{font-size:13px;font-weight:700;color:var(--tx)}
+.an-chart-sub{font-size:11px;color:var(--t2);font-weight:500}
+
+.an-table-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh)}
+.an-table-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.an-table{width:100%;border-collapse:collapse;font-size:12px}
+.an-table th{background:#f8fafc;color:var(--t2);font-weight:700;padding:9px 10px;border-bottom:1.5px solid var(--bdr);text-align:left;position:sticky;top:0;z-index:2}
+.an-table td{padding:9px 10px;border-bottom:1px solid var(--bdr);vertical-align:middle}
+.an-table tr:hover td{background:#fafbfc}
+.an-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.an-badge-gold{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.an-badge-blue{background:#e0e7ff;color:#3730a3;border:1px solid #c7d2fe}
+.an-badge-green{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.an-badge-warn{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+
+.an-pj-tag{display:inline-block;padding:2px 6px;background:#f1f5f9;color:var(--tx);border-radius:4px;font-size:10px;margin:1px 2px;border:1px solid var(--bdr)}
+.an-rate-bar-wrap{background:#e2e8f0;border-radius:10px;height:7px;overflow:hidden;width:100%;margin-top:4px}
+.an-rate-bar{height:100%;border-radius:10px;transition:width .4s}
+
+/* ══ TAXONOMY (DANH MỤC TIÊU CHUẨN) STYLES ══ */
+.tax-nav-tabs{display:flex;gap:6px;border-bottom:1.5px solid var(--bdr);margin-bottom:16px;flex-wrap:wrap;background:#f8fafc;padding:6px 10px;border-radius:var(--r2)}
+.tax-tab-btn{padding:8px 16px;border:none;background:transparent;border-radius:6px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+.tax-tab-btn:hover{background:var(--bdr);color:var(--tx)}
+.tax-tab-btn.active{background:var(--p);color:#fff;box-shadow:0 2px 6px rgba(79,110,247,.25)}
+.tax-code-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:0.3px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+.tax-color-dot{width:14px;height:14px;border-radius:50%;display:inline-block;vertical-align:middle;border:1.5px solid rgba(0,0,0,.15)}
+.tax-color-picker-group{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.tax-color-opt{width:24px;height:24px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:transform .15s}
+.tax-color-opt:hover{transform:scale(1.15)}
+.tax-color-opt.selected{border-color:var(--tx);transform:scale(1.15)}
+.tax-preview-box{padding:10px 14px;background:#f8fafc;border:1.5px dashed var(--bdr);border-radius:var(--r2);margin:8px 0;display:flex;align-items:center;gap:10px}
+.tax-meta-tag{display:inline-block;padding:2px 7px;background:#e2e8f0;border-radius:4px;font-size:10px;font-weight:700;color:#334155;margin-right:4px}
+
+@media(max-width:1100px){.an-chart-grid{grid-template-columns:1fr}.an-kpi-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.srow{grid-template-columns:repeat(2,1fr)}.d2col,.d3col,.d32{grid-template-columns:1fr}.tp-body{grid-template-columns:1fr}}
 </style>
 </head>
@@ -409,9 +468,11 @@ input[type=range]{width:100%;accent-color:var(--p)}
   <div class="sb-nav">
     <div class="sni active" data-p="dashboard" onclick="goPage('dashboard',this)"><span class="ic">🏠</span><span data-i18n="nav_dashboard">Tổng quan</span></div>
     <div class="sni" data-p="gantt" onclick="goPage('gantt',this)"><span class="ic">📅</span><span data-i18n="nav_gantt">Sơ đồ Gantt</span></div>
+    <div class="sni" data-p="analytics" onclick="goPage('analytics',this)"><span class="ic">📊</span><span data-i18n="nav_analytics">Biểu đồ chuyên sâu</span></div>
     <div class="sni" data-p="projects" onclick="goPage('projects',this)"><span class="ic">📁</span><span data-i18n="nav_projects">Dự án</span></div>
     <div class="sni" data-p="tasks" onclick="goPage('tasks',this)"><span class="ic">☑️</span><span data-i18n="nav_tasks">Nhiệm vụ</span></div>
     <div class="sni" id="ni-usr" style="display:none" data-p="users" onclick="goPage('users',this)"><span class="ic">👥</span><span data-i18n="nav_users">Người dùng</span></div>
+    <div class="sni" id="ni-tax" style="display:none" data-p="taxonomy" onclick="goPage('taxonomy',this)"><span class="ic">📐</span><span data-i18n="nav_taxonomy">Danh mục tiêu chuẩn</span></div>
     <div class="sni" id="ni-log" style="display:none" data-p="log" onclick="goPage('log',this)"><span class="ic">📋</span><span data-i18n="nav_log">Nhật ký</span></div>
   </div>
   <div class="sb-out" onclick="doLogout()"><span class="ic" style="font-size:14px">🚪</span><span data-i18n="logout">Đăng xuất</span></div>
@@ -542,6 +603,174 @@ input[type=range]{width:100%;accent-color:var(--p)}
         </div>
       </div>
     </div>
+    <!-- ══ ANALYTICS ══ -->
+    <div class="page" id="page-analytics">
+      <div class="an-wrap">
+        <!-- ══ ANALYTICS TOOLBAR ══ -->
+        <div class="an-toolbar">
+          <div class="an-tb-item">
+            <span class="an-tb-lbl" data-i18n="an_filter_range">📅 Khung thời gian:</span>
+            <div class="an-date-inputs">
+              <span style="font-size:11px;color:var(--t2)" data-i18n="an_from">Từ:</span>
+              <input type="date" class="fc an-date-inp" id="an-from" onchange="onAnalyticsDateManualChange()">
+              <span style="font-size:11px;color:var(--t2)" data-i18n="an_to">Đến:</span>
+              <input type="date" class="fc an-date-inp" id="an-to" onchange="onAnalyticsDateManualChange()">
+            </div>
+            <div class="an-presets">
+              <button class="an-preset-btn" data-preset="all" onclick="setAnalyticsPreset('all')" data-i18n="dash_preset_all">Tất cả</button>
+              <button class="an-preset-btn" data-preset="today" onclick="setAnalyticsPreset('today')" data-i18n="dash_preset_today">Hôm nay</button>
+              <button class="an-preset-btn" data-preset="week" onclick="setAnalyticsPreset('week')" data-i18n="dash_preset_week">Tuần này</button>
+              <button class="an-preset-btn active" data-preset="month" onclick="setAnalyticsPreset('month')" data-i18n="dash_preset_month">Tháng này</button>
+              <button class="an-preset-btn" data-preset="quarter" onclick="setAnalyticsPreset('quarter')" data-i18n="dash_preset_quarter">Quý này</button>
+              <button class="an-preset-btn" data-preset="year" onclick="setAnalyticsPreset('year')" data-i18n="dash_preset_year">Năm nay</button>
+            </div>
+          </div>
+          
+          <div class="an-tb-divider"></div>
+          
+          <div class="an-tb-item">
+            <span class="an-tb-lbl" data-i18n="an_filter_project">📁 Dự án:</span>
+            <select class="fsel an-sel" id="an-pj-sel" onchange="applyAnalyticsFilter()">
+              <option value="all" data-i18n="an_all_projects">Tất cả dự án</option>
+            </select>
+          </div>
+          
+          <div class="an-tb-item" style="position:relative" id="an-staff-wrap">
+            <span class="an-tb-lbl" data-i18n="an_filter_member">👤 Nhân viên:</span>
+            <div class="staff-filter-btn" id="an-staff-btn" onclick="togAnStaffDrop(event)">
+              <span id="an-staff-label" data-i18n="an_all_members">👤 Tất cả nhân viên</span>
+              <span style="color:var(--t3);font-size:10px">▾</span>
+            </div>
+            <div class="staff-filter-drop" id="an-staff-drop" style="min-width:240px;display:none">
+              <label class="staff-cb-all">
+                <input type="checkbox" id="an-staff-all" checked onchange="anStaffSelectAll(this)">
+                <span data-i18n="an_all_members">Tất cả nhân viên</span>
+              </label>
+              <div id="an-staff-checklist" style="max-height:200px;overflow-y:auto"></div>
+              <div class="staff-filter-footer">
+                <button class="btn bp" style="flex:1;font-size:11px" onclick="applyAnStaffFilter()" data-i18n="btn_apply">✔ Áp dụng</button>
+                <button class="btn bs" style="font-size:11px" onclick="resetAnStaffFilter()" data-i18n="btn_reset">↺ Reset</button>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn bs" onclick="resetAnalyticsFilters()" title="Đặt lại bộ lọc" data-i18n-title="an_reset_tooltip" style="padding:6px 10px;font-size:12px">↺</button>
+          <div class="an-filter-summary-badge" id="an-badge-summary">...</div>
+        </div>
+
+        <!-- ══ 4 KPI CARDS ══ -->
+        <div class="an-kpi-grid" id="an-kpis">
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#e0e7ff;color:var(--p)">👥</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-members">0</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_active_members">Nhân sự tham gia</div>
+            </div>
+          </div>
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#fef3c7;color:var(--w)">📁</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-projects">0</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_linked_projects">Dự án liên quan</div>
+            </div>
+          </div>
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#dcfce7;color:var(--g)">📋</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-tasks">0</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_total_tasks">Tổng nhiệm vụ</div>
+            </div>
+          </div>
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#ccfbf1;color:var(--cy)">🎯</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-ontime">0%</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_ontime_rate">Tỷ lệ đúng hạn</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ CHARTS GRID (2 columns) ══ -->
+        <div class="an-chart-grid">
+          <!-- Chart 1: Workload & Status -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_workload">📊 Khối lượng & Tiến độ theo thành viên</span>
+              <span class="an-chart-sub" id="an-sub-workload"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-workload"></canvas>
+            </div>
+          </div>
+          
+          <!-- Chart 2: Radar Comparison -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_radar">🕸️ Đánh giá đa chiều năng lực đóng góp</span>
+              <span class="an-chart-sub" id="an-sub-radar"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-radar"></canvas>
+            </div>
+          </div>
+          
+          <!-- Chart 3: Project Participation Share -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_pj_share">🍩 Tỷ trọng tham gia các dự án</span>
+              <span class="an-chart-sub" id="an-sub-pj-share"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-pj-share"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 4: Workload Distribution per Project -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_trend">📈 Phân bổ công việc qua từng dự án</span>
+              <span class="an-chart-sub" id="an-sub-trend"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-trend"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ DETAIL & DRILL-DOWN TABLE ══ -->
+        <div class="an-table-card">
+          <div class="an-table-hd">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="an-chart-ti" data-i18n="an_tbl_title">📋 Bảng Tổng Hợp Chi Tiết Đóng Góp & Dự Án</span>
+              <span class="an-badge an-badge-blue" id="an-tbl-count-badge">0 thành viên</span>
+            </div>
+            <div class="psrch" style="min-width:180px">
+              <span style="color:var(--t3)">🔍</span>
+              <input id="an-tbl-srch" placeholder="Tìm thành viên..." data-i18n-ph="an_search_member" oninput="filterAnalyticsTable(this.value)">
+            </div>
+          </div>
+          <div class="tblw" style="max-height:420px;overflow-y:auto">
+            <table class="an-table">
+              <thead>
+                <tr>
+                  <th data-i18n="an_tbl_member">Thành viên</th>
+                  <th data-i18n="an_tbl_projects">Dự án tham gia</th>
+                  <th style="text-align:center" data-i18n="an_tbl_tasks">Số task</th>
+                  <th style="text-align:center" data-i18n="an_tbl_done">Đã xong</th>
+                  <th style="text-align:center" data-i18n="an_tbl_progress">Đang làm</th>
+                  <th style="text-align:center" data-i18n="an_tbl_overdue">Quá hạn</th>
+                  <th style="min-width:130px" data-i18n="an_tbl_rate">Tỷ lệ hoàn thành</th>
+                  <th style="text-align:center" data-i18n="an_tbl_ranking">Đánh giá</th>
+                </tr>
+              </thead>
+              <tbody id="an-table-tbody">
+                <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--t2)">Đang tải...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- ══ PROJECTS ══ -->
     <div class="page" id="page-projects">
       <div class="pcrd">
@@ -591,6 +820,66 @@ input[type=range]{width:100%;accent-color:var(--p)}
             <thead><tr><th>#</th><th data-i18n="user_col_id">Tên / ID</th><th data-i18n="user_col_name">Họ Tên</th><th data-i18n="user_col_role">Vai Trò</th><th data-i18n="user_col_status">Trạng Thái</th><th data-i18n="user_col_created">Ngày Tạo</th><th data-i18n="pj_col_actions">Thao Tác</th></tr></thead>
             <tbody id="pu-tb"><tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr></tbody>
           </table>
+        </div>
+      </div>
+    </div>
+    <!-- ══ TAXONOMY ══ -->
+    <div class="page" id="page-taxonomy">
+      <div class="pcrd">
+        <div class="pcrd-hd" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div>
+            <span class="cti" style="font-size:15px;font-weight:700" data-i18n="tax_page_title">📐 Danh Mục Tiêu Chuẩn & Quy Định Mã Hóa</span>
+            <div style="font-size:11px;color:var(--t2);margin-top:2px" data-i18n="page_taxonomy_s">Quy định mã hóa & phân loại công việc chuẩn</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <button class="btn bs" onclick="openBatchTaskMod()" title="Quét & gắn mã tiền tố cho task cũ" data-i18n="tax_btn_batch">⚡ Chuẩn hóa task cũ</button>
+            <button class="btn bs" onclick="restoreDefaultTaxonomy()" title="Khôi phục danh mục chuẩn từ hệ thống" data-i18n="tax_btn_reload_sheet">🔄 Nạp mẫu chuẩn</button>
+            <button class="btn bp" onclick="openTaxonomyMod()" data-i18n="tax_btn_add">+ Thêm Tiêu Chuẩn</button>
+          </div>
+        </div>
+
+        <div style="padding:14px 16px">
+          <!-- 4 Sub-Tabs -->
+          <div class="tax-nav-tabs">
+            <button type="button" class="tax-tab-btn active" id="tax-subtab-cat" onclick="switchTaxSubTab('CATEGORY')" data-i18n="tax_tab_cat">1. Category (Nhóm lớn)</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-phase" onclick="switchTaxSubTab('PHASE')" data-i18n="tax_tab_phase">2. Phase dự án</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-disc" onclick="switchTaxSubTab('DISCIPLINE')" data-i18n="tax_tab_disc">3. Chi tiết công việc</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-pjcode" onclick="switchTaxSubTab('PROJECT_CODE')" data-i18n="tax_tab_pjcode">4. Mã dự án</button>
+          </div>
+
+          <!-- Filter & Search Bar -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+            <div style="flex:1;min-width:220px;max-width:320px;position:relative">
+              <input type="text" id="tax-srch" class="fc" placeholder="Tìm theo mã, tên, mô tả..." oninput="filterTaxonomyTable()" style="padding-left:30px;height:34px;font-size:12px">
+              <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:12px">🔍</span>
+            </div>
+            <select id="tax-st-filter" class="fc" onchange="filterTaxonomyTable()" style="max-width:160px;height:34px;font-size:12px">
+              <option value="">Tất cả trạng thái</option>
+              <option value="Active">Đang dùng (Active)</option>
+              <option value="Archived">Tạm ngưng</option>
+            </select>
+            <span id="tax-count-badge" class="an-badge an-badge-blue" style="margin-left:auto;font-size:11px">0 mục</span>
+          </div>
+
+          <!-- Table -->
+          <div class="tblw">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:40px">#</th>
+                  <th data-i18n="tax_col_code">Mã viết tắt</th>
+                  <th data-i18n="tax_col_name">Tên phân loại</th>
+                  <th data-i18n="tax_col_desc">Giải thích phạm vi</th>
+                  <th data-i18n="tax_col_extra">Thông tin bổ sung</th>
+                  <th data-i18n="user_col_status">Trạng thái</th>
+                  <th style="width:110px" data-i18n="pj_col_actions">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="tax-tbody">
+                <tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -676,7 +965,30 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <div class="mhd"><h3 id="mpj-ti">Thêm Dự Án</h3><button class="mcl" onclick="closeModal('m-pj')">✕</button></div>
     <div class="mbd">
       <input type="hidden" id="mpj-id">
-      <div class="fg"><label class="fl">Tên Dự Án <span class="req">*</span></label><input class="fc" id="mpj-nm" placeholder="Nhập tên dự án..."></div>
+      <!-- Khối định dạng chuẩn: [Năm]-[STT]-[Nội dung xxxxx] -->
+      <div class="fg" style="background:#f8fafc;padding:12px;border-radius:8px;border:1.5px dashed #cbd5e1;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--p);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+          <span>📐 Quy chuẩn mã hóa: [Năm]-[STT]-[Tên/Mã dự án]</span>
+          <span style="font-size:10px;color:var(--t3);font-weight:normal" id="mpj-format-hint">VD: 2026-01-xxxxx</span>
+        </div>
+        <div class="frow" style="gap:8px;margin-bottom:2px">
+          <div style="flex:1;max-width:110px">
+            <label class="fl" style="font-size:11px" data-i18n="pj_year_lbl">Năm</label>
+            <input type="text" class="fc" id="mpj-year" placeholder="2026" maxlength="4" style="font-size:12px;font-weight:700;text-align:center" oninput="syncProjectNameFromTaxonomy()">
+          </div>
+          <div style="flex:1;max-width:110px">
+            <label class="fl" style="font-size:11px" data-i18n="pj_seq_lbl">Số TT (STT)</label>
+            <input type="text" class="fc" id="mpj-seq" placeholder="01" maxlength="4" style="font-size:12px;font-weight:700;text-align:center" oninput="syncProjectNameFromTaxonomy()" onblur="formatProjectSeq()">
+          </div>
+          <div style="flex:2">
+            <label class="fl" style="font-size:11px" data-i18n="tax_select_pj_code">Chọn từ Danh mục tiêu chuẩn</label>
+            <select class="fc" id="mpj-tax-sel" onchange="onProjectTaxonomySelect(this.value)" style="font-size:12px;font-weight:600">
+              <option value="">-- Tự nhập nội dung xxxxx --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Tên Dự Án <span class="req">*</span></label><input class="fc" id="mpj-nm" placeholder="2026-01-xxxxx..." style="font-weight:600" oninput="onCustomProjectNameInput()"></div>
       <div class="fg"><label class="fl">Mô Tả</label><textarea class="fc" id="mpj-ds" placeholder="Mô tả..."></textarea></div>
       <div class="frow">
         <div class="fg"><label class="fl">Ngày Bắt Đầu</label><input type="date" class="fc" id="mpj-sd"></div>
@@ -723,6 +1035,30 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <!-- TAB 1: TẠO ĐƠN LẺ (GIỮ NGUYÊN 100% CÁC ELEMENT HIỆN TẠI) -->
     <div class="mbd" id="qtk-body-single">
       <input type="hidden" id="mqtk-id">
+      <!-- Phân loại chuẩn hóa (Category / Phase / Discipline) -->
+      <div class="fg" style="margin-bottom:8px">
+        <label class="fl" style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:600">📐 Mã phân loại chuẩn (Tùy chọn)</span>
+          <span style="font-size:10px;color:var(--t3);font-weight:normal" id="qtk-tax-preview-txt">[Mã tự chèn vào tên task]</span>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div>
+            <select class="fc" id="mqtk-cat" onchange="onTaskTaxonomyChange('single')" style="font-size:11px;padding:4px 6px">
+              <option value="">-- Nhóm (Category) --</option>
+            </select>
+          </div>
+          <div>
+            <select class="fc" id="mqtk-phase" onchange="onTaskTaxonomyChange('single')" style="font-size:11px;padding:4px 6px">
+              <option value="">-- Giai đoạn (Phase) --</option>
+            </select>
+          </div>
+          <div>
+            <select class="fc" id="mqtk-disc" onchange="onTaskTaxonomyChange('single')" style="font-size:11px;padding:4px 6px">
+              <option value="">-- Chi tiết (Discipline) --</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="fg"><label class="fl">Tên Nhiệm Vụ <span class="req">*</span></label><input class="fc" id="mqtk-nm" placeholder="Nhập tên..."></div>
       <div class="fg"><label class="fl">Dự Án <span class="req">*</span></label><select class="fc" id="mqtk-pj" onchange="refreshAsCombo('qtk')"></select></div>
       <div class="frow">
@@ -960,6 +1296,40 @@ input[type=range]{width:100%;accent-color:var(--p)}
       <div class="tp-col">
         <div class="tp-col-ti">Thông tin cơ bản</div>
         <input type="hidden" id="tp-id">
+        <!-- Khối phân loại ký tự chuẩn trong Task Panel -->
+        <div class="fg" style="background:#f8fafc;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <label class="fl" style="margin:0;font-weight:700;color:var(--tx)" data-i18n="tax_prefix_badge">
+              📐 Ký tự phân loại chuẩn (Taxonomy Prefix)
+            </label>
+            <span id="tp-tax-preview-badge" style="font-size:11px;font-family:monospace;padding:2px 8px;border-radius:4px;background:#eef2ff;color:var(--p);border:1px solid #c7d2fe;font-weight:700">
+              [CHƯA GÁN MÃ]
+            </span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+            <div>
+              <label style="font-size:10px;color:var(--t2);font-weight:600" data-i18n="tax_lbl_cat">1. Nhóm (Category)</label>
+              <select class="fc" id="tp-cat" onchange="onTaskTaxonomyChange('tp')" style="font-size:11px;padding:4px 6px">
+                <option value="">-- Chọn Nhóm --</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:10px;color:var(--t2);font-weight:600" data-i18n="tax_lbl_phase">2. Giai đoạn (Phase)</label>
+              <select class="fc" id="tp-phase" onchange="onTaskTaxonomyChange('tp')" style="font-size:11px;padding:4px 6px">
+                <option value="">-- Chọn Phase --</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:10px;color:var(--t2);font-weight:600" data-i18n="tax_lbl_disc">3. Chi tiết (Discipline)</label>
+              <select class="fc" id="tp-disc" onchange="onTaskTaxonomyChange('tp')" style="font-size:11px;padding:4px 6px">
+                <option value="">-- Chọn Discipline --</option>
+              </select>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);margin-top:4px">
+            💡 Chọn các mục trên để tự động chèn tiền tố chuẩn vào tên công việc bên dưới.
+          </div>
+        </div>
         <div class="fg"><label class="fl">Tên nhiệm vụ <span class="req">*</span></label><input class="fc" id="tp-nm" placeholder="Tên nhiệm vụ..."></div>
         <div class="fg"><label class="fl">Thuộc dự án <span class="req">*</span></label><select class="fc" id="tp-pj" onchange="refreshAsCombo('tp')"></select></div>
         <div class="fg"><label class="fl">Mô tả</label><textarea class="fc" id="tp-ds" placeholder="Mô tả..."></textarea></div>
@@ -1051,6 +1421,143 @@ input[type=range]{width:100%;accent-color:var(--p)}
     <div class="mft">
       <button class="btn bs" onclick="closeModal('m-sys-lang')" data-i18n="btn_cancel">Hủy</button>
       <button class="btn bp" onclick="saveSysDefaultLang()" data-i18n="btn_save">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL TAXONOMY ITEM (THÊM / SỬA TIÊU CHUẨN) ══ -->
+<div class="ov" id="m-tax">
+  <div class="modal" style="max-width:520px">
+    <div class="mhd">
+      <h3 id="mtax-modal-ti">📐 Thêm Tiêu Chuẩn Phân Loại</h3>
+      <button class="mcl" onclick="closeModal('m-tax')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <input type="hidden" id="mtax-id">
+      <div class="fg">
+        <label class="fl">Cấp độ phân loại <span class="req">*</span></label>
+        <select class="fc" id="mtax-type" onchange="onTaxModalTypeChange()">
+          <option value="CATEGORY">1. Category (Nhóm lớn: GE, DE, PC, M3...)</option>
+          <option value="PHASE">2. Phase dự án (Giai đoạn: BD, DD, IS...)</option>
+          <option value="DISCIPLINE">3. Chi tiết công việc (Discipline: AR, STR, MP, ELE...)</option>
+          <option value="PROJECT_CODE">4. Mã dự án (Project Code: HAG01, JJK01...)</option>
+        </select>
+      </div>
+
+      <div class="frow">
+        <div class="fg" style="flex:1">
+          <label class="fl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-code" placeholder="VD: AR, STR, M3..." maxlength="10" oninput="this.value=this.value.toUpperCase(); updateTaxPreview()" style="font-weight:700;letter-spacing:1px">
+          <div style="font-size:10px;color:var(--t3);margin-top:2px" data-i18n="tax_code_hint">2-5 ký tự in hoa</div>
+        </div>
+        <div class="fg" style="flex:2">
+          <label class="fl"><span data-i18n="tax_col_name">Tên phân loại</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-name" placeholder="VD: Dựng hình kiến trúc..." oninput="updateTaxPreview()">
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl" data-i18n="tax_col_desc">Giải thích phạm vi / Nội dung</label>
+        <textarea class="fc" id="mtax-desc" rows="2" placeholder="Mô tả phạm vi áp dụng, chi tiết nội dung đầu việc..."></textarea>
+      </div>
+
+      <div class="frow" id="mtax-extra-row">
+        <div class="fg" style="flex:1" id="mtax-extra1-wrap">
+          <label class="fl" id="mtax-extra1-lbl">Màu nhận diện (Hex)</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="color" id="mtax-color-inp" value="#4f6ef7" onchange="pickTaxColor(this.value)" style="width:34px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:0">
+            <input type="text" class="fc" id="mtax-extra1" value="#4f6ef7" placeholder="#4f6ef7" oninput="pickTaxColor(this.value)" style="font-size:12px;height:34px">
+          </div>
+          <div class="tax-color-picker-group">
+            <span class="tax-color-opt" style="background:#4f6ef7" onclick="pickTaxColor('#4f6ef7')"></span>
+            <span class="tax-color-opt" style="background:#06b6d4" onclick="pickTaxColor('#06b6d4')"></span>
+            <span class="tax-color-opt" style="background:#8b5cf6" onclick="pickTaxColor('#8b5cf6')"></span>
+            <span class="tax-color-opt" style="background:#10b981" onclick="pickTaxColor('#10b981')"></span>
+            <span class="tax-color-opt" style="background:#f59e0b" onclick="pickTaxColor('#f59e0b')"></span>
+            <span class="tax-color-opt" style="background:#ec4899" onclick="pickTaxColor('#ec4899')"></span>
+            <span class="tax-color-opt" style="background:#64748b" onclick="pickTaxColor('#64748b')"></span>
+          </div>
+        </div>
+
+        <div class="fg" style="flex:1">
+          <label class="fl" id="mtax-extra2-lbl">Ghi chú tiếng Nhật (Tùy chọn)</label>
+          <input type="text" class="fc" id="mtax-extra2" placeholder="VD: 建築モデリング..." style="height:34px">
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl" data-i18n="user_col_status">Trạng thái</label>
+        <select class="fc" id="mtax-status">
+          <option value="Active">Đang sử dụng (Active)</option>
+          <option value="Archived">Tạm ngưng (Archived)</option>
+        </select>
+      </div>
+
+      <!-- Live Preview Badge -->
+      <div class="tax-preview-box">
+        <div style="font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;margin-bottom:6px">Xem trước hiển thị:</div>
+        <div id="mtax-preview-badge" style="display:inline-flex;align-items:center;gap:6px">
+          <span class="tax-code-badge" style="background:#eef2ff;color:#4f6ef7;border-color:rgba(79,110,247,0.3)">CODE</span>
+          <span style="font-weight:600;font-size:12px;color:var(--tx)">Tên hiển thị</span>
+        </div>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bs" onclick="closeModal('m-tax')" data-i18n="btn_cancel">Hủy</button>
+      <button class="btn bp" onclick="submitTaxonomyItem()" data-i18n="btn_save">💾 Lưu tiêu chuẩn</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL BATCH STANDARDIZE TASKS (CHUẨN HÓA TASK CŨ) ══ -->
+<div class="ov" id="m-batch-tax">
+  <div class="modal" style="max-width:720px">
+    <div class="mhd">
+      <h3 data-i18n="tax_modal_batch_ti">⚡ Chuẩn Hóa Mã Tiền Tố Cho Nhiệm Vụ Cũ</h3>
+      <button class="mcl" onclick="closeModal('m-batch-tax')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.5" data-i18n="tax_modal_batch_sub">
+        Tự động nhận diện từ khóa trong tên nhiệm vụ và đề xuất tiền tố chuẩn [CATEGORY-PHASE-DISC] mà không làm thay đổi nội dung gốc.
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;background:#f8fafc;padding:10px 14px;border-radius:8px;border:1px solid var(--bdr);margin-bottom:14px">
+        <div style="flex:1">
+          <label class="fl" style="margin-bottom:4px">Lọc theo dự án</label>
+          <select class="fc" id="mbatch-tax-pj" style="font-size:12px;height:34px"></select>
+        </div>
+        <div style="padding-top:18px">
+          <button class="btn bp" onclick="runAutoDetectLegacyTasks()" style="height:34px">🔍 Quét nhiệm vụ chưa chuẩn</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;cursor:pointer">
+          <input type="checkbox" id="mbatch-check-all" onchange="toggleBatchAll(this.checked)" checked>
+          <span>Chọn tất cả (<span id="mbatch-scan-count">0</span> nhiệm vụ cần chuẩn hóa)</span>
+        </label>
+        <span style="font-size:11px;color:var(--t3)">* Có thể chỉnh sửa trực tiếp tên mới trước khi áp dụng</span>
+      </div>
+
+      <div class="tblw" style="max-height:300px;overflow-y:auto;border:1px solid var(--bdr);border-radius:8px">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:36px"><input type="checkbox" checked onchange="toggleBatchAll(this.checked)"></th>
+              <th>Tên hiện tại</th>
+              <th>Tiền tố gợi ý</th>
+              <th>Tên mới sau khi chuẩn hóa</th>
+            </tr>
+          </thead>
+          <tbody id="mbatch-tbody">
+            <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--t2)">Nhấn "Quét nhiệm vụ" để bắt đầu tìm kiếm các task chưa có mã tiền tố.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bs" onclick="closeModal('m-batch-tax')" data-i18n="btn_cancel">Hủy</button>
+      <button class="btn bp" id="mbatch-submit-btn" onclick="applyBatchTaskMigration()" disabled>⚡ Áp dụng chuẩn hóa</button>
     </div>
   </div>
 </div>
@@ -1226,6 +1733,89 @@ const I18N = {
     desc: "Mô tả",
     note: "Ghi chú",
     manage_members: "⚙ Quản lý thành viên",
+    
+    nav_analytics: "Biểu đồ chuyên sâu",
+    page_analytics_t: "Biểu Đồ Chuyên Sâu",
+    page_analytics_s: "Phân tích hiệu suất & mức độ đóng góp thành viên",
+    an_filter_range: "📅 Khung thời gian:",
+    an_from: "Từ:",
+    an_to: "Đến:",
+    dash_preset_all: "Tất cả",
+    dash_preset_today: "Hôm nay",
+    dash_preset_week: "Tuần này",
+    dash_preset_month: "Tháng này",
+    dash_preset_quarter: "Quý này",
+    dash_preset_year: "Năm nay",
+    an_filter_project: "📁 Dự án:",
+    an_filter_member: "👤 Nhân viên:",
+    an_all_projects: "Tất cả dự án",
+    an_all_members: "👤 Tất cả nhân viên",
+    an_kpi_active_members: "Nhân sự tham gia",
+    an_kpi_linked_projects: "Dự án liên quan",
+    an_kpi_total_tasks: "Tổng nhiệm vụ",
+    an_kpi_ontime_rate: "Tỷ lệ đúng hạn",
+    an_chart_workload: "📊 Khối lượng & Tiến độ theo thành viên",
+    an_chart_radar: "🕸️ Đánh giá đa chiều năng lực đóng góp",
+    an_chart_pj_share: "🍩 Tỷ trọng tham gia các dự án",
+    an_chart_trend: "📈 Phân bổ công việc qua từng dự án",
+    an_tbl_title: "📋 Bảng Tổng Hợp Chi Tiết Đóng Góp & Dự Án",
+    an_tbl_member: "Thành viên",
+    an_tbl_projects: "Dự án tham gia",
+    an_tbl_tasks: "Số task",
+    an_tbl_done: "Đã xong",
+    an_tbl_progress: "Đang làm",
+    an_tbl_overdue: "Quá hạn",
+    an_tbl_rate: "Tỷ lệ hoàn thành",
+    an_tbl_ranking: "Đánh giá",
+    an_search_member: "Tìm thành viên...",
+    an_comparing_members: "Đang so sánh: {n} thành viên",
+    an_reset_tooltip: "Đặt lại bộ lọc",
+    an_no_data: "Không có dữ liệu trong khoảng thời gian đã chọn",
+    an_rank_excellent: "🏆 Xuất sắc",
+    an_rank_good: "⭐ Tích cực",
+    an_rank_steady: "Đang ổn định",
+    an_rank_support: "⚠️ Cần hỗ trợ",
+    an_radar_workload: "Khối lượng",
+    an_radar_completion: "Hoàn thành",
+    an_radar_ontime: "Đúng hạn",
+    an_radar_highpri: "Việc khó/Cao",
+    an_radar_velocity: "Tiến độ TB",
+
+    nav_taxonomy: "Danh mục tiêu chuẩn",
+    page_taxonomy_t: "Danh Mục Tiêu Chuẩn",
+    page_taxonomy_s: "Quy định mã hóa & phân loại công việc chuẩn",
+    tax_page_title: "📐 Danh Mục Tiêu Chuẩn & Quy Định Mã Hóa",
+    tax_tab_cat: "1. Category (Nhóm lớn)",
+    tax_tab_phase: "2. Phase dự án",
+    tax_tab_disc: "3. Chi tiết công việc",
+    tax_tab_pjcode: "4. Mã dự án",
+    tax_col_code: "Mã viết tắt",
+    tax_col_name: "Tên phân loại",
+    tax_col_desc: "Giải thích phạm vi",
+    tax_col_extra: "Thông tin bổ sung",
+    tax_btn_add: "+ Thêm Tiêu Chuẩn",
+    tax_btn_reload_sheet: "Nạp mẫu chuẩn",
+    tax_btn_batch: "Chuẩn hóa task cũ",
+    tax_reload_title: "Khôi phục danh mục mẫu chuẩn từ hệ thống",
+    tax_batch_title: "Quét và gán mã tiền tố cho các task cũ",
+    tax_srch_ph: "Tìm theo mã, tên, mô tả...",
+    tax_code_hint: "2-5 ký tự in hoa",
+    disc_preview_badge: "Xem trước nhãn:",
+    tax_lbl_cat: "Category (Nhóm lớn)",
+    tax_lbl_phase: "Phase (Giai đoạn)",
+    tax_lbl_disc: "Chi tiết (Discipline)",
+    tax_modal_batch_ti: "⚡ Chuẩn Hóa Mã Tiền Tố Cho Nhiệm Vụ Cũ",
+    tax_modal_batch_sub: "Tự động nhận diện từ khóa và gán tiền tố [CATEGORY-PHASE-DISC] cho các nhiệm vụ chưa có mã",
+    tax_item_saved: "Đã lưu tiêu chuẩn thành công!",
+    tax_item_deleted: "Đã xóa tiêu chuẩn thành công!",
+    tax_batch_success: "Đã chuẩn hóa {n} nhiệm vụ thành công!",
+    pj_year_lbl: "Năm",
+    pj_seq_lbl: "Số TT (STT)",
+    pj_seq_hint: "VD: 01, 02...",
+    tax_select_pj_code: "Chọn từ Danh mục tiêu chuẩn",
+    tax_custom_pj_name: "-- Tự nhập nội dung xxxxx --",
+    tax_prefix_badge: "Ký tự phân loại chuẩn",
+    tax_prefix_none: "[CHƯA GÁN MÃ]",
   },
 
   en: {
@@ -1394,6 +1984,89 @@ const I18N = {
     desc: "Description",
     note: "Notes",
     manage_members: "⚙ Manage Members",
+    
+    nav_analytics: "Advanced Analytics",
+    page_analytics_t: "Advanced Analytics",
+    page_analytics_s: "Measure member performance & project participation",
+    an_filter_range: "📅 Time Range:",
+    an_from: "From:",
+    an_to: "To:",
+    dash_preset_all: "All",
+    dash_preset_today: "Today",
+    dash_preset_week: "This Week",
+    dash_preset_month: "This Month",
+    dash_preset_quarter: "This Quarter",
+    dash_preset_year: "This Year",
+    an_filter_project: "📁 Project:",
+    an_filter_member: "👤 Member:",
+    an_all_projects: "All Projects",
+    an_all_members: "👤 All Members",
+    an_kpi_active_members: "Active Members",
+    an_kpi_linked_projects: "Linked Projects",
+    an_kpi_total_tasks: "Total Tasks",
+    an_kpi_ontime_rate: "On-time Delivery Rate",
+    an_chart_workload: "📊 Workload & Progress by Member",
+    an_chart_radar: "🕸️ Multi-dimensional Contribution Radar",
+    an_chart_pj_share: "🍩 Project Participation Share",
+    an_chart_trend: "📈 Workload Distribution per Project",
+    an_tbl_title: "📋 Detailed Contribution & Project Breakdown",
+    an_tbl_member: "Member",
+    an_tbl_projects: "Participating Projects",
+    an_tbl_tasks: "Tasks",
+    an_tbl_done: "Done",
+    an_tbl_progress: "In Progress",
+    an_tbl_overdue: "Overdue",
+    an_tbl_rate: "Completion Rate",
+    an_tbl_ranking: "Rating",
+    an_search_member: "Search member...",
+    an_comparing_members: "Comparing: {n} members",
+    an_reset_tooltip: "Reset filters",
+    an_no_data: "No data in selected date range",
+    an_rank_excellent: "🏆 Excellent",
+    an_rank_good: "⭐ High Impact",
+    an_rank_steady: "Steady",
+    an_rank_support: "⚠️ Needs Support",
+    an_radar_workload: "Workload",
+    an_radar_completion: "Completion",
+    an_radar_ontime: "On-time",
+    an_radar_highpri: "High/Urgent",
+    an_radar_velocity: "Avg Progress",
+
+    nav_taxonomy: "Standard Taxonomy",
+    page_taxonomy_t: "Standard Taxonomy",
+    page_taxonomy_s: "Standardized codes and classifications",
+    tax_page_title: "📐 Master Taxonomy & Code Standards",
+    tax_tab_cat: "1. Category Master",
+    tax_tab_phase: "2. Project Phase",
+    tax_tab_disc: "3. Work Discipline",
+    tax_tab_pjcode: "4. Project Codes",
+    tax_col_code: "Short Code",
+    tax_col_name: "Classification Name",
+    tax_col_desc: "Scope Description",
+    tax_col_extra: "Extra Info",
+    tax_btn_add: "+ Add Standard",
+    tax_btn_reload_sheet: "Load Defaults",
+    tax_btn_batch: "Standardize Tasks",
+    tax_reload_title: "Restore default taxonomy template",
+    tax_batch_title: "Scan and auto-prefix legacy tasks",
+    tax_srch_ph: "Search code, name, description...",
+    tax_code_hint: "2-5 uppercase letters",
+    disc_preview_badge: "Live preview:",
+    tax_lbl_cat: "Category",
+    tax_lbl_phase: "Project Phase",
+    tax_lbl_disc: "Work Discipline",
+    tax_modal_batch_ti: "⚡ Standardize Task Prefixes",
+    tax_modal_batch_sub: "Auto-detect keywords and assign [CATEGORY-PHASE-DISC] prefix to legacy tasks",
+    tax_item_saved: "Standard saved successfully!",
+    tax_item_deleted: "Standard deleted successfully!",
+    tax_batch_success: "Successfully standardized {n} tasks!",
+    pj_year_lbl: "Year",
+    pj_seq_lbl: "Seq No. (STT)",
+    pj_seq_hint: "e.g. 01, 02...",
+    tax_select_pj_code: "Select from Standard Project Codes",
+    tax_custom_pj_name: "-- Custom project content xxxxx --",
+    tax_prefix_badge: "Standard Taxonomy Prefix",
+    tax_prefix_none: "[NO CODE ASSIGNED]",
   },
 
   ja: {
@@ -1562,6 +2235,89 @@ const I18N = {
     desc: "説明",
     note: "備考",
     manage_members: "⚙ メンバー管理",
+    
+    nav_analytics: "高度な分析",
+    page_analytics_t: "高度な分析",
+    page_analytics_s: "メンバーの貢献度とプロジェクト参加状況の分析",
+    an_filter_range: "📅 期間指定:",
+    an_from: "開始:",
+    an_to: "終了:",
+    dash_preset_all: "すべて",
+    dash_preset_today: "今日",
+    dash_preset_week: "今週",
+    dash_preset_month: "今月",
+    dash_preset_quarter: "今四半期",
+    dash_preset_year: "今年",
+    an_filter_project: "📁 プロジェクト:",
+    an_filter_member: "👤 メンバー:",
+    an_all_projects: "すべてのプロジェクト",
+    an_all_members: "👤 すべてのメンバー",
+    an_kpi_active_members: "稼働メンバー",
+    an_kpi_linked_projects: "関連プロジェクト",
+    an_kpi_total_tasks: "総タスク数",
+    an_kpi_ontime_rate: "期日遵守率",
+    an_chart_workload: "📊 メンバー別の業務量と進捗",
+    an_chart_radar: "🕸️ 多角的貢献度レーダー",
+    an_chart_pj_share: "🍩 プロジェクト参加比率",
+    an_chart_trend: "📈 プロジェクト別の業務配分",
+    an_tbl_title: "📋 貢献度およびプロジェクト参加の詳細一覧",
+    an_tbl_member: "メンバー",
+    an_tbl_projects: "参加プロジェクト",
+    an_tbl_tasks: "タスク数",
+    an_tbl_done: "完了",
+    an_tbl_progress: "進行中",
+    an_tbl_overdue: "遅延",
+    an_tbl_rate: "完了率",
+    an_tbl_ranking: "評価",
+    an_search_member: "メンバー検索...",
+    an_comparing_members: "比較中: {n} 名",
+    an_reset_tooltip: "フィルターをリセット",
+    an_no_data: "指定された期間のデータがありません",
+    an_rank_excellent: "🏆 優秀",
+    an_rank_good: "⭐ 積極的",
+    an_rank_steady: "安定",
+    an_rank_support: "⚠️ 要支援",
+    an_radar_workload: "業務量",
+    an_radar_completion: "完了率",
+    an_radar_ontime: "期日遵守",
+    an_radar_highpri: "高難度/至急",
+    an_radar_velocity: "平均進捗",
+
+    nav_taxonomy: "基準管理",
+    page_taxonomy_t: "基準管理・区分設定",
+    page_taxonomy_s: "標準コード・工種区分の一元管理",
+    tax_page_title: "📐 標準コード・工種区分マスター",
+    tax_tab_cat: "1. 大分類（Category）",
+    tax_tab_phase: "2. 業務フェーズ（Phase）",
+    tax_tab_disc: "3. 工種・詳細（Discipline）",
+    tax_tab_pjcode: "4. プロジェクトコード",
+    tax_col_code: "略称コード",
+    tax_col_name: "区分・名称",
+    tax_col_desc: "作業内容・説明",
+    tax_col_extra: "補足情報",
+    tax_btn_add: "+ 基準を追加",
+    tax_btn_reload_sheet: "標準読込",
+    tax_btn_batch: "既存タスク標準化",
+    tax_reload_title: "システムの標準テンプレートを復元",
+    tax_batch_title: "既存タスクをスキャンしてプレフィックスを付与",
+    tax_srch_ph: "コード、名称、説明で検索...",
+    tax_code_hint: "英大文字2〜5文字",
+    disc_preview_badge: "表示プレビュー:",
+    tax_lbl_cat: "大分類（Category）",
+    tax_lbl_phase: "フェーズ（Phase）",
+    tax_lbl_disc: "工種・専門（Discipline）",
+    tax_modal_batch_ti: "⚡ 既存タスクのコード標準化",
+    tax_modal_batch_sub: "キーワードを自動認識し [CATEGORY-PHASE-DISC] プレフィックスを付与します",
+    tax_item_saved: "基準マスターを保存しました！",
+    tax_item_deleted: "基準マスターを削除しました！",
+    tax_batch_success: "{n} 件のタスクを標準化しました！",
+    pj_year_lbl: "年度",
+    pj_seq_lbl: "連番 (No.)",
+    pj_seq_hint: "例: 01, 02...",
+    tax_select_pj_code: "標準プロジェクトコードから選択",
+    tax_custom_pj_name: "-- 自由入力（コード外）xxxxx --",
+    tax_prefix_badge: "標準分類プレフィックス",
+    tax_prefix_none: "[コード未設定]",
   }
 };
 
@@ -1694,6 +2450,10 @@ function setLanguage(lang, saveAsDefault) {
     loadPgTk();
   } else if (curPage === 'gantt') {
     loadGantt();
+  } else if (curPage === 'analytics') {
+    loadAnalytics();
+  } else if (curPage === 'taxonomy') {
+    loadPgTaxonomy();
   } else if (curPage === 'users') {
     loadPgUsr();
   } else if (curPage === 'log') {
@@ -1871,6 +2631,7 @@ const S = {
   _loading: false,
   lang: 'vi',
   systemDefaultLang: 'vi',
+  taxonomy: { categories: [], phases: [], disciplines: [], projectCodes: [] },
 };
 let _pdPjId = null;
 let _currTkReminders = [];
@@ -2051,10 +2812,17 @@ function loadApp() {
       popPjFilter();
       popGanttStaff();
 
+      if (res.taxonomy) {
+        S.taxonomy = res.taxonomy;
+      }
+      popTaskTaxonomySelects();
+
       const curPageId = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
       if (curPageId === "tasks") loadPgTk();
       else if (curPageId === "projects") renderPgPj(S.projects);
       else if (curPageId === "gantt") loadGantt();
+      else if (curPageId === "analytics") loadAnalytics();
+      else if (curPageId === "taxonomy") loadPgTaxonomy();
       else if (curPageId === "users") loadPgUsr();
       else if (curPageId === "log") loadPgLog();
     })
@@ -2084,8 +2852,10 @@ function clDrop(id)     { document.getElementById(id).classList.remove("show"); 
 const PTITLES = {
   dashboard:["Tổng Quan","Chào mừng trở lại"],
   gantt    :["Sơ đồ Gantt","Quản lý tiến độ trực quan"],
+  analytics:["Biểu đồ chuyên sâu","Phân tích hiệu suất & mức độ đóng góp"],
   projects :["Dự Án","Quản lý tất cả dự án"],
   tasks    :["Nhiệm Vụ","Quản lý tất cả nhiệm vụ"],
+  taxonomy :["Danh Mục Tiêu Chuẩn","Quy định mã hóa & phân loại công việc chuẩn"],
   users    :["Người Dùng","Phân quyền & quản lý"],
   log      :["Nhật Ký","Lịch sử hoạt động"],
 };
@@ -2102,6 +2872,8 @@ function goPage(p, el) {
   else if (p==="users") loadPgUsr();
   else if (p==="log")   loadPgLog();
   else if (p==="gantt") loadGantt();
+  else if (p==="analytics") loadAnalytics();
+  else if (p==="taxonomy") loadPgTaxonomy();
 }
 
 // ═══════════════════════════════════════
@@ -2115,6 +2887,10 @@ function updateSbUser(u) {
     document.getElementById("ni-usr").style.display="flex";
     document.getElementById("ni-log").style.display="flex";
     document.getElementById("d-usr-o").style.display="flex";
+  }
+  if (u.role==="Admin" || u.role==="Manager") {
+    const niTax = document.getElementById("ni-tax");
+    if (niTax) niTax.style.display="flex";
   }
   if (u.role==="Viewer"||u.role==="Member") {
     const b=document.getElementById("btn-add-tk"); if(b) b.style.display="none";
@@ -3316,10 +4092,20 @@ function gDragEnd(e) { e.currentTarget.classList.remove("dragging"); document.qu
 function loadPgPj() { renderPgPj(S.projects); }
 function renderPgPj(data) {
   const tb=document.getElementById("pp-tb");
-  if (!data.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ic">📁</div>' + t('pj_list_title') + ': 0</div></td></tr>'; return; }
-  tb.innerHTML=data.map((p,i)=>`<tr>
+  if (!data || !data.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ic">📁</div>' + t('pj_list_title') + ': 0</div></td></tr>'; return; }
+  const sorted = data.slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
+  tb.innerHTML=sorted.map((p,i)=>{
+    const seqMatch = (p.name || "").match(/^(\d{4})-(\d{1,3})-(.*)$/);
+    const seqBadge = seqMatch ? `<span class="badge bg-bl" style="margin-right:6px;font-size:10px;font-weight:700">#${seqMatch[2]}</span>` : "";
+    return `<tr>
     <td>${i+1}</td>
-    <td><b style="cursor:pointer;color:var(--p)" onclick="openPjDetail('${p.id}')">${p.name}</b><br><small style="color:#64748b">${p.desc||""}</small></td>
+    <td>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">
+        ${seqBadge}
+        <b style="cursor:pointer;color:var(--p)" onclick="openPjDetail('${p.id}')">${p.name}</b>
+      </div>
+      <small style="color:#64748b">${p.desc||""}</small>
+    </td>
     <td><small>${_displayName(p.manager)}</small></td>
     <td><span class="badge ${sBadge(p.status)}">${tStatus(p.status)}</span></td>
     <td><div class="progc"><div class="pm"><div class="pmb" style="width:${p.progress}%"></div></div><small>${p.progress}%</small></div></td>
@@ -3330,7 +4116,8 @@ function renderPgPj(data) {
       <button class="bic grn" onclick="expRpt('${p.id}')" title="${t('btn_export')}">📤</button>
       ${S.role==="Admin"?`<button class="bic del" onclick="delPj('${p.id}')" title="${t('btn_delete')}">🗑</button>`:""}
     </div></td>
-  </tr>`).join("");
+  </tr>`;
+  }).join("");
 }
 function filterPgPj() {
   const q=document.getElementById("pp-s").value.toLowerCase(), st=document.getElementById("pp-st").value;
@@ -3473,6 +4260,32 @@ function openNewFullTask() {
   _currTkReminders = [];
   renderReminders();
   previewLinks();
+
+  popTaskTaxonomySelects();
+  const mqtkCat = document.getElementById("mqtk-cat")?.value || "";
+  const mqtkPhase = document.getElementById("mqtk-phase")?.value || "";
+  const mqtkDisc = document.getElementById("mqtk-disc")?.value || "";
+  const tpCat = document.getElementById("tp-cat");
+  const tpPhase = document.getElementById("tp-phase");
+  const tpDisc = document.getElementById("tp-disc");
+  if (tpCat) tpCat.value = mqtkCat;
+  if (tpPhase) tpPhase.value = mqtkPhase;
+  if (tpDisc) tpDisc.value = mqtkDisc;
+  const parts = [mqtkCat, mqtkPhase, mqtkDisc].filter(Boolean);
+  const badge = document.getElementById("tp-tax-preview-badge");
+  if (badge) {
+    if (parts.length) {
+      badge.textContent = `[${parts.join('-')}]`;
+      badge.style.background = "#eef2ff";
+      badge.style.color = "var(--p)";
+      badge.style.borderColor = "#c7d2fe";
+    } else {
+      badge.textContent = t('tax_prefix_none') || "[CHƯA GÁN MÃ]";
+      badge.style.background = "#fff7ed";
+      badge.style.color = "#ea580c";
+      badge.style.borderColor = "#fdba74";
+    }
+  }
 }
 
 function openFullTaskEdit(taskId) {
@@ -3489,6 +4302,37 @@ function fillTpForm(t) {
   document.getElementById("tp-ds").value=t.desc||"";
   document.getElementById("tp-st").value=t.status;
   document.getElementById("tp-pr").value=t.priority;
+
+  popTaskTaxonomySelects();
+  const catSel = document.getElementById("tp-cat");
+  const phaseSel = document.getElementById("tp-phase");
+  const discSel = document.getElementById("tp-disc");
+  const prevBadge = document.getElementById("tp-tax-preview-badge");
+  
+  if (catSel) catSel.value = "";
+  if (phaseSel) phaseSel.value = "";
+  if (discSel) discSel.value = "";
+  if (prevBadge) {
+    prevBadge.textContent = t('tax_prefix_none') || "[CHƯA GÁN MÃ]";
+    prevBadge.style.background = "#fff7ed";
+    prevBadge.style.color = "#ea580c";
+    prevBadge.style.borderColor = "#fdba74";
+  }
+
+  // Parse existing prefix e.g. [M3-BD-AR] or [M3-AR]
+  const prefixMatch = (t.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
+  if (prefixMatch) {
+    const codes = prefixMatch[1].toUpperCase().split('-');
+    if (catSel && codes[0]) catSel.value = codes[0];
+    if (phaseSel && codes[1]) phaseSel.value = codes[1];
+    if (discSel && (codes[2] || codes[1])) discSel.value = codes[2] || codes[1];
+    if (prevBadge) {
+      prevBadge.textContent = "[" + prefixMatch[1].toUpperCase() + "]";
+      prevBadge.style.background = "#eef2ff";
+      prevBadge.style.color = "var(--p)";
+      prevBadge.style.borderColor = "#c7d2fe";
+    }
+  }
   document.getElementById("tp-nt").value=t.note||"";
   const prog = t.progress || 0;
   document.getElementById("tp-pg").value = prog;
@@ -3572,12 +4416,101 @@ function delReminder(id) { _currTkReminders=_currTkReminders.filter(r=>r.id!==id
 // ═══════════════════════════════════════
 //  PROJECT CRUD
 // ═══════════════════════════════════════
+let _isCustomProjectName = false;
+
+function popProjectTaxonomySelect() {
+  const sel = document.getElementById("mpj-tax-sel");
+  if (!sel) return;
+  const cur = sel.value;
+  sel.innerHTML = `<option value="">-- ${t('tax_custom_pj_name')} --</option>` +
+    ((S.taxonomy && S.taxonomy.projectCodes) || []).filter(c => c.status === 'Active').map(c => `
+      <option value="${c.code}">[${c.code}] ${c.desc || c.name || c.extra2 || ''}</option>
+    `).join('');
+  if (cur) sel.value = cur;
+}
+
+function formatProjectSeq() {
+  const seqInp = document.getElementById("mpj-seq");
+  if (!seqInp) return;
+  let val = seqInp.value.trim();
+  if (val && !isNaN(val)) {
+    seqInp.value = String(parseInt(val, 10)).padStart(2, '0');
+  }
+  syncProjectNameFromTaxonomy();
+}
+
+function onProjectTaxonomySelect(val) {
+  _isCustomProjectName = false;
+  const descInp = document.getElementById("mpj-ds");
+  if (val) {
+    const item = (S.taxonomy && S.taxonomy.projectCodes || []).find(c => c.code === val);
+    if (item && descInp && !descInp.value.trim()) {
+      descInp.value = item.desc || item.extra2 || "";
+    }
+  }
+  syncProjectNameFromTaxonomy();
+}
+
+function syncProjectNameFromTaxonomy() {
+  if (_isCustomProjectName) return;
+  const year = (document.getElementById("mpj-year")?.value || new Date().getFullYear().toString()).trim();
+  const seq = (document.getElementById("mpj-seq")?.value || "").trim();
+  const taxCode = document.getElementById("mpj-tax-sel")?.value || "";
+  const nameInp = document.getElementById("mpj-nm");
+  if (!nameInp) return;
+
+  let contentPart = "";
+  if (taxCode) {
+    const item = (S.taxonomy?.projectCodes || []).find(c => c.code === taxCode);
+    if (item) {
+      contentPart = item.desc ? `${item.code}_${item.desc}` : item.name;
+    } else {
+      contentPart = taxCode;
+    }
+  }
+
+  if (seq && contentPart) {
+    nameInp.value = `${year}-${seq}-${contentPart}`;
+  } else if (seq) {
+    const curVal = nameInp.value.trim();
+    const oldSuffix = curVal.replace(/^\d{4}-\d{1,3}-?/, '');
+    nameInp.value = oldSuffix ? `${year}-${seq}-${oldSuffix}` : `${year}-${seq}-`;
+  }
+}
+
+function onCustomProjectNameInput() {
+  _isCustomProjectName = true;
+}
+
 function openPjMod() {
   document.getElementById("mpj-ti").textContent = t("add_project");
   document.getElementById("mpj-id").value="";
   ["mpj-nm","mpj-ds","mpj-sd","mpj-ed"].forEach(x=>document.getElementById(x).value="");
   document.getElementById("mpj-st").value="Lên kế hoạch";
-  ldMgSel("mpj-mg",""); openModal("m-pj");
+  ldMgSel("mpj-mg","");
+
+  _isCustomProjectName = false;
+  const curYear = new Date().getFullYear().toString();
+  const yrInp = document.getElementById("mpj-year");
+  if (yrInp) yrInp.value = curYear;
+  
+  // Suggest next STT in that year
+  const seqInp = document.getElementById("mpj-seq");
+  if (seqInp) {
+    const existingNums = (S.projects || []).map(p => {
+      const m = (p.name || "").match(new RegExp(`^${curYear}-(\\d{1,3})-`));
+      return m ? parseInt(m[1], 10) : 0;
+    }).filter(n => n > 0);
+    const nextSeq = existingNums.length ? (Math.max(...existingNums) + 1) : 1;
+    seqInp.value = String(nextSeq).padStart(2, '0');
+  }
+
+  popProjectTaxonomySelect();
+  const taxSel = document.getElementById("mpj-tax-sel");
+  if (taxSel) taxSel.value = "";
+  
+  syncProjectNameFromTaxonomy();
+  openModal("m-pj");
 }
 function editPj(id) {
   const p=S.projects.find(x=>x.id===id); if (!p) return;
@@ -3588,7 +4521,31 @@ function editPj(id) {
   document.getElementById("mpj-st").value=p.status;
   document.getElementById("mpj-sd").value=p.startRaw||"";
   document.getElementById("mpj-ed").value=p.endRaw||"";
-  ldMgSel("mpj-mg",p.manager); openModal("m-pj");
+  ldMgSel("mpj-mg",p.manager);
+
+  _isCustomProjectName = false;
+  popProjectTaxonomySelect();
+  
+  const yrInp = document.getElementById("mpj-year");
+  const seqInp = document.getElementById("mpj-seq");
+  const taxSel = document.getElementById("mpj-tax-sel");
+  
+  // Parse [Năm]-[STT]-[xxxxx]
+  const m = (p.name || "").match(/^(\d{4})-(\d{1,3})-(.*)$/);
+  if (m) {
+    if (yrInp) yrInp.value = m[1];
+    if (seqInp) seqInp.value = m[2].padStart(2, '0');
+    if (taxSel) {
+      const found = (S.taxonomy?.projectCodes || []).find(it => m[3].startsWith(it.code) || (it.desc && m[3].includes(it.desc)));
+      taxSel.value = found ? found.code : "";
+    }
+  } else {
+    if (yrInp) yrInp.value = new Date().getFullYear().toString();
+    if (seqInp) seqInp.value = "";
+    if (taxSel) taxSel.value = "";
+    _isCustomProjectName = true;
+  }
+  openModal("m-pj");
 }
 function savePj() {
   const id=document.getElementById("mpj-id").value;
@@ -3982,6 +4939,16 @@ function openTkMod(taskId, defaultPjId, initialTab) {
   ldPjSel("mqtk-pj", defaultPjId || "");
   setAssignees('qtk', '');
 
+  popTaskTaxonomySelects();
+  const catSel = document.getElementById("mqtk-cat");
+  const phaseSel = document.getElementById("mqtk-phase");
+  const discSel = document.getElementById("mqtk-disc");
+  if (catSel) catSel.value = "";
+  if (phaseSel) phaseSel.value = "";
+  if (discSel) discSel.value = "";
+  const prevTxt = document.getElementById("qtk-tax-preview-txt");
+  if (prevTxt) prevTxt.textContent = "[Mã tự chèn vào tên task]";
+
   const tabsWrap = document.getElementById("qtk-tabs-wrap");
   if (taskId) {
     if (tabsWrap) tabsWrap.style.display = "none";
@@ -3992,6 +4959,16 @@ function openTkMod(taskId, defaultPjId, initialTab) {
       document.getElementById("mqtk-st").value = t.status;
       document.getElementById("mqtk-pr").value = t.priority;
       setAssignees('qtk', t.assignee);
+
+      // Parse existing prefix e.g. [M3-BD-AR] or [M3-AR]
+      const prefixMatch = (t.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
+      if (prefixMatch) {
+        const codes = prefixMatch[1].toUpperCase().split('-');
+        if (catSel && codes[0]) catSel.value = codes[0];
+        if (phaseSel && codes[1]) phaseSel.value = codes[1];
+        if (discSel && (codes[2] || codes[1])) discSel.value = codes[2] || codes[1];
+        if (prevTxt) prevTxt.textContent = "Tiền tố: [" + prefixMatch[1].toUpperCase() + "]";
+      }
     }
   } else {
     if (tabsWrap) tabsWrap.style.display = "flex";
@@ -4431,7 +5408,8 @@ function ldPjSel(id, sel, disable) {
   const el=document.getElementById(id); if (!el) return;
   el.innerHTML='<option value="">-- Chọn dự án --</option>';
   if (disable) el.disabled=true;
-  S.projects.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; if(sel&&p.id===sel) o.selected=true; el.appendChild(o); });
+  const sorted = (S.projects || []).slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
+  sorted.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; if(sel&&p.id===sel) o.selected=true; el.appendChild(o); });
 }
 function ldMgSel(id, sel) {
   const el=document.getElementById(id); if (!el) return; el.innerHTML="";
@@ -4442,7 +5420,8 @@ function popPjFilter() {
   if (!sel) return;
   const curVal = sel.value;
   sel.innerHTML=`<option value="">${t("filter_by_project")}</option>`;
-  S.projects.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; if(p.id===curVal) o.selected=true; sel.appendChild(o); });
+  const sorted = (S.projects || []).slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
+  sorted.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; if(p.id===curVal) o.selected=true; sel.appendChild(o); });
 }
 
 // ═══════════════════════════════════════
@@ -4482,6 +5461,1192 @@ function gSearch(q){
     const filtered = S.tasks.filter(t => !q || (t.name||"").toLowerCase().includes(q.toLowerCase()));
     renderPtkGrid(filtered);
   }
+}
+
+// ═══════════════════════════════════════
+//  ADVANCED ANALYTICS (BIỂU ĐỒ CHUYÊN SÂU)
+// ═══════════════════════════════════════
+let _anInitialised = false;
+let _anStaffInited = false;
+let _anCachedTableData = [];
+
+function loadAnalytics() {
+  if (!_anInitialised) {
+    initAnalyticsFilterBar();
+    _anInitialised = true;
+  } else {
+    popAnalyticsPjOptions();
+    if (!_anStaffInited && S.members && S.members.length) {
+      buildAnalyticsStaffList();
+    }
+  }
+  applyAnalyticsFilter();
+}
+
+function initAnalyticsFilterBar() {
+  popAnalyticsPjOptions();
+  buildAnalyticsStaffList();
+  setAnalyticsPreset('month', true);
+}
+
+function popAnalyticsPjOptions() {
+  const sel = document.getElementById("an-pj-sel");
+  if (!sel) return;
+  const curVal = sel.value || 'all';
+  sel.innerHTML = `<option value="all">${t('an_all_projects')}</option>`;
+  if (S.projects) {
+    S.projects.forEach(p => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = p.name;
+      if (p.id === curVal) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+function buildAnalyticsStaffList() {
+  const c = document.getElementById('an-staff-checklist');
+  if (!c || !S.members || !S.members.length) return;
+  c.innerHTML = S.members.map(m => `
+    <label class="staff-cb-row">
+      <input type="checkbox" class="an-staff-cb" value="${m.email}" checked>
+      <span style="flex:1">${m.name || m.email}</span>
+      <span style="font-size:10px;color:var(--t3)">${tRole(m.role)}</span>
+    </label>`).join('');
+  document.querySelectorAll('.an-staff-cb').forEach(cb => cb.addEventListener('change', syncAnStaffAllCheckbox));
+  _anStaffInited = true;
+  updateAnStaffFilterLabel();
+}
+
+function togAnStaffDrop(e) {
+  if (e) e.stopPropagation();
+  const d = document.getElementById('an-staff-drop');
+  if (!d) return;
+  d.style.display = (d.style.display === 'none' || !d.style.display) ? 'block' : 'none';
+}
+
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('an-staff-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    const d = document.getElementById('an-staff-drop');
+    if (d) d.style.display = 'none';
+  }
+});
+
+function anStaffSelectAll(cb) {
+  document.querySelectorAll('.an-staff-cb').forEach(c => c.checked = cb.checked);
+  updateAnStaffFilterLabel();
+}
+
+function syncAnStaffAllCheckbox() {
+  const all = [...document.querySelectorAll('.an-staff-cb')];
+  const allCb = document.getElementById('an-staff-all');
+  if (allCb) allCb.checked = all.every(c => c.checked);
+  updateAnStaffFilterLabel();
+}
+
+function updateAnStaffFilterLabel() {
+  const all = [...document.querySelectorAll('.an-staff-cb')];
+  const checked = all.filter(c => c.checked);
+  const lbl = document.getElementById('an-staff-label');
+  if (!lbl) return;
+  if (!all.length || checked.length === all.length) {
+    lbl.textContent = '👤 ' + t('an_all_members');
+  } else if (checked.length === 0) {
+    lbl.textContent = '👤 ' + (S.lang === 'ja' ? '未選択' : (S.lang === 'en' ? 'No staff selected' : 'Chưa chọn'));
+  } else if (checked.length === 1) {
+    const m = S.members.find(x => x.email === checked[0].value);
+    lbl.textContent = '👤 ' + (m ? m.name : checked[0].value);
+  } else {
+    lbl.textContent = '👤 ' + t('an_comparing_members', { n: checked.length });
+  }
+}
+
+function getAnSelectedStaff() {
+  const all = [...document.querySelectorAll('.an-staff-cb')];
+  if (!all.length) return null;
+  const checked = all.filter(c => c.checked).map(c => c.value);
+  return checked.length === all.length ? null : checked;
+}
+
+function applyAnStaffFilter() {
+  updateAnStaffFilterLabel();
+  const d = document.getElementById('an-staff-drop');
+  if (d) d.style.display = 'none';
+  applyAnalyticsFilter();
+}
+
+function resetAnStaffFilter() {
+  document.querySelectorAll('.an-staff-cb').forEach(c => c.checked = true);
+  const allCb = document.getElementById('an-staff-all');
+  if (allCb) allCb.checked = true;
+  updateAnStaffFilterLabel();
+  applyAnalyticsFilter();
+}
+
+function setAnalyticsPreset(preset, skipApply) {
+  const now = new Date();
+  let fStr = '', tStr = '';
+
+  function fmtYMD(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  if (preset === 'today') {
+    fStr = tStr = fmtYMD(now);
+  } else if (preset === 'week') {
+    const dayOfWeek = now.getDay() || 7;
+    const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek + 1);
+    const sun = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 6);
+    fStr = fmtYMD(mon);
+    tStr = fmtYMD(sun);
+  } else if (preset === 'month') {
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    fStr = fmtYMD(firstDay);
+    tStr = fmtYMD(lastDay);
+  } else if (preset === 'quarter') {
+    const curQ = Math.floor(now.getMonth() / 3);
+    const qStart = new Date(now.getFullYear(), curQ * 3, 1);
+    const qEnd = new Date(now.getFullYear(), curQ * 3 + 3, 0);
+    fStr = fmtYMD(qStart);
+    tStr = fmtYMD(qEnd);
+  } else if (preset === 'year') {
+    fStr = `${now.getFullYear()}-01-01`;
+    tStr = `${now.getFullYear()}-12-31`;
+  } else if (preset === 'all') {
+    fStr = '';
+    tStr = '';
+  }
+
+  const inpF = document.getElementById('an-from');
+  const inpT = document.getElementById('an-to');
+  if (inpF) inpF.value = fStr;
+  if (inpT) inpT.value = tStr;
+
+  document.querySelectorAll('.an-preset-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-preset') === preset);
+  });
+
+  if (!skipApply) {
+    applyAnalyticsFilter();
+  }
+}
+
+function onAnalyticsDateManualChange() {
+  document.querySelectorAll('.an-preset-btn').forEach(btn => btn.classList.remove('active'));
+  applyAnalyticsFilter();
+}
+
+function resetAnalyticsFilters() {
+  const selPj = document.getElementById('an-pj-sel');
+  if (selPj) selPj.value = 'all';
+  resetAnStaffFilter();
+  setAnalyticsPreset('month');
+}
+
+function getFilteredAnalyticsTasks() {
+  if (!S.tasks) return [];
+  const inpF = document.getElementById('an-from');
+  const inpT = document.getElementById('an-to');
+  const selPj = document.getElementById('an-pj-sel');
+  
+  const fStart = inpF && inpF.value ? parseLocalDate(inpF.value) : null;
+  const fEnd = inpT && inpT.value ? parseLocalDate(inpT.value) : null;
+  if (fEnd) fEnd.setHours(23, 59, 59, 999);
+  
+  const pjId = selPj ? selPj.value : 'all';
+  const selectedStaff = getAnSelectedStaff();
+
+  return S.tasks.filter(tk => {
+    if (pjId && pjId !== 'all' && tk.projectId !== pjId) return false;
+
+    if (selectedStaff && selectedStaff.length > 0) {
+      if (!tk.assignee) return false;
+      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+      const matches = selectedStaff.some(em => {
+        const m = S.members.find(x => x.email === em);
+        return parts.includes(em.toLowerCase()) || (m && m.name && parts.includes(m.name.toLowerCase()));
+      });
+      if (!matches) return false;
+    }
+
+    if (fStart || fEnd) {
+      const tStart = tk.startDate ? parseLocalDate(tk.startDate) : null;
+      const tEnd = tk.deadline ? parseLocalDate(tk.deadline) : null;
+      if (tStart && tEnd) {
+        if (fEnd && tStart > fEnd) return false;
+        if (fStart && tEnd < fStart) return false;
+      } else if (tEnd) {
+        if (fStart && tEnd < fStart) return false;
+        if (fEnd && tEnd > fEnd) return false;
+      } else if (tStart) {
+        if (fStart && tStart < fStart) return false;
+        if (fEnd && tStart > fEnd) return false;
+      }
+    }
+    return true;
+  });
+}
+
+function applyAnalyticsFilter() {
+  const filteredTasks = getFilteredAnalyticsTasks();
+  const selectedStaff = getAnSelectedStaff();
+  
+  let targetMembers = [...S.members];
+  if (selectedStaff && selectedStaff.length > 0) {
+    targetMembers = targetMembers.filter(m => selectedStaff.includes(m.email));
+  }
+
+  const distinctMembers = new Set();
+  const distinctPjs = new Set();
+  let doneCount = 0;
+  let ontimeCount = 0;
+
+  filteredTasks.forEach(tk => {
+    if (tk.projectId) distinctPjs.add(tk.projectId);
+    if (tk.assignee) {
+      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+      parts.forEach(p => distinctMembers.add(p));
+    }
+    if (tk.status === 'Hoàn thành') {
+      doneCount++;
+      if (tk.deadline) {
+        const deadD = parseLocalDate(tk.deadline);
+        if (deadD) ontimeCount++;
+      } else {
+        ontimeCount++;
+      }
+    }
+  });
+
+  const ontimeRate = doneCount > 0 ? Math.round((ontimeCount / doneCount) * 100) : 100;
+
+  const elMb = document.getElementById('an-val-members');
+  const elPj = document.getElementById('an-val-projects');
+  const elTk = document.getElementById('an-val-tasks');
+  const elOt = document.getElementById('an-val-ontime');
+  if (elMb) elMb.textContent = distinctMembers.size;
+  if (elPj) elPj.textContent = distinctPjs.size;
+  if (elTk) elTk.textContent = filteredTasks.length;
+  if (elOt) elOt.textContent = ontimeRate + '%';
+
+  const badge = document.getElementById('an-badge-summary');
+  if (badge) {
+    badge.textContent = `${distinctPjs.size} ${t('nav_projects')} · ${filteredTasks.length} ${t('nav_tasks')} · ${distinctMembers.size} ${t('nav_users')}`;
+  }
+
+  renderAnalyticsCharts(filteredTasks, targetMembers);
+  renderAnalyticsTable(filteredTasks, targetMembers);
+}
+
+function renderAnalyticsCharts(tasks, members) {
+  if (!S.analyticsCharts) S.analyticsCharts = {};
+
+  ['workload', 'radar', 'pjShare', 'trend'].forEach(k => {
+    if (S.analyticsCharts[k]) {
+      try { S.analyticsCharts[k].destroy(); } catch(e) {}
+      S.analyticsCharts[k] = null;
+    }
+  });
+
+  const memberStats = members.map(m => {
+    const mEmail = m.email.toLowerCase();
+    const mName = (m.name || '').toLowerCase();
+    const mTasks = tasks.filter(tk => {
+      if (!tk.assignee) return false;
+      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+      return parts.includes(mEmail) || (mName && parts.includes(mName));
+    });
+
+    const done = mTasks.filter(tk => tk.status === 'Hoàn thành').length;
+    const inProg = mTasks.filter(tk => tk.status === 'Đang thực hiện' || tk.status === 'Đang tiến hành').length;
+    const pending = mTasks.filter(tk => tk.status === 'Chờ thực hiện' || tk.status === 'Lên kế hoạch' || tk.status === 'Chờ duyệt').length;
+    const overdue = mTasks.filter(tk => tk.status === 'Quá hạn').length;
+    const highPri = mTasks.filter(tk => tk.priority === 'Khẩn cấp' || tk.priority === 'Cao').length;
+    const avgProg = mTasks.length > 0 ? Math.round(mTasks.reduce((acc, cur) => acc + (Number(cur.progress) || 0), 0) / mTasks.length) : 0;
+    const pjs = new Set(mTasks.map(tk => tk.projectId).filter(Boolean));
+
+    return {
+      member: m,
+      total: mTasks.length,
+      done,
+      inProg,
+      pending,
+      overdue,
+      highPri,
+      avgProg,
+      pjs,
+      rate: mTasks.length > 0 ? Math.round((done / mTasks.length) * 100) : 0
+    };
+  });
+
+  const sortedByWorkload = [...memberStats].filter(x => x.total > 0).sort((a, b) => b.total - a.total);
+  const displayMembers = sortedByWorkload.length ? sortedByWorkload : memberStats.slice(0, 10);
+
+  // 1. Chart Workload
+  const cWorkloadEl = document.getElementById('an-c-workload');
+  if (cWorkloadEl) {
+    const labels = displayMembers.map(x => x.member.name || x.member.email);
+    S.analyticsCharts.workload = new Chart(cWorkloadEl, {
+      type: 'bar',
+      data: {
+        labels: labels.length ? labels : [t('an_no_data')],
+        datasets: [
+          { label: tStatus('Hoàn thành'), data: displayMembers.map(x => x.done), backgroundColor: '#22c55e', borderRadius: 3 },
+          { label: tStatus('Đang thực hiện'), data: displayMembers.map(x => x.inProg), backgroundColor: '#4f6ef7', borderRadius: 3 },
+          { label: tStatus('Chờ thực hiện'), data: displayMembers.map(x => x.pending), backgroundColor: '#f59e0b', borderRadius: 3 },
+          { label: tStatus('Quá hạn'), data: displayMembers.map(x => x.overdue), backgroundColor: '#ef4444', borderRadius: 3 }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { stacked: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, font: { size: 10 } } },
+          y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } }
+        },
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // 2. Chart Radar
+  const cRadarEl = document.getElementById('an-c-radar');
+  if (cRadarEl) {
+    const radarLabels = [
+      t('an_radar_workload'),
+      t('an_radar_completion'),
+      t('an_radar_ontime'),
+      t('an_radar_highpri'),
+      t('an_radar_velocity')
+    ];
+
+    const radarColors = [
+      { border: '#4f6ef7', bg: 'rgba(79,110,247,0.2)' },
+      { border: '#f97316', bg: 'rgba(249,115,22,0.2)' },
+      { border: '#8b5cf6', bg: 'rgba(139,92,246,0.2)' },
+      { border: '#22c55e', bg: 'rgba(34,197,94,0.2)' },
+      { border: '#06b6d4', bg: 'rgba(6,182,212,0.2)' }
+    ];
+
+    const topActive = displayMembers.slice(0, 5);
+    const maxTasks = Math.max(...topActive.map(x => x.total), 1);
+
+    const radarDatasets = topActive.map((item, idx) => {
+      const col = radarColors[idx % radarColors.length];
+      const normWorkload = Math.round((item.total / maxTasks) * 100);
+      const highPriRate = item.total > 0 ? Math.round((item.highPri / item.total) * 100) : 0;
+      const ontimeRate = item.done > 0 ? Math.max(0, Math.round(((item.done - item.overdue) / item.done) * 100)) : 100;
+
+      return {
+        label: item.member.name || item.member.email,
+        data: [normWorkload, item.rate, ontimeRate, highPriRate, item.avgProg],
+        borderColor: col.border,
+        backgroundColor: col.bg,
+        pointBackgroundColor: col.border,
+        borderWidth: 2,
+        pointRadius: 3
+      };
+    });
+
+    S.analyticsCharts.radar = new Chart(cRadarEl, {
+      type: 'radar',
+      data: {
+        labels: radarLabels,
+        datasets: radarDatasets.length ? radarDatasets : [{
+          label: t('an_all_members'),
+          data: [0, 0, 0, 0, 0],
+          borderColor: '#94a3b8',
+          backgroundColor: 'rgba(148,163,184,0.1)'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            suggestedMin: 0,
+            suggestedMax: 100,
+            ticks: { stepSize: 25, display: false },
+            pointLabels: { font: { size: 10, weight: '600' }, color: '#475569' },
+            grid: { color: '#e2e8f0' }
+          }
+        },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // 3. Chart PJ Share
+  const cPjShareEl = document.getElementById('an-c-pj-share');
+  if (cPjShareEl) {
+    const pjMap = {};
+    tasks.forEach(tk => {
+      const pName = tk.projectName || (S.projects.find(p => p.id === tk.projectId)?.name) || tk.projectId || 'Dự án khác';
+      pjMap[pName] = (pjMap[pName] || 0) + 1;
+    });
+
+    const pjLabels = Object.keys(pjMap);
+    const pjCounts = Object.values(pjMap);
+    const pjPalette = ['#4f6ef7', '#22c55e', '#f59e0b', '#06b6d4', '#8b5cf6', '#ec4899', '#f97316', '#64748b'];
+
+    S.analyticsCharts.pjShare = new Chart(cPjShareEl, {
+      type: 'doughnut',
+      data: {
+        labels: pjLabels.length ? pjLabels : [t('an_no_data')],
+        datasets: [{
+          data: pjCounts.length ? pjCounts : [1],
+          backgroundColor: pjLabels.length ? pjLabels.map((_, i) => pjPalette[i % pjPalette.length]) : ['#e2e8f0'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // 4. Chart Trend / Workload per Project
+  const cTrendEl = document.getElementById('an-c-trend');
+  if (cTrendEl) {
+    const pjStats = {};
+    tasks.forEach(tk => {
+      const pName = tk.projectName || (S.projects.find(p => p.id === tk.projectId)?.name) || tk.projectId;
+      if (!pName) return;
+      if (!pjStats[pName]) pjStats[pName] = {};
+      
+      let assignedMember = 'Chưa gán';
+      if (tk.assignee) {
+        const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+        const found = members.find(m => parts.includes(m.email.toLowerCase()) || (m.name && parts.includes(m.name.toLowerCase())));
+        if (found) assignedMember = found.name || found.email;
+      }
+      pjStats[pName][assignedMember] = (pjStats[pName][assignedMember] || 0) + 1;
+    });
+
+    const projectLabels = Object.keys(pjStats).slice(0, 6);
+    const memberPalette = ['#4f6ef7', '#22c55e', '#f97316', '#8b5cf6', '#06b6d4', '#e11d48', '#64748b'];
+
+    const datasets = members.slice(0, 7).map((m, idx) => {
+      const name = m.name || m.email;
+      return {
+        label: name,
+        data: projectLabels.map(p => pjStats[p]?.[name] || 0),
+        backgroundColor: memberPalette[idx % memberPalette.length],
+        borderRadius: 3
+      };
+    });
+
+    S.analyticsCharts.trend = new Chart(cTrendEl, {
+      type: 'bar',
+      data: {
+        labels: projectLabels.length ? projectLabels : [t('an_no_data')],
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 20 } },
+          y: { stacked: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, font: { size: 10 } } }
+        },
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+}
+
+function renderAnalyticsTable(tasks, members) {
+  const tbody = document.getElementById('an-table-tbody');
+  const badgeEl = document.getElementById('an-tbl-count-badge');
+  if (!tbody) return;
+
+  _anCachedTableData = members.map(m => {
+    const mEmail = m.email.toLowerCase();
+    const mName = (m.name || '').toLowerCase();
+    const mTasks = tasks.filter(tk => {
+      if (!tk.assignee) return false;
+      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+      return parts.includes(mEmail) || (mName && parts.includes(mName));
+    });
+
+    const done = mTasks.filter(tk => tk.status === 'Hoàn thành').length;
+    const inProg = mTasks.filter(tk => tk.status === 'Đang thực hiện' || tk.status === 'Đang tiến hành').length;
+    const overdue = mTasks.filter(tk => tk.status === 'Quá hạn').length;
+    const rate = mTasks.length > 0 ? Math.round((done / mTasks.length) * 100) : 0;
+    
+    const pjNames = [...new Set(mTasks.map(tk => tk.projectName || (S.projects.find(p => p.id === tk.projectId)?.name)).filter(Boolean))];
+
+    let rankBadge = `<span class="an-badge an-badge-blue">${t('an_rank_steady')}</span>`;
+    if (mTasks.length >= 5 && rate >= 80 && overdue === 0) {
+      rankBadge = `<span class="an-badge an-badge-gold">${t('an_rank_excellent')}</span>`;
+    } else if (rate >= 60 || mTasks.length >= 8) {
+      rankBadge = `<span class="an-badge an-badge-green">${t('an_rank_good')}</span>`;
+    } else if (overdue >= 2 || (mTasks.length > 0 && rate < 30)) {
+      rankBadge = `<span class="an-badge an-badge-warn">${t('an_rank_support')}</span>`;
+    }
+
+    return {
+      member: m,
+      total: mTasks.length,
+      done,
+      inProg,
+      overdue,
+      rate,
+      pjNames,
+      rankBadge
+    };
+  }).sort((a, b) => b.total - a.total);
+
+  if (badgeEl) {
+    badgeEl.textContent = `${_anCachedTableData.length} ${t('nav_users').toLowerCase()}`;
+  }
+
+  filterAnalyticsTable('');
+}
+
+function filterAnalyticsTable(query) {
+  const tbody = document.getElementById('an-table-tbody');
+  if (!tbody) return;
+  const q = (query || '').toLowerCase().trim();
+
+  const filtered = _anCachedTableData.filter(item => {
+    if (!q) return true;
+    const name = (item.member.name || '').toLowerCase();
+    const email = (item.member.email || '').toLowerCase();
+    const pjs = item.pjNames.join(' ').toLowerCase();
+    return name.includes(q) || email.includes(q) || pjs.includes(q);
+  });
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--t2)">${t('empty_no_users')}</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(row => {
+    const pjTags = row.pjNames.length
+      ? row.pjNames.map(pn => `<span class="an-pj-tag" title="${pn}">${pn.length > 20 ? pn.slice(0, 18) + '...' : pn}</span>`).join('')
+      : `<span style="color:var(--t3);font-size:11px">-</span>`;
+    
+    const barColor = row.rate >= 80 ? 'var(--g)' : (row.rate >= 50 ? 'var(--p)' : 'var(--w)');
+
+    return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--p),#6366f1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">
+              ${(row.member.name || row.member.email).slice(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--tx)">${row.member.name || row.member.email}</div>
+              <div style="font-size:10px;color:var(--t3)">${row.member.email} · ${tRole(row.member.role)}</div>
+            </div>
+          </div>
+        </td>
+        <td><div style="max-width:280px;display:flex;flex-wrap:wrap;gap:2px">${pjTags}</div></td>
+        <td style="text-align:center;font-weight:700">${row.total}</td>
+        <td style="text-align:center;color:var(--g);font-weight:600">${row.done}</td>
+        <td style="text-align:center;color:var(--p);font-weight:600">${row.inProg}</td>
+        <td style="text-align:center;color:${row.overdue > 0 ? 'var(--d)' : 'var(--t3)'};font-weight:${row.overdue > 0 ? '700' : 'normal'}">${row.overdue}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11px;font-weight:700;min-width:32px">${row.rate}%</span>
+            <div class="an-rate-bar-wrap">
+              <div class="an-rate-bar" style="width:${row.rate}%;background:${barColor}"></div>
+            </div>
+          </div>
+        </td>
+        <td style="text-align:center">${row.rankBadge}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TAXONOMY & STANDARDIZATION LOGIC (DANH MỤC TIÊU CHUẨN)
+// ═══════════════════════════════════════════════════════════
+let _activeTaxSubTab = 'CATEGORY';
+let _taxFilteredData = [];
+let _batchLegacyTasksList = [];
+
+function loadPgTaxonomy(force) {
+  if (!force && S.taxonomy && (S.taxonomy.categories?.length || S.taxonomy.phases?.length || S.taxonomy.disciplines?.length || S.taxonomy.projectCodes?.length)) {
+    renderTaxonomyTable();
+    return;
+  }
+  
+  const tbody = document.getElementById('tax-tbody');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr>`;
+  
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success && res.data) {
+        S.taxonomy = res.data;
+        renderTaxonomyTable();
+        popTaskTaxonomySelects();
+      } else {
+        toast((res && res.error) || "Lỗi tải danh mục tiêu chuẩn", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .getTaxonomyData();
+}
+
+function switchTaxSubTab(subTab) {
+  _activeTaxSubTab = subTab;
+  ['cat', 'phase', 'disc', 'pjcode'].forEach(id => {
+    const el = document.getElementById('tax-subtab-' + id);
+    if (el) el.classList.remove('active');
+  });
+  
+  const map = { CATEGORY: 'cat', PHASE: 'phase', DISCIPLINE: 'disc', PROJECT_CODE: 'pjcode' };
+  const curBtn = document.getElementById('tax-subtab-' + (map[subTab] || 'cat'));
+  if (curBtn) curBtn.classList.add('active');
+
+  const srch = document.getElementById('tax-srch');
+  if (srch) srch.value = '';
+  
+  renderTaxonomyTable();
+}
+
+function getActiveTaxonomyList() {
+  if (!S.taxonomy) S.taxonomy = { categories: [], phases: [], disciplines: [], projectCodes: [] };
+  if (_activeTaxSubTab === 'CATEGORY') return S.taxonomy.categories || [];
+  if (_activeTaxSubTab === 'PHASE') return S.taxonomy.phases || [];
+  if (_activeTaxSubTab === 'DISCIPLINE') return S.taxonomy.disciplines || [];
+  if (_activeTaxSubTab === 'PROJECT_CODE') return S.taxonomy.projectCodes || [];
+  return [];
+}
+
+function renderTaxonomyTable() {
+  const tbody = document.getElementById('tax-tbody');
+  const countBadge = document.getElementById('tax-count-badge');
+  if (!tbody) return;
+
+  const rawList = getActiveTaxonomyList();
+  const srchText = (document.getElementById('tax-srch')?.value || '').toLowerCase().trim();
+  const statusFilter = (document.getElementById('tax-st-filter')?.value || '').trim();
+
+  _taxFilteredData = rawList.filter(item => {
+    if (statusFilter && item.status !== statusFilter) return false;
+    if (!srchText) return true;
+    return (
+      (item.code || '').toLowerCase().includes(srchText) ||
+      (item.name || '').toLowerCase().includes(srchText) ||
+      (item.desc || '').toLowerCase().includes(srchText) ||
+      (item.extra1 || '').toLowerCase().includes(srchText) ||
+      (item.extra2 || '').toLowerCase().includes(srchText)
+    );
+  });
+
+  if (countBadge) {
+    countBadge.textContent = `${_taxFilteredData.length} ${t('tax_col_name').toLowerCase()}`;
+  }
+
+  if (!_taxFilteredData.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:36px;color:var(--t2)">${t('empty_no_users')} (0 tiêu chuẩn)</td></tr>`;
+    return;
+  }
+
+  const isAdmin = S.user && S.user.role === 'Admin';
+
+  tbody.innerHTML = _taxFilteredData.map((item, idx) => {
+    const badgeColor = item.extra1 && item.extra1.startsWith('#') ? item.extra1 : '#4f6ef7';
+    const statusBadge = item.status === 'Active'
+      ? `<span class="badge bg-gr">Active</span>`
+      : `<span class="badge bg-gy">Archived</span>`;
+
+    let extraDisplay = '-';
+    if (_activeTaxSubTab === 'CATEGORY' || _activeTaxSubTab === 'DISCIPLINE') {
+      extraDisplay = `
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="tax-color-dot" style="background:${badgeColor}"></span>
+          <span style="font-size:11px;font-family:monospace">${item.extra1 || '-'}</span>
+          ${item.extra2 ? `<span style="font-size:11px;color:var(--t2);margin-left:4px">(${item.extra2})</span>` : ''}
+        </div>
+      `;
+    } else if (_activeTaxSubTab === 'PROJECT_CODE') {
+      extraDisplay = `
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="badge bg-pu">${item.extra1 || '2026'}</span>
+          ${item.extra2 ? `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>` : ''}
+        </div>
+      `;
+    } else if (item.extra2) {
+      extraDisplay = `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>`;
+    }
+
+    return `
+      <tr>
+        <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+        <td>
+          <span class="tax-code-badge" style="background:${badgeColor}15;color:${badgeColor};border:1px solid ${badgeColor}40">
+            ${item.code}
+          </span>
+        </td>
+        <td style="font-weight:600;color:var(--tx)">${item.name}</td>
+        <td style="font-size:12px;color:var(--t2);max-width:300px;line-height:1.4">${item.desc || '-'}</td>
+        <td>${extraDisplay}</td>
+        <td>${statusBadge}</td>
+        <td>
+          <div style="display:flex;gap:4px">
+            <button type="button" class="btn bs" style="padding:2px 7px;font-size:11px" onclick="openTaxonomyMod('${item.id}')">✏️ ${t('btn_edit')}</button>
+            ${isAdmin ? `<button type="button" class="btn bs" style="padding:2px 7px;font-size:11px;color:var(--d);border-color:#fee2e2" onclick="deleteTaxonomyItemClick('${item.id}','${item.code}')">🗑️</button>` : ''}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterTaxonomyTable() {
+  renderTaxonomyTable();
+}
+
+function openTaxonomyMod(id) {
+  const modalTi = document.getElementById('mtax-modal-ti');
+  const idInp = document.getElementById('mtax-id');
+  const typeSel = document.getElementById('mtax-type');
+  const codeInp = document.getElementById('mtax-code');
+  const nameInp = document.getElementById('mtax-name');
+  const descInp = document.getElementById('mtax-desc');
+  const extra1Inp = document.getElementById('mtax-extra1');
+  const colorInp = document.getElementById('mtax-color-inp');
+  const extra2Inp = document.getElementById('mtax-extra2');
+  const statusSel = document.getElementById('mtax-status');
+
+  idInp.value = id || '';
+  
+  if (id) {
+    if (modalTi) modalTi.textContent = '✏️ ' + t('btn_edit') + ' ' + t('nav_taxonomy');
+    const all = [
+      ...(S.taxonomy.categories || []),
+      ...(S.taxonomy.phases || []),
+      ...(S.taxonomy.disciplines || []),
+      ...(S.taxonomy.projectCodes || [])
+    ];
+    const item = all.find(x => x.id === id);
+    if (item) {
+      typeSel.value = item.type;
+      codeInp.value = item.code;
+      nameInp.value = item.name;
+      descInp.value = item.desc || '';
+      extra1Inp.value = item.extra1 || '';
+      if (colorInp && item.extra1 && item.extra1.startsWith('#')) colorInp.value = item.extra1;
+      extra2Inp.value = item.extra2 || '';
+      statusSel.value = item.status || 'Active';
+    }
+  } else {
+    if (modalTi) modalTi.textContent = '📐 ' + t('tax_btn_add');
+    typeSel.value = _activeTaxSubTab;
+    codeInp.value = '';
+    nameInp.value = '';
+    descInp.value = '';
+    extra1Inp.value = '#4f6ef7';
+    if (colorInp) colorInp.value = '#4f6ef7';
+    extra2Inp.value = '';
+    statusSel.value = 'Active';
+  }
+
+  onTaxModalTypeChange();
+  updateTaxPreview();
+  openModal('m-tax');
+}
+
+function onTaxModalTypeChange() {
+  const type = document.getElementById('mtax-type')?.value || 'CATEGORY';
+  const extra1Lbl = document.getElementById('mtax-extra1-lbl');
+  const colorInp = document.getElementById('mtax-color-inp');
+  const extra1Inp = document.getElementById('mtax-extra1');
+  const pickerGroup = document.querySelector('.tax-color-picker-group');
+
+  if (type === 'CATEGORY' || type === 'DISCIPLINE') {
+    if (extra1Lbl) extra1Lbl.textContent = 'Màu nhận diện (Hex)';
+    if (colorInp) colorInp.style.display = 'block';
+    if (pickerGroup) pickerGroup.style.display = 'flex';
+  } else if (type === 'PROJECT_CODE') {
+    if (extra1Lbl) extra1Lbl.textContent = 'Năm triển khai (VD: 2026)';
+    if (colorInp) colorInp.style.display = 'none';
+    if (pickerGroup) pickerGroup.style.display = 'none';
+    if (extra1Inp && !extra1Inp.value.trim()) extra1Inp.value = new Date().getFullYear().toString();
+  } else {
+    if (extra1Lbl) extra1Lbl.textContent = 'Thông tin bổ sung (Tùy chọn)';
+    if (colorInp) colorInp.style.display = 'none';
+    if (pickerGroup) pickerGroup.style.display = 'none';
+  }
+  updateTaxPreview();
+}
+
+function pickTaxColor(hex) {
+  if (!hex) return;
+  const colorInp = document.getElementById('mtax-color-inp');
+  const extra1Inp = document.getElementById('mtax-extra1');
+  if (colorInp && hex.startsWith('#')) colorInp.value = hex;
+  if (extra1Inp) extra1Inp.value = hex;
+
+  document.querySelectorAll('.tax-color-opt').forEach(el => {
+    el.classList.toggle('selected', el.style.background === hex || el.getAttribute('data-color') === hex);
+  });
+  updateTaxPreview();
+}
+
+function updateTaxPreview() {
+  const previewBox = document.getElementById('mtax-preview-badge');
+  if (!previewBox) return;
+
+  const code = (document.getElementById('mtax-code')?.value || 'CODE').toUpperCase();
+  const name = document.getElementById('mtax-name')?.value || 'Tên hiển thị';
+  const color = document.getElementById('mtax-extra1')?.value || '#4f6ef7';
+  const isHex = color.startsWith('#');
+  const c = isHex ? color : '#4f6ef7';
+
+  previewBox.innerHTML = `
+    <span class="tax-code-badge" style="background:${c}15;color:${c};border:1px solid ${c}40">${code}</span>
+    <span style="font-weight:600;font-size:12px;color:var(--tx)">${name}</span>
+  `;
+}
+
+function submitTaxonomyItem() {
+  const id = document.getElementById('mtax-id')?.value;
+  const type = document.getElementById('mtax-type')?.value;
+  const code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
+  const name = (document.getElementById('mtax-name')?.value || '').trim();
+  const desc = (document.getElementById('mtax-desc')?.value || '').trim();
+  const extra1 = (document.getElementById('mtax-extra1')?.value || '').trim();
+  const extra2 = (document.getElementById('mtax-extra2')?.value || '').trim();
+  const status = document.getElementById('mtax-status')?.value || 'Active';
+
+  if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
+  if (!name) { toast("Vui lòng nhập tên phân loại", "error"); return; }
+
+  const payload = { id, type, code, name, desc, extra1, extra2, status };
+
+  toast("Đang lưu tiêu chuẩn...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        closeModal('m-tax');
+        toast(t('tax_item_saved'), "success");
+        loadPgTaxonomy(true);
+      } else {
+        toast((res && res.error) || "Lỗi lưu tiêu chuẩn", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .saveTaxonomyItem(payload);
+}
+
+function deleteTaxonomyItemClick(id, code) {
+  if (!confirm(`Bạn có chắc chắn muốn xóa tiêu chuẩn [${code}]?`)) return;
+
+  toast("Đang xóa tiêu chuẩn...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        toast(t('tax_item_deleted'), "success");
+        loadPgTaxonomy(true);
+      } else {
+        toast((res && res.error) || "Lỗi xóa tiêu chuẩn", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi xóa tiêu chuẩn", "error");
+    })
+    .deleteTaxonomyItem(id);
+}
+
+function restoreDefaultTaxonomy() {
+  if (!confirm("Khôi phục danh mục mẫu tiêu chuẩn từ hệ thống? Các tiêu chuẩn mặc định theo bảng quy định sẽ được thiết lập lại.")) return;
+
+  toast("Đang khôi phục danh mục mẫu...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success && res.data) {
+        S.taxonomy = res.data;
+        renderTaxonomyTable();
+        popTaskTaxonomySelects();
+        toast("Đã nạp danh mục mẫu chuẩn thành công!", "success");
+      } else {
+        toast((res && res.error) || "Lỗi khôi phục danh mục mẫu", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối", "error");
+    })
+    .loadDefaultTaxonomy();
+}
+
+function popTaskTaxonomySelects() {
+  const catOptions = `<option value="">-- ${t('tax_lbl_cat')} --</option>` +
+    ((S.taxonomy && S.taxonomy.categories) || []).filter(c => c.status === 'Active').map(c => `
+      <option value="${c.code}">${c.code} - ${c.name}</option>
+    `).join('');
+
+  const phaseOptions = `<option value="">-- ${t('tax_lbl_phase')} --</option>` +
+    ((S.taxonomy && S.taxonomy.phases) || []).filter(p => p.status === 'Active').map(p => `
+      <option value="${p.code}">${p.code} - ${p.name}</option>
+    `).join('');
+
+  const discOptions = `<option value="">-- ${t('tax_lbl_disc')} --</option>` +
+    ((S.taxonomy && S.taxonomy.disciplines) || []).filter(d => d.status === 'Active').map(d => `
+      <option value="${d.code}">${d.code} - ${d.name}</option>
+    `).join('');
+
+  // 1. Quick Task Modal
+  const qCat = document.getElementById('mqtk-cat');
+  const qPhase = document.getElementById('mqtk-phase');
+  const qDisc = document.getElementById('mqtk-disc');
+  if (qCat) { const cur = qCat.value; qCat.innerHTML = catOptions; if (cur) qCat.value = cur; }
+  if (qPhase) { const cur = qPhase.value; qPhase.innerHTML = phaseOptions; if (cur) qPhase.value = cur; }
+  if (qDisc) { const cur = qDisc.value; qDisc.innerHTML = discOptions; if (cur) qDisc.value = cur; }
+
+  // 2. Full Task Edit Panel
+  const tpCat = document.getElementById('tp-cat');
+  const tpPhase = document.getElementById('tp-phase');
+  const tpDisc = document.getElementById('tp-disc');
+  if (tpCat) { const cur = tpCat.value; tpCat.innerHTML = catOptions; if (cur) tpCat.value = cur; }
+  if (tpPhase) { const cur = tpPhase.value; tpPhase.innerHTML = phaseOptions; if (cur) tpPhase.value = cur; }
+  if (tpDisc) { const cur = tpDisc.value; tpDisc.innerHTML = discOptions; if (cur) tpDisc.value = cur; }
+}
+
+function onTaskTaxonomyChange(mode) {
+  if (mode === 'tp') {
+    const cat = document.getElementById('tp-cat')?.value || '';
+    const phase = document.getElementById('tp-phase')?.value || '';
+    const disc = document.getElementById('tp-disc')?.value || '';
+    const parts = [cat, phase, disc].filter(Boolean);
+    const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+    const badge = document.getElementById('tp-tax-preview-badge');
+    if (badge) {
+      if (prefix) {
+        badge.textContent = prefix;
+        badge.style.background = '#eef2ff';
+        badge.style.color = 'var(--p)';
+        badge.style.borderColor = '#c7d2fe';
+      } else {
+        badge.textContent = t('tax_prefix_none') || '[CHƯA GÁN MÃ]';
+        badge.style.background = '#fff7ed';
+        badge.style.color = '#ea580c';
+        badge.style.borderColor = '#fdba74';
+      }
+    }
+
+    const nmInp = document.getElementById('tp-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+    return;
+  }
+
+  // Default / Single mode for #m-qtk
+  const cat = document.getElementById('mqtk-cat')?.value || '';
+  const phase = document.getElementById('mqtk-phase')?.value || '';
+  const disc = document.getElementById('mqtk-disc')?.value || '';
+
+  const parts = [cat, phase, disc].filter(Boolean);
+  const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+  const prevTxt = document.getElementById('qtk-tax-preview-txt');
+  if (prevTxt) {
+    prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
+  }
+
+  if (mode === 'single') {
+    const nmInp = document.getElementById('mqtk-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+  }
+}
+
+// ── BATCH LEGACY TASK STANDARDIZATION TOOL ──
+function openBatchTaskMod() {
+  const pjSel = document.getElementById('mbatch-tax-pj');
+  if (pjSel) {
+    pjSel.innerHTML = `<option value="">-- Tất cả dự án --</option>` +
+      (S.projects || []).map(p => `<option value="${p.id}">${p.name || p.id}</option>`).join('');
+    if (S.pjFilter) pjSel.value = S.pjFilter;
+  }
+
+  openModal('m-batch-tax');
+  runAutoDetectLegacyTasks();
+}
+
+function runAutoDetectLegacyTasks() {
+  const pjId = document.getElementById('mbatch-tax-pj')?.value || '';
+  const tbody = document.getElementById('mbatch-tbody');
+  const countEl = document.getElementById('mbatch-scan-count');
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+
+  let tasks = S.tasks || [];
+  if (pjId) tasks = tasks.filter(t => t.projectId === pjId);
+
+  // Filter tasks that do not start with [CODE]
+  const unstandardized = tasks.filter(t => !t.name || !t.name.trim().match(/^\[[A-Z0-9_\-]+\]/i));
+
+  if (!unstandardized.length) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--g);font-weight:600">🎉 Tuyệt vời! Tất cả nhiệm vụ trong phạm vi đã được chuẩn hóa tiền tố.</td></tr>`;
+    if (countEl) countEl.textContent = '0';
+    if (submitBtn) submitBtn.disabled = true;
+    _batchLegacyTasksList = [];
+    return;
+  }
+
+  _batchLegacyTasksList = unstandardized.map(t => {
+    const nameLow = (t.name || '').toLowerCase();
+    
+    // Category detection
+    let cat = 'M3';
+    if (nameLow.includes('point cloud') || nameLow.includes('pointcloud') || nameLow.includes('laser') || nameLow.includes('scan')) cat = 'PC';
+    else if (nameLow.includes('báo cáo') || nameLow.includes('report') || nameLow.includes('nghiệm thu')) cat = 'RP';
+    else if (nameLow.includes('họp') || nameLow.includes('meeting') || nameLow.includes('trao đổi')) cat = 'MTG';
+    else if (nameLow.includes('tool') || nameLow.includes('script') || nameLow.includes('addon') || nameLow.includes('phát triển')) cat = 'DE';
+    else if (nameLow.includes('chung') || nameLow.includes('quản lý') || nameLow.includes('hồ sơ')) cat = 'GE';
+
+    // Phase detection
+    let phase = 'BD';
+    if (nameLow.includes('chi tiết') || nameLow.includes('detail') || nameLow.includes('thi công')) phase = 'DD';
+    else if (nameLow.includes('nghiệm thu') || nameLow.includes('kiểm tra') || nameLow.includes('inspect')) phase = 'IS';
+
+    // Discipline detection
+    let disc = 'AR';
+    if (nameLow.includes('kết cấu') || nameLow.includes('structure') || nameLow.includes('thép') || nameLow.includes('móng')) disc = 'STR';
+    else if (nameLow.includes('cơ điện') || nameLow.includes('mep') || nameLow.includes('thiết bị') || nameLow.includes('hvac') || nameLow.includes('ống') || nameLow.includes('plumb')) disc = 'MP';
+    else if (nameLow.includes('điện') || nameLow.includes('electric') || nameLow.includes('chiếu sáng')) disc = 'ELE';
+    else if (nameLow.includes('layer')) disc = 'PCL';
+    else if (nameLow.includes('xử lý')) disc = 'PCP';
+
+    const suggestedPrefix = `[${cat}-${phase}-${disc}]`;
+    const cleanOrigName = t.name.trim();
+    const suggestedNewName = `${suggestedPrefix} ${cleanOrigName}`;
+
+    return {
+      id: t.id,
+      origName: cleanOrigName,
+      suggestedPrefix,
+      suggestedNewName,
+      checked: true
+    };
+  });
+
+  if (countEl) countEl.textContent = _batchLegacyTasksList.length;
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${_batchLegacyTasksList.length} nhiệm vụ)`;
+  }
+
+  if (tbody) {
+    tbody.innerHTML = _batchLegacyTasksList.map((item, idx) => `
+      <tr>
+        <td style="text-align:center">
+          <input type="checkbox" id="mbatch-ck-${idx}" onchange="updateBatchItemCheck(${idx}, this.checked)" checked>
+        </td>
+        <td style="font-size:12px;color:var(--tx);max-width:200px">${item.origName}</td>
+        <td>
+          <span class="tax-code-badge" style="background:#eef2ff;color:#4f6ef7;border:1px solid #c7d2fe">
+            ${item.suggestedPrefix}
+          </span>
+        </td>
+        <td>
+          <input type="text" class="fc" id="mbatch-inp-${idx}" value="${item.suggestedNewName}" style="font-size:12px;height:30px" oninput="_batchLegacyTasksList[${idx}].suggestedNewName = this.value">
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function updateBatchItemCheck(idx, checked) {
+  if (_batchLegacyTasksList[idx]) {
+    _batchLegacyTasksList[idx].checked = checked;
+  }
+  const checkedCount = _batchLegacyTasksList.filter(x => x.checked).length;
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = checkedCount === 0;
+    submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${checkedCount} nhiệm vụ)`;
+  }
+}
+
+function toggleBatchAll(checked) {
+  _batchLegacyTasksList.forEach((item, idx) => {
+    item.checked = checked;
+    const el = document.getElementById('mbatch-ck-' + idx);
+    if (el) el.checked = checked;
+  });
+  const checkedCount = checked ? _batchLegacyTasksList.length : 0;
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = checkedCount === 0;
+    submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${checkedCount} nhiệm vụ)`;
+  }
+}
+
+function applyBatchTaskMigration() {
+  const selected = _batchLegacyTasksList.filter(x => x.checked);
+  if (!selected.length) {
+    toast("Chưa chọn nhiệm vụ nào để chuẩn hóa", "info");
+    return;
+  }
+
+  const updates = selected.map(x => ({
+    id: x.id,
+    newName: (x.suggestedNewName || '').trim()
+  })).filter(x => x.id && x.newName);
+
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "⏳ Đang cập nhật...";
+  }
+
+  toast("Đang chuẩn hóa tiền tố cho các nhiệm vụ...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        closeModal('m-batch-tax');
+        toast(t('tax_batch_success').replace('{n}', res.updatedCount || updates.length), "success");
+        // Optimistic update in local state
+        updates.forEach(u => {
+          const found = S.tasks.find(tk => tk.id === u.id);
+          if (found) found.name = u.newName;
+        });
+        _refreshUI();
+        const curPage = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
+        if (curPage === 'tasks') loadPgTk();
+      } else {
+        toast((res && res.error) || "Lỗi cập nhật nhiệm vụ", "error");
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi máy chủ", "error");
+      if (submitBtn) submitBtn.disabled = false;
+    })
+    .batchUpdateLegacyTasks(updates);
 }
 </script>
 </body>
