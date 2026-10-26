@@ -523,9 +523,14 @@ function initSheets() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   if (!ss.getSheetByName(CONFIG.SHEET_USERS)) {
     const s=ss.insertSheet(CONFIG.SHEET_USERS);
-    s.appendRow(["ID","Email","Họ Tên","Vai Trò","Trạng Thái","Ngày Tạo","Ghi Chú"]);
-    s.getRange(1,1,1,7).setFontWeight("bold").setBackground("#4a86e8").setFontColor("white");
-    s.appendRow([generateId(),Session.getActiveUser().getEmail(),"Admin","Admin","Active",new Date(),"Tài khoản khởi tạo"]);
+    s.appendRow(["ID","Email","Họ Tên","Vai Trò","Trạng Thái","Ngày Tạo","Ghi Chú","Link Bảng Tính"]);
+    s.getRange(1,1,1,8).setFontWeight("bold").setBackground("#4a86e8").setFontColor("white");
+    s.appendRow([generateId(),Session.getActiveUser().getEmail(),"Admin","Admin","Active",new Date(),"Tài khoản khởi tạo",""]);
+  } else {
+    const s = ss.getSheetByName(CONFIG.SHEET_USERS);
+    if (s.getLastColumn() < 8) {
+      s.getRange(1, 8).setValue("Link Bảng Tính").setFontWeight("bold").setBackground("#4a86e8").setFontColor("white");
+    }
   }
   if (!ss.getSheetByName(CONFIG.SHEET_PROJECTS)) {
     const s=ss.insertSheet(CONFIG.SHEET_PROJECTS);

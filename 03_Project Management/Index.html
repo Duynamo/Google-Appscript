@@ -1661,17 +1661,35 @@ input[type=range]{width:100%;accent-color:var(--p)}
         </div>
       </div>
 
-      <!-- KHỐI NHẬP LIỆU CHUẨN CHO CÁC NHÓM KHÁC (CATEGORY, PHASE, DISCIPLINE, EMPLOYEE) -->
+      <!-- KHỐI NHẬP LIỆU CHUẨN CHO CÁC NHÓM (CATEGORY, PHASE, DISCIPLINE, EMPLOYEE) -->
       <div id="mtax-std-section">
         <div class="frow">
-          <div class="fg" style="flex:1">
+          <div class="fg" style="flex:1.5">
             <label class="fl" id="mtax-code-lbl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
             <input type="text" class="fc" id="mtax-code" placeholder="VD: AR, STR, M3..." maxlength="20" oninput="this.value=this.value.toUpperCase(); updateTaxPreview()" style="font-weight:700;letter-spacing:1px">
             <div style="font-size:10px;color:var(--t3);margin-top:2px" id="mtax-code-hint" data-i18n="tax_code_hint">2-5 ký tự in hoa</div>
           </div>
-          <div class="fg" style="flex:2">
-            <label class="fl" id="mtax-name-lbl"><span data-i18n="tax_col_name">Tên phân loại</span> <span class="req">*</span></label>
-            <input type="text" class="fc" id="mtax-name" placeholder="VD: Dựng hình kiến trúc..." oninput="updateTaxPreview()">
+          <div class="fg" style="flex:1" id="mtax-order-wrap">
+            <label class="fl"><span data-i18n="tax_col_order">Thứ tự (#)</span></label>
+            <input type="number" class="fc" id="mtax-order" placeholder="1" min="1" max="999" value="1" style="font-weight:700;text-align:center">
+          </div>
+        </div>
+
+        <!-- TÊN ĐA NGÔN NGỮ (VI - EN - JA) -->
+        <div class="fg" id="mtax-name-vi-wrap">
+          <label class="fl" id="mtax-name-lbl"><span style="display:inline-flex;align-items:center;gap:4px">🇻🇳 Tên Tiếng Việt</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-name-vi" placeholder="VD: Dựng hình kiến trúc..." oninput="syncTaxNameInputs(); updateTaxPreview()">
+          <input type="hidden" id="mtax-name">
+        </div>
+
+        <div class="frow" id="mtax-name-multilang-row">
+          <div class="fg" style="flex:1" id="mtax-name-en-wrap">
+            <label class="fl"><span style="display:inline-flex;align-items:center;gap:4px">🇺🇸 Tên Tiếng Anh</span></label>
+            <input type="text" class="fc" id="mtax-name-en" placeholder="VD: Architecture Modeling..." oninput="updateTaxPreview()">
+          </div>
+          <div class="fg" style="flex:1" id="mtax-name-jp-wrap">
+            <label class="fl"><span style="display:inline-flex;align-items:center;gap:4px">🇯🇵 Tên Tiếng Nhật</span></label>
+            <input type="text" class="fc" id="mtax-name-jp" placeholder="VD: 建築モデリング..." oninput="updateTaxPreview()">
           </div>
         </div>
 
@@ -2890,6 +2908,22 @@ function tRole(role) {
   return item[lang] || item['vi'] || role;
 }
 
+function tTaxonomy(item, lang) {
+  if (!item) return "";
+  const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
+  let text = "";
+  if (curLang === 'ja') text = item.name_jp || item.name_en || item.name_vi || item.name || item.code || "";
+  else if (curLang === 'en') text = item.name_en || item.name_vi || item.name_jp || item.name || item.code || "";
+  else text = item.name_vi || item.name_en || item.name || item.code || "";
+
+  // Tự động loại bỏ tiền tố mã bị lặp nếu có (VD: "PM01_..." hoặc "PM01 - ...")
+  if (text && item.code) {
+    const rx = new RegExp('^' + item.code + '[_\\-\\s:]+', 'i');
+    text = text.replace(rx, '').trim();
+  }
+  return text;
+}
+
 function formatDisplayDate(dStr) {
   if (!dStr) return "";
   try {
@@ -2973,6 +3007,7 @@ function setLanguage(lang, saveAsDefault) {
     if (typeof renderTimesheetGrid === 'function') renderTimesheetGrid();
   }
   popPjFilter();
+  if (typeof popTaskTaxonomySelects === 'function') popTaskTaxonomySelects();
 }
 
 function selectLanguage(lang) {
@@ -6759,6 +6794,9 @@ function renderTaxonomyTable() {
     return (
       (item.code || '').toLowerCase().includes(srchText) ||
       (item.name || '').toLowerCase().includes(srchText) ||
+      (item.name_vi || '').toLowerCase().includes(srchText) ||
+      (item.name_en || '').toLowerCase().includes(srchText) ||
+      (item.name_jp || '').toLowerCase().includes(srchText) ||
       (item.desc || '').toLowerCase().includes(srchText) ||
       (item.extra1 || '').toLowerCase().includes(srchText) ||
       (item.extra2 || '').toLowerCase().includes(srchText) ||
@@ -6778,18 +6816,18 @@ function renderTaxonomyTable() {
   const isAdmin = S.user && S.user.role === 'Admin';
 
   tbody.innerHTML = _taxFilteredData.map((item, idx) => {
-    const badgeColor = item.extra1 && item.extra1.startsWith('#') ? item.extra1 : '#4f6ef7';
+    const badgeColor = item.color || (item.extra1 && item.extra1.startsWith('#') ? item.extra1 : '#4f6ef7');
     const statusBadge = item.status === 'Active'
       ? `<span class="badge bg-gr">Active</span>`
       : `<span class="badge bg-gy">Archived</span>`;
 
     let extraDisplay = '-';
-    if (_activeTaxSubTab === 'CATEGORY' || _activeTaxSubTab === 'DISCIPLINE') {
+    if (_activeTaxSubTab === 'CATEGORY' || _activeTaxSubTab === 'DISCIPLINE' || _activeTaxSubTab === 'PHASE') {
       extraDisplay = `
         <div style="display:flex;align-items:center;gap:6px">
           <span class="tax-color-dot" style="background:${badgeColor}"></span>
-          <span style="font-size:11px;font-family:monospace">${item.extra1 || '-'}</span>
-          ${item.extra2 ? `<span style="font-size:11px;color:var(--t2);margin-left:4px">(${item.extra2})</span>` : ''}
+          <span style="font-size:11px;font-family:monospace">${badgeColor}</span>
+          ${item.sortOrder ? `<span class="badge bg-bl" style="font-size:10px" title="Thứ tự">#${item.sortOrder}</span>` : ''}
         </div>
       `;
     } else if (_activeTaxSubTab === 'PROJECT_CODE') {
@@ -6826,6 +6864,10 @@ function renderTaxonomyTable() {
       extraDisplay = `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>`;
     }
 
+    const nameVI = item.name_vi || item.name || '';
+    const nameEN = item.name_en || '';
+    const nameJP = item.name_jp || item.extra2 || '';
+
     return `
       <tr>
         <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
@@ -6834,7 +6876,16 @@ function renderTaxonomyTable() {
             ${item.code}
           </span>
         </td>
-        <td style="font-weight:600;color:var(--tx)">${item.name}</td>
+        <td>
+          <div style="font-weight:700;color:var(--tx);font-size:13px">${tTaxonomy(item)}</div>
+          ${(_activeTaxSubTab !== 'EMPLOYEE' && (nameVI || nameEN || nameJP)) ? `
+            <div style="display:flex;gap:6px;margin-top:3px;flex-wrap:wrap;font-size:10px">
+              ${nameVI ? `<span class="badge" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:10px" title="Tiếng Việt">🇻🇳 ${nameVI}</span>` : ''}
+              ${nameEN ? `<span class="badge" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;font-size:10px" title="English">🇺🇸 ${nameEN}</span>` : ''}
+              ${nameJP ? `<span class="badge" style="background:#fdf2f8;color:#9d174d;border:1px solid #fbcfe8;font-size:10px" title="日本語">🇯🇵 ${nameJP}</span>` : ''}
+            </div>
+          ` : ''}
+        </td>
         <td style="font-size:12px;color:var(--t2);max-width:300px;line-height:1.4">${item.desc || '-'}</td>
         <td>${extraDisplay}</td>
         <td>${statusBadge}</td>
@@ -6880,11 +6931,21 @@ function syncTaxProjectName() {
   updateTaxPreview();
 }
 
+function syncTaxNameInputs() {
+  const vi = document.getElementById('mtax-name-vi')?.value || '';
+  const hiddenName = document.getElementById('mtax-name');
+  if (hiddenName) hiddenName.value = vi;
+}
+
 function openTaxonomyMod(id) {
   const modalTi = document.getElementById('mtax-modal-ti');
   const idInp = document.getElementById('mtax-id');
   const typeSel = document.getElementById('mtax-type');
   const codeInp = document.getElementById('mtax-code');
+  const orderInp = document.getElementById('mtax-order');
+  const nameViInp = document.getElementById('mtax-name-vi');
+  const nameEnInp = document.getElementById('mtax-name-en');
+  const nameJpInp = document.getElementById('mtax-name-jp');
   const nameInp = document.getElementById('mtax-name');
   const descInp = document.getElementById('mtax-desc');
   const extra1Inp = document.getElementById('mtax-extra1');
@@ -6926,12 +6987,18 @@ function openTaxonomyMod(id) {
         if (pjcExtra2) pjcExtra2.value = item.extra2 || '';
         if (pjcName) pjcName.value = item.name || '';
       } else {
-        codeInp.value = item.code;
-        nameInp.value = item.name;
+        codeInp.value = item.code || '';
+        if (orderInp) orderInp.value = item.sortOrder || 1;
+        if (nameViInp) nameViInp.value = item.name_vi || item.name || '';
+        if (nameEnInp) nameEnInp.value = item.name_en || '';
+        if (nameJpInp) nameJpInp.value = item.name_jp || item.extra2 || '';
+        if (nameInp) nameInp.value = item.name_vi || item.name || '';
         descInp.value = item.desc || '';
-        extra1Inp.value = item.extra1 || '';
-        if (colorInp && item.extra1 && item.extra1.startsWith('#')) colorInp.value = item.extra1;
-        extra2Inp.value = item.extra2 || '';
+        extra1Inp.value = item.color || item.extra1 || '';
+        if (colorInp && (item.color || item.extra1) && (item.color || item.extra1).startsWith('#')) {
+          colorInp.value = item.color || item.extra1;
+        }
+        extra2Inp.value = item.name_jp || item.extra2 || '';
         if (extra3Sel) {
           const raw = String(item.extra3 || "").toLowerCase().trim();
           if (["admin", "cấp 1", "level1", "1"].includes(raw)) {
@@ -6951,7 +7018,11 @@ function openTaxonomyMod(id) {
     if (modalTi) modalTi.textContent = '📐 ' + t('tax_btn_add');
     typeSel.value = _activeTaxSubTab;
     codeInp.value = '';
-    nameInp.value = '';
+    if (orderInp) orderInp.value = '1';
+    if (nameViInp) nameViInp.value = '';
+    if (nameEnInp) nameEnInp.value = '';
+    if (nameJpInp) nameJpInp.value = '';
+    if (nameInp) nameInp.value = '';
     descInp.value = '';
     extra1Inp.value = _activeTaxSubTab === 'EMPLOYEE' ? '' : '#4f6ef7';
     if (colorInp) colorInp.value = '#4f6ef7';
@@ -7006,8 +7077,10 @@ function onTaxModalTypeChange() {
   const codeLbl = document.getElementById('mtax-code-lbl');
   const codeHint = document.getElementById('mtax-code-hint');
   const codeInp = document.getElementById('mtax-code');
+  const orderWrap = document.getElementById('mtax-order-wrap');
   const nameLbl = document.getElementById('mtax-name-lbl');
-  const nameInp = document.getElementById('mtax-name');
+  const nameViInp = document.getElementById('mtax-name-vi');
+  const multilangRow = document.getElementById('mtax-name-multilang-row');
   const descLbl = document.getElementById('mtax-desc-lbl');
   const descInp = document.getElementById('mtax-desc');
   const extra1Lbl = document.getElementById('mtax-extra1-lbl');
@@ -7023,8 +7096,10 @@ function onTaxModalTypeChange() {
     if (codeLbl) codeLbl.innerHTML = `<span>Mã nhân viên (Staff Code)</span> <span class="req">*</span>`;
     if (codeHint) codeHint.textContent = "VD: NV01, NV02...";
     if (codeInp) codeInp.placeholder = "VD: NV01";
+    if (orderWrap) orderWrap.style.display = 'none';
     if (nameLbl) nameLbl.innerHTML = `<span>Họ và tên</span> <span class="req">*</span>`;
-    if (nameInp) nameInp.placeholder = "VD: Nguyễn Văn A";
+    if (nameViInp) nameViInp.placeholder = "VD: Nguyễn Văn A";
+    if (multilangRow) multilangRow.style.display = 'none';
     if (descLbl) descLbl.textContent = "Cấp bậc / Vị trí chuyên môn";
     if (descInp) descInp.placeholder = "VD: Kỹ sư kết cấu, Kiến trúc sư...";
     if (extra1Lbl) extra1Lbl.textContent = "Email Google đăng nhập *";
@@ -7039,8 +7114,10 @@ function onTaxModalTypeChange() {
     if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
     if (codeHint) codeHint.textContent = "2-5 ký tự in hoa";
     if (codeInp) codeInp.placeholder = "VD: AR, STR, M3...";
-    if (nameLbl) nameLbl.innerHTML = `<span>${t('tax_col_name')}</span> <span class="req">*</span>`;
-    if (nameInp) nameInp.placeholder = "VD: Dựng hình kiến trúc...";
+    if (orderWrap) orderWrap.style.display = 'block';
+    if (nameLbl) nameLbl.innerHTML = `<span>🇻🇳 Tên Tiếng Việt</span> <span class="req">*</span>`;
+    if (nameViInp) nameViInp.placeholder = "VD: Dựng hình kiến trúc...";
+    if (multilangRow) multilangRow.style.display = 'flex';
     if (descLbl) descLbl.textContent = t('tax_col_fullname');
     if (descInp) descInp.placeholder = "Mô tả phạm vi áp dụng, chi tiết nội dung đầu việc...";
     if (extra1Lbl) extra1Lbl.textContent = 'Màu nhận diện (Hex)';
@@ -7079,7 +7156,7 @@ function updateTaxPreview() {
     color = '#6366f1';
   } else {
     code = (document.getElementById('mtax-code')?.value || 'CODE').toUpperCase();
-    name = document.getElementById('mtax-name')?.value || 'Tên hiển thị';
+    name = document.getElementById('mtax-name-vi')?.value || document.getElementById('mtax-name')?.value || 'Tên hiển thị';
     const c = document.getElementById('mtax-extra1')?.value || '#4f6ef7';
     color = (c && c.startsWith('#')) ? c : '#4f6ef7';
   }
@@ -7094,7 +7171,7 @@ function submitTaxonomyItem() {
   const id = document.getElementById('mtax-id')?.value;
   const type = document.getElementById('mtax-type')?.value;
   const status = document.getElementById('mtax-status')?.value || 'Active';
-  let code, name, desc, extra1, extra2, extra3;
+  let code, name, name_vi, name_en, name_jp, desc, extra1, extra2, extra3, sortOrder;
 
   if (type === 'PROJECT_CODE') {
     extra1 = (document.getElementById('mtax-pjc-year')?.value || '').trim();
@@ -7103,6 +7180,10 @@ function submitTaxonomyItem() {
     desc = (document.getElementById('mtax-pjc-desc')?.value || '').trim();
     name = (document.getElementById('mtax-pjc-name')?.value || '').trim();
     extra2 = (document.getElementById('mtax-pjc-extra2')?.value || '').trim();
+    name_vi = desc;
+    name_en = name;
+    name_jp = extra2;
+    sortOrder = parseInt(extra3, 10) || 1;
 
     if (!extra1) { toast("Vui lòng nhập năm triển khai", "error"); return; }
     if (!extra3) { toast("Vui lòng nhập số thứ tự (STT)", "error"); return; }
@@ -7111,17 +7192,36 @@ function submitTaxonomyItem() {
     if (!name) name = `${extra1}_${extra3}_${code}_${desc}`;
   } else {
     code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
-    name = (document.getElementById('mtax-name')?.value || '').trim();
+    name_vi = (document.getElementById('mtax-name-vi')?.value || document.getElementById('mtax-name')?.value || '').trim();
+    name_en = (document.getElementById('mtax-name-en')?.value || '').trim();
+    name_jp = (document.getElementById('mtax-name-jp')?.value || '').trim();
+    name = name_vi;
     desc = (document.getElementById('mtax-desc')?.value || '').trim();
     extra1 = (document.getElementById('mtax-extra1')?.value || '').trim();
-    extra2 = (document.getElementById('mtax-extra2')?.value || '').trim();
+    extra2 = name_jp || (document.getElementById('mtax-extra2')?.value || '').trim();
     extra3 = (document.getElementById('mtax-extra3')?.value || '').trim();
+    sortOrder = parseInt(document.getElementById('mtax-order')?.value || '1', 10) || 1;
 
     if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
-    if (!name) { toast("Vui lòng nhập tên phân loại", "error"); return; }
+    if (!name_vi) { toast("Vui lòng nhập tên phân loại", "error"); return; }
   }
 
-  const payload = { id, type, code, name, desc, extra1, extra2, extra3, status };
+  const payload = {
+    id,
+    type,
+    code,
+    name: name_vi || name,
+    name_vi: name_vi || name,
+    name_en: name_en,
+    name_jp: name_jp,
+    desc,
+    color: extra1,
+    extra1,
+    extra2,
+    extra3,
+    sortOrder,
+    status
+  };
 
   toast("Đang lưu tiêu chuẩn...", "info");
   google.script.run
@@ -7211,6 +7311,7 @@ function restoreDefaultTaxonomy() {
         S.taxonomy = res.data;
         renderTaxonomyTable();
         popTaskTaxonomySelects();
+        if (typeof renderTimesheetGrid === 'function') renderTimesheetGrid();
         toast("Đã nạp danh mục mẫu chuẩn thành công!", "success");
       } else {
         toast((res && res.error) || "Lỗi khôi phục danh mục mẫu", "error");
@@ -7225,17 +7326,17 @@ function restoreDefaultTaxonomy() {
 function popTaskTaxonomySelects() {
   const catOptions = `<option value="">-- ${t('tax_lbl_cat')} --</option>` +
     ((S.taxonomy && S.taxonomy.categories) || []).filter(c => c.status === 'Active').map(c => `
-      <option value="${c.code}">${c.code} - ${c.name}</option>
+      <option value="${c.code}">${c.code} - ${tTaxonomy(c)}</option>
     `).join('');
 
   const phaseOptions = `<option value="">-- ${t('tax_lbl_phase')} --</option>` +
     ((S.taxonomy && S.taxonomy.phases) || []).filter(p => p.status === 'Active').map(p => `
-      <option value="${p.code}">${p.code} - ${p.name}</option>
+      <option value="${p.code}">${p.code} - ${tTaxonomy(p)}</option>
     `).join('');
 
   const discOptions = `<option value="">-- ${t('tax_lbl_disc')} --</option>` +
     ((S.taxonomy && S.taxonomy.disciplines) || []).filter(d => d.status === 'Active').map(d => `
-      <option value="${d.code}">${d.code} - ${d.name}</option>
+      <option value="${d.code}">${d.code} - ${tTaxonomy(d)}</option>
     `).join('');
 
   // 1. Quick Task Modal
@@ -8039,22 +8140,26 @@ function renderTimesheetGrid(prefillData) {
     });
   }
 
-  // Build taxonomy dropdown options (concise code only)
-  const pjOptions = `<option value="">-</option>` + (S.taxonomy?.projectCodes || []).map(p =>
-    `<option value="${p.code}">${p.code}</option>`
-  ).join('');
+  // Build taxonomy dropdown options with localized labels
+  const pjOptions = `<option value="">-</option>` + (S.taxonomy?.projectCodes || []).map(p => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(p) : (p.name_vi || p.name || '');
+    return `<option value="${p.code}" title="${lbl}">${p.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
 
-  const catOptions = `<option value="">-</option>` + (S.taxonomy?.categories || []).map(c =>
-    `<option value="${c.code}">${c.code}</option>`
-  ).join('');
+  const catOptions = `<option value="">-</option>` + (S.taxonomy?.categories || []).map(c => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(c) : (c.name_vi || c.name || '');
+    return `<option value="${c.code}" title="${lbl}">${c.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
 
-  const phOptions = `<option value="">-</option>` + (S.taxonomy?.phases || []).map(ph =>
-    `<option value="${ph.code}">${ph.code}</option>`
-  ).join('');
+  const phOptions = `<option value="">-</option>` + (S.taxonomy?.phases || []).map(ph => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(ph) : (ph.name_vi || ph.name || '');
+    return `<option value="${ph.code}" title="${lbl}">${ph.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
 
-  const discOptions = `<option value="">-</option>` + (S.taxonomy?.disciplines || []).map(d =>
-    `<option value="${d.code}">${d.code}</option>`
-  ).join('');
+  const discOptions = `<option value="">-</option>` + (S.taxonomy?.disciplines || []).map(d => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(d) : (d.name_vi || d.name || '');
+    return `<option value="${d.code}" title="${lbl}">${d.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
 
   const isReadOnly = _tsHasExistingData && !_tsEditModeActive;
   const roClass = isReadOnly ? ' readonly' : '';

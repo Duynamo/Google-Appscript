@@ -17,7 +17,8 @@ function getUsers() {
     role   : r[3],
     status : r[4],
     created: r[5] ? Utilities.formatDate(new Date(r[5]), "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : "",
-    note   : r[6] || ""
+    note   : r[6] || "",
+    sheetUrl: r[7] || ""
   }));
   return { success: true, data: users };
 }
@@ -44,8 +45,11 @@ function addUser(payload) {
 
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sh = ss.getSheetByName(CONFIG.SHEET_USERS);
+  if (sh.getLastColumn() < 8) {
+    sh.getRange(1, 8).setValue("Link Bảng Tính").setFontWeight("bold").setBackground("#4a86e8").setFontColor("white");
+  }
   const now = new Date();
-  sh.appendRow([id, email, payload.name, payload.role, payload.status || "Active", now, payload.note || ""]);
+  sh.appendRow([id, email, payload.name, payload.role, payload.status || "Active", now, payload.note || "", payload.sheetUrl || ""]);
   SpreadsheetApp.flush();
   invalidateCache([CONFIG.SHEET_USERS]);
   writeLog("ADD_USER", `Thêm user: ${payload.name} (${email}) | Role: ${payload.role}`);
@@ -53,7 +57,8 @@ function addUser(payload) {
   const userObj = {
     id, email, name: payload.name, role: payload.role, status: payload.status || "Active",
     created: Utilities.formatDate(now, "Asia/Ho_Chi_Minh", "dd/MM/yyyy"),
-    note: payload.note || ""
+    note: payload.note || "",
+    sheetUrl: payload.sheetUrl || ""
   };
 
   return { success: true, message: `Đã thêm ${payload.name} thành công`, id, user: userObj };
@@ -68,6 +73,9 @@ function updateUser(payload) {
 
   const ss   = SpreadsheetApp.getActiveSpreadsheet();
   const sh   = ss.getSheetByName(CONFIG.SHEET_USERS);
+  if (sh.getLastColumn() < 8) {
+    sh.getRange(1, 8).setValue("Link Bảng Tính").setFontWeight("bold").setBackground("#4a86e8").setFontColor("white");
+  }
   const rows = sh.getDataRange().getValues();
 
   const targetId = payload.id ? String(payload.id).trim().toLowerCase() : "";
@@ -80,10 +88,11 @@ function updateUser(payload) {
                     (targetEmail && (rowId === targetEmail || rowEmail === targetEmail));
 
     if (isMatch) {
-      if (payload.name   !== undefined) sh.getRange(i+1, 3).setValue(payload.name);
-      if (payload.role   !== undefined) sh.getRange(i+1, 4).setValue(payload.role);
-      if (payload.status !== undefined) sh.getRange(i+1, 5).setValue(payload.status);
-      if (payload.note   !== undefined) sh.getRange(i+1, 7).setValue(payload.note);
+      if (payload.name     !== undefined) sh.getRange(i+1, 3).setValue(payload.name);
+      if (payload.role     !== undefined) sh.getRange(i+1, 4).setValue(payload.role);
+      if (payload.status   !== undefined) sh.getRange(i+1, 5).setValue(payload.status);
+      if (payload.note     !== undefined) sh.getRange(i+1, 7).setValue(payload.note);
+      if (payload.sheetUrl !== undefined) sh.getRange(i+1, 8).setValue(payload.sheetUrl);
       SpreadsheetApp.flush();
       invalidateCache([CONFIG.SHEET_USERS]);
       writeLog("UPDATE_USER", `Cập nhật user ID: ${rows[i][0]} | Email: ${rows[i][1]}`);
