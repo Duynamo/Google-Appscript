@@ -557,4 +557,7 @@ function initSheets() {
     s.getRange(1,1,1,6).setFontWeight("bold").setBackground("#fbbc04").setFontColor("#333");
   }
   initTaxonomySheet();
+  if (typeof initTimesheetCentralSheets === "function") {
+    initTimesheetCentralSheets();
+  }
 }

@@ -82,9 +82,11 @@ const DEFAULT_TAXONOMY_LIST = [
   { id:"DISC_DE01", type:"DISCIPLINE", code:"DE01", name_vi:"Phát triển Tool / Script / API",  name_en:"Automation & Tool Dev",         name_jp:"開発関連", desc:"Lập trình Dynamo, Python, Revit API", color:"#3b82f6", sortOrder:45, status:"Active" },
   { id:"DISC_LN01", type:"DISCIPLINE", code:"LN01", name_vi:"Đào tạo & Nâng cao kỹ năng",      name_en:"Training & Skill Learning",      name_jp:"勉強・スキルアップ", desc:"Tự học phần mềm mới, training nội bộ", color:"#3b82f6", sortOrder:46, status:"Active" },
 
-  // ── 4. PROJECT CODES (MÃ DỰ ÁN MẪU CHUẨN HOÁ) ──
-  { id:"PJC_HAG01", type:"PROJECT_CODE", code:"HAG01", name_vi:"Trạm xử lý nước thải Hanamigawa", name_en:"2026_01_HAG01_Hanamigawa", name_jp:"花見川終末処理場", name:"2026_01_HAG01_花見川終末処理場", desc:"花見川終末処理場", color:"#6366f1", sortOrder:1, extra1:"2026", extra2:"花見川終末処理場", extra3:"01", status:"Active" },
-  { id:"PJC_JJK01", type:"PROJECT_CODE", code:"JJK01", name_vi:"Công trình mới Làng xưởng Jujikai", name_en:"2026_01_JJK01_Jujikai", name_jp:"十字会工房ヴィレッジ新築工事", name:"2026_01_JJK01_十字会工房ヴィレッジ新築工事", desc:"十字会工房ヴィレッジ新築工事", color:"#6366f1", sortOrder:2, extra1:"2026", extra2:"十字会", extra3:"01", status:"Active" }
+  // ── 4. PROJECT CODES (MÃ DỰ ÁN THỰC TẾ CHUẨN HOÁ) ──
+  { id:"PJC_MUR01", type:"PROJECT_CODE", code:"MUR01", name_vi:"Trạm xử lý nước thải Ranto TP Muroran", name_en:"2026_01_MUR01_Muroran", name_jp:"室蘭市蘭東下水処理場", name:"2026_01_MUR01_室蘭市蘭東下水処理場", desc:"2026_01_MUR01_室蘭市蘭東下水処理場", color:"#3b82f6", sortOrder:1, extra1:"2026", extra2:"室蘭市蘭東下水処理場", extra3:"01", status:"Active" },
+  { id:"PJC_JJK01", type:"PROJECT_CODE", code:"JJK01", name_vi:"Công trình xây mới Làng xưởng Kobo Village", name_en:"2026_02_JJK01_KoboVillage", name_jp:"工房ヴィレッジ新築工事", name:"2026_02_JJK01_工房ヴィレッジ新築工事", desc:"2026_02_JJK01_工房ヴィレッジ新築工事", color:"#10b981", sortOrder:2, extra1:"2026", extra2:"工房ヴィレッジ", extra3:"02", status:"Active" },
+  { id:"PJC_AMA01", type:"PROJECT_CODE", code:"AMA01", name_vi:"Trung tâm xử lý nước Hondo TP Amakusa", name_en:"2026_03_AMA01_Amakusa", name_jp:"天草市本渡浄化センター", name:"2026_03_AMA01_天草市本渡浄化センター", desc:"2026_03_AMA01_天草市本渡浄化センター", color:"#f59e0b", sortOrder:3, extra1:"2026", extra2:"天草市本渡浄化センター", extra3:"03", status:"Active" },
+  { id:"PJC_TES01", type:"PROJECT_CODE", code:"TES01", name_vi:"TT xử lý nước Teshikaga Thị trấn Teshikaga", name_en:"2026_04_TES01_Teshikaga", name_jp:"弟子屈町弟子屈浄化センター", name:"2026_04_TES01_弟子屈町弟子屈浄化センター", desc:"2026_04_TES01_弟子屈町弟子屈浄化センター", color:"#8b5cf6", sortOrder:4, extra1:"2026", extra2:"弟子屈町弟子屈浄化センター", extra3:"04", status:"Active" }
 ];
 
 const TAXONOMY_HEADERS = [
@@ -340,26 +342,36 @@ function getTaxonomyDataInternal() {
     else if (type === "PHASE") phases.push(item);
     else if (type === "DISCIPLINE") disciplines.push(item);
     else if (type === "PROJECT_CODE") projectCodes.push(item);
-    else if (type === "EMPLOYEE") employees.push(item);
+    // Bo qua dong EMPLOYEE trong bang TAXONOMY
   });
 
-  // TÍCH HỢP ĐỒNG BỘ TỪ BẢNG USERS VÀO EMPLOYEES
-  // Đảm bảo TimesheetAPI và các chức năng phân quyền tìm thấy nhân viên không bao giờ bị lỗi
+  // TÍCH HỢP ĐỒNG BỘ TẬP TRUNG TỪ BẢNG USERS VÀO EMPLOYEES (Loại trừ 100% bản ghi rác và duplicate)
   try {
     const usersData = getSheetData(CONFIG.SHEET_USERS);
-    const existingEmails = new Set(employees.map(e => String(e.extra1 || "").toLowerCase().trim()));
+    const seenCodes = new Set();
+    const seenEmails = new Set();
 
     usersData.forEach(u => {
-      if (!u[0] || !u[1]) return;
-      const email = String(u[1]).trim();
-      if (existingEmails.has(email.toLowerCase())) return;
-
-      const staffCode = String(u[0]).trim();
+      if (!u[0] && !u[1]) return;
+      const staffCode = String(u[0] || "").trim().toUpperCase();
+      const email = String(u[1] || "").trim();
       const staffName = String(u[2] || "").trim();
       const staffRole = String(u[3] || "Member").trim();
       const staffStatus = String(u[4] || "Active").trim();
       const staffRank = String(u[6] || "").trim();
       const sheetUrl = String(u[7] || "").trim();
+
+      // Bỏ qua dòng tiêu đề hoặc rác
+      if (staffCode === "ID" || email === "EMAIL") return;
+      if (!staffCode && (!email || !email.includes("@"))) return;
+      if (email.startsWith("#")) return; // Loại bỏ rác mã màu lọt vào email
+
+      const emLower = email.toLowerCase();
+      if (emLower && seenEmails.has(emLower)) return;
+      if (staffCode && seenCodes.has(staffCode)) return;
+
+      if (emLower) seenEmails.add(emLower);
+      if (staffCode) seenCodes.add(staffCode);
 
       employees.push({
         id: "EMP_" + staffCode,
@@ -438,10 +450,40 @@ function saveTaxonomyItem(payload) {
     const sortOrder = Number(payload.sortOrder || payload.order || 1);
     const extra3 = String(payload.extra3 || "").trim();
 
-    // NẾU LÀ EMPLOYEE: Lưu thẳng vào bảng USERS tập trung
+    // NẾU LÀ EMPLOYEE: Quản lý nhân sự tập trung, đồng bộ toàn diện và Cascade Update
     if (type === "EMPLOYEE") {
-      const email = String(payload.extra1 || payload.email || "").trim();
+      let email = String(payload.extra1 || payload.email || "").trim();
       let sheetUrl = String(payload.extra2 || payload.sheetUrl || "").trim();
+
+      // 1. Xác định mã nhân viên cũ (Old Staff Code)
+      let oldStaffCode = "";
+      if (payload.id && String(payload.id).startsWith("EMP_")) {
+        oldStaffCode = String(payload.id).replace(/^EMP_/, "").trim().toUpperCase();
+      }
+
+      // Tra cứu bảng USERS để lấy chính xác mã cũ và email
+      const ssUsers = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.SHEET_USERS || "USERS");
+      let foundUserRow = null;
+      if (ssUsers && ssUsers.getLastRow() >= 2) {
+        const uRows = ssUsers.getDataRange().getValues();
+        for (let i = 1; i < uRows.length; i++) {
+          const rowCode = String(uRows[i][0] || "").trim().toUpperCase();
+          const rowEmail = String(uRows[i][1] || "").trim().toLowerCase();
+          if ((email && rowEmail === email.toLowerCase()) || (oldStaffCode && rowCode === oldStaffCode)) {
+            foundUserRow = uRows[i];
+            if (!oldStaffCode) oldStaffCode = rowCode;
+            if (!email || email.startsWith("#") || !email.includes("@")) {
+              if (rowEmail && rowEmail.includes("@")) email = rowEmail;
+            }
+            break;
+          }
+        }
+      }
+
+      // BẢO VỆ CHỐNG TRÁO ĐỔI COLOR: Tuyệt đối không cho phép mã màu lọt vào Email
+      if (!email || email.startsWith("#") || !email.includes("@")) {
+        return { success: false, error: "Email nhân sự không hợp lệ hoặc bị thiếu" };
+      }
 
       if (!sheetUrl) {
         try {
@@ -461,8 +503,24 @@ function saveTaxonomyItem(payload) {
       else if (["cấp 3", "pj_lead", "pj lead", "level3", "3", "manager"].includes(ex3)) targetRole = "PJ_Lead";
       else if (extra3) targetRole = extra3;
 
+      if (foundUserRow && String(foundUserRow[3] || "").trim() === "Admin" && targetRole !== "Admin") {
+        targetRole = "Admin";
+      }
+
+      const newStaffCode = code;
+
+      // 2. KÍCH HOẠT CASCADE UPDATE NẾU ĐỔI MÃ NHÂN VIÊN
+      if (oldStaffCode && newStaffCode && oldStaffCode !== newStaffCode) {
+        const cascadeRes = cascadeUpdateStaffCode(oldStaffCode, newStaffCode, email, nameVI);
+        if (!cascadeRes || !cascadeRes.success) {
+          return { success: false, error: "Lỗi cập nhật lan truyền mã nhân viên: " + ((cascadeRes && cascadeRes.error) || "Không xác định") };
+        }
+      }
+
+      // 3. Đồng bộ vào bảng USERS (cột 1 sẽ được cập nhật newStaffCode)
       syncEmployeeToUsersSheet({
-        id: code,
+        id: newStaffCode,
+        oldId: oldStaffCode,
         email: email,
         name: nameVI,
         role: targetRole,
@@ -471,14 +529,43 @@ function saveTaxonomyItem(payload) {
         sheetUrl: sheetUrl
       });
 
-      invalidateCache([CONFIG.SHEET_USERS, CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
-      writeLog("SAVE_EMPLOYEE", `Lưu nhân sự [${code}]: ${nameVI} (${email})`);
+      // 4. Đồng bộ vào bảng TAXONOMY nếu có dòng EMPLOYEE tương ứng
+      const ss = SpreadsheetApp.getActiveSpreadsheet();
+      const shTax = ss.getSheetByName(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
+      if (shTax && shTax.getLastRow() >= 2) {
+        const tData = shTax.getDataRange().getValues();
+        let foundTaxRow = -1;
+        for (let i = 1; i < tData.length; i++) {
+          const tType = String(tData[i][1] || "").toUpperCase().trim();
+          const tCode = String(tData[i][2] || "").toUpperCase().trim();
+          const tId = String(tData[i][0] || "").trim();
+          if (tType === "EMPLOYEE" && (tCode === oldStaffCode || tCode === newStaffCode || tId === "EMP_" + oldStaffCode || tId === payload.id)) {
+            foundTaxRow = i + 1;
+            break;
+          }
+        }
+        if (foundTaxRow !== -1) {
+          shTax.getRange(foundTaxRow, 1).setValue("EMP_" + newStaffCode);
+          shTax.getRange(foundTaxRow, 3).setValue(newStaffCode);
+          shTax.getRange(foundTaxRow, 4).setValue(nameVI);
+          shTax.getRange(foundTaxRow, 5).setValue(nameEN || nameVI);
+          shTax.getRange(foundTaxRow, 7).setValue(desc);
+          shTax.getRange(foundTaxRow, 10).setValue(status);
+        }
+      }
+
+      SpreadsheetApp.flush();
+      invalidateCache([CONFIG.SHEET_USERS, CONFIG.SHEET_TAXONOMY || "TAXONOMY", "TIMESHEET_2026", "TIMESHEET_DAILY_ROLLUP"]);
+      writeLog("SAVE_EMPLOYEE", `Lưu nhân sự [${newStaffCode}] (cũ: ${oldStaffCode}): ${nameVI} (${email})`);
       return {
         success: true,
+        message: (oldStaffCode && oldStaffCode !== newStaffCode)
+          ? `Đã đổi mã nhân viên từ [${oldStaffCode}] sang [${newStaffCode}] và đồng bộ toàn hệ thống!`
+          : `Đã lưu nhân sự [${newStaffCode}] thành công!`,
         item: {
-          id: payload.id || ("EMP_" + code),
+          id: "EMP_" + newStaffCode,
           type: "EMPLOYEE",
-          code: code,
+          code: newStaffCode,
           name: nameVI,
           name_vi: nameVI,
           name_en: nameEN,
@@ -603,12 +690,16 @@ function syncEmployeeToUsersSheet(emp) {
     }
 
     const rows = shUsers.getDataRange().getValues();
-    const emailTarget = String(emp.email).toLowerCase().trim();
+    const emailTarget = String(emp.email || "").toLowerCase().trim();
+    const oldIdTarget = String(emp.oldId || "").toUpperCase().trim();
+    const idTarget = String(emp.id || "").toUpperCase().trim();
     let foundIndex = -1;
     let existingRole = "";
 
     for (let i = 1; i < rows.length; i++) {
-      if (String(rows[i][1]).toLowerCase().trim() === emailTarget) {
+      const rowId = String(rows[i][0] || "").toUpperCase().trim();
+      const rowEmail = String(rows[i][1] || "").toLowerCase().trim();
+      if ((emailTarget && rowEmail === emailTarget) || (oldIdTarget && rowId === oldIdTarget) || (idTarget && rowId === idTarget)) {
         foundIndex = i + 1;
         existingRole = String(rows[i][3] || "").trim();
         break;
@@ -622,6 +713,8 @@ function syncEmployeeToUsersSheet(emp) {
     }
 
     if (foundIndex !== -1) {
+      if (emp.id) shUsers.getRange(foundIndex, 1).setValue(emp.id); // <--- CRUCIAL FIX: CẬP NHẬT MÃ NHÂN VIÊN VÀO CỘT 1
+      if (emp.email && !emp.email.startsWith("#")) shUsers.getRange(foundIndex, 2).setValue(emp.email);
       shUsers.getRange(foundIndex, 3).setValue(emp.name);
       shUsers.getRange(foundIndex, 4).setValue(roleToSet);
       shUsers.getRange(foundIndex, 5).setValue(emp.status);
@@ -656,8 +749,21 @@ function deleteTaxonomyItem(id) {
         const itemCode = data[i][2];
         const itemType = data[i][1];
         sh.deleteRow(i + 1);
+        // Nếu xóa EMPLOYEE, cũng cập nhật trạng thái Inactive trong USERS để tránh tự hồi sinh
+        if (itemType === "EMPLOYEE") {
+          const shUsers = ss.getSheetByName(CONFIG.SHEET_USERS || "USERS");
+          if (shUsers && shUsers.getLastRow() >= 2) {
+            const uData = shUsers.getDataRange().getValues();
+            for (let u = 1; u < uData.length; u++) {
+              if (String(uData[u][0] || "").trim().toUpperCase() === String(itemCode).trim().toUpperCase()) {
+                shUsers.getRange(u + 1, 5).setValue("Inactive");
+                break;
+              }
+            }
+          }
+        }
         SpreadsheetApp.flush();
-        invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
+        invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY", CONFIG.SHEET_USERS || "USERS"]);
         writeLog("DELETE_TAXONOMY", `Xóa ${itemType} [${itemCode}]`);
         return { success: true };
       }

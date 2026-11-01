@@ -4,8 +4,8 @@
     "passedCount": 38,
     "failedCount": 0,
     "passRate": "100.0%",
-    "durationMs": 148,
-    "executedAt": "2026-10-26T14:30:25.824Z"
+    "durationMs": 50,
+    "executedAt": "2026-10-31T08:41:50.345Z"
   },
   "results": [
     {
@@ -13,8 +13,8 @@
       "moduleName": "Syntax / Backend",
       "description": "Biên dịch cú pháp file Code.gs",
       "status": "PASS",
-      "details": "100% cú pháp ES6 hợp lệ (25651 bytes)",
-      "executionTimeMs": 1
+      "details": "100% cú pháp ES6 hợp lệ (25750 bytes)",
+      "executionTimeMs": 0
     },
     {
       "id": "TC-01.Userapi.gs",
@@ -30,14 +30,14 @@
       "description": "Biên dịch cú pháp file Taxonomyapi.gs",
       "status": "PASS",
       "details": "100% cú pháp ES6 hợp lệ (39012 bytes)",
-      "executionTimeMs": 2
+      "executionTimeMs": 1
     },
     {
       "id": "TC-01.Timesheetapi.gs",
       "moduleName": "Syntax / Backend",
       "description": "Biên dịch cú pháp file Timesheetapi.gs",
       "status": "PASS",
-      "details": "100% cú pháp ES6 hợp lệ (22639 bytes)",
+      "details": "100% cú pháp ES6 hợp lệ (68095 bytes)",
       "executionTimeMs": 1
     },
     {
@@ -62,7 +62,7 @@
       "description": "Biên dịch cú pháp file Helpers.gs",
       "status": "PASS",
       "details": "100% cú pháp ES6 hợp lệ (1889 bytes)",
-      "executionTimeMs": 2
+      "executionTimeMs": 1
     },
     {
       "id": "TC-01",
@@ -70,15 +70,15 @@
       "description": "Biên dịch toàn bộ 7 file backend .gs qua Node.js VM",
       "status": "PASS",
       "details": "7/7 file biên dịch thành công 0 lỗi",
-      "executionTimeMs": 10
+      "executionTimeMs": 6
     },
     {
       "id": "TC-02",
       "moduleName": "Syntax / Index",
       "description": "Bóc tách 1 script blocks từ Index.html biên dịch qua VM",
       "status": "PASS",
-      "details": "Khối script 284.4KB biên dịch thành công",
-      "executionTimeMs": 14
+      "details": "Khối script 313.9KB biên dịch thành công",
+      "executionTimeMs": 7
     },
     {
       "id": "TC-03",
@@ -86,7 +86,7 @@
       "description": "Khởi tạo bảng danh mục khi sheet chưa tồn tại (initTaxonomySheet)",
       "status": "PASS",
       "details": "Tạo tab TAXONOMY chuẩn 11 cột, nạp 59 dòng dữ liệu mẫu",
-      "executionTimeMs": 1
+      "executionTimeMs": 0
     },
     {
       "id": "TC-04",
@@ -102,15 +102,15 @@
       "description": "Kiểm tra loại bỏ tiền tố lặp cho PM01-LN01 trong getTaxonomyDataInternal",
       "status": "PASS",
       "details": "PM01 name_jp: \"プロジェクト資料確認\" (không dính PM01_)",
-      "executionTimeMs": 11
+      "executionTimeMs": 4
     },
     {
       "id": "TC-06",
       "moduleName": "Taxonomy / GS",
       "description": "Cơ chế Auto-backup khi Admin nạp lại mẫu chuẩn (loadDefaultTaxonomy)",
       "status": "PASS",
-      "details": "Đã tạo sheet dự phòng an toàn: TAXONOMY_BACKUP_20261026_213025",
-      "executionTimeMs": 10
+      "details": "Đã tạo sheet dự phòng an toàn: TAXONOMY_BACKUP_20261031_154150",
+      "executionTimeMs": 2
     },
     {
       "id": "TC-07",
@@ -118,7 +118,7 @@
       "description": "Bảo vệ quyền Admin không bị giáng chức khi sync (syncEmployeeToUsersSheet)",
       "status": "PASS",
       "details": "Role Admin được bảo vệ an toàn tuyệt đối (không bị giáng cấp thành Member)",
-      "executionTimeMs": 1
+      "executionTimeMs": 0
     },
     {
       "id": "TC-08",
@@ -126,7 +126,7 @@
       "description": "Chạy trực tiếp tiện ích setupTaxonomy46Codes()",
       "status": "PASS",
       "details": "Trả về: \"Đã nạp thành công 46 mã công việc chuẩn hóa vào tab TAXONOMY!\" | Số dòng: 60",
-      "executionTimeMs": 2
+      "executionTimeMs": 1
     },
     {
       "id": "TC-09",
@@ -134,7 +134,7 @@
       "description": "Lưu bảng chấm công 1 ngày của nhân viên (saveTimesheetData)",
       "status": "PASS",
       "details": "Lưu thành công 2 khung giờ vào DAILY_LOG",
-      "executionTimeMs": 9
+      "executionTimeMs": 3
     },
     {
       "id": "TC-10",
@@ -142,7 +142,7 @@
       "description": "Kiểm tra tính toán giờ nghỉ trưa (12:00-13:00)",
       "status": "PASS",
       "details": "2 slots 12:00-13:00 được đánh dấu isLunch:true (khóa cứng, không tính vào giờ làm)",
-      "executionTimeMs": 5
+      "executionTimeMs": 2
     },
     {
       "id": "TC-11",
@@ -150,7 +150,7 @@
       "description": "Nhận diện làm thêm giờ OT sáng (06:00-08:00)",
       "status": "PASS",
       "details": "4 slots OT sáng (06:00 - 08:00) được nhận diện chuẩn xác (tối đa 2.0h)",
-      "executionTimeMs": 13
+      "executionTimeMs": 2
     },
     {
       "id": "TC-12",
@@ -158,7 +158,7 @@
       "description": "Nhận diện làm thêm giờ OT tối (17:00-22:00)",
       "status": "PASS",
       "details": "10 slots OT tối (17:00 - 22:00) được nhận diện chuẩn xác (tối đa 5.0h)",
-      "executionTimeMs": 8
+      "executionTimeMs": 3
     },
     {
       "id": "TC-13",
@@ -166,7 +166,7 @@
       "description": "Tính năng sao chép chấm công từ ngày hôm trước (copyTimesheetFromYesterday)",
       "status": "PASS",
       "details": "Sao chép thành công 2 khung giờ từ ngày 2026-10-26",
-      "executionTimeMs": 5
+      "executionTimeMs": 1
     },
     {
       "id": "TC-14",
@@ -174,7 +174,7 @@
       "description": "Thêm nhiệm vụ với tiền tố mã chuẩn (addTask)",
       "status": "PASS",
       "details": "Tạo thành công task ID MOCKUUID: \"[MD01] Dựng kết cấu tầng 1\"",
-      "executionTimeMs": 6
+      "executionTimeMs": 1
     },
     {
       "id": "TC-15",
@@ -182,7 +182,7 @@
       "description": "Quét & chuẩn hóa nhiệm vụ cũ hàng loạt (batchUpdateLegacyTasks)",
       "status": "PASS",
       "details": "Chuẩn hóa thành công 1 nhiệm vụ -> \"[MD02] Dựng mô hình cũ đã chuẩn hóa\"",
-      "executionTimeMs": 3
+      "executionTimeMs": 1
     },
     {
       "id": "TC-16",
@@ -190,7 +190,7 @@
       "description": "Tạo mã dự án theo chuẩn Nhật YYYY_STT_MÃ_TÊN (addProject)",
       "status": "PASS",
       "details": "Tạo dự án thành công: \"2026_02_JJK01_十字会工房ヴィレッジ新築工事\" (Mã ID: DA002)",
-      "executionTimeMs": 5
+      "executionTimeMs": 1
     },
     {
       "id": "TC-17",
@@ -198,7 +198,7 @@
       "description": "Lưu đường link Google Sheet cá nhân cho nhân viên (Cột 8 SheetUrl)",
       "status": "PASS",
       "details": "Lưu thành công SheetUrl: https://docs.google.com/spreadsheets/d/test_engineer_sheet_id_2026",
-      "executionTimeMs": 4
+      "executionTimeMs": 1
     },
     {
       "id": "TC-18",
@@ -206,7 +206,7 @@
       "description": "Bảo vệ đặc quyền Root Admin cho 'Vũ Đình Duy' (getCurrentUser)",
       "status": "PASS",
       "details": "User: \"Vũ Đình Duy\" | Role: Admin | PermLevel: 1 (Đặc quyền tối cao)",
-      "executionTimeMs": 2
+      "executionTimeMs": 0
     },
     {
       "id": "TC-19",
@@ -222,7 +222,7 @@
       "description": "Dropdown 'Mã Công Việc' không hiển thị lặp mã",
       "status": "PASS",
       "details": "Hiển thị chuẩn: \"PM01 - プロジェクト資料確認\"",
-      "executionTimeMs": 1
+      "executionTimeMs": 0
     },
     {
       "id": "TC-21",
@@ -254,7 +254,7 @@
       "description": "Nạp mẫu chuẩn 1-click trên WebApp (restoreDefaultTaxonomy)",
       "status": "PASS",
       "details": "Đã kiểm tra hàm restoreDefaultTaxonomy kết nối trực tiếp đến loadDefaultTaxonomy",
-      "executionTimeMs": 1
+      "executionTimeMs": 0
     },
     {
       "id": "TC-25",
@@ -270,7 +270,7 @@
       "description": "Modal Thêm nhiệm vụ nhanh nạp đủ Category, Phase, Discipline",
       "status": "PASS",
       "details": "Modal id=\"m-qtk\" chứa đầy đủ 3 dropdown Category, Phase, Discipline liên kết 46 mã",
-      "executionTimeMs": 1
+      "executionTimeMs": 0
     },
     {
       "id": "TC-27",
@@ -302,7 +302,7 @@
       "description": "Hỗ trợ phím tắt và nút chuyển nhanh ngày làm việc (stepTimesheetDate)",
       "status": "PASS",
       "details": "Hàm stepTimesheetDate(+1 / -1) và phím tắt điều hướng ngày hoạt động chính xác",
-      "executionTimeMs": 1
+      "executionTimeMs": 0
     },
     {
       "id": "TC-E2E",
@@ -310,7 +310,7 @@
       "description": "Đồng bộ khép kín: Task WebApp <-> Timesheet Cá nhân <-> Giờ thực tế",
       "status": "PASS",
       "details": "Khởi tạo task \"[MD03]\" -> Ghi nhận 4 slots (2.0h) khép kín không mất dữ liệu",
-      "executionTimeMs": 8
+      "executionTimeMs": 2
     }
   ]
 }

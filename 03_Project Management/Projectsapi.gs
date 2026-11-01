@@ -124,6 +124,133 @@ function updateProject(payload) {
   return { success:false, error:"Không tìm thấy" };
 }
 
+
+/**
+ * Cập nhật lan truyền (Cascade Update) mã và tên dự án trên toàn bộ hệ thống
+ * Đảm bảo 100% tính đồng nhất: PROJECTS, TAXONOMY, TIMESHEET_YYYY, TIMESHEET_DAILY_ROLLUP, TASKS
+ */
+function cascadeUpdateProject(oldCode, newCode, newName, newDesc, newBudget) {
+  const user = getCurrentUser();
+  if (!user || !hasPermission(user.role, "manage_projects")) {
+    return { success: false, error: "Không có quyền quản lý dự án" };
+  }
+
+  const srcCode = String(oldCode || "").trim().toUpperCase();
+  const dstCode = String(newCode || oldCode || "").trim().toUpperCase();
+  if (!srcCode || !dstCode) return { success: false, error: "Thiếu mã dự án nguồn hoặc đích" };
+
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(25000)) return { success: false, error: "Hệ thống đang bận cập nhật dữ liệu khác" };
+
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    // 1. Cập nhật bảng PROJECTS
+    const shPj = ss.getSheetByName(CONFIG.SHEET_PROJECTS || "PROJECTS");
+    let pjFound = false;
+    if (shPj && shPj.getLastRow() >= 2) {
+      const pData = shPj.getDataRange().getValues();
+      for (let i = 1; i < pData.length; i++) {
+        const rowId = String(pData[i][0] || "").trim().toUpperCase();
+        if (rowId === srcCode || String(pData[i][1] || "").includes(srcCode)) {
+          shPj.getRange(i + 1, 1).setValue(dstCode);
+          if (newName) shPj.getRange(i + 1, 2).setValue(newName);
+          if (newDesc !== undefined) shPj.getRange(i + 1, 3).setValue(newDesc);
+          if (newBudget !== undefined && shPj.getLastColumn() >= 12) {
+            shPj.getRange(i + 1, 12).setValue(Number(newBudget) || 0);
+          }
+          pjFound = true;
+          break;
+        }
+      }
+    }
+
+    // 2. Cập nhật bảng TAXONOMY (Mã dự án chuẩn)
+    const shTax = ss.getSheetByName(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
+    if (shTax && shTax.getLastRow() >= 2) {
+      const tData = shTax.getDataRange().getValues();
+      for (let i = 1; i < tData.length; i++) {
+        const type = String(tData[i][1] || "").toUpperCase().trim();
+        const code = String(tData[i][2] || "").toUpperCase().trim();
+        if (type === "PROJECT_CODE" && (code === srcCode || String(tData[i][0]) === "PJC_" + srcCode)) {
+          shTax.getRange(i + 1, 1).setValue("PJC_" + dstCode);
+          shTax.getRange(i + 1, 3).setValue(dstCode);
+          if (newName) {
+            shTax.getRange(i + 1, 4).setValue(newName);
+            shTax.getRange(i + 1, 6).setValue(newName);
+            shTax.getRange(i + 1, 7).setValue(newName);
+          }
+        }
+      }
+    }
+
+    // 3. Cập nhật toàn bộ các bảng năm TIMESHEET_YYYY
+    const curYr = new Date().getFullYear();
+    for (let yr = curYr - 1; yr <= curYr + 1; yr++) {
+      const yearSheetName = (typeof getTimesheetYearSheetName === "function") 
+        ? getTimesheetYearSheetName(yr) 
+        : `TIMESHEET_${yr}`;
+      const shTs = ss.getSheetByName(yearSheetName);
+      if (shTs && shTs.getLastRow() >= 2) {
+        const tsData = shTs.getDataRange().getValues();
+        for (let i = 1; i < tsData.length; i++) {
+          const rowPj = String(tsData[i][7] || "").trim().toUpperCase(); // Cột 8: Project_Code
+          if (rowPj === srcCode) {
+            shTs.getRange(i + 1, 8).setValue(dstCode);
+          }
+        }
+      }
+    }
+
+    // 4. Cập nhật bảng TIMESHEET_DAILY_ROLLUP
+    const shRollup = ss.getSheetByName((typeof TIMESHEET_CONFIG !== "undefined" && TIMESHEET_CONFIG.ROLLUP_SHEET_NAME) ? TIMESHEET_CONFIG.ROLLUP_SHEET_NAME : "TIMESHEET_DAILY_ROLLUP");
+    if (shRollup && shRollup.getLastRow() >= 2) {
+      const rData = shRollup.getDataRange().getValues();
+      for (let i = 1; i < rData.length; i++) {
+        const rowPj = String(rData[i][4] || "").trim().toUpperCase(); // Cột 5: Project_Code
+        if (rowPj === srcCode) {
+          shRollup.getRange(i + 1, 5).setValue(dstCode);
+          // Cập nhật lại Rollup_ID (Cột 1)
+          const dStr = (rData[i][1] instanceof Date) 
+            ? Utilities.formatDate(rData[i][1], "Asia/Ho_Chi_Minh", "yyyyMMdd")
+            : String(rData[i][1] || "").replace(/-/g, "").slice(0, 8);
+          const sCode = String(rData[i][2] || "").trim();
+          const dCode = String(rData[i][7] || "").trim();
+          const newRollupId = `${dStr}_${sCode}_${dstCode}_${dCode}`;
+          shRollup.getRange(i + 1, 1).setValue(newRollupId);
+        }
+      }
+    }
+
+    // 5. Cập nhật bảng TASKS
+    const shTasks = ss.getSheetByName(CONFIG.SHEET_TASKS || "TASKS");
+    if (shTasks && shTasks.getLastRow() >= 2) {
+      const tkData = shTasks.getDataRange().getValues();
+      for (let i = 1; i < tkData.length; i++) {
+        const pjId = String(tkData[i][1] || "").trim().toUpperCase();
+        if (pjId === srcCode) {
+          shTasks.getRange(i + 1, 2).setValue(dstCode);
+          if (newName) shTasks.getRange(i + 1, 3).setValue(newName);
+        }
+      }
+    }
+
+    SpreadsheetApp.flush();
+    invalidateCache([
+      CONFIG.SHEET_PROJECTS || "PROJECTS",
+      CONFIG.SHEET_TAXONOMY || "TAXONOMY",
+      CONFIG.SHEET_TASKS || "TASKS",
+      "TIMESHEET_2026",
+      "TIMESHEET_DAILY_ROLLUP"
+    ]);
+
+    writeLog("CASCADE_PROJECT", `Cập nhật lan truyền dự án từ [${srcCode}] sang [${dstCode}] (${newName || ""})`);
+    return { success: true, message: `Đã cập nhật lan truyền dự án sang [${dstCode}] trên toàn bộ hệ thống!` };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
 function deleteProject(projectId) {
   const user = getCurrentUser();
   if (!user||user.role!=="Admin") return { success:false, error:"Chỉ Admin" };
@@ -156,8 +283,21 @@ function deleteProject(projectId) {
       }
     }
 
+    // Đồng thời xóa khỏi bảng TAXONOMY để không để lại dự án ma
+    const shTax = ss.getSheetByName(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
+    if (shTax && shTax.getLastRow() >= 2) {
+      const taxData = shTax.getDataRange().getValues();
+      for (let k = taxData.length - 1; k >= 1; k--) {
+        const type = String(taxData[k][1] || "").toUpperCase().trim();
+        const code = String(taxData[k][2] || "").toUpperCase().trim();
+        if (type === "PROJECT_CODE" && (code === projectId || String(taxData[k][0]) === "PJC_" + projectId)) {
+          shTax.deleteRow(k + 1);
+        }
+      }
+    }
+
     SpreadsheetApp.flush();
-    invalidateCache([CONFIG.SHEET_PROJECTS, CONFIG.SHEET_TASKS]);
+    invalidateCache([CONFIG.SHEET_PROJECTS, CONFIG.SHEET_TASKS, CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
     writeLog("DELETE_PROJECT",`Xóa DA: ${projectId} và toàn bộ task liên quan`);
     return { success:true, message:"Đã xóa dự án và các nhiệm vụ liên quan" };
   } finally {

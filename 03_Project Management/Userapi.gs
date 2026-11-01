@@ -3,177 +3,164 @@
 //  Quản Lý Người Dùng & Phân Quyền
 // ============================================================
 
-/** Lấy danh sách người dùng (Admin only) */
-function getUsers() {
+/**
+ * Cập nhật lan truyền (Cascade Update) mã nhân sự trên toàn hệ thống
+ * Đảm bảo đồng nhất USERS, TAXONOMY, TIMESHEET_YYYY, TIMESHEET_DAILY_ROLLUP, PROJECTS, TASKS
+ */
+function cascadeUpdateStaffCode(oldStaffCode, newStaffCode, staffEmail, newName) {
   const user = getCurrentUser();
-  if (!user || !hasPermission(user.role, "manage_users"))
-    return { success: false, error: "Không có quyền truy cập" };
-
-  const data = getSheetData(CONFIG.SHEET_USERS);
-  const users = data.map(r => ({
-    id     : r[0],
-    email  : r[1],
-    name   : r[2],
-    role   : r[3],
-    status : r[4],
-    created: r[5] ? Utilities.formatDate(new Date(r[5]), "Asia/Ho_Chi_Minh", "dd/MM/yyyy") : "",
-    note   : r[6] || "",
-    sheetUrl: r[7] || ""
-  }));
-  return { success: true, data: users };
-}
-
-/** Thêm người dùng mới (hỗ trợ cả Gmail và Thành viên nội bộ chỉ cần tên) */
-function addUser(payload) {
-  const user = getCurrentUser();
-  if (!user || !hasPermission(user.role, "manage_users"))
-    return { success: false, error: "Không có quyền thực hiện" };
-  if (!payload.name || !payload.role)
-    return { success: false, error: "Thiếu thông tin bắt buộc" };
-  const validRoles = [...CONFIG.ROLES, "Manager", "Viewer", "Level2"];
-  if (!validRoles.includes(payload.role))
-    return { success: false, error: "Vai trò không hợp lệ" };
-
-  const id = generateId();
-  // Nếu không có email (chế độ chỉ cần tên), tự sinh email định danh nội bộ
-  const email = (payload.email && payload.email.trim()) 
-    ? payload.email.trim() 
-    : `member_${id.toLowerCase()}@internal.local`;
-
-  const existing = getSheetData(CONFIG.SHEET_USERS).find(r => r[1] && r[1].toLowerCase() === email.toLowerCase());
-  if (existing) return { success: false, error: "Email/Mã thành viên đã tồn tại trong hệ thống" };
-
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sh = ss.getSheetByName(CONFIG.SHEET_USERS);
-  if (sh.getLastColumn() < 8) {
-    sh.getRange(1, 8).setValue("Link Bảng Tính").setFontWeight("bold").setBackground("#4a86e8").setFontColor("white");
+  if (!user || (!hasPermission(user.role, "manage_users") && user.role !== "Admin")) {
+    return { success: false, error: "Chỉ Quản trị viên mới có quyền đổi mã nhân viên." };
   }
-  const now = new Date();
-  sh.appendRow([id, email, payload.name, payload.role, payload.status || "Active", now, payload.note || "", payload.sheetUrl || ""]);
-  SpreadsheetApp.flush();
-  invalidateCache([CONFIG.SHEET_USERS]);
-  writeLog("ADD_USER", `Thêm user: ${payload.name} (${email}) | Role: ${payload.role}`);
 
-  const userObj = {
-    id, email, name: payload.name, role: payload.role, status: payload.status || "Active",
-    created: Utilities.formatDate(now, "Asia/Ho_Chi_Minh", "dd/MM/yyyy"),
-    note: payload.note || "",
-    sheetUrl: payload.sheetUrl || ""
-  };
+  const srcCode = String(oldStaffCode || "").trim().toUpperCase();
+  const dstCode = String(newStaffCode || "").trim().toUpperCase();
+  if (!srcCode || !dstCode) return { success: false, error: "Thiếu mã nhân sự nguồn hoặc đích." };
 
-  return { success: true, message: `Đã thêm ${payload.name} thành công`, id, user: userObj };
-}
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(25000)) return { success: false, error: "Hệ thống đang bận, vui lòng thử lại sau vài giây." };
 
-/** Cập nhật thông tin người dùng */
-function updateUser(payload) {
-  const user = getCurrentUser();
-  if (!user || !hasPermission(user.role, "manage_users"))
-    return { success: false, error: "Không có quyền thực hiện" };
-  if (!payload.id && !payload.email) return { success: false, error: "Thiếu ID hoặc Email người dùng" };
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let targetEmail = staffEmail ? String(staffEmail).toLowerCase().trim() : "";
 
-  const ss   = SpreadsheetApp.getActiveSpreadsheet();
-  const sh   = ss.getSheetByName(CONFIG.SHEET_USERS);
-  if (sh.getLastColumn() < 8) {
-    sh.getRange(1, 8).setValue("Link Bảng Tính").setFontWeight("bold").setBackground("#4a86e8").setFontColor("white");
-  }
-  const rows = sh.getDataRange().getValues();
-
-  const targetId = payload.id ? String(payload.id).trim().toLowerCase() : "";
-  const targetEmail = payload.email ? String(payload.email).trim().toLowerCase() : "";
-
-  for (let i = 1; i < rows.length; i++) {
-    const rowId = String(rows[i][0] || "").trim().toLowerCase();
-    const rowEmail = String(rows[i][1] || "").trim().toLowerCase();
-    const isMatch = (targetId && (rowId === targetId || rowEmail === targetId)) ||
-                    (targetEmail && (rowId === targetEmail || rowEmail === targetEmail));
-
-    if (isMatch) {
-      if (payload.name     !== undefined) sh.getRange(i+1, 3).setValue(payload.name);
-      if (payload.role     !== undefined) sh.getRange(i+1, 4).setValue(payload.role);
-      if (payload.status   !== undefined) sh.getRange(i+1, 5).setValue(payload.status);
-      if (payload.note     !== undefined) sh.getRange(i+1, 7).setValue(payload.note);
-      if (payload.sheetUrl !== undefined) sh.getRange(i+1, 8).setValue(payload.sheetUrl);
-      SpreadsheetApp.flush();
-      invalidateCache([CONFIG.SHEET_USERS]);
-      writeLog("UPDATE_USER", `Cập nhật user ID: ${rows[i][0]} | Email: ${rows[i][1]}`);
-      return { success: true, message: "Cập nhật thành công" };
+    // 1. Cập nhật bảng USERS (Batch update & cập nhật toàn bộ bản ghi trùng)
+    const shUsers = ss.getSheetByName(CONFIG.SHEET_USERS || "USERS");
+    if (shUsers && shUsers.getLastRow() >= 2) {
+      const uData = shUsers.getDataRange().getValues();
+      let uChanged = false;
+      for (let i = 1; i < uData.length; i++) {
+        const rowId = String(uData[i][0] || "").trim().toUpperCase();
+        const rowEmail = String(uData[i][1] || "").trim().toLowerCase();
+        if (rowId === srcCode || (targetEmail && rowEmail === targetEmail)) {
+          uData[i][0] = dstCode;
+          if (newName) uData[i][2] = newName;
+          if (targetEmail && !rowEmail.includes("@")) uData[i][1] = targetEmail;
+          uChanged = true;
+        }
+      }
+      if (uChanged) {
+        shUsers.getRange(1, 1, uData.length, uData[0].length).setValues(uData);
+      }
     }
-  }
-  return { success: false, error: "Không tìm thấy người dùng" };
-}
 
-/** Xóa người dùng vĩnh viễn khỏi hệ thống */
-function deleteUser(userId, userEmail) {
-  const user = getCurrentUser();
-  if (!user || !hasPermission(user.role, "manage_users"))
-    return { success: false, error: "Không có quyền thực hiện" };
-
-  if (!userId && !userEmail)
-    return { success: false, error: "Thiếu ID hoặc Email người dùng cần xóa" };
-
-  const ss   = SpreadsheetApp.getActiveSpreadsheet();
-  const sh   = ss.getSheetByName(CONFIG.SHEET_USERS);
-  const rows = sh.getDataRange().getValues();
-
-  const targetId = userId ? String(userId).trim().toLowerCase() : "";
-  const targetEmail = userEmail ? String(userEmail).trim().toLowerCase() : "";
-
-  for (let i = 1; i < rows.length; i++) {
-    const rowId = String(rows[i][0] || "").trim().toLowerCase();
-    const rowEmail = String(rows[i][1] || "").trim().toLowerCase();
-
-    const isMatch = (targetId && (rowId === targetId || rowEmail === targetId)) ||
-                    (targetEmail && (rowId === targetEmail || rowEmail === targetEmail));
-
-    if (isMatch) {
-      if (rowEmail && user.email && rowEmail === user.email.toLowerCase())
-        return { success: false, error: "Không thể xóa tài khoản đang đăng nhập" };
-
-      const displayName = rows[i][2] || rows[i][1] || userId;
-      sh.deleteRow(i + 1);
-      SpreadsheetApp.flush();
-      invalidateCache([CONFIG.SHEET_USERS]);
-      writeLog("DELETE_USER", `Xóa user ID: ${rows[i][0]} | Email: ${rows[i][1]} | Tên: ${displayName}`);
-      return { success: true, message: `Đã xóa người dùng "${displayName}"` };
+    // 2. Cập nhật bảng TAXONOMY (nếu có dòng Employee)
+    const shTax = ss.getSheetByName(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
+    if (shTax && shTax.getLastRow() >= 2) {
+      const tData = shTax.getDataRange().getValues();
+      let tChanged = false;
+      for (let i = 1; i < tData.length; i++) {
+        const type = String(tData[i][1] || "").toUpperCase().trim();
+        const code = String(tData[i][2] || "").toUpperCase().trim();
+        const id = String(tData[i][0] || "").trim();
+        const tEmail = String(tData[i][5] || "").toLowerCase().trim();
+        if (type === "EMPLOYEE" && (code === srcCode || id === "EMP_" + srcCode || (targetEmail && tEmail === targetEmail))) {
+          tData[i][0] = "EMP_" + dstCode;
+          tData[i][2] = dstCode;
+          if (newName) tData[i][3] = newName;
+          tChanged = true;
+        }
+      }
+      if (tChanged) {
+        shTax.getRange(1, 1, tData.length, tData[0].length).setValues(tData);
+      }
     }
-  }
-  return { success: false, error: "Không tìm thấy người dùng trong hệ thống" };
-}
 
-/** Chuyển đổi trạng thái Active <-> Inactive */
-function toggleUserStatus(userId, userEmail) {
-  const user = getCurrentUser();
-  if (!user || !hasPermission(user.role, "manage_users"))
-    return { success: false, error: "Không có quyền thực hiện" };
-
-  if (!userId && !userEmail)
-    return { success: false, error: "Thiếu ID hoặc Email người dùng" };
-
-  const ss   = SpreadsheetApp.getActiveSpreadsheet();
-  const sh   = ss.getSheetByName(CONFIG.SHEET_USERS);
-  const rows = sh.getDataRange().getValues();
-
-  const targetId = userId ? String(userId).trim().toLowerCase() : "";
-  const targetEmail = userEmail ? String(userEmail).trim().toLowerCase() : "";
-
-  for (let i = 1; i < rows.length; i++) {
-    const rowId = String(rows[i][0] || "").trim().toLowerCase();
-    const rowEmail = String(rows[i][1] || "").trim().toLowerCase();
-
-    const isMatch = (targetId && (rowId === targetId || rowEmail === targetId)) ||
-                    (targetEmail && (rowId === targetEmail || rowEmail === targetEmail));
-
-    if (isMatch) {
-      if (rowEmail && user.email && rowEmail === user.email.toLowerCase())
-        return { success: false, error: "Không thể đổi trạng thái tài khoản đang đăng nhập" };
-
-      const newStatus = rows[i][4] === "Active" ? "Inactive" : "Active";
-      sh.getRange(i + 1, 5).setValue(newStatus);
-      SpreadsheetApp.flush();
-      invalidateCache([CONFIG.SHEET_USERS]);
-      writeLog("UPDATE_USER", `Đổi trạng thái user ID: ${rows[i][0]} -> ${newStatus}`);
-      return { success: true, message: `Đã đổi trạng thái thành ${newStatus}`, status: newStatus };
+    // 3. Cập nhật toàn bộ các bảng năm TIMESHEET_YYYY (Batch atomic write)
+    const curYr = new Date().getFullYear();
+    for (let yr = curYr - 1; yr <= curYr + 1; yr++) {
+      const yearSheetName = (typeof getTimesheetYearSheetName === "function") 
+        ? getTimesheetYearSheetName(yr) 
+        : `TIMESHEET_${yr}`;
+      const shTs = ss.getSheetByName(yearSheetName);
+      if (shTs && shTs.getLastRow() >= 2) {
+        const tsData = shTs.getDataRange().getValues();
+        let changed = false;
+        for (let i = 1; i < tsData.length; i++) {
+          const rowCode = String(tsData[i][13] || "").trim().toUpperCase(); // Cột 14: Staff_Code
+          if (rowCode === srcCode) {
+            tsData[i][13] = dstCode;
+            if (newName) tsData[i][14] = newName; // Cột 15: Staff_Name
+            changed = true;
+          }
+        }
+        if (changed) {
+          shTs.getRange(1, 1, tsData.length, tsData[0].length).setValues(tsData);
+        }
+      }
     }
+
+    // 4. Cập nhật bảng TIMESHEET_DAILY_ROLLUP (Batch atomic write & tái tạo Rollup_ID)
+    const shRollup = ss.getSheetByName((typeof TIMESHEET_CONFIG !== "undefined" && TIMESHEET_CONFIG.ROLLUP_SHEET_NAME) ? TIMESHEET_CONFIG.ROLLUP_SHEET_NAME : "TIMESHEET_DAILY_ROLLUP");
+    if (shRollup && shRollup.getLastRow() >= 2) {
+      const rData = shRollup.getDataRange().getValues();
+      let rChanged = false;
+      for (let i = 1; i < rData.length; i++) {
+        const rowCode = String(rData[i][2] || "").trim().toUpperCase(); // Cột 3: Staff_Code
+        if (rowCode === srcCode) {
+          rData[i][2] = dstCode;
+          if (newName) rData[i][3] = newName; // Cột 4: Staff_Name
+          // Tái tạo Rollup_ID chuẩn (Cột 1)
+          const dStr = (rData[i][1] instanceof Date) 
+            ? Utilities.formatDate(rData[i][1], "Asia/Ho_Chi_Minh", "yyyyMMdd")
+            : String(rData[i][1] || "").replace(/[-/]/g, "").slice(0, 8);
+          const pCode = String(rData[i][4] || "").trim();
+          const discCode = String(rData[i][7] || "").trim();
+          rData[i][0] = `${dStr}_${dstCode}_${pCode}_${discCode}`;
+          rChanged = true;
+        }
+      }
+      if (rChanged) {
+        shRollup.getRange(1, 1, rData.length, rData[0].length).setValues(rData);
+      }
+    }
+
+    // 5. Cập nhật danh sách thành viên trong PROJECTS sheet (nếu m.id là Staff Code)
+    const shProj = ss.getSheetByName(CONFIG.SHEET_PROJECTS || "PROJECTS");
+    if (shProj && shProj.getLastRow() >= 2) {
+      const pData = shProj.getDataRange().getValues();
+      let pChanged = false;
+      for (let i = 1; i < pData.length; i++) {
+        const rawMems = String(pData[i][10] || "").trim();
+        if (rawMems && rawMems.startsWith("[") && (rawMems.includes(srcCode) || (targetEmail && rawMems.includes(targetEmail)))) {
+          try {
+            const mems = JSON.parse(rawMems);
+            let mChanged = false;
+            mems.forEach(m => {
+              if (String(m.id || "").toUpperCase() === srcCode) {
+                m.id = dstCode;
+                if (newName) m.name = newName;
+                mChanged = true;
+              } else if (targetEmail && String(m.email || "").toLowerCase() === targetEmail) {
+                if (m.id && String(m.id).toUpperCase() === srcCode) m.id = dstCode;
+                if (newName) m.name = newName;
+                mChanged = true;
+              }
+            });
+            if (mChanged) {
+              pData[i][10] = JSON.stringify(mems);
+              pChanged = true;
+            }
+          } catch(e) {}
+        }
+      }
+      if (pChanged) {
+        shProj.getRange(1, 1, pData.length, pData[0].length).setValues(pData);
+      }
+    }
+
+    SpreadsheetApp.flush();
+    invalidateCache([
+      CONFIG.SHEET_USERS || "USERS",
+      CONFIG.SHEET_TAXONOMY || "TAXONOMY",
+      CONFIG.SHEET_PROJECTS || "PROJECTS",
+      "TIMESHEET_2026",
+      "TIMESHEET_DAILY_ROLLUP"
+    ]);
+
+    writeLog("CASCADE_STAFF", `Cập nhật lan truyền mã nhân viên từ [${srcCode}] sang [${dstCode}] (${newName || ""})`);
+    return { success: true, message: `Đã cập nhật lan truyền mã nhân viên sang [${dstCode}] trên toàn bộ hệ thống!` };
+  } finally {
+    lock.releaseLock();
   }
-  return { success: false, error: "Không tìm thấy người dùng trong hệ thống" };
 }

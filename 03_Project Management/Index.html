@@ -489,6 +489,52 @@ input[type=range]{width:100%;accent-color:var(--p)}
 
 @media(max-width:1100px){.an-chart-grid{grid-template-columns:1fr}.an-kpi-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.srow{grid-template-columns:repeat(2,1fr)}.d2col,.d3col,.d32{grid-template-columns:1fr}.tp-body{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════════════════════════════
+   TIMESHEET ACTUAL TIME ENGINE & PIVOT MATRIX STYLES (v4.7)
+   ═══════════════════════════════════════════════════════════ */
+.ts-nav-tabs { display:flex; gap:6px; border-bottom:1.5px solid var(--bdr); margin-bottom:14px; flex-wrap:wrap; background:var(--card); padding:8px 12px; border-radius:var(--r2); box-shadow:var(--sh); }
+.ts-tab-btn { padding:8px 16px; border:1px solid transparent; background:transparent; border-radius:6px; font-size:12px; font-weight:600; color:var(--t2); cursor:pointer; transition:.15s; display:inline-flex; align-items:center; gap:6px; }
+.ts-tab-btn:hover { background:var(--bdr); color:var(--tx); }
+.ts-tab-btn.active { background:var(--p); color:#fff; box-shadow:0 2px 6px rgba(79,110,247,.25); font-weight:700; }
+
+.ts-subtab-pane { width:100%; }
+
+/* KPI Cards */
+.ts-kpi-card { background:var(--card); border:1px solid var(--bdr); border-radius:var(--r2); padding:12px 14px; box-shadow:var(--sh); }
+.ts-kpi-lbl { font-size:11px; font-weight:600; color:var(--t2); text-transform:uppercase; letter-spacing:0.5px; }
+.ts-kpi-val { font-size:20px; font-weight:800; color:var(--tx); margin-top:4px; }
+.ts-kpi-sub { font-size:11px; color:var(--t3); margin-top:2px; }
+
+/* 2-Way Sticky Matrix Table */
+.ts-matrix-wrap { max-height:calc(100vh - 280px); overflow:auto; border:1px solid var(--bdr); border-radius:var(--r2); position:relative; background:var(--card); }
+.ts-matrix-table { border-collapse:separate; border-spacing:0; width:100%; font-size:12px; }
+.ts-matrix-table th, .ts-matrix-table td { padding:8px 10px; border-right:1px solid var(--bdr); border-bottom:1px solid var(--bdr); white-space:nowrap; }
+
+.ts-matrix-table .sticky-col-idx { position:sticky; left:0; z-index:2; background:#fff; min-width:38px; text-align:center; font-weight:600; }
+.ts-matrix-table .sticky-col-code { position:sticky; left:38px; z-index:2; background:#fff; min-width:85px; font-weight:700; color:var(--tx); }
+.ts-matrix-table .sticky-col-name { position:sticky; left:123px; z-index:2; background:#fff; min-width:145px; font-weight:600; box-shadow:2px 0 4px rgba(0,0,0,.06); }
+
+.ts-matrix-table thead th { position:sticky; top:0; z-index:3; background:#f8fafc; font-weight:700; color:var(--tx); border-bottom:2px solid var(--bdr); }
+.ts-matrix-table thead th.sticky-col-idx { z-index:5; left:0; background:#f8fafc; }
+.ts-matrix-table thead th.sticky-col-code { z-index:5; left:38px; background:#f8fafc; }
+.ts-matrix-table thead th.sticky-col-name { z-index:5; left:123px; background:#f8fafc; }
+
+.ts-matrix-table tfoot td { position:sticky; bottom:0; z-index:3; background:#f1f5f9; font-weight:700; border-top:2px solid var(--bdr); }
+.ts-matrix-table tfoot td.sticky-col-idx { z-index:5; left:0; background:#f1f5f9; }
+.ts-matrix-table tfoot td.sticky-col-code { z-index:5; left:38px; background:#f1f5f9; }
+.ts-matrix-table tfoot td.sticky-col-name { z-index:5; left:123px; background:#f1f5f9; }
+
+.ts-matrix-cell { text-align:right; font-variant-numeric:tabular-nums; }
+.ts-matrix-cell.has-val { font-weight:700; color:#1e40af; background:#eff6ff; cursor:pointer; transition:.1s; }
+.ts-matrix-cell.has-val:hover { background:#dbeafe; color:#1d4ed8; text-decoration:underline; }
+
+/* Tree view styles */
+.ts-tree-pj-hdr { background:#f8fafc; padding:10px 12px; border-radius:6px; margin-bottom:6px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; border:1px solid var(--bdr); }
+.ts-tree-pj-hdr:hover { background:#f1f5f9; }
+.ts-tree-disc-row { padding:6px 12px 6px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px dashed var(--bdr); font-size:12px; }
+.ts-tree-notes { margin:4px 0 8px 48px; font-size:11px; color:var(--t2); }
+
 </style>
 </head>
 <body>
@@ -965,99 +1011,284 @@ input[type=range]{width:100%;accent-color:var(--p)}
     </div>
     <!-- ══ TIMESHEET (QUẢN LÝ THỜI GIAN) ══ -->
     <div class="page" id="page-timesheet">
-      <div class="ts-card">
-        <!-- Topbar Controls -->
-        <div class="ts-topbar">
-          <div class="ts-ctrl-grp">
-            <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_date">Ngày làm việc</label>
-            <button type="button" class="ts-btn" onclick="stepTimesheetDate(-1)" data-i18n="ts_prev_day">◀ Ngày trước</button>
-            <input type="date" id="ts-date-inp" class="fc" style="height:32px;font-size:12px;font-weight:700;padding:2px 8px;width:145px" onchange="onTimesheetDateChange(this.value)">
-            <button type="button" class="ts-btn" onclick="stepTimesheetDate(1)" data-i18n="ts_next_day">Ngày sau ▶</button>
-            <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('today')" data-i18n="ts_today">Hôm nay</button>
-            <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('yesterday')" data-i18n="ts_yesterday">Hôm qua</button>
-          </div>
+      <!-- 4 Sub-Tabs Navigation for Timesheet -->
+      <div class="ts-nav-tabs">
+        <button type="button" class="ts-tab-btn active" id="ts-subtab-btn-entry" onclick="switchTsSubTab('ENTRY')">⏱️ <span data-i18n="ts_subtab_entry">Nhập Giờ Chi Tiết (30 Phút)</span></button>
+        <button type="button" class="ts-tab-btn" id="ts-subtab-btn-project" onclick="switchTsSubTab('PROJECT')">📊 <span data-i18n="ts_subtab_project">Báo Cáo Thực Tế Dự Án</span></button>
+        <button type="button" class="ts-tab-btn" id="ts-subtab-btn-staff" onclick="switchTsSubTab('STAFF')">👤 <span data-i18n="ts_subtab_staff">Bóc Tách Theo Nhân Viên</span></button>
+        <button type="button" class="ts-tab-btn" id="ts-subtab-btn-matrix" onclick="switchTsSubTab('MATRIX')">🔲 <span data-i18n="ts_subtab_matrix">Ma Trận Đối Chiếu Hàng Loạt</span></button>
+      </div>
 
-          <div class="ts-ctrl-grp">
-            <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_staff_code">Nhân viên</label>
-            <select id="ts-staff-sel" class="fc" style="height:32px;font-size:12px;font-weight:600;min-width:180px" onchange="onTimesheetStaffChange(this.value)"></select>
-            <span id="ts-staff-rank-badge" class="badge bg-bl" style="font-size:11px">-</span>
-            <span id="ts-sheet-link-wrap" style="margin-left:6px">
-              <a id="ts-sheet-link-btn" href="#" target="_blank" class="ts-btn" style="text-decoration:none;color:var(--p);font-weight:700">📊 <span data-i18n="ts_sheet_open">Mở Sheet lưu trữ ↗</span></a>
-            </span>
-          </div>
-
-          <div class="ts-ctrl-grp" style="margin-left:auto">
-            <button type="button" class="ts-btn ts-btn-sec" onclick="loadTimesheetData(true)"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
-            <button type="button" class="ts-btn ts-btn-warn" id="ts-btn-edit-mode" style="display:none" onclick="enableTimesheetEditMode()"><span data-i18n="ts_btn_edit_mode">✏️ Bật Chế Độ Chỉnh Sửa</span></button>
-            <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-cancel-edit" style="display:none" onclick="cancelTimesheetEditMode()"><span data-i18n="ts_btn_cancel_edit">❌ Hủy chỉnh sửa</span></button>
-            <button type="button" class="ts-btn ts-btn-pri" id="ts-btn-save" onclick="saveTimesheetClick()"><span data-i18n="ts_btn_save">💾 Lưu thời gian</span></button>
-            <button type="button" class="ts-btn ts-btn-dang" id="ts-btn-overwrite" style="display:none" onclick="confirmOverwriteClick()"><span data-i18n="ts_btn_overwrite">🔄 Cập Nhật & Ghi Đè (Overwrite)</span></button>
-          </div>
-        </div>
-
-        <!-- Notification / Warning Banners -->
-        <div id="ts-existing-banner" class="ts-banner ts-banner-warn" style="display:none">
-          <span style="font-size:15px">⚠️</span>
-          <span data-i18n="ts_existing_data_warning">Ngày này đã có dữ liệu lưu trữ. Nút Lưu đã bị khóa để bảo vệ dữ liệu. Vui lòng bấm 'Bật Chế Độ Chỉnh Sửa' nếu muốn ghi đè.</span>
-        </div>
-        <div id="ts-edit-banner" class="ts-banner ts-banner-edit" style="display:none">
-          <span style="font-size:15px">🔔</span>
-          <span data-i18n="ts_edit_mode_active">Chế độ chỉnh sửa đang BẬT. Khi nhấn 'Cập Nhật & Ghi Đè', dữ liệu ngày này trên Google Sheet sẽ được thay thế hoàn toàn.</span>
-        </div>
-
-        <!-- Fast Bulk Tools Toolbar -->
-        <div class="ts-toolbar">
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-            <button type="button" class="ts-btn" onclick="copyFromYesterdayClick()"><span data-i18n="ts_copy_yesterday">📋 Sao chép từ Hôm Qua</span></button>
-            <button type="button" class="ts-btn" onclick="bulkFillMorning()"><span data-i18n="ts_fill_morning">☀️ Điền cả buổi sáng</span></button>
-            <button type="button" class="ts-btn" onclick="bulkFillAfternoon()"><span data-i18n="ts_fill_afternoon">🌤️ Điền cả buổi chiều</span></button>
-            <button type="button" class="ts-btn" id="btn-ts-morning-ot" onclick="toggleMorningOt()"><span data-i18n="ts_morning_ot">🌅 TĂNG CA SÁNG</span> <span id="ts-m-ot-badge">(Ẩn)</span></button>
-            <button type="button" class="ts-btn" id="btn-ts-evening-ot" onclick="toggleEveningOt()"><span data-i18n="ts_evening_ot">🌙 TĂNG CA TỐI</span> <span id="ts-e-ot-badge">(Ẩn)</span></button>
-            <button type="button" class="ts-btn" onclick="clearTimesheetInputs()"><span data-i18n="ts_clear_all">🧹 Xóa trắng</span></button>
-          </div>
-          <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:4px">
-            <span>💡</span> <span data-i18n="ts_copy_hint">Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets</span>
-          </div>
-        </div>
-
-        <!-- Table Grid Container -->
-        <div class="tblw" style="max-height:calc(100vh - 280px);overflow-y:auto">
-          <table id="ts-table">
-            <thead style="position:sticky;top:0;background:var(--card);z-index:2">
-              <tr>
-                <th style="width:36px;text-align:center">#</th>
-                <th style="width:125px" data-i18n="ts_col_time">Khung Giờ</th>
-                <th style="width:140px" data-i18n="ts_col_project">Mã Dự Án</th>
-                <th style="width:115px" data-i18n="ts_col_category">Mã Category</th>
-                <th style="width:105px" data-i18n="ts_col_phase">Phase</th>
-                <th style="width:125px" data-i18n="ts_col_discipline">Mã Công Việc</th>
-                <th data-i18n="ts_col_note">Ghi Chú Công Việc</th>
-                <th style="width:110px;text-align:center" data-i18n="ts_col_actions">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="ts-tbody">
-              <tr><td colspan="8"><div class="ldg"><div class="spn"></div></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Footer Stats Bar -->
-        <div class="ts-footer-bar">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <div class="ts-stat-chip">
-              <span data-i18n="ts_stat_official">Giờ chính thức</span>: <span class="ts-stat-num" id="ts-stat-reg">0.0h / 8.0h</span>
+      <!-- ── SUB-TAB PANE 1: NHẬP GIỜ CHI TIẾT (30 PHÚT) ── -->
+      <div id="ts-pane-entry" class="ts-subtab-pane">
+        <div class="ts-card">
+          <!-- Topbar Controls -->
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_date">Ngày làm việc</label>
+              <button type="button" class="ts-btn" onclick="stepTimesheetDate(-1)" data-i18n="ts_prev_day">◀ Ngày trước</button>
+              <input type="date" id="ts-date-inp" class="fc" style="height:32px;font-size:12px;font-weight:700;padding:2px 8px;width:145px" onchange="onTimesheetDateChange(this.value)">
+              <button type="button" class="ts-btn" onclick="stepTimesheetDate(1)" data-i18n="ts_next_day">Ngày sau ▶</button>
+              <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('today')" data-i18n="ts_today">Hôm nay</button>
+              <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('yesterday')" data-i18n="ts_yesterday">Hôm qua</button>
             </div>
-            <div class="ts-stat-chip">
-              <span data-i18n="ts_stat_ot">Giờ tăng ca</span>: <span class="ts-stat-num" id="ts-stat-ot" style="color:#ea580c">0.0h</span>
+
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_staff_code">Nhân viên</label>
+              <select id="ts-staff-sel" class="fc" style="height:32px;font-size:12px;font-weight:600;min-width:180px" onchange="onTimesheetStaffChange(this.value)"></select>
+              <span id="ts-staff-rank-badge" class="badge bg-bl" style="font-size:11px">-</span>
+              <span id="ts-sheet-link-wrap" style="margin-left:6px">
+                <a id="ts-sheet-link-btn" href="#" target="_blank" class="ts-btn" style="text-decoration:none;color:var(--p);font-weight:700">📊 <span data-i18n="ts_sheet_open">Mở Sheet lưu trữ ↗</span></a>
+              </span>
             </div>
-            <div class="ts-stat-chip" style="background:#eef2ff">
-              <span data-i18n="ts_stat_total">Tổng cộng</span>: <span class="ts-stat-num" id="ts-stat-total" style="color:var(--p)">0.0h</span>
-            </div>
-            <div class="ts-stat-chip">
-              <span data-i18n="ts_stat_slots">Khung giờ đã nhập</span>: <span class="ts-stat-num" id="ts-stat-slots">0</span>
+
+            <div class="ts-ctrl-grp" style="margin-left:auto">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadTimesheetData(true)"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
+              <button type="button" class="ts-btn ts-btn-warn" id="ts-btn-edit-mode" style="display:none" onclick="enableTimesheetEditMode()"><span data-i18n="ts_btn_edit_mode">✏️ Bật Chế Độ Chỉnh Sửa</span></button>
+              <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-cancel-edit" style="display:none" onclick="cancelTimesheetEditMode()"><span data-i18n="ts_btn_cancel_edit">❌ Hủy chỉnh sửa</span></button>
+              <button type="button" class="ts-btn ts-btn-pri" id="ts-btn-save" onclick="saveTimesheetClick()"><span data-i18n="ts_btn_save">💾 Lưu thời gian</span></button>
+              <button type="button" class="ts-btn ts-btn-dang" id="ts-btn-overwrite" style="display:none" onclick="confirmOverwriteClick()"><span data-i18n="ts_btn_overwrite">🔄 Cập Nhật & Ghi Đè (Overwrite)</span></button>
             </div>
           </div>
-          <div id="ts-sync-status" style="font-size:11px;color:var(--t3)">Đã sẵn sàng</div>
+
+          <!-- Notification / Warning Banners -->
+          <div id="ts-existing-banner" class="ts-banner ts-banner-warn" style="display:none">
+            <span style="font-size:15px">⚠️</span>
+            <span data-i18n="ts_existing_data_warning">Ngày này đã có dữ liệu lưu trữ. Nút Lưu đã bị khóa để bảo vệ dữ liệu. Vui lòng bấm 'Bật Chế Độ Chỉnh Sửa' nếu muốn ghi đè.</span>
+          </div>
+          <div id="ts-edit-banner" class="ts-banner ts-banner-edit" style="display:none">
+            <span style="font-size:15px">🔔</span>
+            <span data-i18n="ts_edit_mode_active">Chế độ chỉnh sửa đang BẬT. Khi nhấn 'Cập Nhật & Ghi Đè', dữ liệu ngày này trên Google Sheet sẽ được thay thế hoàn toàn.</span>
+          </div>
+
+          <!-- Fast Bulk Tools Toolbar -->
+          <div class="ts-toolbar">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <button type="button" class="ts-btn" onclick="copyFromYesterdayClick()"><span data-i18n="ts_copy_yesterday">📋 Sao chép từ Hôm Qua</span></button>
+              <button type="button" class="ts-btn" onclick="bulkFillMorning()"><span data-i18n="ts_fill_morning">☀️ Điền cả buổi sáng</span></button>
+              <button type="button" class="ts-btn" onclick="bulkFillAfternoon()"><span data-i18n="ts_fill_afternoon">🌤️ Điền cả buổi chiều</span></button>
+              <button type="button" class="ts-btn" id="btn-ts-morning-ot" onclick="toggleMorningOt()"><span data-i18n="ts_morning_ot">🌅 TĂNG CA SÁNG</span> <span id="ts-m-ot-badge">(Ẩn)</span></button>
+              <button type="button" class="ts-btn" id="btn-ts-evening-ot" onclick="toggleEveningOt()"><span data-i18n="ts_evening_ot">🌙 TĂNG CA TỐI</span> <span id="ts-e-ot-badge">(Ẩn)</span></button>
+              <button type="button" class="ts-btn" onclick="clearTimesheetInputs()"><span data-i18n="ts_clear_all">🧹 Xóa trắng</span></button>
+            </div>
+            <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:4px">
+              <span>💡</span> <span data-i18n="ts_copy_hint">Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets</span>
+            </div>
+          </div>
+
+          <!-- Table Grid Container -->
+          <div class="tblw" style="max-height:calc(100vh - 280px);overflow-y:auto">
+            <table id="ts-table">
+              <thead style="position:sticky;top:0;background:var(--card);z-index:2">
+                <tr>
+                  <th style="width:36px;text-align:center">#</th>
+                  <th style="width:125px" data-i18n="ts_col_time">Khung Giờ</th>
+                  <th style="width:140px" data-i18n="ts_col_project">Mã Dự Án</th>
+                  <th style="width:115px" data-i18n="ts_col_category">Mã Category</th>
+                  <th style="width:105px" data-i18n="ts_col_phase">Phase</th>
+                  <th style="width:125px" data-i18n="ts_col_discipline">Mã Công Việc</th>
+                  <th data-i18n="ts_col_note">Ghi Chú Công Việc</th>
+                  <th style="width:110px;text-align:center" data-i18n="ts_col_actions">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="ts-tbody">
+                <tr><td colspan="8"><div class="ldg"><div class="spn"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer Stats Bar -->
+          <div class="ts-footer-bar">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <div class="ts-stat-chip">
+                <span data-i18n="ts_stat_official">Giờ chính thức</span>: <span class="ts-stat-num" id="ts-stat-reg">0.0h / 8.0h</span>
+              </div>
+              <div class="ts-stat-chip">
+                <span data-i18n="ts_stat_ot">Giờ tăng ca</span>: <span class="ts-stat-num" id="ts-stat-ot" style="color:#ea580c">0.0h</span>
+              </div>
+              <div class="ts-stat-chip" style="background:#eef2ff">
+                <span data-i18n="ts_stat_total">Tổng cộng</span>: <span class="ts-stat-num" id="ts-stat-total" style="color:var(--p)">0.0h</span>
+              </div>
+              <div class="ts-stat-chip">
+                <span data-i18n="ts_stat_slots">Khung giờ đã nhập</span>: <span class="ts-stat-num" id="ts-stat-slots">0</span>
+              </div>
+            </div>
+            <div id="ts-sync-status" style="font-size:11px;color:var(--t3)">Đã sẵn sàng</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUB-TAB PANE 2: BÁO CÁO DỰ ÁN REAL-TIME & LŨY KẾ 3-5 NĂM ── -->
+      <div id="ts-pane-project" class="ts-subtab-pane" style="display:none">
+        <div class="ts-card">
+          <!-- Project Filter Toolbar -->
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_lbl_select_pj">Dự án:</label>
+              <select id="ts-rep-pj-sel" class="fc" style="height:32px;font-size:12px;font-weight:700;min-width:200px" onchange="loadProjectActualTimeReport()"></select>
+            </div>
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_lbl_scope">Phạm vi:</label>
+              <select id="ts-rep-scope-sel" class="fc" style="height:32px;font-size:12px;font-weight:600;min-width:180px" onchange="onProjectScopeChange(this.value)">
+                <option value="all" data-i18n="ts_scope_all">🌐 Toàn bộ vòng đời (3 - 5 năm)</option>
+                <option value="current" data-i18n="ts_scope_current">📅 Chỉ năm hiện hành (Real-time)</option>
+                <option value="custom" data-i18n="ts_scope_custom">📆 Khoảng ngày tùy chọn...</option>
+              </select>
+            </div>
+            <div class="ts-ctrl-grp" id="ts-rep-custom-dates" style="display:none">
+              <input type="date" id="ts-rep-from" class="fc" style="height:32px;font-size:12px;width:130px">
+              <span style="font-size:11px;color:var(--t2)">➔</span>
+              <input type="date" id="ts-rep-to" class="fc" style="height:32px;font-size:12px;width:130px">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadProjectActualTimeReport()" data-i18n="ts_btn_filter">Lọc</button>
+            </div>
+            <div class="ts-ctrl-grp" style="margin-left:auto">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadProjectActualTimeReport()"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
+              <button type="button" class="ts-btn ts-btn-pri" id="btn-export-jp-report" onclick="exportJapaneseProjectReportClick()">
+                <span>🇯🇵</span> <span data-i18n="ts_btn_export_jp">Xuất File Nghiệm Thu (Format Nhật)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Summary Cards -->
+          <div id="ts-rep-kpi-container" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin:16px 0">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- Budget Variance & Progress Alert -->
+          <div id="ts-rep-budget-bar-wrap" style="background:var(--card);border:1px solid var(--bdr);border-radius:var(--r2);padding:14px;margin-bottom:16px;display:none">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- Historical Yearly Snapshot Accordion (If 3-5 Year Lifecycle) -->
+          <div id="ts-rep-historical-wrap" style="margin-bottom:16px;display:none">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- 2 Detail Tables: Members & Disciplines -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));gap:16px">
+            <!-- Table 1: Staff Contribution -->
+            <div style="border:1px solid var(--bdr);border-radius:var(--r2);background:var(--card);overflow:hidden">
+              <div style="padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-weight:700;font-size:13px;color:var(--tx)" data-i18n="ts_tbl_staff_contrib">👥 Đóng Góp Theo Nhân Sự</span>
+                <span id="ts-rep-member-count" class="an-badge an-badge-blue">0 kỹ sư</span>
+              </div>
+              <div class="tblw" style="max-height:350px;overflow-y:auto">
+                <table>
+                  <thead style="position:sticky;top:0;background:#f8fafc;z-index:2">
+                    <tr>
+                      <th style="width:36px;text-align:center">#</th>
+                      <th data-i18n="ts_col_staff_code">Mã NV</th>
+                      <th data-i18n="ts_col_staff_name">Họ Tên</th>
+                      <th style="text-align:right" data-i18n="ts_col_hours">Số Giờ</th>
+                      <th style="width:110px;text-align:right" data-i18n="ts_col_ratio">Tỷ Trọng</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ts-rep-tbody-members">
+                    <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">Chọn dự án để xem dữ liệu</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Table 2: Discipline Breakdown -->
+            <div style="border:1px solid var(--bdr);border-radius:var(--r2);background:var(--card);overflow:hidden">
+              <div style="padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-weight:700;font-size:13px;color:var(--tx)" data-i18n="ts_tbl_disc_breakdown">📐 Phân Bổ Theo Tác Nghiệp (Discipline)</span>
+                <span id="ts-rep-disc-count" class="an-badge an-badge-blue">0 tác nghiệp</span>
+              </div>
+              <div class="tblw" style="max-height:350px;overflow-y:auto">
+                <table>
+                  <thead style="position:sticky;top:0;background:#f8fafc;z-index:2">
+                    <tr>
+                      <th style="width:36px;text-align:center">#</th>
+                      <th data-i18n="ts_col_disc_code">Mã</th>
+                      <th data-i18n="ts_col_disc_name">Tên Tác Nghiệp</th>
+                      <th style="text-align:right" data-i18n="ts_col_hours">Số Giờ</th>
+                      <th style="width:110px;text-align:right" data-i18n="ts_col_ratio">Tỷ Trọng</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ts-rep-tbody-disciplines">
+                    <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">Chọn dự án để xem dữ liệu</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUB-TAB PANE 3: BÓC TÁCH CHI TIẾT THEO NHÂN VIÊN ── -->
+      <div id="ts-pane-staff" class="ts-subtab-pane" style="display:none">
+        <div class="ts-card">
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_stf_select">Nhân viên:</label>
+              <select id="ts-stf-sel" class="fc" style="height:32px;font-size:12px;font-weight:700;min-width:180px" onchange="loadStaffWorkBreakdown()"></select>
+            </div>
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_stf_from">Từ ngày:</label>
+              <input type="date" id="ts-stf-from" class="fc" style="height:32px;font-size:12px;width:135px">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_stf_to">Đến ngày:</label>
+              <input type="date" id="ts-stf-to" class="fc" style="height:32px;font-size:12px;width:135px">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="setStaffQuickRange('this_month')" data-i18n="ts_stf_btn_this_month">Tháng này</button>
+              <button type="button" class="ts-btn ts-btn-sec" onclick="setStaffQuickRange('last_month')" data-i18n="ts_stf_btn_last_month">Tháng trước</button>
+              <button type="button" class="ts-btn ts-btn-sec" id="btn-staff-all" onclick="setStaffQuickRange('all')" data-i18n="ts_stf_btn_all">📅 Toàn bộ thời gian</button>
+              <button type="button" class="ts-btn ts-btn-pri" onclick="loadStaffWorkBreakdown()" data-i18n="ts_stf_btn_view">🔍 Xem Bóc Tách</button>
+            </div>
+          </div>
+
+          <!-- Staff KPI Summary -->
+          <div id="ts-stf-kpi-container" style="display:flex;gap:12px;margin:14px 0;flex-wrap:wrap">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- Hierarchical Tree Breakdown -->
+          <div id="ts-stf-tree-container" style="border:1px solid var(--bdr);border-radius:var(--r2);background:var(--card);padding:14px">
+            <div style="text-align:center;padding:30px;color:var(--t3)" data-i18n="ts_stf_empty_hint">Vui lòng bấm [🔍 Xem Bóc Tách] để hiển thị cây công việc</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUB-TAB PANE 4: MA TRẬN ĐỐI CHIẾU HÀNG LOẠT (PIVOT GRID) ── -->
+      <div id="ts-pane-matrix" class="ts-subtab-pane" style="display:none">
+        <div class="ts-card">
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_mat_month">Tháng đối chiếu:</label>
+              <input type="month" id="ts-mat-month" class="fc" style="height:32px;font-size:12px;font-weight:700;width:150px" onchange="loadBatchComparisonMatrix()">
+              <button type="button" class="ts-btn" onclick="stepMatrixMonth(-1)" data-i18n="ts_mat_prev_month">◀ Tháng trước</button>
+              <button type="button" class="ts-btn" onclick="stepMatrixMonth(1)" data-i18n="ts_mat_next_month">Tháng sau ▶</button>
+              <button type="button" class="ts-btn ts-btn-sec" id="btn-mat-all" onclick="loadBatchComparisonMatrix(true)" data-i18n="ts_mat_all_months">📅 Tất cả các tháng</button>
+            </div>
+            <div class="ts-ctrl-grp">
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;cursor:pointer;user-select:none">
+                <input type="checkbox" id="ts-mat-hide-zero" onchange="loadBatchComparisonMatrix()" checked>
+                <span data-i18n="ts_mat_hide_zero">Ẩn dự án 0 giờ (Hide Zero Columns)</span>
+              </label>
+            </div>
+            <div class="ts-ctrl-grp" style="margin-left:auto">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadBatchComparisonMatrix()"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
+              <span id="ts-mat-status" style="font-size:11px;color:var(--t2)" data-i18n="ts_mat_status_ready">Sẵn sàng</span>
+            </div>
+          </div>
+
+          <div style="font-size:11px;color:var(--t2);padding:6px 12px;background:#f8fafc;border-radius:6px;margin:8px 0;display:flex;align-items:center;gap:6px">
+            <span>💡</span>
+            <span data-i18n="ts_mat_hint">Mẹo: Cuộn ngang/dọc tự do, cột Tên & dòng Tiêu đề luôn ghim cố định (Sticky Freeze). Click vào ô bất kỳ để mở Popup bóc tách chi tiết!</span>
+          </div>
+
+          <!-- 2-Way Sticky Matrix Container -->
+          <div class="ts-matrix-wrap" id="ts-matrix-wrap">
+            <table class="ts-matrix-table" id="ts-matrix-table">
+              <thead id="ts-mat-thead">
+                <tr><th>Đang nạp ma trận...</th></tr>
+              </thead>
+              <tbody id="ts-mat-tbody">
+                <tr><td style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></td></tr>
+              </tbody>
+              <tfoot id="ts-mat-tfoot"></tfoot>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -2142,6 +2373,105 @@ const I18N = {
     ts_stat_ot: "Giờ tăng ca",
     ts_stat_total: "Tổng cộng",
     ts_stat_slots: "Khung giờ đã nhập",
+    ts_subtab_entry: "Nhập Giờ Chi Tiết (30 Phút)",
+    ts_subtab_project: "Báo Cáo Thực Tế Dự Án",
+    ts_subtab_staff: "Bóc Tách Theo Nhân Viên",
+    ts_subtab_matrix: "Ma Trận Đối Chiếu Hàng Loạt",
+    ts_lbl_select_pj: "Dự án:",
+    ts_lbl_scope: "Phạm vi:",
+    ts_scope_all: "🌐 Toàn bộ vòng đời (3 - 5 năm)",
+    ts_scope_current: "📅 Chỉ năm hiện hành (Real-time)",
+    ts_scope_custom: "📆 Khoảng ngày tùy chọn...",
+    ts_btn_export_jp: "Xuất File Nghiệm Thu (Format Nhật)",
+    ts_tbl_staff_contrib: "👥 Đóng Góp Theo Nhân Sự",
+    ts_tbl_disc_breakdown: "📐 Phân Bổ Theo Tác Nghiệp (Discipline)",
+    ts_btn_reload: "🔄 Tải lại",
+    ts_btn_filter: "Lọc",
+    ts_opt_select_pj: "-- Chọn dự án cần xem --",
+    ts_kpi_lifetime_hours: "Tổng Giờ Vòng Đời (Lifetime)",
+    ts_kpi_actual_hours: "Tổng Giờ Thực Làm",
+    ts_kpi_lifetime_sub: "Gồm cả năm cũ đã chốt sổ",
+    ts_kpi_scope_sub: "Phạm vi đã chọn",
+    ts_kpi_current_year: "Năm Hiện Hành ({year})",
+    ts_kpi_standard_hours: "Giờ tiêu chuẩn: {hours}h",
+    ts_kpi_ot: "Tăng Ca (OT)",
+    ts_kpi_ot_rate: "Tỷ lệ OT: {rate}%",
+    ts_kpi_engineers: "Kỹ Sư Tham Gia",
+    ts_kpi_engineers_sub: "Số nhân sự có đóng góp",
+    ts_budget_control: "🎯 Kiểm Soát Ngân Sách Giờ Công:",
+    ts_budget_plan: "Dự toán:",
+    ts_budget_actual: "Thực tế:",
+    ts_budget_used: "ĐÃ DÙNG {pct}%",
+    ts_budget_over: "VƯỢT BUDGET +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 Lũy Kế Snapshot Các Niên Độ Quá Khứ (Đã Chốt Sổ):",
+    ts_historical_year: "Năm {year}:",
+    ts_historical_closed: "Đã chốt sổ",
+    ts_historical_running: "Đang chạy",
+    ts_col_staff_code: "Mã NV",
+    ts_col_staff_name: "Họ Tên",
+    ts_col_hours: "Số Giờ",
+    ts_col_ratio: "Tỷ Trọng",
+    ts_col_disc_code: "Mã",
+    ts_col_disc_name: "Tên Tác Nghiệp",
+    ts_count_engineers: "{count} kỹ sư",
+    ts_count_disciplines: "{count} tác nghiệp",
+    ts_empty_project_data: "Không có dữ liệu thời gian cho dự án này",
+    ts_empty_disc_data: "Không có dữ liệu tác nghiệp",
+    ts_select_project_hint: "Chọn dự án để xem dữ liệu",
+    ts_stf_select: "Nhân viên:",
+    ts_stf_from: "Từ ngày:",
+    ts_stf_to: "Đến ngày:",
+    ts_stf_btn_this_month: "Tháng này",
+    ts_stf_btn_last_month: "Tháng trước",
+    ts_stf_btn_all: "📅 Toàn bộ thời gian",
+    ts_stf_btn_view: "🔍 Xem Bóc Tách",
+    ts_stf_total_hours: "Tổng Giờ Làm:",
+    ts_stf_official_hours: "Giờ Chuẩn:",
+    ts_stf_ot_hours: "Tăng Ca (OT):",
+    ts_stf_active_days: "Số Ngày Làm:",
+    ts_stf_days_unit: "{count} ngày",
+    ts_stf_pjs_count: "Số Dự Án:",
+    ts_stf_pjs_unit: "{count} dự án",
+    ts_stf_tree_header: "🌳 Cây Bóc Tách Công Việc Của [{staff}]:",
+    ts_stf_empty_hint: "Vui lòng bấm [🔍 Xem Bóc Tách] để hiển thị cây công việc",
+    ts_stf_no_data: "Không phát sinh giờ làm việc trong khoảng thời gian này",
+    ts_no_note: "Không có ghi chú",
+    ts_mat_month: "Tháng đối chiếu:",
+    ts_mat_prev_month: "◀ Tháng trước",
+    ts_mat_next_month: "Tháng sau ▶",
+    ts_mat_all_months: "📅 Tất cả các tháng",
+    ts_mat_hide_zero: "Ẩn dự án 0 giờ (Hide Zero Columns)",
+    ts_mat_status_ready: "Sẵn sàng",
+    ts_mat_status_loading: "⏳ Đang tổng hợp ma trận...",
+    ts_mat_status_done: "✅ Đã tải xong",
+    ts_mat_status_all_done: "✅ Toàn bộ thời gian",
+    ts_mat_status_err: "❌ Lỗi tải",
+    ts_mat_hint: "Mẹo: Cuộn ngang/dọc tự do, cột Tên & dòng Tiêu đề luôn ghim cố định (Sticky Freeze). Click vào ô bất kỳ để mở Popup bóc tách chi tiết!",
+    ts_mat_loading: "Đang nạp ma trận...",
+    ts_mat_col_total: "TỔNG (h)",
+    ts_mat_grand_total: "TỔNG CỘNG",
+    ts_mat_all_projects: "Toàn bộ dự án",
+    ts_mat_drilldown_title: "Chi Tiết Thời Gian: {staff} × {project}",
+    ts_mat_drilldown_sub: "Bóc tách tác nghiệp và nhật ký cho dự án [{project}]",
+    ts_mat_drilldown_default_title: "Chi Tiết Thời Gian Làm Việc",
+    ts_mat_drilldown_default_sub: "Bóc tách tác nghiệp và nhật ký theo từng slot",
+    ts_drill_col_date: "Ngày",
+    ts_drill_col_slot: "Khung Giờ",
+    ts_drill_col_hours: "Số Giờ",
+    ts_drill_col_type: "Loại Ca",
+    ts_drill_col_disc: "Tác Nghiệp",
+    ts_drill_col_note: "Ghi Chú Công Việc",
+    ts_drill_type_standard: "Chuẩn",
+    ts_drill_type_ot: "OT",
+    ts_drill_no_records: "Không có bản ghi chi tiết",
+    ts_placeholder_note: "Ghi chú công việc...",
+    ts_clear_row: "Xóa dòng",
+    ts_morning_ot: "TĂNG CA SÁNG",
+    ts_evening_ot: "TĂNG CA TỐI",
+    ts_lunch_break: "Nghỉ trưa",
+    ts_badge_hidden: "(Ẩn)",
+    ts_badge_shown: "(Hiện)",
+    ts_status_ready: "Đã sẵn sàng",
     ts_copy_hint: "Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets",
     tax_tab_emp: "5. Nhân viên",
     tax_tab_matrix: "6. Ma trận phân quyền",
@@ -2476,6 +2806,105 @@ const I18N = {
     ts_stat_ot: "Overtime Hours",
     ts_stat_total: "Total Hours",
     ts_stat_slots: "Slots Logged",
+    ts_subtab_entry: "Detailed Timesheet (30m)",
+    ts_subtab_project: "Project Actual Report",
+    ts_subtab_staff: "Staff Work Breakdown",
+    ts_subtab_matrix: "Batch Comparison Matrix",
+    ts_lbl_select_pj: "Project:",
+    ts_lbl_scope: "Scope:",
+    ts_scope_all: "🌐 Full Lifecycle (3 - 5 Years)",
+    ts_scope_current: "📅 Current Year Only (Real-time)",
+    ts_scope_custom: "📆 Custom Date Range...",
+    ts_btn_export_jp: "Export Acceptance File (JP Format)",
+    ts_tbl_staff_contrib: "👥 Staff Contribution",
+    ts_tbl_disc_breakdown: "📐 Discipline Breakdown",
+    ts_btn_reload: "🔄 Reload",
+    ts_btn_filter: "Filter",
+    ts_opt_select_pj: "-- Select Project --",
+    ts_kpi_lifetime_hours: "Lifetime Hours",
+    ts_kpi_actual_hours: "Total Actual Hours",
+    ts_kpi_lifetime_sub: "Including closed past years",
+    ts_kpi_scope_sub: "Selected range",
+    ts_kpi_current_year: "Current Year ({year})",
+    ts_kpi_standard_hours: "Standard hours: {hours}h",
+    ts_kpi_ot: "Overtime (OT)",
+    ts_kpi_ot_rate: "OT rate: {rate}%",
+    ts_kpi_engineers: "Engineers Involved",
+    ts_kpi_engineers_sub: "Contributors count",
+    ts_budget_control: "🎯 Work Budget Control:",
+    ts_budget_plan: "Budget:",
+    ts_budget_actual: "Actual:",
+    ts_budget_used: "USED {pct}%",
+    ts_budget_over: "OVER BUDGET +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 Historical Snapshot by Past Fiscal Years (Closed):",
+    ts_historical_year: "Year {year}:",
+    ts_historical_closed: "Closed",
+    ts_historical_running: "Running",
+    ts_col_staff_code: "Staff ID",
+    ts_col_staff_name: "Full Name",
+    ts_col_hours: "Hours",
+    ts_col_ratio: "Ratio",
+    ts_col_disc_code: "Code",
+    ts_col_disc_name: "Discipline Name",
+    ts_count_engineers: "{count} engineers",
+    ts_count_disciplines: "{count} disciplines",
+    ts_empty_project_data: "No timesheet data for this project",
+    ts_empty_disc_data: "No discipline data",
+    ts_select_project_hint: "Select a project to view data",
+    ts_stf_select: "Staff:",
+    ts_stf_from: "From:",
+    ts_stf_to: "To:",
+    ts_stf_btn_this_month: "This Month",
+    ts_stf_btn_last_month: "Last Month",
+    ts_stf_btn_all: "📅 All Time",
+    ts_stf_btn_view: "🔍 View Breakdown",
+    ts_stf_total_hours: "Total Hours:",
+    ts_stf_official_hours: "Standard Hours:",
+    ts_stf_ot_hours: "Overtime (OT):",
+    ts_stf_active_days: "Active Days:",
+    ts_stf_days_unit: "{count} days",
+    ts_stf_pjs_count: "Projects Count:",
+    ts_stf_pjs_unit: "{count} projects",
+    ts_stf_tree_header: "🌳 Work Breakdown Tree of [{staff}]:",
+    ts_stf_empty_hint: "Click [🔍 View Breakdown] to display tree",
+    ts_stf_no_data: "No logged hours in this period",
+    ts_no_note: "No note",
+    ts_mat_month: "Comparison Month:",
+    ts_mat_prev_month: "◀ Prev Month",
+    ts_mat_next_month: "Next Month ▶",
+    ts_mat_all_months: "📅 All Months",
+    ts_mat_hide_zero: "Hide 0h projects (Hide Zero Columns)",
+    ts_mat_status_ready: "Ready",
+    ts_mat_status_loading: "⏳ Calculating matrix...",
+    ts_mat_status_done: "✅ Loaded",
+    ts_mat_status_all_done: "✅ All Time Loaded",
+    ts_mat_status_err: "❌ Failed",
+    ts_mat_hint: "Tip: Scroll freely, Name & Headers are sticky frozen. Click any cell to inspect details!",
+    ts_mat_loading: "Loading matrix...",
+    ts_mat_col_total: "TOTAL (h)",
+    ts_mat_grand_total: "GRAND TOTAL",
+    ts_mat_all_projects: "All Projects",
+    ts_mat_drilldown_title: "Timesheet Detail: {staff} × {project}",
+    ts_mat_drilldown_sub: "Breakdown and work logs for project [{project}]",
+    ts_mat_drilldown_default_title: "Working Time Details",
+    ts_mat_drilldown_default_sub: "Slot-by-slot task and work log breakdown",
+    ts_drill_col_date: "Date",
+    ts_drill_col_slot: "Time Slot",
+    ts_drill_col_hours: "Hours",
+    ts_drill_col_type: "Type",
+    ts_drill_col_disc: "Discipline",
+    ts_drill_col_note: "Work Note",
+    ts_drill_type_standard: "Standard",
+    ts_drill_type_ot: "OT",
+    ts_drill_no_records: "No detailed records",
+    ts_placeholder_note: "Work note...",
+    ts_clear_row: "Clear row",
+    ts_morning_ot: "MORNING OVERTIME",
+    ts_evening_ot: "EVENING OVERTIME",
+    ts_lunch_break: "Lunch break",
+    ts_badge_hidden: "(Hidden)",
+    ts_badge_shown: "(Shown)",
+    ts_status_ready: "Ready",
     ts_copy_hint: "Tip: Use Ctrl+C / Ctrl+V to copy rows or paste multiple lines from Excel/Google Sheets",
     tax_tab_emp: "5. Employees",
     tax_tab_matrix: "6. Permission Matrix",
@@ -2810,6 +3239,105 @@ const I18N = {
     ts_stat_ot: "残業時間",
     ts_stat_total: "合計時間",
     ts_stat_slots: "入力済み枠数",
+    ts_subtab_entry: "詳細工数入力 (30分)",
+    ts_subtab_project: "プロジェクト別実績報告",
+    ts_subtab_staff: "担当者別詳細分析",
+    ts_subtab_matrix: "一括突合マトリクス",
+    ts_lbl_select_pj: "プロジェクト:",
+    ts_lbl_scope: "集計範囲:",
+    ts_scope_all: "🌐 全期間 (3〜5年)",
+    ts_scope_current: "📅 当該年のみ (リアルタイム)",
+    ts_scope_custom: "📆 期間指定...",
+    ts_btn_export_jp: "検収ファイル出力 (日本形式)",
+    ts_tbl_staff_contrib: "👥 担当者別稼働工数",
+    ts_tbl_disc_breakdown: "📐 業務・作業別工数配分",
+    ts_btn_reload: "🔄 再読み込み",
+    ts_btn_filter: "絞り込み",
+    ts_opt_select_pj: "-- プロジェクトを選択 --",
+    ts_kpi_lifetime_hours: "累計総工数 (全期間)",
+    ts_kpi_actual_hours: "実績総工数",
+    ts_kpi_lifetime_sub: "過去年度締め切り分を含む",
+    ts_kpi_scope_sub: "指定された集計範囲",
+    ts_kpi_current_year: "当該年度 ({year})",
+    ts_kpi_standard_hours: "定時時間: {hours}h",
+    ts_kpi_ot: "残業時間 (OT)",
+    ts_kpi_ot_rate: "残業比率: {rate}%",
+    ts_kpi_engineers: "参加エンジニア",
+    ts_kpi_engineers_sub: "稼働スタッフ数",
+    ts_budget_control: "🎯 工数予算管理:",
+    ts_budget_plan: "予算:",
+    ts_budget_actual: "実績:",
+    ts_budget_used: "消化率 {pct}%",
+    ts_budget_over: "予算超過 +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 過去年度確定スナップショット (決算済み):",
+    ts_historical_year: "{year}年度:",
+    ts_historical_closed: "締め切り済み",
+    ts_historical_running: "進行中",
+    ts_col_staff_code: "社員番号",
+    ts_col_staff_name: "氏名",
+    ts_col_hours: "工数 (h)",
+    ts_col_ratio: "構成比",
+    ts_col_disc_code: "コード",
+    ts_col_disc_name: "業務項目名",
+    ts_count_engineers: "{count} 名",
+    ts_count_disciplines: "{count} 業務項目",
+    ts_empty_project_data: "このプロジェクトの工数データはありません",
+    ts_empty_disc_data: "業務項目データはありません",
+    ts_select_project_hint: "プロジェクトを選択してください",
+    ts_stf_select: "担当者:",
+    ts_stf_from: "開始日:",
+    ts_stf_to: "終了日:",
+    ts_stf_btn_this_month: "今月",
+    ts_stf_btn_last_month: "先月",
+    ts_stf_btn_all: "📅 全期間",
+    ts_stf_btn_view: "🔍 詳細分析表示",
+    ts_stf_total_hours: "総稼働時間:",
+    ts_stf_official_hours: "定時時間:",
+    ts_stf_ot_hours: "残業時間 (OT):",
+    ts_stf_active_days: "稼働日数:",
+    ts_stf_days_unit: "{count} 日",
+    ts_stf_pjs_count: "対象プロジェクト:",
+    ts_stf_pjs_unit: "{count} 件",
+    ts_stf_tree_header: "🌳 業務ブレークダウン [{staff}]:",
+    ts_stf_empty_hint: "「🔍 詳細分析表示」をクリックして業務ツリーを展開してください",
+    ts_stf_no_data: "指定期間内に稼働実績はありません",
+    ts_no_note: "メモなし",
+    ts_mat_month: "対象月:",
+    ts_mat_prev_month: "◀ 前月",
+    ts_mat_next_month: "翌月 ▶",
+    ts_mat_all_months: "📅 全月表示",
+    ts_mat_hide_zero: "0時間プロジェクトを非表示",
+    ts_mat_status_ready: "準備完了",
+    ts_mat_status_loading: "⏳ マトリクス集計中...",
+    ts_mat_status_done: "✅ 読み込み完了",
+    ts_mat_status_all_done: "✅ 全期間表示完了",
+    ts_mat_status_err: "❌ 読み込み失敗",
+    ts_mat_hint: "ヒント: 縦横スクロール可能、社員名とヘッダーは固定表示。任意のセルをクリックすると詳細内訳が開きます。",
+    ts_mat_loading: "マトリクスを読み込み中...",
+    ts_mat_col_total: "合計 (h)",
+    ts_mat_grand_total: "総合計",
+    ts_mat_all_projects: "全プロジェクト",
+    ts_mat_drilldown_title: "工数詳細内訳: {staff} × {project}",
+    ts_mat_drilldown_sub: "案件 [{project}] の作業項目・ログ詳細",
+    ts_mat_drilldown_default_title: "勤務工数詳細",
+    ts_mat_drilldown_default_sub: "枠ごとの作業項目および業務ログ詳細",
+    ts_drill_col_date: "日付",
+    ts_drill_col_slot: "時間枠",
+    ts_drill_col_hours: "工数 (h)",
+    ts_drill_col_type: "区分",
+    ts_drill_col_disc: "業務項目",
+    ts_drill_col_note: "業務内容・メモ",
+    ts_drill_type_standard: "定時",
+    ts_drill_type_ot: "残業",
+    ts_drill_no_records: "詳細レコードはありません",
+    ts_placeholder_note: "業務内容・メモ...",
+    ts_clear_row: "行をクリア",
+    ts_morning_ot: "早朝残業",
+    ts_evening_ot: "夜間残業",
+    ts_lunch_break: "昼休憩",
+    ts_badge_hidden: "(非表示)",
+    ts_badge_shown: "(表示中)",
+    ts_status_ready: "準備完了",
     ts_copy_hint: "ヒント: Ctrl+C / Ctrl+V で行コピーまたはExcel/Googleスプレッドシートから複数行貼り付け可能",
     tax_tab_emp: "5. 社員・スタッフ",
     tax_tab_matrix: "6. 権限マトリクス",
@@ -3004,7 +3532,22 @@ function setLanguage(lang, saveAsDefault) {
   } else if (curPage === 'log') {
     loadPgLog();
   } else if (curPage === 'timesheet') {
-    if (typeof renderTimesheetGrid === 'function') renderTimesheetGrid();
+    if (typeof _tsActiveSubTab !== 'undefined') {
+      if (_tsActiveSubTab === 'ENTRY' && typeof renderTimesheetGrid === 'function') {
+        renderTimesheetGrid();
+      } else if (_tsActiveSubTab === 'PROJECT') {
+        if (typeof updateProjectScopeDropdownI18n === 'function') updateProjectScopeDropdownI18n();
+        if (typeof initProjectActualTimeTab === 'function') initProjectActualTimeTab();
+        else if (typeof loadProjectActualTimeReport === 'function') loadProjectActualTimeReport();
+      } else if (_tsActiveSubTab === 'STAFF') {
+        if (typeof initStaffWorkBreakdownTab === 'function') initStaffWorkBreakdownTab();
+        else if (typeof loadStaffWorkBreakdown === 'function') loadStaffWorkBreakdown();
+      } else if (_tsActiveSubTab === 'MATRIX') {
+        if (typeof loadBatchComparisonMatrix === 'function') loadBatchComparisonMatrix();
+      }
+    } else if (typeof renderTimesheetGrid === 'function') {
+      renderTimesheetGrid();
+    }
   }
   popPjFilter();
   if (typeof popTaskTaxonomySelects === 'function') popTaskTaxonomySelects();
@@ -4264,11 +4807,23 @@ function renderPdMembers(pjId) {
     return;
   }
   const show = mems.slice(0, 6);
-  listEl.innerHTML = show.map(m=>`
+  listEl.innerHTML = show.map(m=>{
+    let mName = "";
+    if (typeof m === "string") {
+      const found = (S.members || []).find(u => u.email === m || u.name === m);
+      mName = found ? found.name : m;
+    } else if (m && typeof m === "object") {
+      mName = m.name || (m.email ? ((S.members || []).find(u => u.email === m.email) || {}).name : "") || m.email || "Thành viên";
+    } else {
+      mName = "Thành viên";
+    }
+    const initials = (mName || "?").slice(0, 2).toUpperCase();
+    return `
     <div class="mem-mini-row">
-      <div class="mem-avatar" style="width:22px;height:22px;font-size:9px">${(m.name||'?').slice(0,2).toUpperCase()}</div>
-      <span style="font-size:11px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${m.name}">${m.name}</span>
-    </div>`).join('') + (mems.length>6?`<div style="font-size:10px;color:var(--t3);padding:2px 0">+${mems.length-6} người khác...</div>`:'');
+      <div class="mem-avatar" style="width:22px;height:22px;font-size:9px">${initials}</div>
+      <span style="font-size:11px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${mName}">${mName}</span>
+    </div>`;
+  }).join('') + (mems.length>6?`<div style="font-size:10px;color:var(--t3);padding:2px 0">+${mems.length-6} người khác...</div>`:'');
 }
 
 // ═══════════════════════════════════════
@@ -6994,7 +7549,16 @@ function openTaxonomyMod(id) {
         if (nameJpInp) nameJpInp.value = item.name_jp || item.extra2 || '';
         if (nameInp) nameInp.value = item.name_vi || item.name || '';
         descInp.value = item.desc || '';
-        extra1Inp.value = item.color || item.extra1 || '';
+        if (item.type === 'EMPLOYEE') {
+          let emailVal = item.extra1 || item.email || '';
+          if (emailVal.startsWith('#') || !emailVal.includes('@')) {
+            const uFound = (S.members || []).find(m => m.id === item.code || m.name === item.name);
+            emailVal = (uFound && uFound.email && uFound.email.includes('@')) ? uFound.email : '';
+          }
+          extra1Inp.value = emailVal;
+        } else {
+          extra1Inp.value = item.color || item.extra1 || '';
+        }
         if (colorInp && (item.color || item.extra1) && (item.color || item.extra1).startsWith('#')) {
           colorInp.value = item.color || item.extra1;
         }
@@ -7228,7 +7792,24 @@ function submitTaxonomyItem() {
     .withSuccessHandler(res => {
       if (res && res.success) {
         closeModal('m-tax');
-        toast(t('tax_item_saved'), "success");
+        toast(res.message || t('tax_item_saved'), "success");
+        if (type === 'EMPLOYEE') {
+          // Cập nhật ngay trong cache frontend (Optimistic UI)
+          const newCode = payload.code;
+          if (Array.isArray(S.members)) {
+            const m = S.members.find(x => (payload.extra1 && x.email === payload.extra1) || (payload.id && x.id === payload.id?.replace(/^EMP_/, '')) || x.id === newCode);
+            if (m) {
+              m.id = newCode;
+              m.code = newCode;
+              m.name = payload.name;
+            }
+          }
+          if (S.user && (S.user.email === payload.extra1 || S.user.staffCode === payload.id?.replace(/^EMP_/, ''))) {
+            S.user.staffCode = newCode;
+            S.user.id = newCode;
+            S.user.name = payload.name;
+          }
+        }
         loadPgTaxonomy(true);
       } else {
         toast((res && res.error) || "Lỗi lưu tiêu chuẩn", "error");
@@ -8616,6 +9197,752 @@ function submitTimesheetData(isOverwrite) {
     })
     .saveTimesheetData(payload);
 }
+
+
+// ════════════════════════════════════════════════════════════
+//  TIMESHEET v4.7 SUB-TAB CONTROLLER & ADVANCED ANALYTICS
+// ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  TIMESHEET v4.7 SUB-TAB CONTROLLER & ADVANCED ANALYTICS
+// ════════════════════════════════════════════════════════════
+
+let _tsActiveSubTab = 'ENTRY';
+
+function switchTsSubTab(tabKey) {
+  _tsActiveSubTab = tabKey;
+  
+  ['ENTRY', 'PROJECT', 'STAFF', 'MATRIX'].forEach(k => {
+    const btn = document.getElementById('ts-subtab-btn-' + k.toLowerCase());
+    const pane = document.getElementById('ts-pane-' + k.toLowerCase());
+    if (btn) {
+      if (k === tabKey) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+    if (pane) {
+      pane.style.display = (k === tabKey) ? 'block' : 'none';
+    }
+  });
+
+  if (tabKey === 'PROJECT') {
+    initProjectActualTimeTab();
+  } else if (tabKey === 'STAFF') {
+    initStaffWorkBreakdownTab();
+  } else if (tabKey === 'MATRIX') {
+    initBatchMatrixTab();
+  }
+}
+
+// ── 1. SUB-TAB 2: PROJECT ACTUAL TIME REPORT ──
+
+
+function updateProjectScopeDropdownI18n() {
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  if (!scopeSel) return;
+  const curVal = scopeSel.value || 'all';
+  scopeSel.innerHTML = `
+    <option value="all">${t('ts_scope_all')}</option>
+    <option value="current">${t('ts_scope_current')}</option>
+    <option value="custom">${t('ts_scope_custom')}</option>
+  `;
+  scopeSel.value = curVal;
+}
+
+function initProjectActualTimeTab() {
+  const sel = document.getElementById('ts-rep-pj-sel');
+  if (!sel) return;
+
+  // Danh mục mã lỗi thời cần lọc sạch (ngăn chặn dự án bóng ma lọt vào dropdown)
+  const obsoleteCodes = new Set(["MRR01", "AMK01", "TSK01", "JUJ01", "DA010", "HAG01"]);
+
+  // 4 Dự án chuẩn chính thức của công ty
+  const officialProjects = [
+    { id: "MUR01", name: "2026_01_MUR01_室蘭市蘭東下水処理場" },
+    { id: "JJK01", name: "2026_02_JJK01_工房ヴィレッジ新築工事" },
+    { id: "AMA01", name: "2026_03_AMA01_天草市本渡浄化センター" },
+    { id: "TES01", name: "2026_04_TES01_弟子屈町弟子屈浄化センター" }
+  ];
+
+  let projectList = [];
+  const seenIds = new Set();
+
+  // Ưu tiên nạp 4 dự án chuẩn trước
+  officialProjects.forEach(dp => {
+    seenIds.add(dp.id);
+    projectList.push({ id: dp.id, name: dp.name });
+  });
+
+  // Nạp thêm các dự án hợp lệ khác từ S.projects nếu không nằm trong danh sách lỗi thời
+  if (S && S.projects && S.projects.length) {
+    S.projects.forEach(p => {
+      const pid = String(p.id || '').trim().toUpperCase();
+      if (pid && !seenIds.has(pid) && !obsoleteCodes.has(pid)) {
+        seenIds.add(pid);
+        projectList.push({
+          id: pid,
+          name: p.name || pid
+        });
+      }
+    });
+  }
+
+  // Nạp thêm từ Taxonomy nếu có
+  if (S && S.taxonomy && S.taxonomy.projectCodes && S.taxonomy.projectCodes.length) {
+    S.taxonomy.projectCodes.forEach(p => {
+      const pCode = String(p.code || p.id || '').trim().toUpperCase();
+      if (pCode && !seenIds.has(pCode) && !obsoleteCodes.has(pCode)) {
+        seenIds.add(pCode);
+        projectList.push({
+          id: pCode,
+          name: typeof tTaxonomy === 'function' ? tTaxonomy(p) : (p.name_vi || p.name || pCode)
+        });
+      }
+    });
+  }
+
+  updateProjectScopeDropdownI18n();
+  let opts = '<option value="">' + t('ts_opt_select_pj') + '</option>';
+  projectList.forEach(p => {
+    const label = (p.name && p.name.includes(p.id)) ? p.name : (p.id + ' - ' + (p.name || ''));
+    opts += '<option value="' + p.id + '">' + label + '</option>';
+  });
+  sel.innerHTML = opts;
+
+  if (projectList.length > 0 && !sel.value) {
+    sel.value = projectList[0].id;
+    loadProjectActualTimeReport();
+  }
+}
+
+function onProjectScopeChange(scope) {
+  const customDates = document.getElementById('ts-rep-custom-dates');
+  if (customDates) {
+    customDates.style.display = (scope === 'custom') ? 'flex' : 'none';
+  }
+  if (scope !== 'custom') {
+    loadProjectActualTimeReport();
+  }
+}
+
+function loadProjectActualTimeReport() {
+  const pjSel = document.getElementById('ts-rep-pj-sel');
+  const projectCode = pjSel ? pjSel.value : '';
+  if (!projectCode) return;
+
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  const scope = scopeSel ? scopeSel.value : 'all';
+  const fromDate = (document.getElementById('ts-rep-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-rep-to')?.value || '').trim();
+
+  const kpiContainer = document.getElementById('ts-rep-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+  const tbMembers = document.getElementById('ts-rep-tbody-members');
+  if (tbMembers) tbMembers.innerHTML = '<tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr>';
+  const tbDisc = document.getElementById('ts-rep-tbody-disciplines');
+  if (tbDisc) tbDisc.innerHTML = '<tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        renderProjectActualTimeReport(res);
+      } else {
+        toast((res && res.error) || 'Lỗi tải báo cáo dự án', 'error');
+      }
+    })
+    .withFailureHandler(err => toast(err.message || 'Lỗi kết nối máy chủ', 'error'))
+    .getProjectActualTimeReport(projectCode, scope, fromDate, toDate);
+}
+
+function renderProjectActualTimeReport(data) {
+  // 1. KPI Cards
+  const kpiContainer = document.getElementById('ts-rep-kpi-container');
+  if (kpiContainer) {
+    const isLifetime = (data.scope === 'all');
+    kpiContainer.innerHTML = `
+      <div class="ts-kpi-card" style="border-left:4px solid var(--p)">
+        <div class="ts-kpi-lbl">${isLifetime ? t('ts_kpi_lifetime_hours') : t('ts_kpi_actual_hours')}</div>
+        <div class="ts-kpi-val" style="color:var(--p)">${Number(data.totalLifetimeHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${isLifetime ? t('ts_kpi_lifetime_sub') : t('ts_kpi_scope_sub')}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #10b981">
+        <div class="ts-kpi-lbl">${t('ts_kpi_current_year', { year: '2026' })}</div>
+        <div class="ts-kpi-val" style="color:#10b981">${Number(data.currentYearHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_standard_hours', { hours: data.officialHours || 0 })}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #f59e0b">
+        <div class="ts-kpi-lbl">${t('ts_kpi_ot')}</div>
+        <div class="ts-kpi-val" style="color:#f59e0b">${Number(data.otHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_ot_rate', { rate: data.currentYearHours > 0 ? ((data.otHours / data.currentYearHours) * 100).toFixed(1) : 0 })}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #6366f1">
+        <div class="ts-kpi-lbl">${t('ts_kpi_engineers')}</div>
+        <div class="ts-kpi-val" style="color:#6366f1">${(data.members || []).length}</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_engineers_sub')}</div>
+      </div>
+    `;
+  }
+
+  // 2. Budget Variance & Progress Alert
+  const budgetWrap = document.getElementById('ts-rep-budget-bar-wrap');
+  if (budgetWrap) {
+    if (data.budgetHours && data.budgetHours > 0) {
+      budgetWrap.style.display = 'block';
+      const pct = data.budgetUsagePercent || 0;
+      const isOver = data.isOverBudget;
+      const barColor = isOver ? '#ef4444' : (pct > 80 ? '#f59e0b' : '#10b981');
+      const badgeClass = isOver ? 'an-badge an-badge-warn' : 'an-badge an-badge-green';
+      const badgeText = isOver
+        ? '⚠️ ' + t('ts_budget_over', { variance: data.varianceHours, pct: (pct - 100).toFixed(1) })
+        : '✅ ' + t('ts_budget_used', { pct });
+
+      budgetWrap.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div>
+            <span style="font-weight:700;font-size:13px;color:var(--tx)">${t('ts_budget_control')}</span>
+            <span style="font-size:12px;color:var(--t2);margin-left:6px">${t('ts_budget_plan')} <b>${data.budgetHours}h</b> | ${t('ts_budget_actual')} <b>${data.totalLifetimeHours}h</b></span>
+          </div>
+          <div>
+            <span class="${badgeClass}" style="font-weight:700">${badgeText}</span>
+          </div>
+        </div>
+        <div style="height:10px;background:#e2e8f0;border-radius:5px;overflow:hidden">
+          <div style="height:100%;width:${Math.min(pct, 100)}%;background:${barColor};transition:.3s"></div>
+        </div>
+      `;
+    } else {
+      budgetWrap.style.display = 'none';
+    }
+  }
+
+  // 3. Historical Snapshot Wrap (for 3-5 Year Multi-Year Projects)
+  const histWrap = document.getElementById('ts-rep-historical-wrap');
+  if (histWrap) {
+    const histYears = Object.keys(data.historicalByYear || {});
+    if (histYears.length > 0) {
+      histWrap.style.display = 'block';
+      let histHtml = `
+        <div style="background:#f8fafc;border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 14px">
+          <div style="font-weight:700;font-size:12px;color:var(--tx);margin-bottom:8px">${t('ts_historical_title')}</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+      `;
+      histYears.forEach(yr => {
+        histHtml += `
+          <div style="background:#fff;border:1px solid var(--bdr);border-radius:6px;padding:6px 12px;font-size:12px">
+            <span style="font-weight:700;color:var(--tx)">${t('ts_historical_year', { year: yr })}</span>
+            <span style="font-weight:800;color:var(--p);margin-left:4px">${data.historicalByYear[yr]}h</span>
+            <span class="badge bg-bl" style="font-size:10px;margin-left:4px">${t('ts_historical_closed')}</span>
+          </div>
+        `;
+      });
+      histHtml += `
+            <div style="background:#fff;border:1px solid var(--bdr);border-radius:6px;padding:6px 12px;font-size:12px">
+              <span style="font-weight:700;color:var(--tx)">${t('ts_historical_year', { year: '2026' })}</span>
+              <span style="font-weight:800;color:#10b981;margin-left:4px">${data.currentYearHours}h</span>
+              <span class="badge bg-gr" style="font-size:10px;margin-left:4px">${t('ts_historical_running')}</span>
+            </div>
+          </div>
+        </div>
+      `;
+      histWrap.innerHTML = histHtml;
+    } else {
+      histWrap.style.display = 'none';
+    }
+  }
+
+  // 4. Staff Contribution Table
+  const tbMembers = document.getElementById('ts-rep-tbody-members');
+  const countMembers = document.getElementById('ts-rep-member-count');
+  if (countMembers) countMembers.textContent = t('ts_count_engineers', { count: (data.members || []).length });
+
+  if (tbMembers) {
+    if (!data.members || !data.members.length) {
+      tbMembers.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_empty_project_data')}</td></tr>`;
+    } else {
+      tbMembers.innerHTML = data.members.map((m, idx) => `
+        <tr>
+          <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+          <td style="font-weight:700;color:var(--tx)">${m.code}</td>
+          <td>${m.name}</td>
+          <td style="text-align:right;font-weight:700;color:var(--p)">${m.hours}h</td>
+          <td style="text-align:right">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+              <span style="font-size:11px;font-weight:600;min-width:36px">${m.percentage}%</span>
+              <div style="width:50px;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+                <div style="width:${Math.min(m.percentage, 100)}%;height:100%;background:var(--p)"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  // 5. Discipline Breakdown Table (Hỗ trợ đa ngôn ngữ Nhật / Anh / Việt)
+  const tbDisc = document.getElementById('ts-rep-tbody-disciplines');
+  const countDisc = document.getElementById('ts-rep-disc-count');
+  if (countDisc) countDisc.textContent = t('ts_count_disciplines', { count: (data.disciplines || []).length });
+
+  if (tbDisc) {
+    if (!data.disciplines || !data.disciplines.length) {
+      tbDisc.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_empty_disc_data')}</td></tr>`;
+    } else {
+      tbDisc.innerHTML = data.disciplines.map((d, idx) => {
+        const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === d.code);
+        const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : (d.name || d.code);
+        return `
+          <tr>
+            <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+            <td style="font-weight:700;color:var(--tx)"><span class="badge bg-bl">${d.code}</span></td>
+            <td>${discName}</td>
+            <td style="text-align:right;font-weight:700;color:#0f766e">${d.hours}h</td>
+            <td style="text-align:right">
+              <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+                <span style="font-size:11px;font-weight:600;min-width:36px">${d.percentage}%</span>
+                <div style="width:50px;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+                  <div style="width:${Math.min(d.percentage, 100)}%;height:100%;background:#0f766e"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
+}
+
+// ── 2. SUB-TAB 3: STAFF WORK BREAKDOWN ──
+
+function initStaffWorkBreakdownTab() {
+  const sel = document.getElementById('ts-stf-sel');
+  if (!sel) return;
+
+  if (_tsStaffList && _tsStaffList.length) {
+    sel.innerHTML = _tsStaffList.map(st => `
+      <option value="${st.code}">${st.code} - ${st.name}</option>
+    `).join('');
+    const curVal = document.getElementById('ts-staff-sel')?.value;
+    if (curVal && sel.querySelector(`option[value="${curVal}"]`)) {
+      sel.value = curVal;
+    }
+  } else {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success) {
+          _tsStaffList = res.staffList || [];
+          sel.innerHTML = _tsStaffList.map(st => `
+            <option value="${st.code}">${st.code} - ${st.name}</option>
+          `).join('');
+          const curVal = document.getElementById('ts-staff-sel')?.value;
+          if (curVal && sel.querySelector(`option[value="${curVal}"]`)) {
+            sel.value = curVal;
+          }
+          loadStaffWorkBreakdown();
+        }
+      })
+      .getStaffListForTimesheet();
+  }
+
+  const isLevel2 = (S && S.user && S.user.role === 'Member');
+  if (isLevel2) {
+    sel.disabled = true;
+  }
+
+  setStaffQuickRange('this_month');
+}
+
+function setStaffQuickRange(type) {
+  const now = new Date();
+  let fromD = null;
+  let toD = null;
+
+  if (type === 'this_month') {
+    fromD = new Date(now.getFullYear(), now.getMonth(), 1);
+    toD = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  } else if (type === 'last_month') {
+    fromD = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    toD = new Date(now.getFullYear(), now.getMonth(), 0);
+  } else if (type === 'all') {
+    fromD = null;
+    toD = null;
+  }
+
+  const fromInp = document.getElementById('ts-stf-from');
+  const toInp = document.getElementById('ts-stf-to');
+  if (fromInp) fromInp.value = fromD ? _formatDateYMD(fromD) : '';
+  if (toInp) toInp.value = toD ? _formatDateYMD(toD) : '';
+
+  loadStaffWorkBreakdown();
+}
+
+function loadStaffWorkBreakdown() {
+  const staffSel = document.getElementById('ts-stf-sel');
+  const staffCode = staffSel ? staffSel.value : '';
+  const fromDate = (document.getElementById('ts-stf-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-stf-to')?.value || '').trim();
+
+  if (!staffCode) {
+    toast("Vui lòng chọn nhân viên cần xem", "error");
+    return;
+  }
+
+  const kpiContainer = document.getElementById('ts-stf-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = '<div style="width:100%;text-align:center;padding:15px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+  const treeContainer = document.getElementById('ts-stf-tree-container');
+  if (treeContainer) {
+    treeContainer.innerHTML = '<div style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        renderStaffWorkBreakdown(res);
+      } else {
+        toast((res && res.error) || "Lỗi tải bóc tách công việc", "error");
+      }
+    })
+    .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+    .getStaffWorkBreakdownByRange(staffCode, fromDate, toDate);
+}
+
+function renderStaffWorkBreakdown(data) {
+  // 1. KPI Chips
+  const kpiContainer = document.getElementById('ts-stf-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = `
+      <div class="ts-stat-chip" style="background:#eef2ff">
+        <span style="font-weight:600">${t('ts_stf_total_hours')}</span> <span class="ts-stat-num" style="color:var(--p);font-size:15px">${data.totalHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_official_hours')}</span> <span class="ts-stat-num">${data.officialHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_ot_hours')}</span> <span class="ts-stat-num" style="color:#ea580c">${data.otHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_active_days')}</span> <span class="ts-stat-num">${t('ts_stf_days_unit', { count: data.activeDays || 0 })}</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_pjs_count')}</span> <span class="ts-stat-num">${t('ts_stf_pjs_unit', { count: (data.projects || []).length })}</span>
+      </div>
+    `;
+  }
+
+  // 2. Hierarchical Tree Breakdown
+  const treeContainer = document.getElementById('ts-stf-tree-container');
+  if (!treeContainer) return;
+
+  if (!data.projects || !data.projects.length) {
+    treeContainer.innerHTML = `<div style="text-align:center;padding:30px;color:var(--t3)">${t('ts_stf_no_data')}</div>`;
+    return;
+  }
+
+  let treeHtml = `<div style="font-weight:700;font-size:13px;color:var(--tx);margin-bottom:12px">${t('ts_stf_tree_header', { staff: data.staffCode + ' - ' + data.staffName })}</div>`;
+
+  data.projects.forEach((p, pIdx) => {
+    treeHtml += `
+      <div style="margin-bottom:10px;border:1px solid var(--bdr);border-radius:6px;overflow:hidden">
+        <div class="ts-tree-pj-hdr" onclick="toggleTreeSection('ts-tree-pj-body-${pIdx}')">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:14px">📁</span>
+            <span style="font-weight:700;color:var(--tx);font-size:13px">${p.projectCode}</span>
+            <span class="badge bg-bl" style="font-size:10px">${p.percentage}%</span>
+          </div>
+          <div style="font-weight:800;color:var(--p);font-size:13px">${p.totalHours}h ▾</div>
+        </div>
+        <div id="ts-tree-pj-body-${pIdx}" style="padding:6px 0;background:#fff">
+    `;
+
+    (p.disciplines || []).forEach(d => {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === d.code);
+      const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : (d.name || d.code);
+      treeHtml += `
+        <div class="ts-tree-disc-row">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="badge bg-gr" style="font-size:10px">${d.code}</span>
+            <span style="font-weight:600;color:var(--tx)">${discName}</span>
+          </div>
+          <div style="font-weight:700;color:#0f766e">${d.hours}h (${d.percentage}%)</div>
+        </div>
+      `;
+
+      if (d.logs && d.logs.length) {
+        treeHtml += `<div class="ts-tree-notes">`;
+        d.logs.slice(0, 5).forEach(l => {
+          treeHtml += `<div>• <b>${l.date}</b> (${l.timeSlot}): ${l.note || t('ts_no_note')}</div>`;
+        });
+        treeHtml += `</div>`;
+      }
+    });
+
+    treeHtml += `
+        </div>
+      </div>
+    `;
+  });
+
+  treeContainer.innerHTML = treeHtml;
+}
+
+function toggleTreeSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+  }
+}
+
+// ── 3. SUB-TAB 4: BATCH COMPARISON MATRIX (PIVOT GRID) ──
+
+function initBatchMatrixTab() {
+  const mInp = document.getElementById('ts-mat-month');
+  if (mInp && !mInp.value) {
+    const now = new Date();
+    const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    mInp.value = ym;
+  }
+  loadBatchComparisonMatrix();
+}
+
+function stepMatrixMonth(delta) {
+  const mInp = document.getElementById('ts-mat-month');
+  if (!mInp || !mInp.value) return;
+
+  const parts = mInp.value.split('-');
+  let y = parseInt(parts[0], 10);
+  let m = parseInt(parts[1], 10) + delta;
+
+  if (m > 12) { m = 1; y++; }
+  else if (m < 1) { m = 12; y--; }
+
+  mInp.value = `${y}-${String(m).padStart(2, '0')}`;
+  loadBatchComparisonMatrix();
+}
+
+function loadBatchComparisonMatrix(isAllTime) {
+  let startDate = '';
+  let endDate = '';
+
+  const mInp = document.getElementById('ts-mat-month');
+  const statusEl = document.getElementById('ts-mat-status');
+
+  if (isAllTime) {
+    if (mInp) mInp.value = '';
+    if (statusEl) statusEl.textContent = t('ts_mat_status_loading');
+  } else {
+    const ym = mInp ? mInp.value : '';
+    if (!ym) {
+      startDate = '';
+      endDate = '';
+    } else {
+      const parts = ym.split('-');
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10);
+      startDate = `${ym}-01`;
+      const lastDay = new Date(y, m, 0).getDate();
+      endDate = `${ym}-${String(lastDay).padStart(2, '0')}`;
+    }
+    if (statusEl) statusEl.textContent = t('ts_mat_status_loading');
+  }
+
+  const hideZero = !!document.getElementById('ts-mat-hide-zero')?.checked;
+  const tbody = document.getElementById('ts-mat-tbody');
+  if (tbody) tbody.innerHTML = '<tr><td style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (statusEl) statusEl.textContent = isAllTime ? t('ts_mat_status_all_done') : t('ts_mat_status_done');
+      if (res && res.success) {
+        renderBatchComparisonMatrix(res);
+      } else {
+        toast((res && res.error) || 'Lỗi tải ma trận đối chiếu', 'error');
+      }
+    })
+    .withFailureHandler(err => {
+      if (statusEl) statusEl.textContent = t('ts_mat_status_err');
+      toast(err.message || 'Lỗi máy chủ', 'error');
+    })
+    .getBatchStaffComparisonMatrix(startDate, endDate, hideZero);
+}
+
+function renderBatchComparisonMatrix(data) {
+  const thead = document.getElementById('ts-mat-thead');
+  const tbody = document.getElementById('ts-mat-tbody');
+  const tfoot = document.getElementById('ts-mat-tfoot');
+  if (!thead || !tbody || !tfoot) return;
+
+  const projects = data.projectColumns || [];
+  const rows = data.rows || [];
+  const colTotals = data.columnTotals || {};
+  const grandTotal = data.grandTotalHours || 0;
+
+  // 1. Build Thead
+  let thHtml = '<tr>';
+  thHtml += '<th class="sticky-col-idx">#</th>';
+  thHtml += `<th class="sticky-col-code">${t('ts_col_staff_code')}</th>`;
+  thHtml += `<th class="sticky-col-name">${t('ts_col_staff_name')}</th>`;
+  projects.forEach(p => {
+    thHtml += `<th style="text-align:right;min-width:75px">${p}</th>`;
+  });
+  thHtml += `<th style="text-align:right;min-width:90px;background:#eef2ff;color:var(--p)">${t('ts_mat_col_total')}</th>`;
+  thHtml += '</tr>';
+  thead.innerHTML = thHtml;
+
+  // 2. Build Tbody
+  if (!rows.length) {
+    const colSpan = Math.max(projects.length + 4, 5);
+    const msg = data.isAllTime
+      ? t('ts_stf_no_data')
+      : t('ts_empty_project_data');
+    tbody.innerHTML = `<tr><td colspan="${colSpan}" style="text-align:center;padding:35px 20px;color:var(--t2);font-size:13px">${msg}</td></tr>`;
+    tfoot.innerHTML = '';
+    return;
+  }
+
+  let tbHtml = '';
+  rows.forEach((s, idx) => {
+    tbHtml += '<tr>';
+    tbHtml += `<td class="sticky-col-idx">${idx + 1}</td>`;
+    tbHtml += `<td class="sticky-col-code">${s.staffCode}</td>`;
+    tbHtml += `<td class="sticky-col-name">${s.staffName}</td>`;
+
+    projects.forEach(p => {
+      const hrs = (s.projectHours && s.projectHours[p]) || 0;
+      if (hrs > 0) {
+        tbHtml += `<td class="ts-matrix-cell has-val" onclick="openTsDrilldownModal('${s.staffCode}', '${s.staffName.replace(/'/g, "\\'")}', '${p}')" title="${t('ts_mat_hint')}">${hrs.toFixed(1)}</td>`;
+      } else {
+        tbHtml += `<td class="ts-matrix-cell" style="color:#cbd5e1">-</td>`;
+      }
+    });
+
+    tbHtml += `<td class="ts-matrix-cell" style="font-weight:800;color:var(--p);background:#f8fafc">${s.totalHours.toFixed(1)}</td>`;
+    tbHtml += '</tr>';
+  });
+  tbody.innerHTML = tbHtml;
+
+  // 3. Build Tfoot (Summary Row)
+  let tfHtml = '<tr>';
+  tfHtml += '<td class="sticky-col-idx">∑</td>';
+  tfHtml += `<td class="sticky-col-code">${t('ts_mat_grand_total')}</td>`;
+  tfHtml += `<td class="sticky-col-name">${t('ts_mat_all_projects')}</td>`;
+  projects.forEach(p => {
+    const tot = colTotals[p] || 0;
+    tfHtml += `<td style="text-align:right;font-weight:800;color:#0f766e">${tot.toFixed(1)}</td>`;
+  });
+  tfHtml += `<td style="text-align:right;font-weight:900;color:var(--p);font-size:13px;background:#e0e7ff">${grandTotal.toFixed(1)}</td>`;
+  tfHtml += '</tr>';
+  tfoot.innerHTML = tfHtml;
+}
+
+// ── 4. DRILLDOWN DETAIL MODAL ON CELL CLICK ──
+
+function openTsDrilldownModal(staffCode, staffName, projectCode) {
+  const mTitle = document.getElementById('m-ts-drill-title');
+  const mSub = document.getElementById('m-ts-drill-sub');
+  const tb = document.getElementById('m-ts-drill-tbody');
+
+  if (mTitle) mTitle.textContent = t('ts_mat_drilldown_title', { staff: `${staffCode} (${staffName})`, project: projectCode });
+  if (mSub) mSub.textContent = t('ts_mat_drilldown_sub', { project: projectCode });
+  if (tb) tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:25px"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  openModal('m-ts-drilldown');
+
+  const mInp = document.getElementById('ts-mat-month');
+  const ym = mInp ? mInp.value : '';
+  let startDate = '', endDate = '';
+  if (ym) {
+    const parts = ym.split('-');
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    startDate = `${ym}-01`;
+    const lastDay = new Date(y, m, 0).getDate();
+    endDate = `${ym}-${String(lastDay).padStart(2, '0')}`;
+  }
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success && res.slots) {
+        if (!res.slots.length) {
+          tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_drill_no_records')}</td></tr>`;
+        } else {
+          tb.innerHTML = res.slots.map(s => {
+            const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === s.disciplineCode);
+            const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : s.disciplineCode;
+            const typeLabel = s.isOT ? t('ts_drill_type_ot') : t('ts_drill_type_standard');
+            return `
+              <tr>
+                <td style="font-weight:600">${s.date}</td>
+                <td><span class="ts-time-badge">${s.timeSlot}</span></td>
+                <td style="text-align:right;font-weight:700;color:var(--p)">${s.durHours}h</td>
+                <td><span class="badge ${s.isOT ? 'bg-re' : 'bg-bl'}">${typeLabel}</span></td>
+                <td><span class="badge bg-gr" title="${discName}">${s.disciplineCode} - ${discName}</span></td>
+                <td style="font-size:11px;color:var(--tx)">${s.note || '-'}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } else {
+        tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">${(res && res.error) || 'Lỗi tải dữ liệu'}</td></tr>`;
+      }
+    })
+    .withFailureHandler(err => {
+      tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">${err.message || 'Lỗi máy chủ'}</td></tr>`;
+    })
+    .getTimesheetCellDrilldown(staffCode, projectCode, startDate, endDate);
+}
+
+window.updateProjectScopeDropdownI18n = updateProjectScopeDropdownI18n;
+window.switchTsSubTab = switchTsSubTab;
+window.initProjectActualTimeTab = initProjectActualTimeTab;
+window.onProjectScopeChange = onProjectScopeChange;
+window.loadProjectActualTimeReport = loadProjectActualTimeReport;
+window.exportJapaneseProjectReportClick = exportJapaneseProjectReportClick;
+window.initStaffWorkBreakdownTab = initStaffWorkBreakdownTab;
+window.setStaffQuickRange = setStaffQuickRange;
+window.loadStaffWorkBreakdown = loadStaffWorkBreakdown;
+window.toggleTreeSection = toggleTreeSection;
+window.initBatchMatrixTab = initBatchMatrixTab;
+window.stepMatrixMonth = stepMatrixMonth;
+window.loadBatchComparisonMatrix = loadBatchComparisonMatrix;
+window.openTsDrilldownModal = openTsDrilldownModal;
+
 </script>
+
+<!-- ══ MODAL: TIMESHEET CELL DRILLDOWN ══ -->
+<div class="ov" id="m-ts-drilldown">
+  <div class="modal modal-lg" style="max-width:850px">
+    <div class="mhd" style="padding:14px 18px 0;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <h3 id="m-ts-drill-title" style="margin:0;font-size:16px;color:var(--tx)" data-i18n="ts_mat_drilldown_default_title">Chi Tiết Thời Gian Làm Việc</h3>
+        <div id="m-ts-drill-sub" style="font-size:12px;color:var(--t2);margin-top:2px" data-i18n="ts_mat_drilldown_default_sub">Bóc tách tác nghiệp và nhật ký theo từng slot</div>
+      </div>
+      <button class="mcl" onclick="closeModal('m-ts-drilldown')">✕</button>
+    </div>
+    <div style="padding:14px 18px">
+      <div class="tblw" style="max-height:420px;overflow-y:auto">
+        <table>
+          <thead style="position:sticky;top:0;background:#f8fafc;z-index:2">
+            <tr>
+              <th style="width:90px" data-i18n="ts_drill_col_date">Ngày</th>
+              <th style="width:105px" data-i18n="ts_drill_col_slot">Khung Giờ</th>
+              <th style="width:65px;text-align:right" data-i18n="ts_drill_col_hours">Số Giờ</th>
+              <th style="width:75px" data-i18n="ts_drill_col_type">Loại Ca</th>
+              <th style="width:100px" data-i18n="ts_drill_col_disc">Tác Nghiệp</th>
+              <th data-i18n="ts_drill_col_note">Ghi Chú Công Việc</th>
+            </tr>
+          </thead>
+          <tbody id="m-ts-drill-tbody">
+            <tr><td colspan="6" style="text-align:center;padding:20px"><div class="ldg"><div class="spn"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:14px;text-align:right">
+        <button type="button" class="btn bs" onclick="closeModal('m-ts-drilldown')" data-i18n="btn_close">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
