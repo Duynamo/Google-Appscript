@@ -1,0 +1,308 @@
+    <!-- ══ TIMESHEET (QUẢN LÝ THỜI GIAN) ══ -->
+    <div class="page" id="page-timesheet">
+      <!-- 4 Sub-Tabs Navigation for Timesheet -->
+      <div class="ts-nav-tabs">
+        <button type="button" class="ts-tab-btn active" id="ts-subtab-btn-entry" onclick="switchTsSubTab('ENTRY')">⏱️ <span data-i18n="ts_subtab_entry">Nhập Giờ Chi Tiết (30 Phút)</span></button>
+        <button type="button" class="ts-tab-btn" id="ts-subtab-btn-project" onclick="switchTsSubTab('PROJECT')">📊 <span data-i18n="ts_subtab_project">Báo Cáo Thực Tế Dự Án</span></button>
+        <button type="button" class="ts-tab-btn" id="ts-subtab-btn-staff" onclick="switchTsSubTab('STAFF')">👤 <span data-i18n="ts_subtab_staff">Bóc Tách Theo Nhân Viên</span></button>
+        <button type="button" class="ts-tab-btn" id="ts-subtab-btn-matrix" onclick="switchTsSubTab('MATRIX')">🔲 <span data-i18n="ts_subtab_matrix">Ma Trận Đối Chiếu Hàng Loạt</span></button>
+      </div>
+
+      <!-- ── SUB-TAB PANE 1: NHẬP GIỜ CHI TIẾT (30 PHÚT) ── -->
+      <div id="ts-pane-entry" class="ts-subtab-pane">
+        <div class="ts-card">
+          <!-- Topbar Controls -->
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_date">Ngày làm việc</label>
+              <button type="button" class="ts-btn" onclick="stepTimesheetDate(-1)" data-i18n="ts_prev_day">◀ Ngày trước</button>
+              <input type="date" id="ts-date-inp" class="fc" style="height:32px;font-size:12px;font-weight:700;padding:2px 8px;width:145px" onchange="onTimesheetDateChange(this.value)">
+              <button type="button" class="ts-btn" onclick="stepTimesheetDate(1)" data-i18n="ts_next_day">Ngày sau ▶</button>
+              <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('today')" data-i18n="ts_today">Hôm nay</button>
+              <button type="button" class="ts-btn" onclick="setTimesheetQuickDate('yesterday')" data-i18n="ts_yesterday">Hôm qua</button>
+            </div>
+
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_staff_code">Nhân viên</label>
+              <select id="ts-staff-sel" class="fc" style="height:32px;font-size:12px;font-weight:600;min-width:180px" onchange="onTimesheetStaffChange(this.value)"></select>
+              <span id="ts-staff-rank-badge" class="badge bg-bl" style="font-size:11px">-</span>
+              <span id="ts-sheet-link-wrap" style="margin-left:6px">
+                <a id="ts-sheet-link-btn" href="#" target="_blank" class="ts-btn" style="text-decoration:none;color:var(--p);font-weight:700">📊 <span data-i18n="ts_sheet_open">Mở Sheet lưu trữ ↗</span></a>
+              </span>
+            </div>
+
+            <div class="ts-ctrl-grp" style="margin-left:auto">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadTimesheetData(true)"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
+              <button type="button" class="ts-btn ts-btn-warn" id="ts-btn-edit-mode" style="display:none" onclick="enableTimesheetEditMode()"><span data-i18n="ts_btn_edit_mode">✏️ Bật Chế Độ Chỉnh Sửa</span></button>
+              <button type="button" class="ts-btn ts-btn-sec" id="ts-btn-cancel-edit" style="display:none" onclick="cancelTimesheetEditMode()"><span data-i18n="ts_btn_cancel_edit">❌ Hủy chỉnh sửa</span></button>
+              <button type="button" class="ts-btn ts-btn-pri" id="ts-btn-save" onclick="saveTimesheetClick()"><span data-i18n="ts_btn_save">💾 Lưu thời gian</span></button>
+              <button type="button" class="ts-btn ts-btn-dang" id="ts-btn-overwrite" style="display:none" onclick="confirmOverwriteClick()"><span data-i18n="ts_btn_overwrite">🔄 Cập Nhật & Ghi Đè (Overwrite)</span></button>
+            </div>
+          </div>
+
+          <!-- Notification / Warning Banners -->
+          <div id="ts-existing-banner" class="ts-banner ts-banner-warn" style="display:none">
+            <span style="font-size:15px">⚠️</span>
+            <span data-i18n="ts_existing_data_warning">Ngày này đã có dữ liệu lưu trữ. Nút Lưu đã bị khóa để bảo vệ dữ liệu. Vui lòng bấm 'Bật Chế Độ Chỉnh Sửa' nếu muốn ghi đè.</span>
+          </div>
+          <div id="ts-edit-banner" class="ts-banner ts-banner-edit" style="display:none">
+            <span style="font-size:15px">🔔</span>
+            <span data-i18n="ts_edit_mode_active">Chế độ chỉnh sửa đang BẬT. Khi nhấn 'Cập Nhật & Ghi Đè', dữ liệu ngày này trên Google Sheet sẽ được thay thế hoàn toàn.</span>
+          </div>
+
+          <!-- Fast Bulk Tools Toolbar -->
+          <div class="ts-toolbar">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <button type="button" class="ts-btn" onclick="copyFromYesterdayClick()"><span data-i18n="ts_copy_yesterday">📋 Sao chép từ Hôm Qua</span></button>
+              <button type="button" class="ts-btn" onclick="bulkFillMorning()"><span data-i18n="ts_fill_morning">☀️ Điền cả buổi sáng</span></button>
+              <button type="button" class="ts-btn" onclick="bulkFillAfternoon()"><span data-i18n="ts_fill_afternoon">🌤️ Điền cả buổi chiều</span></button>
+              <button type="button" class="ts-btn" id="btn-ts-morning-ot" onclick="toggleMorningOt()"><span data-i18n="ts_morning_ot">🌅 TĂNG CA SÁNG</span> <span id="ts-m-ot-badge">(Ẩn)</span></button>
+              <button type="button" class="ts-btn" id="btn-ts-evening-ot" onclick="toggleEveningOt()"><span data-i18n="ts_evening_ot">🌙 TĂNG CA TỐI</span> <span id="ts-e-ot-badge">(Ẩn)</span></button>
+              <button type="button" class="ts-btn" onclick="clearTimesheetInputs()"><span data-i18n="ts_clear_all">🧹 Xóa trắng</span></button>
+            </div>
+            <div style="font-size:11px;color:var(--t2);display:flex;align-items:center;gap:4px">
+              <span>💡</span> <span data-i18n="ts_copy_hint">Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets</span>
+            </div>
+          </div>
+
+          <!-- Table Grid Container -->
+          <div class="tblw" style="max-height:calc(100vh - 280px);overflow-y:auto">
+            <table id="ts-table">
+              <thead style="position:sticky;top:0;background:var(--card);z-index:2">
+                <tr>
+                  <th style="width:36px;text-align:center">#</th>
+                  <th style="width:125px" data-i18n="ts_col_time">Khung Giờ</th>
+                  <th style="width:140px" data-i18n="ts_col_project">Mã Dự Án</th>
+                  <th style="width:115px" data-i18n="ts_col_category">Mã Category</th>
+                  <th style="width:105px" data-i18n="ts_col_phase">Phase</th>
+                  <th style="width:125px" data-i18n="ts_col_discipline">Mã Công Việc</th>
+                  <th data-i18n="ts_col_note">Ghi Chú Công Việc</th>
+                  <th style="width:110px;text-align:center" data-i18n="ts_col_actions">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="ts-tbody">
+                <tr><td colspan="8"><div class="ldg"><div class="spn"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer Stats Bar -->
+          <div class="ts-footer-bar">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <div class="ts-stat-chip">
+                <span data-i18n="ts_stat_official">Giờ chính thức</span>: <span class="ts-stat-num" id="ts-stat-reg">0.0h / 8.0h</span>
+              </div>
+              <div class="ts-stat-chip">
+                <span data-i18n="ts_stat_ot">Giờ tăng ca</span>: <span class="ts-stat-num" id="ts-stat-ot" style="color:#ea580c">0.0h</span>
+              </div>
+              <div class="ts-stat-chip" style="background:#eef2ff">
+                <span data-i18n="ts_stat_total">Tổng cộng</span>: <span class="ts-stat-num" id="ts-stat-total" style="color:var(--p)">0.0h</span>
+              </div>
+              <div class="ts-stat-chip">
+                <span data-i18n="ts_stat_slots">Khung giờ đã nhập</span>: <span class="ts-stat-num" id="ts-stat-slots">0</span>
+              </div>
+            </div>
+            <div id="ts-sync-status" style="font-size:11px;color:var(--t3)">Đã sẵn sàng</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUB-TAB PANE 2: BÁO CÁO DỰ ÁN REAL-TIME & LŨY KẾ 3-5 NĂM ── -->
+      <div id="ts-pane-project" class="ts-subtab-pane" style="display:none">
+        <div class="ts-card">
+          <!-- Project Filter Toolbar -->
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_lbl_select_pj">Dự án:</label>
+              <select id="ts-rep-pj-sel" class="fc" style="height:32px;font-size:12px;font-weight:700;min-width:200px" onchange="loadProjectActualTimeReport()"></select>
+            </div>
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_lbl_scope">Phạm vi:</label>
+              <select id="ts-rep-scope-sel" class="fc" style="height:32px;font-size:12px;font-weight:600;min-width:180px" onchange="onProjectScopeChange(this.value)">
+                <option value="all" data-i18n="ts_scope_all">🌐 Toàn bộ vòng đời (3 - 5 năm)</option>
+                <option value="current" data-i18n="ts_scope_current">📅 Chỉ năm hiện hành (Real-time)</option>
+                <option value="custom" data-i18n="ts_scope_custom">📆 Khoảng ngày tùy chọn...</option>
+              </select>
+            </div>
+            <div class="ts-ctrl-grp" id="ts-rep-custom-dates" style="display:none">
+              <input type="date" id="ts-rep-from" class="fc" style="height:32px;font-size:12px;width:130px">
+              <span style="font-size:11px;color:var(--t2)">➔</span>
+              <input type="date" id="ts-rep-to" class="fc" style="height:32px;font-size:12px;width:130px">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadProjectActualTimeReport()" data-i18n="ts_btn_filter">Lọc</button>
+            </div>
+            <div class="ts-ctrl-grp" style="margin-left:auto">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadProjectActualTimeReport()"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
+              <button type="button" class="ts-btn ts-btn-pri" id="btn-export-jp-report" onclick="exportJapaneseProjectReportClick()">
+                <span>🇯🇵</span> <span data-i18n="ts_btn_export_jp">Xuất File Nghiệm Thu (Format Nhật)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Summary Cards -->
+          <div id="ts-rep-kpi-container" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:12px;margin:16px 0">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- Budget Variance & Progress Alert -->
+          <div id="ts-rep-budget-bar-wrap" style="background:var(--card);border:1px solid var(--bdr);border-radius:var(--r2);padding:14px;margin-bottom:16px;display:none">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- Historical Yearly Snapshot Accordion (If 3-5 Year Lifecycle) -->
+          <div id="ts-rep-historical-wrap" style="margin-bottom:16px;display:none">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- 2 Detail Tables: Members & Disciplines -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));gap:16px">
+            <!-- Table 1: Staff Contribution -->
+            <div style="border:1px solid var(--bdr);border-radius:var(--r2);background:var(--card);overflow:hidden">
+              <div style="padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-weight:700;font-size:13px;color:var(--tx)" data-i18n="ts_tbl_staff_contrib">👥 Đóng Góp Theo Nhân Sự</span>
+                <span id="ts-rep-member-count" class="an-badge an-badge-blue">0 kỹ sư</span>
+              </div>
+              <div class="tblw" style="max-height:350px;overflow-y:auto">
+                <table>
+                  <thead style="position:sticky;top:0;background:#f8fafc;z-index:2">
+                    <tr>
+                      <th style="width:36px;text-align:center">#</th>
+                      <th data-i18n="ts_col_staff_code">Mã NV</th>
+                      <th data-i18n="ts_col_staff_name">Họ Tên</th>
+                      <th style="text-align:right" data-i18n="ts_col_hours">Số Giờ</th>
+                      <th style="width:110px;text-align:right" data-i18n="ts_col_ratio">Tỷ Trọng</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ts-rep-tbody-members">
+                    <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">Chọn dự án để xem dữ liệu</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Table 2: Discipline Breakdown -->
+            <div style="border:1px solid var(--bdr);border-radius:var(--r2);background:var(--card);overflow:hidden">
+              <div style="padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between">
+                <span style="font-weight:700;font-size:13px;color:var(--tx)" data-i18n="ts_tbl_disc_breakdown">📐 Phân Bổ Theo Tác Nghiệp (Discipline)</span>
+                <span id="ts-rep-disc-count" class="an-badge an-badge-blue">0 tác nghiệp</span>
+              </div>
+              <div class="tblw" style="max-height:350px;overflow-y:auto">
+                <table>
+                  <thead style="position:sticky;top:0;background:#f8fafc;z-index:2">
+                    <tr>
+                      <th style="width:36px;text-align:center">#</th>
+                      <th data-i18n="ts_col_disc_code">Mã</th>
+                      <th data-i18n="ts_col_disc_name">Tên Tác Nghiệp</th>
+                      <th style="text-align:right" data-i18n="ts_col_hours">Số Giờ</th>
+                      <th style="width:110px;text-align:right" data-i18n="ts_col_ratio">Tỷ Trọng</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ts-rep-tbody-disciplines">
+                    <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">Chọn dự án để xem dữ liệu</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUB-TAB PANE 3: BÓC TÁCH CHI TIẾT THEO NHÂN VIÊN ── -->
+      <div id="ts-pane-staff" class="ts-subtab-pane" style="display:none">
+        <div class="ts-card">
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_stf_select">Nhân viên:</label>
+              <select id="ts-stf-sel" class="fc" style="height:32px;font-size:12px;font-weight:700;min-width:180px" onchange="loadStaffWorkBreakdown()"></select>
+            </div>
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_stf_from">Từ ngày:</label>
+              <input type="date" id="ts-stf-from" class="fc" style="height:32px;font-size:12px;width:135px">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_stf_to">Đến ngày:</label>
+              <input type="date" id="ts-stf-to" class="fc" style="height:32px;font-size:12px;width:135px">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="setStaffQuickRange('this_month')" data-i18n="ts_stf_btn_this_month">Tháng này</button>
+              <button type="button" class="ts-btn ts-btn-sec" onclick="setStaffQuickRange('last_month')" data-i18n="ts_stf_btn_last_month">Tháng trước</button>
+              <button type="button" class="ts-btn ts-btn-sec" id="btn-staff-all" onclick="setStaffQuickRange('all')" data-i18n="ts_stf_btn_all">📅 Toàn bộ thời gian</button>
+              <button type="button" class="ts-btn ts-btn-pri" onclick="loadStaffWorkBreakdown()" data-i18n="ts_stf_btn_view">🔍 Xem Bóc Tách</button>
+            </div>
+          </div>
+
+          <!-- Staff KPI Summary -->
+          <div id="ts-stf-kpi-container" style="display:flex;gap:12px;margin:14px 0;flex-wrap:wrap">
+            <!-- Dynamically injected -->
+          </div>
+
+          <!-- Hierarchical Tree Breakdown -->
+          <div id="ts-stf-tree-container" style="border:1px solid var(--bdr);border-radius:var(--r2);background:var(--card);padding:14px">
+            <div style="text-align:center;padding:30px;color:var(--t3)" data-i18n="ts_stf_empty_hint">Vui lòng bấm [🔍 Xem Bóc Tách] để hiển thị cây công việc</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUB-TAB PANE 4: MA TRẬN ĐỐI CHIẾU HÀNG LOẠT (PIVOT GRID) ── -->
+      <div id="ts-pane-matrix" class="ts-subtab-pane" style="display:none">
+        <div class="ts-card">
+          <div class="ts-topbar">
+            <div class="ts-ctrl-grp">
+              <label style="font-weight:700;font-size:12px;color:var(--tx)" data-i18n="ts_mat_month">Tháng đối chiếu:</label>
+              <input type="month" id="ts-mat-month" class="fc" style="height:32px;font-size:12px;font-weight:700;width:150px" onchange="loadBatchComparisonMatrix()">
+              <button type="button" class="ts-btn" onclick="stepMatrixMonth(-1)" data-i18n="ts_mat_prev_month">◀ Tháng trước</button>
+              <button type="button" class="ts-btn" onclick="stepMatrixMonth(1)" data-i18n="ts_mat_next_month">Tháng sau ▶</button>
+              <button type="button" class="ts-btn ts-btn-sec" id="btn-mat-all" onclick="loadBatchComparisonMatrix(true)" data-i18n="ts_mat_all_months">📅 Tất cả các tháng</button>
+            </div>
+            <div class="ts-ctrl-grp">
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;cursor:pointer;user-select:none">
+                <input type="checkbox" id="ts-mat-hide-zero" onchange="loadBatchComparisonMatrix()" checked>
+                <span data-i18n="ts_mat_hide_zero">Ẩn dự án 0 giờ (Hide Zero Columns)</span>
+              </label>
+            </div>
+            <div class="ts-ctrl-grp" style="margin-left:auto">
+              <button type="button" class="ts-btn ts-btn-sec" onclick="loadBatchComparisonMatrix()"><span data-i18n="ts_btn_reload">🔄 Tải lại</span></button>
+              <span id="ts-mat-status" style="font-size:11px;color:var(--t2)" data-i18n="ts_mat_status_ready">Sẵn sàng</span>
+            </div>
+          </div>
+
+          <div style="font-size:11px;color:var(--t2);padding:6px 12px;background:#f8fafc;border-radius:6px;margin:8px 0;display:flex;align-items:center;gap:6px">
+            <span>💡</span>
+            <span data-i18n="ts_mat_hint">Mẹo: Cuộn ngang/dọc tự do, cột Tên & dòng Tiêu đề luôn ghim cố định (Sticky Freeze). Click vào ô bất kỳ để mở Popup bóc tách chi tiết!</span>
+          </div>
+
+          <!-- 2-Way Sticky Matrix Container -->
+          <div class="ts-matrix-wrap" id="ts-matrix-wrap">
+            <table class="ts-matrix-table" id="ts-matrix-table">
+              <thead id="ts-mat-thead">
+                <tr><th>Đang nạp ma trận...</th></tr>
+              </thead>
+              <tbody id="ts-mat-tbody">
+                <tr><td style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></td></tr>
+              </tbody>
+              <tfoot id="ts-mat-tfoot"></tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- ══ MODAL CONFIRM OVERWRITE TIMESHEET ══ -->
+<div class="ov" id="m-confirm-overwrite">
+  <div class="modal" style="max-width:440px">
+    <div class="mhd">
+      <h3 style="color:var(--d);display:flex;align-items:center;gap:6px">
+        <span>⚠️</span> <span data-i18n="ts_confirm_overwrite_title">Xác nhận ghi đè dữ liệu</span>
+      </h3>
+      <button class="mcl" onclick="closeModal('m-confirm-overwrite')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <div style="font-size:13px;line-height:1.5;color:var(--tx);margin-bottom:12px" id="m-confirm-overwrite-msg">
+        Ngày này đã có dữ liệu trên Google Sheet. Bạn có chắc chắn muốn ghi đè toàn bộ dữ liệu ngày này?
+      </div>
+      <div style="padding:10px 14px;background:#fff5f5;border:1px solid #fee2e2;border-radius:8px;font-size:11px;color:#b91c1c;line-height:1.4">
+        ⚠️ <strong>Lưu ý:</strong> Hành động này sẽ thay thế toàn bộ dữ liệu cũ của ngày được chọn bằng dữ liệu mới bạn vừa nhập.
+      </div>
+    </div>
+    <div class="mft">
+      <button type="button" class="btn bs" onclick="closeModal('m-confirm-overwrite')" data-i18n="btn_cancel">Hủy</button>
+      <button type="button" class="btn" style="background:#ef4444;color:#fff;border-color:#dc2626" onclick="submitTimesheetData(true)"><span data-i18n="ts_btn_overwrite">🔄 Cập Nhật & Ghi Đè (Overwrite)</span></button>
+    </div>
+  </div>
+</div>

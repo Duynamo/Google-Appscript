@@ -1,0 +1,357 @@
+    <!-- ══ GANTT ══ -->
+    <div class="page" id="page-gantt">
+      <div class="gantt-toolbar">
+        <span style="font-size:13px;font-weight:700" data-i18n="nav_gantt">📅 Sơ đồ Gantt</span>
+        <label style="font-size:11px;color:var(--t2)" data-i18n="gantt_from">Từ:</label>
+        <input type="date" class="fc" id="g-from" style="width:130px;padding:5px 8px;font-size:11px">
+        <label style="font-size:11px;color:var(--t2)" data-i18n="gantt_to">Đến:</label>
+        <input type="date" class="fc" id="g-to" style="width:130px;padding:5px 8px;font-size:11px">
+        <div style="position:relative" id="staff-filter-wrap">
+          <div class="staff-filter-btn" id="staff-filter-btn" onclick="togStaffDrop(event)">
+            <span id="staff-filter-label" data-i18n="gantt_all_staff">👤 Tất cả nhân viên</span>
+            <span style="color:var(--t3);font-size:10px">▾</span>
+          </div>
+          <div class="staff-filter-drop" id="staff-filter-drop">
+            <label class="staff-cb-all">
+              <input type="checkbox" id="staff-all" checked onchange="staffSelectAll(this)">
+              <span data-i18n="gantt_all_staff">Tất cả nhân viên</span>
+            </label>
+            <div id="staff-checklist"></div>
+            <div class="staff-filter-footer">
+              <button class="btn bp" style="flex:1;font-size:11px" onclick="applyStaffFilter()" data-i18n="btn_apply">✔ Áp dụng</button>
+              <button class="btn bs" style="font-size:11px" onclick="resetStaffFilter()" data-i18n="btn_reset">↺ Reset</button>
+            </div>
+          </div>
+        </div>
+        <div class="gantt-opt-group">
+          <label class="gantt-cb-opt" title="Bật/Tắt cắm cờ mốc deadline">
+            <input type="checkbox" id="g-cb-flag" checked onchange="updateGanttDisplayOpts()">
+            <span data-i18n="gantt_cb_flag">🚩 Cờ mốc</span>
+          </label>
+          <label class="gantt-cb-opt" title="Bật/Tắt nhãn ngày deadline">
+            <input type="checkbox" id="g-cb-date" checked onchange="updateGanttDisplayOpts()">
+            <span data-i18n="gantt_cb_date">📅 Ngày hạn</span>
+          </label>
+        </div>
+        <div class="psrch" style="min-width:160px"><span style="color:var(--t3)">🔍</span><input id="g-srch2" placeholder="Tìm task..." data-i18n-ph="search_placeholder" oninput="ganttSearch(this.value)"></div>
+        <button class="btn bp" onclick="loadGantt()" data-i18n="btn_view">Xem</button>
+      </div>
+      <div class="gantt-wrap" style="height:calc(100vh - 200px)">
+        <div class="gantt-inner" id="gantt-inner">
+          <div class="ldg"><div class="spn"></div><span data-i18n="loading">Đang tải Gantt...</span></div>
+        </div>
+      </div>
+    </div>
+
+<script>
+
+function initGanttDates() {
+  const today=new Date();
+  const start=new Date(today); start.setDate(1);
+  const end=new Date(today); end.setMonth(end.getMonth()+3);
+  document.getElementById("g-from").value=fmtDateInput(start);
+  document.getElementById("g-to").value=fmtDateInput(end);
+  try {
+    const sf = localStorage.getItem('gantt_show_flags');
+    const sd = localStorage.getItem('gantt_show_dates');
+    if (sf !== null && document.getElementById('g-cb-flag')) document.getElementById('g-cb-flag').checked = (sf === '1');
+    if (sd !== null && document.getElementById('g-cb-date')) document.getElementById('g-cb-date').checked = (sd === '1');
+  } catch(e) {}
+}
+function updateGanttDisplayOpts() {
+  const showFlag = document.getElementById('g-cb-flag') ? document.getElementById('g-cb-flag').checked : true;
+  const showDate = document.getElementById('g-cb-date') ? document.getElementById('g-cb-date').checked : true;
+  try {
+    localStorage.setItem('gantt_show_flags', showFlag ? '1' : '0');
+    localStorage.setItem('gantt_show_dates', showDate ? '1' : '0');
+  } catch(e) {}
+  applyGanttDisplayOpts();
+}
+function applyGanttDisplayOpts() {
+  const showFlag = document.getElementById('g-cb-flag') ? document.getElementById('g-cb-flag').checked : true;
+  const showDate = document.getElementById('g-cb-date') ? document.getElementById('g-cb-date').checked : true;
+  const el = document.getElementById('gantt-inner');
+  if (el) {
+    el.classList.toggle('hide-gflags', !showFlag);
+    el.classList.toggle('hide-gdates', !showDate);
+  }
+}
+function isProjectOverdue(p) {
+  if (!p || !p.endRaw || p.status === "Hoàn thành" || p.status === "Hủy") return false;
+  const dl = new Date(p.endRaw); dl.setHours(0, 0, 0, 0);
+  const tod = new Date(); tod.setHours(0, 0, 0, 0);
+  return dl < tod;
+}
+function fmtDateInput(d) { return d.toISOString().slice(0,10); }
+function popGanttStaff() {
+  const list=document.getElementById("staff-checklist");
+  if (!list||!S.members.length) return;
+  list.innerHTML=S.members.map(m=>`
+    <label class="staff-cb-row">
+      <input type="checkbox" class="staff-cb" value="${m.email}" checked>
+      <span style="flex:1">${m.name}</span>
+      <span style="font-size:10px;color:var(--t3)">${tRole(m.role)}</span>
+    </label>`).join('');
+  document.querySelectorAll('.staff-cb').forEach(cb=>cb.addEventListener('change',syncStaffAllCheckbox));
+  updateStaffFilterLabel();
+}
+function togStaffDrop(e) { e.stopPropagation(); const d=document.getElementById('staff-filter-drop'); d.style.display=d.style.display==='none'||!d.style.display?'block':'none'; }
+function staffSelectAll(cb) { document.querySelectorAll('.staff-cb').forEach(c=>c.checked=cb.checked); updateStaffFilterLabel(); }
+function syncStaffAllCheckbox() { document.getElementById('staff-all').checked=[...document.querySelectorAll('.staff-cb')].every(c=>c.checked); updateStaffFilterLabel(); }
+function updateStaffFilterLabel() {
+  const all=[...document.querySelectorAll('.staff-cb')], checked=all.filter(c=>c.checked);
+  const lbl=document.getElementById('staff-filter-label'); if (!lbl) return;
+  if (!all.length||checked.length===all.length) lbl.textContent='👤 ' + t('gantt_all_staff');
+  else if (checked.length===0) lbl.textContent='👤 ' + (S.lang==='ja'?'未選択':(S.lang==='en'?'No staff selected':'Chưa chọn nhân viên'));
+  else if (checked.length===1) { const m=S.members.find(x=>x.email===checked[0].value); lbl.textContent='👤 '+(m?m.name:checked[0].value); }
+  else lbl.textContent=`👤 ${checked.length} ${t('nav_users').toLowerCase()}`;
+}
+function getSelectedStaff() {
+  const all=[...document.querySelectorAll('.staff-cb')]; if (!all.length) return null;
+  const checked=all.filter(c=>c.checked).map(c=>c.value);
+  return checked.length===all.length?null:checked;
+}
+function applyStaffFilter() { updateStaffFilterLabel(); document.getElementById('staff-filter-drop').style.display='none'; loadGantt(); }
+function resetStaffFilter() { document.querySelectorAll('.staff-cb').forEach(c=>c.checked=true); document.getElementById('staff-all').checked=true; updateStaffFilterLabel(); }
+function parseLocalDate(val) {
+  if (!val) return null;
+  if (val instanceof Date) { const d = new Date(val); d.setHours(0,0,0,0); return d; }
+  const str = String(val).slice(0, 10);
+  const parts = str.split('-');
+  if (parts.length === 3) return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 0, 0, 0);
+  const d = new Date(val); d.setHours(0,0,0,0); return d;
+}
+function buildGanttDataFromMemory(selectedStaff) {
+  if (!S.projects || !S.tasks) return [];
+  let tasks = [...S.tasks];
+  if (selectedStaff && selectedStaff.length > 0) {
+    tasks = tasks.filter(t => {
+      if (!t.assignee) return false;
+      const parts = String(t.assignee).split(',').map(s => s.trim());
+      return parts.some(p => selectedStaff.includes(p));
+    });
+  }
+  return S.projects.map(p => ({
+    project: p,
+    tasks: tasks.filter(t => t.projectId === p.id)
+  })).filter(g => g.tasks.length > 0 || !selectedStaff || selectedStaff.length === 0);
+}
+
+function loadGantt(forceServer) {
+  const selectedStaff = getSelectedStaff();
+  const el = document.getElementById("gantt-inner");
+  if (!el) return;
+
+  const fromVal = document.getElementById("g-from") ? document.getElementById("g-from").value : "";
+  const toVal = document.getElementById("g-to") ? document.getElementById("g-to").value : "";
+  const parsedStart = parseLocalDate(fromVal);
+  const parsedEnd = parseLocalDate(toVal);
+
+  // 1. Tải tức thì 0ms từ bộ nhớ S nếu đã có dữ liệu
+  if (!forceServer && S.projects && S.projects.length && S.tasks && S.tasks.length) {
+    try {
+      GANTT.data = buildGanttDataFromMemory(selectedStaff);
+      GANTT.startDate = parsedStart || new Date();
+      GANTT.endDate = parsedEnd || new Date();
+      renderGantt();
+      return;
+    } catch(err) {
+      console.warn("Gantt local render fallback:", err);
+    }
+  }
+
+  // 2. Gọi server nếu chưa có cache hoặc forceServer
+  el.innerHTML = '<div class="ldg"><div class="spn"></div>' + t('loading') + '</div>';
+  google.script.run
+    .withSuccessHandler(res => {
+      if (!res || !res.success) {
+        if (S.projects && S.projects.length) {
+          GANTT.data = buildGanttDataFromMemory(selectedStaff);
+          GANTT.startDate = parsedStart || new Date();
+          GANTT.endDate = parsedEnd || new Date();
+          renderGantt();
+          return;
+        }
+        el.innerHTML = `<div class="empty">${(res && res.error) || t('dash_no_act')}</div>`;
+        return;
+      }
+      let data = res.data || [];
+      if (selectedStaff && selectedStaff.length > 0) {
+        data = data.map(g => ({
+          project: g.project,
+          tasks: (g.tasks || []).filter(t => {
+            if (!t.assignee) return false;
+            const parts = String(t.assignee).split(',').map(s => s.trim());
+            return parts.some(p => selectedStaff.includes(p));
+          })
+        })).filter(g => g.tasks.length > 0);
+      }
+      GANTT.data = data;
+      GANTT.startDate = parsedStart || new Date();
+      GANTT.endDate = parsedEnd || new Date();
+      renderGantt();
+    })
+    .withFailureHandler(e => {
+      if (S.projects && S.projects.length) {
+        GANTT.data = buildGanttDataFromMemory(selectedStaff);
+        GANTT.startDate = parsedStart || new Date();
+        GANTT.endDate = parsedEnd || new Date();
+        renderGantt();
+        return;
+      }
+      const errMsg = (e && (e.message || (typeof e === 'string' ? e : JSON.stringify(e)))) || "Lỗi tải Gantt";
+      el.innerHTML = `<div class="empty">${errMsg}</div>`;
+    })
+    .getGanttData('all');
+}
+function renderGantt() {
+  const el=document.getElementById("gantt-inner");
+  const sd=GANTT.startDate,ed=GANTT.endDate,ppd=GANTT.pixelsPerDay;
+  const totalDays=Math.round((ed-sd)/86400000)+1;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const todayOffsetDays=Math.round((today-sd)/86400000);
+  const todayCenterPx=(todayOffsetDays*ppd)+Math.floor(ppd/2);
+  const dateHeaders=[];
+  for (let i=0;i<totalDays;i++) {
+    const d=new Date(sd.getFullYear(),sd.getMonth(),sd.getDate()+i);
+    dateHeaders.push({d,isToday:d.getTime()===today.getTime(),isWeekend:d.getDay()===0||d.getDay()===6});
+  }
+  const monthGroups=[];
+  let curKey=null,curCount=0,curLabel='';
+  const mNamesEn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  dateHeaders.forEach(h=>{
+    const mk=`${h.d.getFullYear()}-${h.d.getMonth()}`;
+    if (mk!==curKey) {
+      if(curKey!==null) monthGroups.push({label:curLabel,count:curCount});
+      curKey=mk; curCount=0;
+      if (S.lang==='ja') {
+        curLabel=`${h.d.getFullYear()}年${h.d.getMonth()+1}月`;
+      } else if (S.lang==='en') {
+        curLabel=`${mNamesEn[h.d.getMonth()]} ${h.d.getFullYear()}`;
+      } else {
+        curLabel=`Tháng ${h.d.getMonth()+1} / ${h.d.getFullYear()}`;
+      }
+    }
+    curCount++;
+  });
+  if (curCount>0) monthGroups.push({label:curLabel,count:curCount});
+  const monthRowHtml=monthGroups.map(mg=>`<div class="gantt-month-cell" style="min-width:${mg.count*ppd}px">${mg.label}</div>`).join('');
+  const dowLabels=S.lang==='ja'
+    ?['日','月','火','水','木','金','土']
+    : (S.lang==='en'
+      ?['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+      :['CN','T2','T3','T4','T5','T6','T7']);
+  const dayRowHtml=dateHeaders.map(h=>`<div class="gantt-day${h.isToday?' today':''} ${h.isWeekend?'weekend':''}" style="min-width:${ppd}px">${h.d.getDate()}<br><span style="font-size:8px">${dowLabels[h.d.getDay()]}</span></div>`).join('');
+  let rowsL='',rowsR='';
+  GANTT.data.forEach(g=>{
+    const pjId="gpj-"+g.project.id;
+    rowsL+=`<div class="gantt-pj-row" onclick="togGPj('${pjId}')"><span class="gantt-pj-ic open" id="${pjId}-ic">▶</span><span class="gantt-pj-nm">${g.project.name}</span><span class="gantt-pj-cnt">${g.tasks.length} ${t('gantt_task_unit')}</span></div>`;
+    
+    // Project timeline: Project Bar + Project Deadline Flag
+    let pjBarHtml='', pjFlagHtml='';
+    let pjBarX=0;
+    if (g.project.startRaw) {
+      const ps=parseLocalDate(g.project.startRaw);
+      pjBarX=Math.max(0,Math.round((ps-sd)/86400000))*ppd;
+    }
+    if (g.project.endRaw) {
+      const pe=parseLocalDate(g.project.endRaw);
+      const pjEndDay=Math.round((pe-sd)/86400000);
+      if (g.project.startRaw) {
+        const pjBarW=Math.max(ppd,(pjEndDay+1)*ppd-pjBarX);
+        pjBarHtml=`<div class="gantt-pj-bar" style="left:${pjBarX}px;width:${pjBarW}px" title="${g.project.name} (${g.project.startDate||''} - ${g.project.endDate||''})"></div>`;
+      }
+      if (pjEndDay>=0 && pjEndDay<totalDays) {
+        const pjFlagX=pjEndDay*ppd+5;
+        const isPjOver=isProjectOverdue(g.project);
+        const isPjDone=g.project.status==="Hoàn thành";
+        const pjFlagCls=isPjDone?"flag-done":isPjOver?"flag-overdue":"flag-pj";
+        const pjFlagIcon=isPjDone?"🏁":"🚩";
+        const pjDateLabel=g.project.endDate?g.project.endDate.substring(0,5):(g.project.endRaw?g.project.endRaw.substring(5):"");
+        pjFlagHtml=`<div class="gantt-deadline-flag gantt-pj-flag ${pjFlagCls}" style="left:${pjFlagX}px" title="${t('gantt_pj_deadline')}: ${g.project.endDate||g.project.endRaw} | ${g.project.name}">`
+          +`<span class="gantt-flag-icon">${pjFlagIcon}</span>`
+          +`<span class="gantt-flag-date">${t('gantt_pj_deadline')}: ${pjDateLabel}</span>`
+          +`</div>`;
+      }
+    }
+    rowsR+=`<div class="gantt-pj-line" style="min-width:${totalDays*ppd}px">${pjBarHtml}${pjFlagHtml}</div>`;
+
+    const tkL=g.tasks.map(t=>`<div class="gantt-tk-row" id="gtr-${t.id}" data-id="${t.id}" data-pj="${g.project.id}" draggable="true" ondragstart="gDragStart(event)" ondragover="gDragOver(event)" ondrop="gDrop(event)" ondragend="gDragEnd(event)"><span class="gantt-drag-ic">⠿</span><span class="gantt-tk-nm" title="${t.name}">${t.name}</span><span class="gantt-tk-as" title="${t.assignee||''}">${_displayName(t.assignee)}</span></div>`).join('');
+    const tkR=g.tasks.map(t=>{
+      let barX=0,barW=ppd;
+      if (t.startRaw) { const ts=parseLocalDate(t.startRaw); barX=Math.max(0,Math.round((ts-sd)/86400000))*ppd; }
+      if (t.deadlineRaw) { const te=parseLocalDate(t.deadlineRaw); barW=Math.max(ppd,Math.round((te-sd)/86400000+1)*ppd-barX); }
+      const barColor=t.status==="Hoàn thành"?"#22c55e":isTaskOverdue(t)?"#ef4444":t.status==="Tạm dừng"?"#f59e0b":"#4f6ef7";
+      
+      let flagHtml='';
+      if (t.deadlineRaw) {
+        const te=parseLocalDate(t.deadlineRaw);
+        const tEndDay=Math.round((te-sd)/86400000);
+        if (tEndDay>=0 && tEndDay<totalDays) {
+          const flagX=tEndDay*ppd+5;
+          const isOver=isTaskOverdue(t);
+          const isDone=t.status==="Hoàn thành";
+          const flagCls=isDone?"flag-done":isOver?"flag-overdue":"flag-normal";
+          const flagIcon=isDone?"🏁":"🚩";
+          const deadText=t.deadline?t.deadline.substring(0,5):(t.deadlineRaw?t.deadlineRaw.substring(5):"");
+          flagHtml=`<div class="gantt-deadline-flag ${flagCls}" style="left:${flagX}px" title="Deadline: ${t.deadline||t.deadlineRaw} | ${t.name} (${t.status})" onclick="openFullTaskEdit('${t.id}')">`
+            +`<span class="gantt-flag-icon">${flagIcon}</span>`
+            +`<span class="gantt-flag-date">${deadText}</span>`
+            +`</div>`;
+        }
+      }
+      return `<div class="gantt-tk-line" style="min-width:${totalDays*ppd}px"><div class="gantt-bar" style="left:${barX}px;width:${barW}px;background:${barColor};opacity:${0.7+t.progress/300}" title="${t.name} | ${t.status} | ${t.progress}%" onclick="openFullTaskEdit('${t.id}')">${t.progress>0?t.progress+'%':''}</div>${flagHtml}</div>`;
+    }).join('');
+    rowsL+=`<div class="gantt-pj-tasks open" id="${pjId}-tasks">${tkL}</div>`;
+    rowsR+=`<div class="gantt-pj-tasks-r open" id="${pjId}-tasks-r">${tkR}</div>`;
+  });
+  if (todayOffsetDays>=0 && todayOffsetDays<totalDays) {
+    const todayFormatted = S.lang === 'ja'
+      ? `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`
+      : `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`;
+    rowsR=`<div style="position:absolute;left:${todayCenterPx}px;top:0;bottom:0;width:2px;background:#ef4444;z-index:9;pointer-events:none" title="${t('gantt_today')}: ${todayFormatted}">`
+      +`<span style="position:sticky;top:62px;display:inline-block;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.3);white-space:nowrap">${t('gantt_today')}</span>`
+      +`</div>`+rowsR;
+  }
+  el.innerHTML=`
+    <div class="gantt-left" id="gantt-left"><div class="gantt-header-left">${t('gantt_col_name')}</div>${rowsL}</div>
+    <div class="gantt-right" id="gantt-right" style="position:relative">
+      <div class="gantt-header-right"><div class="gantt-month-row">${monthRowHtml}</div><div class="gantt-day-row">${dayRowHtml}</div></div>
+      <div style="position:relative">${rowsR}</div>
+    </div>`;
+  applyGanttDisplayOpts();
+  const gL=document.getElementById("gantt-left"),gR=document.getElementById("gantt-right");
+  gR.addEventListener("scroll",()=>{ gL.scrollTop=gR.scrollTop; });
+}
+function togGPj(pjId) {
+  const tasks=document.getElementById(pjId+"-tasks"), tasksR=document.getElementById(pjId+"-tasks-r"), ic=document.getElementById(pjId+"-ic");
+  const open=tasks.classList.contains("open");
+  tasks.classList.toggle("open",!open); if(tasksR) tasksR.classList.toggle("open",!open); if(ic) ic.classList.toggle("open",!open);
+}
+function ganttSearch(q) {
+  const lq=q.toLowerCase();
+  document.querySelectorAll(".gantt-tk-row").forEach(row=>{
+    const show=!q||row.querySelector(".gantt-tk-nm").title.toLowerCase().includes(lq);
+    row.style.display=show?"flex":"none";
+    const id=row.dataset.id, barEl=document.querySelector(`.gantt-bar[onclick*="${id}"]`);
+    if (barEl) { const l=barEl.closest(".gantt-tk-line"); if(l) l.style.display=show?"block":"none"; }
+  });
+}
+let _gDragId=null;
+function gDragStart(e) { _gDragId=e.currentTarget.dataset.id; e.currentTarget.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; }
+function gDragOver(e) { e.preventDefault(); e.currentTarget.classList.add("drag-over"); }
+function gDrop(e) {
+  e.preventDefault(); const target=e.currentTarget; target.classList.remove("drag-over");
+  if (!_gDragId||_gDragId===target.dataset.id) return;
+  const container=target.closest(".gantt-pj-tasks"); if (!container) return;
+  const dragEl=document.getElementById("gtr-"+_gDragId), targetEl=document.getElementById("gtr-"+target.dataset.id);
+  if (dragEl&&targetEl) container.insertBefore(dragEl,targetEl);
+  google.script.run.withSuccessHandler(r=>{if(r.success)toast("Đã lưu thứ tự","success");}).saveTaskOrder([...container.querySelectorAll(".gantt-tk-row")].map(r=>r.dataset.id));
+}
+function gDragEnd(e) { e.currentTarget.classList.remove("dragging"); document.querySelectorAll(".gantt-tk-row").forEach(r=>r.classList.remove("drag-over")); _gDragId=null; }
+
+// ═══════════════════════════════════════
+//  PAGE: PROJECTS
+// ═══════════════════════════════════════
+
+</script>

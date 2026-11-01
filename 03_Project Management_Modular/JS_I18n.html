@@ -1,0 +1,1649 @@
+<script>
+const I18N = {
+  vi: {
+    app_name: "Quản Lý Dự Án",
+    app_sub: "Quản lý thông minh",
+    nav_dashboard: "Tổng quan",
+    nav_gantt: "Sơ đồ Gantt",
+    nav_projects: "Dự án",
+    nav_tasks: "Nhiệm vụ",
+    nav_users: "Người dùng",
+    nav_log: "Nhật ký",
+    logout: "Đăng xuất",
+    loading: "Đang tải...",
+    no_permission: "Không có quyền",
+    contact_admin: "Liên hệ Admin để được cấp quyền",
+    
+    page_dashboard_t: "Tổng Quan",
+    page_dashboard_s: "Chào mừng trở lại",
+    page_gantt_t: "Sơ đồ Gantt",
+    page_gantt_s: "Quản lý tiến độ trực quan",
+    page_projects_t: "Dự Án",
+    page_projects_s: "Quản lý tất cả dự án",
+    page_tasks_t: "Nhiệm Vụ",
+    page_tasks_s: "Quản lý tất cả nhiệm vụ",
+    page_users_t: "Người Dùng",
+    page_users_s: "Phân quyền & quản lý",
+    page_log_t: "Nhật Ký",
+    page_log_s: "Lịch sử hoạt động",
+    filter_by_project: "Lọc theo dự án...",
+    filter_all_projects: "Tất cả dự án",
+    search_placeholder: "Tìm kiếm...",
+    create_new: "+ Tạo mới ▾",
+    add_project: "Thêm dự án",
+    add_task: "Thêm nhiệm vụ",
+    add_user: "Thêm nhân viên",
+    notifications: "Thông báo",
+    mark_read: "Xóa đã đọc",
+    reload: "Làm mới",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "Đặt làm mặc định",
+    set_sys_default: "Mặc định hệ thống",
+    modal_sys_lang: "⚙️ Cài đặt ngôn ngữ mặc định hệ thống",
+    sys_lang_desc: "Chọn ngôn ngữ mặc định cho toàn bộ hệ thống. Người dùng mới khi truy cập lần đầu sẽ được áp dụng ngôn ngữ này nếu chưa thiết lập tùy chọn cá nhân.",
+    sys_lang_select_lbl: "Ngôn ngữ mặc định hệ thống",
+    
+    dash_card_total_projects: "TỔNG DỰ ÁN",
+    dash_card_total_tasks: "TỔNG NHIỆM VỤ",
+    dash_card_in_progress: "NHIỆM VỤ ĐANG LÀM",
+    dash_card_overdue: "NHIỆM VỤ QUÁ HẠN",
+    dash_stat_completed: "Hoàn thành",
+    dash_stat_rate: "Tỷ lệ",
+    dash_stat_not_started: "Chưa bắt đầu",
+    dash_stat_paused: "Tạm dừng",
+    dash_stat_active_users: "Nhân viên active",
+    dash_click_detail: "Nhấn để xem chi tiết",
+    dash_chart_status: "Phân Bổ Trạng Thái",
+    dash_chart_priority: "Độ Ưu Tiên",
+    dash_chart_staff: "Phân Công Nhân Sự",
+    dash_chart_trend: "Tiến Độ Hoàn Thành (15 ngày)",
+    dash_chart_progress: "Tiến Độ Dự Án",
+    dash_chart_compare: "So Sánh Kế Hoạch & Thực Tế",
+    dash_recent_activity: "Hoạt Động Gần Đây",
+    dash_urgent_tasks: "Việc Khẩn Cấp / Quá Hạn",
+    dash_no_urgent: "Không có nhiệm vụ khẩn cấp cần xử lý",
+    dash_no_act: "Chưa có hoạt động nào",
+    
+    gantt_all_staff: "Tất cả nhân viên",
+    gantt_today: "Hôm nay",
+    gantt_zoom_week: "Tuần",
+    gantt_zoom_month: "Tháng",
+    gantt_zoom_quarter: "Quý",
+    
+    pj_list_title: "Danh Sách Dự Án",
+    pj_col_code: "Mã DA",
+    pj_col_name: "Tên Dự Án",
+    pj_col_pm: "Quản Lý (PM)",
+    pj_col_start: "Bắt Đầu",
+    pj_col_end: "Kết Thúc",
+    pj_col_progress: "Tiến Độ",
+    pj_col_status: "Trạng Thái",
+    pj_col_actions: "Thao Tác",
+    
+    tk_tab_kanban: "Bảng Kanban",
+    tk_tab_list: "Danh Sách",
+    tk_filter_staff: "Lọc nhân viên...",
+    tk_filter_priority: "Độ ưu tiên...",
+    tk_filter_status: "Trạng thái...",
+    tk_all_staff: "Tất cả nhân viên",
+    tk_all_priorities: "Tất cả độ ưu tiên",
+    tk_all_statuses: "Tất cả trạng thái",
+    tk_col_name: "Tên Công Việc",
+    tk_col_project: "Dự Án",
+    tk_col_assignee: "Người Phụ Trách",
+    tk_col_deadline: "Hạn Chót",
+    tk_col_priority: "Độ Ưu Tiên",
+    tk_col_progress: "Tiến Độ",
+    tk_col_status: "Trạng Thái",
+    
+    btn_save: "💾 Lưu",
+    btn_cancel: "Hủy",
+    btn_add: "+ Thêm",
+    btn_edit: "Sửa",
+    btn_delete: "Xóa",
+    btn_close: "Đóng",
+    btn_confirm: "Xác nhận",
+    btn_duplicate: "📋 Tạo bản sao",
+    btn_bulk_add: "⚡ Thêm nhanh hàng loạt",
+    btn_single_add: "📝 Thêm từng nhiệm vụ",
+    btn_filter: "Lọc",
+    btn_export: "Xuất dữ liệu",
+    
+    st_pending: "Chờ thực hiện",
+    st_in_progress: "Đang thực hiện",
+    st_review: "Chờ duyệt",
+    st_completed: "Hoàn thành",
+    st_paused: "Tạm dừng",
+    st_cancelled: "Hủy",
+    st_overdue: "Quá hạn",
+    st_planning: "Lên kế hoạch",
+    
+    pr_low: "Thấp",
+    pr_medium: "Trung bình",
+    pr_high: "Cao",
+    pr_urgent: "Khẩn cấp",
+    
+    role_admin: "Quản trị viên",
+    role_manager: "Quản lý",
+    role_member: "Thành viên",
+    role_viewer: "Người xem",
+    
+    msg_lang_changed: "Đã chuyển đổi sang Tiếng Việt",
+    msg_default_saved: "Đã lưu Tiếng Việt làm ngôn ngữ mặc định của bạn",
+    msg_sys_default_saved: "Đã lưu ngôn ngữ mặc định hệ thống thành công",
+    msg_save_success: "Lưu thành công!",
+    msg_delete_success: "Đã xóa thành công!",
+    msg_confirm_delete: "Bạn có chắc chắn muốn xóa không? Thao tác này không thể hoàn tác.",
+    msg_confirm_dup_pj: "Bạn có chắc muốn nhân bản dự án này?",
+
+    gantt_from: "Từ:",
+    gantt_to: "Đến:",
+    gantt_cb_flag: "🚩 Cờ mốc",
+    gantt_cb_date: "📅 Ngày hạn",
+    gantt_col_name: "Tên",
+    gantt_task_unit: "việc",
+    gantt_pj_deadline: "Hạn DA",
+    btn_apply: "✔ Áp dụng",
+    btn_reset: "↺ Reset",
+    btn_view: "Xem",
+    filter_all_statuses: "-- Tất cả trạng thái --",
+    filter_status_placeholder: "-- Trạng thái --",
+    filter_priority_placeholder: "-- Ưu tiên --",
+    user_col_id: "Tên / ID",
+    user_col_name: "Họ Tên",
+    user_col_role: "Vai Trò",
+    user_col_status: "Trạng Thái",
+    user_col_created: "Ngày Tạo",
+    log_col_time: "Thời Gian",
+    log_col_email: "Email",
+    log_col_role: "Vai Trò",
+    log_col_action: "Hành Động",
+    log_col_detail: "Chi Tiết",
+    empty_no_users: "Chưa có người dùng nào",
+    desc: "Mô tả",
+    note: "Ghi chú",
+    manage_members: "⚙ Quản lý thành viên",
+    
+    nav_analytics: "Biểu đồ chuyên sâu",
+    page_analytics_t: "Biểu Đồ Chuyên Sâu",
+    page_analytics_s: "Phân tích hiệu suất & mức độ đóng góp thành viên",
+    an_filter_range: "📅 Khung thời gian:",
+    an_from: "Từ:",
+    an_to: "Đến:",
+    dash_preset_all: "Tất cả",
+    dash_preset_today: "Hôm nay",
+    dash_preset_week: "Tuần này",
+    dash_preset_month: "Tháng này",
+    dash_preset_quarter: "Quý này",
+    dash_preset_year: "Năm nay",
+    an_filter_project: "📁 Dự án:",
+    an_filter_member: "👤 Nhân viên:",
+    an_all_projects: "Tất cả dự án",
+    an_all_members: "👤 Tất cả nhân viên",
+    an_kpi_active_members: "Nhân sự tham gia",
+    an_kpi_linked_projects: "Dự án liên quan",
+    an_kpi_total_tasks: "Tổng nhiệm vụ",
+    an_kpi_ontime_rate: "Tỷ lệ đúng hạn",
+    an_chart_workload: "📊 Khối lượng & Tiến độ theo thành viên",
+    an_chart_radar: "🕸️ Đánh giá đa chiều năng lực đóng góp",
+    an_chart_pj_share: "🍩 Tỷ trọng tham gia các dự án",
+    an_chart_trend: "📈 Phân bổ công việc qua từng dự án",
+    an_tbl_title: "📋 Bảng Tổng Hợp Chi Tiết Đóng Góp & Dự Án",
+    an_tbl_member: "Thành viên",
+    an_tbl_projects: "Dự án tham gia",
+    an_tbl_tasks: "Số task",
+    an_tbl_done: "Đã xong",
+    an_tbl_progress: "Đang làm",
+    an_tbl_overdue: "Quá hạn",
+    an_tbl_rate: "Tỷ lệ hoàn thành",
+    an_tbl_ranking: "Đánh giá",
+    an_search_member: "Tìm thành viên...",
+    an_comparing_members: "Đang so sánh: {n} thành viên",
+    an_reset_tooltip: "Đặt lại bộ lọc",
+    an_no_data: "Không có dữ liệu trong khoảng thời gian đã chọn",
+    an_rank_excellent: "🏆 Xuất sắc",
+    an_rank_good: "⭐ Tích cực",
+    an_rank_steady: "Đang ổn định",
+    an_rank_support: "⚠️ Cần hỗ trợ",
+    an_radar_workload: "Khối lượng",
+    an_radar_completion: "Hoàn thành",
+    an_radar_ontime: "Đúng hạn",
+    an_radar_highpri: "Việc khó/Cao",
+    an_radar_velocity: "Tiến độ TB",
+
+    nav_taxonomy: "Danh mục tiêu chuẩn",
+    page_taxonomy_t: "Danh Mục Tiêu Chuẩn",
+    page_taxonomy_s: "Quy định mã hóa & phân loại công việc chuẩn",
+    tax_page_title: "📐 Danh Mục Tiêu Chuẩn & Quy Định Mã Hóa",
+    tax_tab_cat: "1. Category (Nhóm lớn)",
+    tax_tab_phase: "2. Phase dự án",
+    tax_tab_disc: "3. Chi tiết công việc",
+    tax_tab_pjcode: "4. Mã dự án",
+    tax_col_code: "Mã viết tắt",
+    tax_col_name: "Tên phân loại",
+    tax_col_desc: "Tên đầy đủ",
+    tax_col_fullname: "Tên đầy đủ",
+    tax_col_extra: "Ghi chú bổ sung",
+    tax_col_notes: "Ghi chú bổ sung",
+    tax_btn_add: "+ Thêm Tiêu Chuẩn",
+    tax_btn_reload_sheet: "Nạp mẫu chuẩn",
+    tax_btn_batch: "Chuẩn hóa task cũ",
+    tax_reload_title: "Khôi phục danh mục mẫu chuẩn từ hệ thống",
+    tax_batch_title: "Quét và gán mã tiền tố cho các task cũ",
+    tax_srch_ph: "Tìm theo mã, tên, mô tả...",
+    tax_code_hint: "2-5 ký tự in hoa",
+    disc_preview_badge: "Xem trước nhãn:",
+    tax_lbl_cat: "Category (Nhóm lớn)",
+    tax_lbl_phase: "Phase (Giai đoạn)",
+    tax_lbl_disc: "Chi tiết (Discipline)",
+    tax_modal_batch_ti: "⚡ Chuẩn Hóa Mã Tiền Tố Cho Nhiệm Vụ Cũ",
+    tax_modal_batch_sub: "Tự động nhận diện từ khóa và gán tiền tố [CATEGORY-PHASE-DISC] cho các nhiệm vụ chưa có mã",
+    tax_item_saved: "Đã lưu tiêu chuẩn thành công!",
+    tax_item_deleted: "Đã xóa tiêu chuẩn thành công!",
+    tax_batch_success: "Đã chuẩn hóa {n} nhiệm vụ thành công!",
+    pj_year_lbl: "Năm",
+    pj_seq_lbl: "Số TT (STT)",
+    pj_seq_hint: "VD: 01, 02...",
+    tax_select_pj_code: "Chọn từ Danh mục tiêu chuẩn",
+    tax_custom_pj_name: "-- Tự nhập nội dung xxxxx --",
+    btn_update_pj_name: "🔄 Cập nhật",
+    pj_naming_rule: "📐 Quy chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]",
+    pj_name_readonly_hint: "ℹ️ Tên dự án được sinh tự động theo chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]",
+    pj_select_code_hint: "-- Chọn dự án từ Danh mục tiêu chuẩn --",
+    pj_name_updated_toast: "Đã cập nhật tên và mô tả dự án theo chuẩn!",
+    pj_desc_hint: "(Tự động lấy từ Ghi chú bổ sung trong danh mục tiêu chuẩn)",
+    pj_desc_readonly_hint: "(Chế độ chỉ xem - Liên kết từ Danh mục tiêu chuẩn)",
+    pj_select_taxonomy_warn: "Vui lòng chọn dự án từ Danh mục tiêu chuẩn trước khi cập nhật",
+    tax_prefix_badge: "Ký tự phân loại chuẩn",
+    tax_prefix_none: "[CHƯA GÁN MÃ]",
+    nav_timesheet: "Quản lý thời gian",
+    page_timesheet_t: "Quản Lý Thời Gian",
+    page_timesheet_s: "Ghi nhận và kiểm soát thời gian làm việc chi tiết 30 phút",
+    ts_date: "Ngày làm việc",
+    ts_today: "Hôm nay",
+    ts_yesterday: "Hôm qua",
+    ts_prev_day: "◀ Ngày trước",
+    ts_next_day: "Ngày sau ▶",
+    ts_staff_code: "Nhân viên",
+    ts_staff_rank: "Cấp bậc",
+    ts_sheet_link: "Google Sheet cá nhân",
+    ts_sheet_open: "Mở Sheet lưu trữ ↗",
+    ts_sheet_none: "Chưa cấu hình Sheet",
+    ts_col_time: "Khung Giờ",
+    ts_col_project: "Mã Dự Án",
+    ts_col_category: "Mã Category",
+    ts_col_phase: "Phase",
+    ts_col_discipline: "Mã Công Việc",
+    ts_col_note: "Ghi Chú Công Việc",
+    ts_col_actions: "Thao tác",
+    ts_lunch_break: "☕ NGHỈ TRƯA (12:00 - 13:00) — Không tính giờ làm việc",
+    ts_morning_ot: "🌅 TĂNG CA SÁNG (06:00 - 08:00)",
+    ts_evening_ot: "🌙 TĂNG CA TỐI (17:00 - 22:00)",
+    ts_toggle_ot: "Mở rộng tăng ca",
+    ts_btn_save: "💾 Lưu thời gian",
+    ts_btn_saving: "⏳ Đang lưu...",
+    ts_btn_reload: "🔄 Tải lại",
+    ts_btn_edit_mode: "✏️ Bật Chế Độ Chỉnh Sửa",
+    ts_btn_overwrite: "🔄 Cập Nhật & Ghi Đè (Overwrite)",
+    ts_btn_cancel_edit: "❌ Hủy chỉnh sửa",
+    ts_existing_data_warning: "⚠️ Ngày này đã có dữ liệu lưu trữ. Nút Lưu đã bị khóa để bảo vệ dữ liệu. Vui lòng bấm 'Bật Chế Độ Chỉnh Sửa' nếu muốn ghi đè.",
+    ts_edit_mode_active: "🔔 Chế độ chỉnh sửa đang BẬT. Khi nhấn 'Cập Nhật & Ghi Đè', dữ liệu ngày này trên Google Sheet sẽ được thay thế hoàn toàn.",
+    ts_copy_down: "Sao chép xuống dòng dưới",
+    ts_copy_yesterday: "📋 Sao chép từ Hôm Qua",
+    ts_fill_morning: "☀️ Áp dụng cho cả buổi sáng",
+    ts_fill_afternoon: "🌤️ Áp dụng cho cả buổi chiều",
+    ts_clear_all: "🧹 Xóa trắng",
+    ts_confirm_overwrite_title: "Xác nhận ghi đè dữ liệu",
+    ts_confirm_overwrite_msg: "Ngày {date} đã có {count} bản ghi trên Google Sheet của bạn. Bạn có chắc chắn muốn ghi đè toàn bộ dữ liệu ngày này?",
+    ts_stat_official: "Giờ chính thức",
+    ts_stat_ot: "Giờ tăng ca",
+    ts_stat_total: "Tổng cộng",
+    ts_stat_slots: "Khung giờ đã nhập",
+    ts_subtab_entry: "Nhập Giờ Chi Tiết (30 Phút)",
+    ts_subtab_project: "Báo Cáo Thực Tế Dự Án",
+    ts_subtab_staff: "Bóc Tách Theo Nhân Viên",
+    ts_subtab_matrix: "Ma Trận Đối Chiếu Hàng Loạt",
+    ts_lbl_select_pj: "Dự án:",
+    ts_lbl_scope: "Phạm vi:",
+    ts_scope_all: "🌐 Toàn bộ vòng đời (3 - 5 năm)",
+    ts_scope_current: "📅 Chỉ năm hiện hành (Real-time)",
+    ts_scope_custom: "📆 Khoảng ngày tùy chọn...",
+    ts_btn_export_jp: "Xuất File Nghiệm Thu (Format Nhật)",
+    ts_tbl_staff_contrib: "👥 Đóng Góp Theo Nhân Sự",
+    ts_tbl_disc_breakdown: "📐 Phân Bổ Theo Tác Nghiệp (Discipline)",
+    ts_btn_reload: "🔄 Tải lại",
+    ts_btn_filter: "Lọc",
+    ts_opt_select_pj: "-- Chọn dự án cần xem --",
+    ts_kpi_lifetime_hours: "Tổng Giờ Vòng Đời (Lifetime)",
+    ts_kpi_actual_hours: "Tổng Giờ Thực Làm",
+    ts_kpi_lifetime_sub: "Gồm cả năm cũ đã chốt sổ",
+    ts_kpi_scope_sub: "Phạm vi đã chọn",
+    ts_kpi_current_year: "Năm Hiện Hành ({year})",
+    ts_kpi_standard_hours: "Giờ tiêu chuẩn: {hours}h",
+    ts_kpi_ot: "Tăng Ca (OT)",
+    ts_kpi_ot_rate: "Tỷ lệ OT: {rate}%",
+    ts_kpi_engineers: "Kỹ Sư Tham Gia",
+    ts_kpi_engineers_sub: "Số nhân sự có đóng góp",
+    ts_budget_control: "🎯 Kiểm Soát Ngân Sách Giờ Công:",
+    ts_budget_plan: "Dự toán:",
+    ts_budget_actual: "Thực tế:",
+    ts_budget_used: "ĐÃ DÙNG {pct}%",
+    ts_budget_over: "VƯỢT BUDGET +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 Lũy Kế Snapshot Các Niên Độ Quá Khứ (Đã Chốt Sổ):",
+    ts_historical_year: "Năm {year}:",
+    ts_historical_closed: "Đã chốt sổ",
+    ts_historical_running: "Đang chạy",
+    ts_col_staff_code: "Mã NV",
+    ts_col_staff_name: "Họ Tên",
+    ts_col_hours: "Số Giờ",
+    ts_col_ratio: "Tỷ Trọng",
+    ts_col_disc_code: "Mã",
+    ts_col_disc_name: "Tên Tác Nghiệp",
+    ts_count_engineers: "{count} kỹ sư",
+    ts_count_disciplines: "{count} tác nghiệp",
+    ts_empty_project_data: "Không có dữ liệu thời gian cho dự án này",
+    ts_empty_disc_data: "Không có dữ liệu tác nghiệp",
+    ts_select_project_hint: "Chọn dự án để xem dữ liệu",
+    ts_stf_select: "Nhân viên:",
+    ts_stf_from: "Từ ngày:",
+    ts_stf_to: "Đến ngày:",
+    ts_stf_btn_this_month: "Tháng này",
+    ts_stf_btn_last_month: "Tháng trước",
+    ts_stf_btn_all: "📅 Toàn bộ thời gian",
+    ts_stf_btn_view: "🔍 Xem Bóc Tách",
+    ts_stf_total_hours: "Tổng Giờ Làm:",
+    ts_stf_official_hours: "Giờ Chuẩn:",
+    ts_stf_ot_hours: "Tăng Ca (OT):",
+    ts_stf_active_days: "Số Ngày Làm:",
+    ts_stf_days_unit: "{count} ngày",
+    ts_stf_pjs_count: "Số Dự Án:",
+    ts_stf_pjs_unit: "{count} dự án",
+    ts_stf_tree_header: "🌳 Cây Bóc Tách Công Việc Của [{staff}]:",
+    ts_stf_empty_hint: "Vui lòng bấm [🔍 Xem Bóc Tách] để hiển thị cây công việc",
+    ts_stf_no_data: "Không phát sinh giờ làm việc trong khoảng thời gian này",
+    ts_no_note: "Không có ghi chú",
+    ts_mat_month: "Tháng đối chiếu:",
+    ts_mat_prev_month: "◀ Tháng trước",
+    ts_mat_next_month: "Tháng sau ▶",
+    ts_mat_all_months: "📅 Tất cả các tháng",
+    ts_mat_hide_zero: "Ẩn dự án 0 giờ (Hide Zero Columns)",
+    ts_mat_status_ready: "Sẵn sàng",
+    ts_mat_status_loading: "⏳ Đang tổng hợp ma trận...",
+    ts_mat_status_done: "✅ Đã tải xong",
+    ts_mat_status_all_done: "✅ Toàn bộ thời gian",
+    ts_mat_status_err: "❌ Lỗi tải",
+    ts_mat_hint: "Mẹo: Cuộn ngang/dọc tự do, cột Tên & dòng Tiêu đề luôn ghim cố định (Sticky Freeze). Click vào ô bất kỳ để mở Popup bóc tách chi tiết!",
+    ts_mat_loading: "Đang nạp ma trận...",
+    ts_mat_col_total: "TỔNG (h)",
+    ts_mat_grand_total: "TỔNG CỘNG",
+    ts_mat_all_projects: "Toàn bộ dự án",
+    ts_mat_drilldown_title: "Chi Tiết Thời Gian: {staff} × {project}",
+    ts_mat_drilldown_sub: "Bóc tách tác nghiệp và nhật ký cho dự án [{project}]",
+    ts_mat_drilldown_default_title: "Chi Tiết Thời Gian Làm Việc",
+    ts_mat_drilldown_default_sub: "Bóc tách tác nghiệp và nhật ký theo từng slot",
+    ts_drill_col_date: "Ngày",
+    ts_drill_col_slot: "Khung Giờ",
+    ts_drill_col_hours: "Số Giờ",
+    ts_drill_col_type: "Loại Ca",
+    ts_drill_col_disc: "Tác Nghiệp",
+    ts_drill_col_note: "Ghi Chú Công Việc",
+    ts_drill_type_standard: "Chuẩn",
+    ts_drill_type_ot: "OT",
+    ts_drill_no_records: "Không có bản ghi chi tiết",
+    ts_placeholder_note: "Ghi chú công việc...",
+    ts_clear_row: "Xóa dòng",
+    ts_morning_ot: "TĂNG CA SÁNG",
+    ts_evening_ot: "TĂNG CA TỐI",
+    ts_lunch_break: "Nghỉ trưa",
+    ts_badge_hidden: "(Ẩn)",
+    ts_badge_shown: "(Hiện)",
+    ts_status_ready: "Đã sẵn sàng",
+    ts_copy_hint: "Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets",
+    tax_tab_emp: "5. Nhân viên",
+    tax_tab_matrix: "6. Ma trận phân quyền",
+    tax_create_sheet: "🪄 Tự động tạo Google Sheet cho nhân sự này",
+    tax_create_sheet_success: "Đã tạo bảng tính Google Sheet thành công!",
+    tax_col_perm: "Phân quyền",
+    tax_perm_level1: "Cấp 1 - Quản trị viên (Admin)",
+    tax_perm_level2: "Cấp 2 - Trưởng bộ phận (Leader)",
+    tax_perm_level3: "Cấp 3 - Quản lý dự án (PJ Lead)",
+    tax_perm_level4: "Cấp 4 - Thành viên (Member)",
+    matrix_title: "Ma trận phân quyền hệ thống",
+    matrix_subtitle: "Cấu hình trực tiếp mức quyền chi tiết cho từng vai trò trên từng phân hệ",
+    matrix_btn_save: "💾 Lưu ma trận phân quyền",
+    matrix_btn_reset: "↺ Khôi phục mặc định",
+    matrix_badge_custom: "⚙️ Đang áp dụng: Cấu hình tùy biến",
+    matrix_badge_default: "🛡️ Đang áp dụng: Cấu hình chuẩn hệ thống",
+    matrix_col_module: "Phân hệ & Chức năng",
+    perm_full: "🟢 Toàn quyền",
+    perm_lead_scope: "🟡 Quản trị dự án Lead",
+    perm_view_all: "⚪ Xem toàn cảnh (Chỉ xem)",
+    perm_own: "🔵 Việc cá nhân",
+    perm_deny: "❌ Không có quyền (Ẩn)",
+    matrix_saved_success: "Đã lưu cấu hình ma trận phân quyền thành công!",
+    matrix_reset_confirm: "Bạn có chắc muốn khôi phục ma trận về thiết lập mặc định chuẩn?",
+    pj_badge_mylead: "👑 Tôi phụ trách",
+    pj_badge_viewonly: "👁️ Chế độ tham chiếu",
+    matrix_saving: "Đang lưu ma trận phân quyền...",
+    matrix_resetting: "Đang khôi phục ma trận về mặc định...",
+    matrix_admin_only_save: "Chỉ Admin mới có quyền lưu ma trận phân quyền",
+    matrix_admin_only_reset: "Chỉ Admin mới có quyền khôi phục ma trận phân quyền",
+  },
+
+  en: {
+    app_name: "Project Manager",
+    app_sub: "Smart Management",
+    nav_dashboard: "Dashboard",
+    nav_gantt: "Gantt Chart",
+    nav_projects: "Projects",
+    nav_tasks: "Tasks",
+    nav_users: "Users",
+    nav_log: "Activity Log",
+    logout: "Log out",
+    loading: "Loading...",
+    no_permission: "Access Denied",
+    contact_admin: "Please contact an Administrator for access",
+    
+    page_dashboard_t: "Dashboard",
+    page_dashboard_s: "Welcome back",
+    page_gantt_t: "Gantt Chart",
+    page_gantt_s: "Visual timeline & progress",
+    page_projects_t: "Projects",
+    page_projects_s: "Manage all projects",
+    page_tasks_t: "Tasks",
+    page_tasks_s: "Manage all tasks",
+    page_users_t: "Users",
+    page_users_s: "Permissions & team members",
+    page_log_t: "Activity Log",
+    page_log_s: "System history & audit trail",
+    filter_by_project: "Filter by project...",
+    filter_all_projects: "All Projects",
+    search_placeholder: "Search...",
+    create_new: "+ Create ▾",
+    add_project: "New Project",
+    add_task: "New Task",
+    add_user: "New User",
+    notifications: "Notifications",
+    mark_read: "Clear read",
+    reload: "Refresh",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "Set as my default",
+    set_sys_default: "System default",
+    modal_sys_lang: "⚙️ System Default Language Settings",
+    sys_lang_desc: "Choose the default language for the entire system. New users visiting for the first time will use this language unless they set a personal preference.",
+    sys_lang_select_lbl: "System Default Language",
+    
+    dash_card_total_projects: "TOTAL PROJECTS",
+    dash_card_total_tasks: "TOTAL TASKS",
+    dash_card_in_progress: "IN PROGRESS",
+    dash_card_overdue: "OVERDUE TASKS",
+    dash_stat_completed: "Completed",
+    dash_stat_rate: "Rate",
+    dash_stat_not_started: "Not started",
+    dash_stat_paused: "On hold",
+    dash_stat_active_users: "Active members",
+    dash_click_detail: "Click to view details",
+    dash_chart_status: "Status Distribution",
+    dash_chart_priority: "Priority Breakdown",
+    dash_chart_staff: "Staff Workload",
+    dash_chart_trend: "Completion Trend (15 days)",
+    dash_chart_progress: "Project Progress",
+    dash_chart_compare: "Planned vs Actual",
+    dash_recent_activity: "Recent Activity",
+    dash_urgent_tasks: "Urgent & Overdue Tasks",
+    dash_no_urgent: "No urgent tasks pending",
+    dash_no_act: "No recent activity",
+    
+    gantt_all_staff: "All staff",
+    gantt_today: "Today",
+    gantt_zoom_week: "Week",
+    gantt_zoom_month: "Month",
+    gantt_zoom_quarter: "Quarter",
+    
+    pj_list_title: "Project List",
+    pj_col_code: "Code",
+    pj_col_name: "Project Name",
+    pj_col_pm: "Manager (PM)",
+    pj_col_start: "Start Date",
+    pj_col_end: "End Date",
+    pj_col_progress: "Progress",
+    pj_col_status: "Status",
+    pj_col_actions: "Actions",
+    
+    tk_tab_kanban: "Kanban Board",
+    tk_tab_list: "List View",
+    tk_filter_staff: "Filter staff...",
+    tk_filter_priority: "Priority...",
+    tk_filter_status: "Status...",
+    tk_all_staff: "All staff",
+    tk_all_priorities: "All priorities",
+    tk_all_statuses: "All statuses",
+    tk_col_name: "Task Name",
+    tk_col_project: "Project",
+    tk_col_assignee: "Assignee",
+    tk_col_deadline: "Deadline",
+    tk_col_priority: "Priority",
+    tk_col_progress: "Progress",
+    tk_col_status: "Status",
+    
+    btn_save: "💾 Save",
+    btn_cancel: "Cancel",
+    btn_add: "+ Add",
+    btn_edit: "Edit",
+    btn_delete: "Delete",
+    btn_close: "Close",
+    btn_confirm: "Confirm",
+    btn_duplicate: "📋 Duplicate",
+    btn_bulk_add: "⚡ Bulk Add Tasks",
+    btn_single_add: "📝 Single Task",
+    btn_filter: "Filter",
+    btn_export: "Export",
+    
+    st_pending: "To Do",
+    st_in_progress: "In Progress",
+    st_review: "Under Review",
+    st_completed: "Completed",
+    st_paused: "On Hold",
+    st_cancelled: "Cancelled",
+    st_overdue: "Overdue",
+    st_planning: "Planning",
+    
+    pr_low: "Low",
+    pr_medium: "Medium",
+    pr_high: "High",
+    pr_urgent: "Urgent",
+    
+    role_admin: "Admin",
+    role_manager: "Manager",
+    role_member: "Member",
+    role_viewer: "Viewer",
+    
+    msg_lang_changed: "Language changed to English",
+    msg_default_saved: "English set as your default language",
+    msg_sys_default_saved: "System default language saved successfully",
+    msg_save_success: "Saved successfully!",
+    msg_delete_success: "Deleted successfully!",
+    msg_confirm_delete: "Are you sure you want to delete this? This action cannot be undone.",
+    msg_confirm_dup_pj: "Are you sure you want to duplicate this project?",
+
+    gantt_from: "From:",
+    gantt_to: "To:",
+    gantt_cb_flag: "🚩 Milestone",
+    gantt_cb_date: "📅 Due Date",
+    gantt_col_name: "Name",
+    gantt_task_unit: "tasks",
+    gantt_pj_deadline: "Proj Due",
+    btn_apply: "✔ Apply",
+    btn_reset: "↺ Reset",
+    btn_view: "View",
+    filter_all_statuses: "-- All Statuses --",
+    filter_status_placeholder: "-- Status --",
+    filter_priority_placeholder: "-- Priority --",
+    user_col_id: "Name / ID",
+    user_col_name: "Full Name",
+    user_col_role: "Role",
+    user_col_status: "Status",
+    user_col_created: "Created Date",
+    log_col_time: "Time",
+    log_col_email: "Email",
+    log_col_role: "Role",
+    log_col_action: "Action",
+    log_col_detail: "Details",
+    empty_no_users: "No users found",
+    desc: "Description",
+    note: "Notes",
+    manage_members: "⚙ Manage Members",
+    
+    nav_analytics: "Advanced Analytics",
+    page_analytics_t: "Advanced Analytics",
+    page_analytics_s: "Measure member performance & project participation",
+    an_filter_range: "📅 Time Range:",
+    an_from: "From:",
+    an_to: "To:",
+    dash_preset_all: "All",
+    dash_preset_today: "Today",
+    dash_preset_week: "This Week",
+    dash_preset_month: "This Month",
+    dash_preset_quarter: "This Quarter",
+    dash_preset_year: "This Year",
+    an_filter_project: "📁 Project:",
+    an_filter_member: "👤 Member:",
+    an_all_projects: "All Projects",
+    an_all_members: "👤 All Members",
+    an_kpi_active_members: "Active Members",
+    an_kpi_linked_projects: "Linked Projects",
+    an_kpi_total_tasks: "Total Tasks",
+    an_kpi_ontime_rate: "On-time Delivery Rate",
+    an_chart_workload: "📊 Workload & Progress by Member",
+    an_chart_radar: "🕸️ Multi-dimensional Contribution Radar",
+    an_chart_pj_share: "🍩 Project Participation Share",
+    an_chart_trend: "📈 Workload Distribution per Project",
+    an_tbl_title: "📋 Detailed Contribution & Project Breakdown",
+    an_tbl_member: "Member",
+    an_tbl_projects: "Participating Projects",
+    an_tbl_tasks: "Tasks",
+    an_tbl_done: "Done",
+    an_tbl_progress: "In Progress",
+    an_tbl_overdue: "Overdue",
+    an_tbl_rate: "Completion Rate",
+    an_tbl_ranking: "Rating",
+    an_search_member: "Search member...",
+    an_comparing_members: "Comparing: {n} members",
+    an_reset_tooltip: "Reset filters",
+    an_no_data: "No data in selected date range",
+    an_rank_excellent: "🏆 Excellent",
+    an_rank_good: "⭐ High Impact",
+    an_rank_steady: "Steady",
+    an_rank_support: "⚠️ Needs Support",
+    an_radar_workload: "Workload",
+    an_radar_completion: "Completion",
+    an_radar_ontime: "On-time",
+    an_radar_highpri: "High/Urgent",
+    an_radar_velocity: "Avg Progress",
+
+    nav_taxonomy: "Standard Taxonomy",
+    page_taxonomy_t: "Standard Taxonomy",
+    page_taxonomy_s: "Standardized codes and classifications",
+    tax_page_title: "📐 Master Taxonomy & Code Standards",
+    tax_tab_cat: "1. Category Master",
+    tax_tab_phase: "2. Project Phase",
+    tax_tab_disc: "3. Work Discipline",
+    tax_tab_pjcode: "4. Project Codes",
+    tax_col_code: "Short Code",
+    tax_col_name: "Classification Name",
+    tax_col_desc: "Full Name",
+    tax_col_fullname: "Full Name",
+    tax_col_extra: "Additional Notes",
+    tax_col_notes: "Additional Notes",
+    tax_btn_add: "+ Add Standard",
+    tax_btn_reload_sheet: "Load Defaults",
+    tax_btn_batch: "Standardize Tasks",
+    tax_reload_title: "Restore default taxonomy template",
+    tax_batch_title: "Scan and auto-prefix legacy tasks",
+    tax_srch_ph: "Search code, name, description...",
+    tax_code_hint: "2-5 uppercase letters",
+    disc_preview_badge: "Live preview:",
+    tax_lbl_cat: "Category",
+    tax_lbl_phase: "Project Phase",
+    tax_lbl_disc: "Work Discipline",
+    tax_modal_batch_ti: "⚡ Standardize Task Prefixes",
+    tax_modal_batch_sub: "Auto-detect keywords and assign [CATEGORY-PHASE-DISC] prefix to legacy tasks",
+    tax_item_saved: "Standard saved successfully!",
+    tax_item_deleted: "Standard deleted successfully!",
+    tax_batch_success: "Successfully standardized {n} tasks!",
+    pj_year_lbl: "Year",
+    pj_seq_lbl: "Seq No. (STT)",
+    pj_seq_hint: "e.g. 01, 02...",
+    tax_select_pj_code: "Select from Standard Project Codes",
+    tax_custom_pj_name: "-- Custom project content xxxxx --",
+    btn_update_pj_name: "🔄 Update",
+    pj_naming_rule: "📐 Standard: [Year]_[Seq]_[Short Code]_[Full Name]",
+    pj_name_readonly_hint: "ℹ️ Project name is auto-generated: [Year]_[Seq]_[Short Code]_[Full Name]",
+    pj_select_code_hint: "-- Select project from Standard Taxonomy --",
+    pj_name_updated_toast: "Project name and description updated to standard!",
+    pj_desc_hint: "(Auto-filled from Additional Notes in standard taxonomy)",
+    pj_desc_readonly_hint: "(Read-only - Linked from Standard Taxonomy)",
+    pj_select_taxonomy_warn: "Please select a project from standard taxonomy before updating",
+    tax_prefix_badge: "Standard Taxonomy Prefix",
+    tax_prefix_none: "[NO CODE ASSIGNED]",
+    nav_timesheet: "Timesheet",
+    page_timesheet_t: "Timesheet Management",
+    page_timesheet_s: "Detailed 30-minute block work time tracking & control",
+    ts_date: "Work Date",
+    ts_today: "Today",
+    ts_yesterday: "Yesterday",
+    ts_prev_day: "◀ Prev Day",
+    ts_next_day: "Next Day ▶",
+    ts_staff_code: "Employee",
+    ts_staff_rank: "Rank / Title",
+    ts_sheet_link: "Personal Google Sheet",
+    ts_sheet_open: "Open Google Sheet ↗",
+    ts_sheet_none: "No Sheet Configured",
+    ts_col_time: "Time Slot",
+    ts_col_project: "Project Code",
+    ts_col_category: "Category",
+    ts_col_phase: "Phase",
+    ts_col_discipline: "Discipline",
+    ts_col_note: "Task Notes",
+    ts_col_actions: "Actions",
+    ts_lunch_break: "☕ LUNCH BREAK (12:00 - 13:00) — Excluded from work hours",
+    ts_morning_ot: "🌅 MORNING OVERTIME (06:00 - 08:00)",
+    ts_evening_ot: "🌙 EVENING OVERTIME (17:00 - 22:00)",
+    ts_toggle_ot: "Toggle Overtime",
+    ts_btn_save: "💾 Save Timesheet",
+    ts_btn_saving: "⏳ Saving...",
+    ts_btn_reload: "🔄 Refresh",
+    ts_btn_edit_mode: "✏️ Enable Edit Mode",
+    ts_btn_overwrite: "🔄 Update & Overwrite",
+    ts_btn_cancel_edit: "❌ Cancel Edit",
+    ts_existing_data_warning: "⚠️ Data already exists for this date. Save is locked to protect data. Click 'Enable Edit Mode' to overwrite.",
+    ts_edit_mode_active: "🔔 Edit Mode is ON. Clicking 'Update & Overwrite' will completely replace this date's records on Google Sheet.",
+    ts_copy_down: "Copy to row below",
+    ts_copy_yesterday: "📋 Copy from Yesterday",
+    ts_fill_morning: "☀️ Fill Entire Morning",
+    ts_fill_afternoon: "🌤️ Fill Entire Afternoon",
+    ts_clear_all: "🧹 Clear All",
+    ts_confirm_overwrite_title: "Confirm Overwrite Data",
+    ts_confirm_overwrite_msg: "Date {date} already has {count} records in your Google Sheet. Are you sure you want to overwrite all records for this date?",
+    ts_stat_official: "Regular Hours",
+    ts_stat_ot: "Overtime Hours",
+    ts_stat_total: "Total Hours",
+    ts_stat_slots: "Slots Logged",
+    ts_subtab_entry: "Detailed Timesheet (30m)",
+    ts_subtab_project: "Project Actual Report",
+    ts_subtab_staff: "Staff Work Breakdown",
+    ts_subtab_matrix: "Batch Comparison Matrix",
+    ts_lbl_select_pj: "Project:",
+    ts_lbl_scope: "Scope:",
+    ts_scope_all: "🌐 Full Lifecycle (3 - 5 Years)",
+    ts_scope_current: "📅 Current Year Only (Real-time)",
+    ts_scope_custom: "📆 Custom Date Range...",
+    ts_btn_export_jp: "Export Acceptance File (JP Format)",
+    ts_tbl_staff_contrib: "👥 Staff Contribution",
+    ts_tbl_disc_breakdown: "📐 Discipline Breakdown",
+    ts_btn_reload: "🔄 Reload",
+    ts_btn_filter: "Filter",
+    ts_opt_select_pj: "-- Select Project --",
+    ts_kpi_lifetime_hours: "Lifetime Hours",
+    ts_kpi_actual_hours: "Total Actual Hours",
+    ts_kpi_lifetime_sub: "Including closed past years",
+    ts_kpi_scope_sub: "Selected range",
+    ts_kpi_current_year: "Current Year ({year})",
+    ts_kpi_standard_hours: "Standard hours: {hours}h",
+    ts_kpi_ot: "Overtime (OT)",
+    ts_kpi_ot_rate: "OT rate: {rate}%",
+    ts_kpi_engineers: "Engineers Involved",
+    ts_kpi_engineers_sub: "Contributors count",
+    ts_budget_control: "🎯 Work Budget Control:",
+    ts_budget_plan: "Budget:",
+    ts_budget_actual: "Actual:",
+    ts_budget_used: "USED {pct}%",
+    ts_budget_over: "OVER BUDGET +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 Historical Snapshot by Past Fiscal Years (Closed):",
+    ts_historical_year: "Year {year}:",
+    ts_historical_closed: "Closed",
+    ts_historical_running: "Running",
+    ts_col_staff_code: "Staff ID",
+    ts_col_staff_name: "Full Name",
+    ts_col_hours: "Hours",
+    ts_col_ratio: "Ratio",
+    ts_col_disc_code: "Code",
+    ts_col_disc_name: "Discipline Name",
+    ts_count_engineers: "{count} engineers",
+    ts_count_disciplines: "{count} disciplines",
+    ts_empty_project_data: "No timesheet data for this project",
+    ts_empty_disc_data: "No discipline data",
+    ts_select_project_hint: "Select a project to view data",
+    ts_stf_select: "Staff:",
+    ts_stf_from: "From:",
+    ts_stf_to: "To:",
+    ts_stf_btn_this_month: "This Month",
+    ts_stf_btn_last_month: "Last Month",
+    ts_stf_btn_all: "📅 All Time",
+    ts_stf_btn_view: "🔍 View Breakdown",
+    ts_stf_total_hours: "Total Hours:",
+    ts_stf_official_hours: "Standard Hours:",
+    ts_stf_ot_hours: "Overtime (OT):",
+    ts_stf_active_days: "Active Days:",
+    ts_stf_days_unit: "{count} days",
+    ts_stf_pjs_count: "Projects Count:",
+    ts_stf_pjs_unit: "{count} projects",
+    ts_stf_tree_header: "🌳 Work Breakdown Tree of [{staff}]:",
+    ts_stf_empty_hint: "Click [🔍 View Breakdown] to display tree",
+    ts_stf_no_data: "No logged hours in this period",
+    ts_no_note: "No note",
+    ts_mat_month: "Comparison Month:",
+    ts_mat_prev_month: "◀ Prev Month",
+    ts_mat_next_month: "Next Month ▶",
+    ts_mat_all_months: "📅 All Months",
+    ts_mat_hide_zero: "Hide 0h projects (Hide Zero Columns)",
+    ts_mat_status_ready: "Ready",
+    ts_mat_status_loading: "⏳ Calculating matrix...",
+    ts_mat_status_done: "✅ Loaded",
+    ts_mat_status_all_done: "✅ All Time Loaded",
+    ts_mat_status_err: "❌ Failed",
+    ts_mat_hint: "Tip: Scroll freely, Name & Headers are sticky frozen. Click any cell to inspect details!",
+    ts_mat_loading: "Loading matrix...",
+    ts_mat_col_total: "TOTAL (h)",
+    ts_mat_grand_total: "GRAND TOTAL",
+    ts_mat_all_projects: "All Projects",
+    ts_mat_drilldown_title: "Timesheet Detail: {staff} × {project}",
+    ts_mat_drilldown_sub: "Breakdown and work logs for project [{project}]",
+    ts_mat_drilldown_default_title: "Working Time Details",
+    ts_mat_drilldown_default_sub: "Slot-by-slot task and work log breakdown",
+    ts_drill_col_date: "Date",
+    ts_drill_col_slot: "Time Slot",
+    ts_drill_col_hours: "Hours",
+    ts_drill_col_type: "Type",
+    ts_drill_col_disc: "Discipline",
+    ts_drill_col_note: "Work Note",
+    ts_drill_type_standard: "Standard",
+    ts_drill_type_ot: "OT",
+    ts_drill_no_records: "No detailed records",
+    ts_placeholder_note: "Work note...",
+    ts_clear_row: "Clear row",
+    ts_morning_ot: "MORNING OVERTIME",
+    ts_evening_ot: "EVENING OVERTIME",
+    ts_lunch_break: "Lunch break",
+    ts_badge_hidden: "(Hidden)",
+    ts_badge_shown: "(Shown)",
+    ts_status_ready: "Ready",
+    ts_copy_hint: "Tip: Use Ctrl+C / Ctrl+V to copy rows or paste multiple lines from Excel/Google Sheets",
+    tax_tab_emp: "5. Employees",
+    tax_tab_matrix: "6. Permission Matrix",
+    tax_create_sheet: "🪄 Auto-generate Google Sheet for this staff",
+    tax_create_sheet_success: "Google Sheet created successfully!",
+    tax_col_perm: "Access Level",
+    tax_perm_level1: "Level 1 - Administrator (Admin)",
+    tax_perm_level2: "Level 2 - Department Leader (Leader)",
+    tax_perm_level3: "Level 3 - Project Lead (PJ Lead)",
+    tax_perm_level4: "Level 4 - Team Member (Member)",
+    matrix_title: "System Permission Matrix",
+    matrix_subtitle: "Configure granular permissions dynamically per role across all system modules",
+    matrix_btn_save: "💾 Save Permission Matrix",
+    matrix_btn_reset: "↺ Reset to Default",
+    matrix_badge_custom: "⚙️ Active: Custom Configuration",
+    matrix_badge_default: "🛡️ Active: Standard Default",
+    matrix_col_module: "Module & Action",
+    perm_full: "🟢 Full Access",
+    perm_lead_scope: "🟡 Lead Project Scope",
+    perm_view_all: "⚪ View All (Read Only)",
+    perm_own: "🔵 Own Items Only",
+    perm_deny: "❌ Denied (Hidden)",
+    matrix_saved_success: "Permission matrix saved successfully!",
+    matrix_reset_confirm: "Are you sure you want to reset the matrix to default settings?",
+    pj_badge_mylead: "👑 My Lead",
+    pj_badge_viewonly: "👁️ Reference View",
+    matrix_saving: "Saving permission matrix...",
+    matrix_resetting: "Resetting matrix to default...",
+    matrix_admin_only_save: "Only Admin can save the permission matrix",
+    matrix_admin_only_reset: "Only Admin can reset the permission matrix",
+  },
+
+  ja: {
+    app_name: "プロジェクト管理",
+    app_sub: "スマート管理システム",
+    nav_dashboard: "ダッシュボード",
+    nav_gantt: "ガントチャート",
+    nav_projects: "プロジェクト",
+    nav_tasks: "タスク一覧",
+    nav_users: "ユーザー管理",
+    nav_log: "操作ログ",
+    logout: "ログアウト",
+    loading: "読み込み中...",
+    no_permission: "アクセス権限がありません",
+    contact_admin: "システム管理者に権限を申請してください",
+    
+    page_dashboard_t: "ダッシュボード",
+    page_dashboard_s: "おかえりなさい",
+    page_gantt_t: "ガントチャート",
+    page_gantt_s: "視覚的な進捗・工程管理",
+    page_projects_t: "プロジェクト",
+    page_projects_s: "全プロジェクトの管理",
+    page_tasks_t: "タスク一覧",
+    page_tasks_s: "全タスクの進捗管理",
+    page_users_t: "ユーザー管理",
+    page_users_s: "権限およびメンバー管理",
+    page_log_t: "操作ログ",
+    page_log_s: "システムの操作履歴",
+    filter_by_project: "プロジェクトで絞り込み...",
+    filter_all_projects: "すべてのプロジェクト",
+    search_placeholder: "検索...",
+    create_new: "+ 新規作成 ▾",
+    add_project: "プロジェクト追加",
+    add_task: "タスク追加",
+    add_user: "メンバー追加",
+    notifications: "通知",
+    mark_read: "既読をクリア",
+    reload: "更新",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "既定言語に設定",
+    set_sys_default: "システム既定言語",
+    modal_sys_lang: "⚙️ システム既定言語設定",
+    sys_lang_desc: "システム全体の標準言語を選択します。個別設定がない新規ユーザーにこの言語が適用されます。",
+    sys_lang_select_lbl: "システム標準言語",
+    
+    dash_card_total_projects: "総プロジェクト数",
+    dash_card_total_tasks: "総タスク数",
+    dash_card_in_progress: "進行中のタスク",
+    dash_card_overdue: "期限超過タスク",
+    dash_stat_completed: "完了",
+    dash_stat_rate: "達成率",
+    dash_stat_not_started: "未着手",
+    dash_stat_paused: "保留",
+    dash_stat_active_users: "アクティブ担当者",
+    dash_click_detail: "クリックして詳細を表示",
+    dash_chart_status: "ステータス別分布",
+    dash_chart_priority: "優先度別タスク",
+    dash_chart_staff: "担当者別タスク",
+    dash_chart_trend: "完了推移 (過去15日間)",
+    dash_chart_progress: "プロジェクト進捗率",
+    dash_chart_compare: "計画と実績の比較",
+    dash_recent_activity: "最近のアクティビティ",
+    dash_urgent_tasks: "緊急・期限切れタスク",
+    dash_no_urgent: "現在、至急対応のタスクはありません",
+    dash_no_act: "最近のアクティビティはありません",
+    
+    gantt_all_staff: "全担当者",
+    gantt_today: "今日",
+    gantt_zoom_week: "週表示",
+    gantt_zoom_month: "月表示",
+    gantt_zoom_quarter: "四半期表示",
+    
+    pj_list_title: "プロジェクト一覧",
+    pj_col_code: "コード",
+    pj_col_name: "プロジェクト名",
+    pj_col_pm: "管理者 (PM)",
+    pj_col_start: "開始日",
+    pj_col_end: "完了予定日",
+    pj_col_progress: "進捗率",
+    pj_col_status: "状態",
+    pj_col_actions: "操作",
+    
+    tk_tab_kanban: "カンバン形式",
+    tk_tab_list: "リスト形式",
+    tk_filter_staff: "担当者で絞り込み...",
+    tk_filter_priority: "優先度...",
+    tk_filter_status: "状態...",
+    tk_all_staff: "全担当者",
+    tk_all_priorities: "すべての優先度",
+    tk_all_statuses: "すべての状態",
+    tk_col_name: "タスク名",
+    tk_col_project: "プロジェクト",
+    tk_col_assignee: "担当者",
+    tk_col_deadline: "期限",
+    tk_col_priority: "優先度",
+    tk_col_progress: "進捗",
+    tk_col_status: "状態",
+    
+    btn_save: "💾 保存",
+    btn_cancel: "キャンセル",
+    btn_add: "+ 追加",
+    btn_edit: "編集",
+    btn_delete: "削除",
+    btn_close: "閉じる",
+    btn_confirm: "確認",
+    btn_duplicate: "📋 複製する",
+    btn_bulk_add: "⚡ タスク一括追加",
+    btn_single_add: "📝 個別タスク追加",
+    btn_filter: "フィルター",
+    btn_export: "エクスポート",
+    
+    st_pending: "未着手",
+    st_in_progress: "進行中",
+    st_review: "確認待ち",
+    st_completed: "完了",
+    st_paused: "保留",
+    st_cancelled: "中止",
+    st_overdue: "期限超過",
+    st_planning: "計画中",
+    
+    pr_low: "低",
+    pr_medium: "中",
+    pr_high: "高",
+    pr_urgent: "至急",
+    
+    role_admin: "管理者 (Admin)",
+    role_manager: "責任者 (Manager)",
+    role_member: "担当者 (Member)",
+    role_viewer: "閲覧者 (Viewer)",
+    
+    msg_lang_changed: "言語を日本語に変更しました",
+    msg_default_saved: "日本語を既定言語に設定しました",
+    msg_sys_default_saved: "システム既定言語を正常に保存しました",
+    msg_save_success: "正常に保存されました！",
+    msg_delete_success: "正常に削除されました！",
+    msg_confirm_delete: "本当に削除しますか？この操作は取り消せません。",
+    msg_confirm_dup_pj: "このプロジェクトを複製してもよろしいですか？",
+
+    gantt_from: "開始:",
+    gantt_to: "終了:",
+    gantt_cb_flag: "🚩 マイルストーン",
+    gantt_cb_date: "📅 期限日",
+    gantt_col_name: "名前",
+    gantt_task_unit: "件",
+    gantt_pj_deadline: "PJ期限",
+    btn_apply: "✔ 適用",
+    btn_reset: "↺ リセット",
+    btn_view: "表示",
+    filter_all_statuses: "-- すべてのステータス --",
+    filter_status_placeholder: "-- 状態 --",
+    filter_priority_placeholder: "-- 優先度 --",
+    user_col_id: "名前 / ID",
+    user_col_name: "氏名",
+    user_col_role: "権限",
+    user_col_status: "状態",
+    user_col_created: "作成日",
+    log_col_time: "日時",
+    log_col_email: "メール",
+    log_col_role: "権限",
+    log_col_action: "操作",
+    log_col_detail: "詳細",
+    empty_no_users: "登録されたユーザーはいません",
+    desc: "説明",
+    note: "備考",
+    manage_members: "⚙ メンバー管理",
+    
+    nav_analytics: "高度な分析",
+    page_analytics_t: "高度な分析",
+    page_analytics_s: "メンバーの貢献度とプロジェクト参加状況の分析",
+    an_filter_range: "📅 期間指定:",
+    an_from: "開始:",
+    an_to: "終了:",
+    dash_preset_all: "すべて",
+    dash_preset_today: "今日",
+    dash_preset_week: "今週",
+    dash_preset_month: "今月",
+    dash_preset_quarter: "今四半期",
+    dash_preset_year: "今年",
+    an_filter_project: "📁 プロジェクト:",
+    an_filter_member: "👤 メンバー:",
+    an_all_projects: "すべてのプロジェクト",
+    an_all_members: "👤 すべてのメンバー",
+    an_kpi_active_members: "稼働メンバー",
+    an_kpi_linked_projects: "関連プロジェクト",
+    an_kpi_total_tasks: "総タスク数",
+    an_kpi_ontime_rate: "期日遵守率",
+    an_chart_workload: "📊 メンバー別の業務量と進捗",
+    an_chart_radar: "🕸️ 多角的貢献度レーダー",
+    an_chart_pj_share: "🍩 プロジェクト参加比率",
+    an_chart_trend: "📈 プロジェクト別の業務配分",
+    an_tbl_title: "📋 貢献度およびプロジェクト参加の詳細一覧",
+    an_tbl_member: "メンバー",
+    an_tbl_projects: "参加プロジェクト",
+    an_tbl_tasks: "タスク数",
+    an_tbl_done: "完了",
+    an_tbl_progress: "進行中",
+    an_tbl_overdue: "遅延",
+    an_tbl_rate: "完了率",
+    an_tbl_ranking: "評価",
+    an_search_member: "メンバー検索...",
+    an_comparing_members: "比較中: {n} 名",
+    an_reset_tooltip: "フィルターをリセット",
+    an_no_data: "指定された期間のデータがありません",
+    an_rank_excellent: "🏆 優秀",
+    an_rank_good: "⭐ 積極的",
+    an_rank_steady: "安定",
+    an_rank_support: "⚠️ 要支援",
+    an_radar_workload: "業務量",
+    an_radar_completion: "完了率",
+    an_radar_ontime: "期日遵守",
+    an_radar_highpri: "高難度/至急",
+    an_radar_velocity: "平均進捗",
+
+    nav_taxonomy: "基準管理",
+    page_taxonomy_t: "基準管理・区分設定",
+    page_taxonomy_s: "標準コード・工種区分の一元管理",
+    tax_page_title: "📐 標準コード・工種区分マスター",
+    tax_tab_cat: "1. 大分類（Category）",
+    tax_tab_phase: "2. 業務フェーズ（Phase）",
+    tax_tab_disc: "3. 工種・詳細（Discipline）",
+    tax_tab_pjcode: "4. プロジェクトコード",
+    tax_col_code: "略称コード",
+    tax_col_name: "区分・名称",
+    tax_col_desc: "正式名称",
+    tax_col_fullname: "正式名称",
+    tax_col_extra: "補足メモ",
+    tax_col_notes: "補足メモ",
+    tax_btn_add: "+ 基準を追加",
+    tax_btn_reload_sheet: "標準読込",
+    tax_btn_batch: "既存タスク標準化",
+    tax_reload_title: "システムの標準テンプレートを復元",
+    tax_batch_title: "既存タスクをスキャンしてプレフィックスを付与",
+    tax_srch_ph: "コード、名称、説明で検索...",
+    tax_code_hint: "英大文字2〜5文字",
+    disc_preview_badge: "表示プレビュー:",
+    tax_lbl_cat: "大分類（Category）",
+    tax_lbl_phase: "フェーズ（Phase）",
+    tax_lbl_disc: "工種・専門（Discipline）",
+    tax_modal_batch_ti: "⚡ 既存タスクのコード標準化",
+    tax_modal_batch_sub: "キーワードを自動認識し [CATEGORY-PHASE-DISC] プレフィックスを付与します",
+    tax_item_saved: "基準マスターを保存しました！",
+    tax_item_deleted: "基準マスターを削除しました！",
+    tax_batch_success: "{n} 件のタスクを標準化しました！",
+    pj_year_lbl: "年度",
+    pj_seq_lbl: "連番 (No.)",
+    pj_seq_hint: "例: 01, 02...",
+    tax_select_pj_code: "標準プロジェクトコードから選択",
+    tax_custom_pj_name: "-- 自由入力（コード外）xxxxx --",
+    btn_update_pj_name: "🔄 反映・更新",
+    pj_naming_rule: "📐 命名規則: [年]_[連番]_[略称コード]_[正式名称]",
+    pj_name_readonly_hint: "ℹ️ プロジェクト名は標準規約に従い自動生成されます: [年]_[連番]_[略称コード]_[正式名称]",
+    pj_select_code_hint: "-- 基準マスタからプロジェクトを選択 --",
+    pj_name_updated_toast: "プロジェクト名と説明を標準形式に更新しました！",
+    pj_desc_hint: "(基準マスタの補足メモから自動取得)",
+    pj_desc_readonly_hint: "(閲覧のみ - 基準マスタと連携)",
+    pj_select_taxonomy_warn: "反映する前に基準マスタからプロジェクトを選択してください",
+    tax_prefix_badge: "標準分類プレフィックス",
+    tax_prefix_none: "[コード未設定]",
+    nav_timesheet: "工数・勤務管理",
+    page_timesheet_t: "工数・勤務時間管理",
+    page_timesheet_s: "30分単位での詳細な業務実績・工数入力",
+    ts_date: "勤務日",
+    ts_today: "今日",
+    ts_yesterday: "昨日",
+    ts_prev_day: "◀ 前日",
+    ts_next_day: "翌日 ▶",
+    ts_staff_code: "社員番号・氏名",
+    ts_staff_rank: "等級・役職",
+    ts_sheet_link: "個人用Googleスプレッドシート",
+    ts_sheet_open: "シートを開く ↗",
+    ts_sheet_none: "シート未設定",
+    ts_col_time: "時間帯",
+    ts_col_project: "案件コード",
+    ts_col_category: "大分類コード",
+    ts_col_phase: "フェーズ",
+    ts_col_discipline: "作業詳細コード",
+    ts_col_note: "作業メモ・備考",
+    ts_col_actions: "操作",
+    ts_lunch_break: "☕ 昼休憩 (12:00 - 13:00) — 勤務時間外",
+    ts_morning_ot: "🌅 早朝残業 (06:00 - 08:00)",
+    ts_evening_ot: "🌙 夜間残業 (17:00 - 22:00)",
+    ts_toggle_ot: "残業枠を表示/非表示",
+    ts_btn_save: "💾 工数を保存",
+    ts_btn_saving: "⏳ 保存中...",
+    ts_btn_reload: "🔄 再読込",
+    ts_btn_edit_mode: "✏️ 編集モードを有効化",
+    ts_btn_overwrite: "🔄 更新・上書き保存 (Overwrite)",
+    ts_btn_cancel_edit: "❌ 編集キャンセル",
+    ts_existing_data_warning: "⚠️ この日のデータは保存済みです。誤操作防止のため保存ボタンはロックされています。上書きする場合は「編集モードを有効化」してください。",
+    ts_edit_mode_active: "🔔 編集モード有効中。「更新・上書き保存」を実行するとGoogleシート上のデータが完全に置換されます。",
+    ts_copy_down: "下の行にコピー",
+    ts_copy_yesterday: "📋 前日データから複写",
+    ts_fill_morning: "☀️ 午前の全枠に適用",
+    ts_fill_afternoon: "🌤️ 午後の全枠に適用",
+    ts_clear_all: "🧹 全てクリア",
+    ts_confirm_overwrite_title: "データ上書きの確認",
+    ts_confirm_overwrite_msg: "{date} にはすでに {count} 件の記録があります。この日のデータを完全に上書きしてよろしいですか？",
+    ts_stat_official: "定時勤務",
+    ts_stat_ot: "残業時間",
+    ts_stat_total: "合計時間",
+    ts_stat_slots: "入力済み枠数",
+    ts_subtab_entry: "詳細工数入力 (30分)",
+    ts_subtab_project: "プロジェクト別実績報告",
+    ts_subtab_staff: "担当者別詳細分析",
+    ts_subtab_matrix: "一括突合マトリクス",
+    ts_lbl_select_pj: "プロジェクト:",
+    ts_lbl_scope: "集計範囲:",
+    ts_scope_all: "🌐 全期間 (3〜5年)",
+    ts_scope_current: "📅 当該年のみ (リアルタイム)",
+    ts_scope_custom: "📆 期間指定...",
+    ts_btn_export_jp: "検収ファイル出力 (日本形式)",
+    ts_tbl_staff_contrib: "👥 担当者別稼働工数",
+    ts_tbl_disc_breakdown: "📐 業務・作業別工数配分",
+    ts_btn_reload: "🔄 再読み込み",
+    ts_btn_filter: "絞り込み",
+    ts_opt_select_pj: "-- プロジェクトを選択 --",
+    ts_kpi_lifetime_hours: "累計総工数 (全期間)",
+    ts_kpi_actual_hours: "実績総工数",
+    ts_kpi_lifetime_sub: "過去年度締め切り分を含む",
+    ts_kpi_scope_sub: "指定された集計範囲",
+    ts_kpi_current_year: "当該年度 ({year})",
+    ts_kpi_standard_hours: "定時時間: {hours}h",
+    ts_kpi_ot: "残業時間 (OT)",
+    ts_kpi_ot_rate: "残業比率: {rate}%",
+    ts_kpi_engineers: "参加エンジニア",
+    ts_kpi_engineers_sub: "稼働スタッフ数",
+    ts_budget_control: "🎯 工数予算管理:",
+    ts_budget_plan: "予算:",
+    ts_budget_actual: "実績:",
+    ts_budget_used: "消化率 {pct}%",
+    ts_budget_over: "予算超過 +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 過去年度確定スナップショット (決算済み):",
+    ts_historical_year: "{year}年度:",
+    ts_historical_closed: "締め切り済み",
+    ts_historical_running: "進行中",
+    ts_col_staff_code: "社員番号",
+    ts_col_staff_name: "氏名",
+    ts_col_hours: "工数 (h)",
+    ts_col_ratio: "構成比",
+    ts_col_disc_code: "コード",
+    ts_col_disc_name: "業務項目名",
+    ts_count_engineers: "{count} 名",
+    ts_count_disciplines: "{count} 業務項目",
+    ts_empty_project_data: "このプロジェクトの工数データはありません",
+    ts_empty_disc_data: "業務項目データはありません",
+    ts_select_project_hint: "プロジェクトを選択してください",
+    ts_stf_select: "担当者:",
+    ts_stf_from: "開始日:",
+    ts_stf_to: "終了日:",
+    ts_stf_btn_this_month: "今月",
+    ts_stf_btn_last_month: "先月",
+    ts_stf_btn_all: "📅 全期間",
+    ts_stf_btn_view: "🔍 詳細分析表示",
+    ts_stf_total_hours: "総稼働時間:",
+    ts_stf_official_hours: "定時時間:",
+    ts_stf_ot_hours: "残業時間 (OT):",
+    ts_stf_active_days: "稼働日数:",
+    ts_stf_days_unit: "{count} 日",
+    ts_stf_pjs_count: "対象プロジェクト:",
+    ts_stf_pjs_unit: "{count} 件",
+    ts_stf_tree_header: "🌳 業務ブレークダウン [{staff}]:",
+    ts_stf_empty_hint: "「🔍 詳細分析表示」をクリックして業務ツリーを展開してください",
+    ts_stf_no_data: "指定期間内に稼働実績はありません",
+    ts_no_note: "メモなし",
+    ts_mat_month: "対象月:",
+    ts_mat_prev_month: "◀ 前月",
+    ts_mat_next_month: "翌月 ▶",
+    ts_mat_all_months: "📅 全月表示",
+    ts_mat_hide_zero: "0時間プロジェクトを非表示",
+    ts_mat_status_ready: "準備完了",
+    ts_mat_status_loading: "⏳ マトリクス集計中...",
+    ts_mat_status_done: "✅ 読み込み完了",
+    ts_mat_status_all_done: "✅ 全期間表示完了",
+    ts_mat_status_err: "❌ 読み込み失敗",
+    ts_mat_hint: "ヒント: 縦横スクロール可能、社員名とヘッダーは固定表示。任意のセルをクリックすると詳細内訳が開きます。",
+    ts_mat_loading: "マトリクスを読み込み中...",
+    ts_mat_col_total: "合計 (h)",
+    ts_mat_grand_total: "総合計",
+    ts_mat_all_projects: "全プロジェクト",
+    ts_mat_drilldown_title: "工数詳細内訳: {staff} × {project}",
+    ts_mat_drilldown_sub: "案件 [{project}] の作業項目・ログ詳細",
+    ts_mat_drilldown_default_title: "勤務工数詳細",
+    ts_mat_drilldown_default_sub: "枠ごとの作業項目および業務ログ詳細",
+    ts_drill_col_date: "日付",
+    ts_drill_col_slot: "時間枠",
+    ts_drill_col_hours: "工数 (h)",
+    ts_drill_col_type: "区分",
+    ts_drill_col_disc: "業務項目",
+    ts_drill_col_note: "業務内容・メモ",
+    ts_drill_type_standard: "定時",
+    ts_drill_type_ot: "残業",
+    ts_drill_no_records: "詳細レコードはありません",
+    ts_placeholder_note: "業務内容・メモ...",
+    ts_clear_row: "行をクリア",
+    ts_morning_ot: "早朝残業",
+    ts_evening_ot: "夜間残業",
+    ts_lunch_break: "昼休憩",
+    ts_badge_hidden: "(非表示)",
+    ts_badge_shown: "(表示中)",
+    ts_status_ready: "準備完了",
+    ts_copy_hint: "ヒント: Ctrl+C / Ctrl+V で行コピーまたはExcel/Googleスプレッドシートから複数行貼り付け可能",
+    tax_tab_emp: "5. 社員・スタッフ",
+    tax_tab_matrix: "6. 権限マトリクス",
+    tax_create_sheet: "🪄 この社員用スプレッドシートを自動作成",
+    tax_create_sheet_success: "Googleスプレッドシートを正常に作成しました！",
+    tax_col_perm: "権限区分",
+    tax_perm_level1: "第1階層 - システム管理者 (Admin)",
+    tax_perm_level2: "第2階層 - 部門リーダー (Leader)",
+    tax_perm_level3: "第3階層 - PJリーダー (PJ Lead)",
+    tax_perm_level4: "第4階層 - 一般メンバー (Member)",
+    matrix_title: "システム権限マトリクス",
+    matrix_subtitle: "各業務モジュールにおけるロール別の詳細な操作権限を設定",
+    matrix_btn_save: "💾 権限マトリクスを保存",
+    matrix_btn_reset: "↺ デフォルトに戻す",
+    matrix_badge_custom: "⚙️ 適用中: カスタム設定",
+    matrix_badge_default: "🛡️ 適用中: 標準デフォルト設定",
+    matrix_col_module: "機能・操作区分",
+    perm_full: "🟢 フル権限",
+    perm_lead_scope: "🟡 担当PJ管理",
+    perm_view_all: "⚪ 全体参照のみ",
+    perm_own: "🔵 自身の業務のみ",
+    perm_deny: "❌ 権限なし (非表示)",
+    matrix_saved_success: "権限マトリクスが正常に保存されました！",
+    matrix_reset_confirm: "権限マトリクスをデフォルト設定に初期化しますか？",
+    pj_badge_mylead: "👑 担当案件",
+    pj_badge_viewonly: "👁️ 参照のみ",
+    matrix_saving: "権限マトリクスを保存中...",
+    matrix_resetting: "マトリクスをデフォルトに初期化中...",
+    matrix_admin_only_save: "システム管理者のみが権限マトリクスを保存できます",
+    matrix_admin_only_reset: "システム管理者のみが権限マトリクスを初期化できます",
+  }
+};
+
+const STATUS_I18N = {
+  "Chờ thực hiện": { vi: "Chờ thực hiện", en: "To Do", ja: "未着手" },
+  "Đang thực hiện": { vi: "Đang thực hiện", en: "In Progress", ja: "進行中" },
+  "Đang tiến hành": { vi: "Đang tiến hành", en: "In Progress", ja: "進行中" },
+  "Chờ duyệt": { vi: "Chờ duyệt", en: "Under Review", ja: "確認待ち" },
+  "Hoàn thành": { vi: "Hoàn thành", en: "Completed", ja: "完了" },
+  "Tạm dừng": { vi: "Tạm dừng", en: "On Hold", ja: "保留" },
+  "Hủy": { vi: "Hủy", en: "Cancelled", ja: "中止" },
+  "Quá hạn": { vi: "Quá hạn", en: "Overdue", ja: "期限超過" },
+  "Lên kế hoạch": { vi: "Lên kế hoạch", en: "Planning", ja: "計画中" }
+};
+
+const PRIORITY_I18N = {
+  "Thấp": { vi: "Thấp", en: "Low", ja: "低" },
+  "Trung bình": { vi: "Trung bình", en: "Medium", ja: "中" },
+  "Cao": { vi: "Cao", en: "High", ja: "高" },
+  "Khẩn cấp": { vi: "Khẩn cấp", en: "Urgent", ja: "至急" }
+};
+
+const ROLE_I18N = {
+  "Admin":   { vi: "Quản trị viên (Cấp 1)", en: "Administrator (Level 1)", ja: "システム管理者 (第1階層)" },
+  "Leader":  { vi: "Trưởng bộ phận (Cấp 2)", en: "Department Leader (Level 2)", ja: "部門リーダー (第2階層)" },
+  "PJ_Lead": { vi: "Quản lý dự án (Cấp 3)", en: "Project Lead (Level 3)", ja: "PJリーダー (第3階層)" },
+  "Manager": { vi: "Quản lý dự án (Cấp 3)", en: "Project Lead (Level 3)", ja: "PJリーダー (第3階層)" },
+  "Member":  { vi: "Thành viên (Cấp 4)", en: "Team Member (Level 4)", ja: "一般メンバー (第4階層)" },
+  "Viewer":  { vi: "Người xem", en: "Viewer", ja: "閲覧者" },
+  "Level2":  { vi: "Thành viên (Cấp 4)", en: "Team Member (Level 4)", ja: "一般メンバー (第4階層)" }
+};
+
+function t(key, params) {
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  const dict = I18N[lang] || I18N['vi'];
+  let val = dict[key] || I18N['vi'][key] || key;
+  if (params && typeof params === 'object') {
+    Object.keys(params).forEach(k => {
+      val = val.replace(new RegExp(`{${k}}`, 'g'), params[k]);
+    });
+  }
+  return val;
+}
+
+function tStatus(status) {
+  if (!status) return "";
+  const item = STATUS_I18N[status];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return status;
+  return item[lang] || item['vi'] || status;
+}
+
+function tPriority(priority) {
+  if (!priority) return "";
+  const item = PRIORITY_I18N[priority];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return priority;
+  return item[lang] || item['vi'] || priority;
+}
+
+function tRole(role) {
+  if (!role) return "";
+  const item = ROLE_I18N[role];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return role;
+  return item[lang] || item['vi'] || role;
+}
+
+function tTaxonomy(item, lang) {
+  if (!item) return "";
+  const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
+  let text = "";
+  if (curLang === 'ja') text = item.name_jp || item.name_en || item.name_vi || item.name || item.code || "";
+  else if (curLang === 'en') text = item.name_en || item.name_vi || item.name_jp || item.name || item.code || "";
+  else text = item.name_vi || item.name_en || item.name || item.code || "";
+
+  // Tự động loại bỏ tiền tố mã bị lặp nếu có (VD: "PM01_..." hoặc "PM01 - ...")
+  if (text && item.code) {
+    const rx = new RegExp('^' + item.code + '[_\\-\\s:]+', 'i');
+    text = text.replace(rx, '').trim();
+  }
+  return text;
+}
+
+function formatDisplayDate(dStr) {
+  if (!dStr) return "";
+  try {
+    if (dStr instanceof Date) {
+      const y = dStr.getFullYear();
+      const m = String(dStr.getMonth() + 1).padStart(2, '0');
+      const d = String(dStr.getDate()).padStart(2, '0');
+      const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      return lang === 'ja' ? `${y}/${m}/${d}` : `${d}/${m}/${y}`;
+    }
+    const s = String(dStr).trim();
+    if (!s) return "";
+    const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+    if (lang === 'ja') {
+      if (s.includes('/')) {
+        const parts = s.split('/');
+        if (parts.length === 3 && parts[2].length === 4) {
+          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+      } else if (s.includes('-')) {
+        const parts = s.split('-');
+        if (parts.length === 3 && parts[0].length === 4) {
+          return `${parts[0]}/${parts[1]}/${parts[2].slice(0, 2)}`;
+        }
+      }
+    }
+    return s;
+  } catch(e) {
+    return String(dStr || "");
+  }
+}
+
+function setLanguage(lang, saveAsDefault) {
+  if (!['vi', 'en', 'ja'].includes(lang)) return;
+  S.lang = lang;
+  localStorage.setItem('pm_user_lang', lang);
+  
+  if (saveAsDefault) {
+    try { google.script.run.setUserLanguagePreference(lang); } catch(e) {}
+    toast(t('msg_default_saved'), 'success');
+  }
+  
+  applyTranslations();
+  updateLangDropdownUI();
+  
+  // Re-render current page title
+  const curPage = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
+  const [pt, ps] = PTITLES[curPage] || [curPage, ""];
+  const pgt = document.getElementById("pgt");
+  const pgs = document.getElementById("pgs");
+  if (pgt) pgt.textContent = t('page_' + curPage + '_t') || pt;
+  if (pgs) pgs.textContent = t('page_' + curPage + '_s') || ps;
+  
+  if (S.user) {
+    updateSbUser(S.user);
+  }
+  
+  // Re-render UI components
+  if (S.tasks && S.tasks.length) {
+    _refreshUI();
+  }
+  if (curPage === 'projects' && S.projects) {
+    renderPgPj(S.projects);
+  } else if (curPage === 'tasks' && S.tasks) {
+    loadPgTk();
+  } else if (curPage === 'gantt') {
+    loadGantt();
+  } else if (curPage === 'analytics') {
+    loadAnalytics();
+  } else if (curPage === 'taxonomy') {
+    if (typeof _activeTaxSubTab !== 'undefined' && _activeTaxSubTab === 'MATRIX') {
+      if (typeof renderPermissionMatrixTable === 'function') renderPermissionMatrixTable();
+    } else {
+      loadPgTaxonomy();
+    }
+  } else if (curPage === 'users') {
+    loadPgUsr();
+  } else if (curPage === 'log') {
+    loadPgLog();
+  } else if (curPage === 'timesheet') {
+    if (typeof _tsActiveSubTab !== 'undefined') {
+      if (_tsActiveSubTab === 'ENTRY' && typeof renderTimesheetGrid === 'function') {
+        renderTimesheetGrid();
+      } else if (_tsActiveSubTab === 'PROJECT') {
+        if (typeof updateProjectScopeDropdownI18n === 'function') updateProjectScopeDropdownI18n();
+        if (typeof initProjectActualTimeTab === 'function') initProjectActualTimeTab();
+        else if (typeof loadProjectActualTimeReport === 'function') loadProjectActualTimeReport();
+      } else if (_tsActiveSubTab === 'STAFF') {
+        if (typeof initStaffWorkBreakdownTab === 'function') initStaffWorkBreakdownTab();
+        else if (typeof loadStaffWorkBreakdown === 'function') loadStaffWorkBreakdown();
+      } else if (_tsActiveSubTab === 'MATRIX') {
+        if (typeof loadBatchComparisonMatrix === 'function') loadBatchComparisonMatrix();
+      }
+    } else if (typeof renderTimesheetGrid === 'function') {
+      renderTimesheetGrid();
+    }
+  }
+  popPjFilter();
+  if (typeof popTaskTaxonomySelects === 'function') popTaskTaxonomySelects();
+}
+
+function selectLanguage(lang) {
+  setLanguage(lang, false);
+  toast(t('msg_lang_changed'), 'info');
+  document.getElementById('d-lang')?.classList.remove('show');
+}
+
+function setAsMyDefaultLang() {
+  setLanguage(S.lang, true);
+  document.getElementById('d-lang')?.classList.remove('show');
+}
+
+function updateLangDropdownUI() {
+  const flags = { vi: '🇻🇳', en: '🇺🇸', ja: '🇯🇵' };
+  const codes = { vi: 'VI', en: 'EN', ja: 'JA' };
+  const curFlag = document.getElementById('cur-lang-flag');
+  const curText = document.getElementById('cur-lang-text');
+  if (curFlag) curFlag.textContent = flags[S.lang] || '🌐';
+  if (curText) curText.textContent = codes[S.lang] || S.lang.toUpperCase();
+  
+  ['vi', 'en', 'ja'].forEach(l => {
+    const opt = document.getElementById('lang-opt-' + l);
+    const chk = document.getElementById('chk-' + l);
+    if (opt) {
+      if (l === S.lang) opt.classList.add('active');
+      else opt.classList.remove('active');
+    }
+    if (chk) {
+      chk.style.display = (l === S.lang) ? 'inline-block' : 'none';
+    }
+  });
+}
+
+function applyTranslations() {
+  document.documentElement.lang = S.lang;
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.textContent = translated;
+      }
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.placeholder = translated;
+      }
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.title = translated;
+      }
+    }
+  });
+
+  updateFilterDropdowns();
+
+  if (typeof renderPermissionMatrixTable === 'function' && document.getElementById('matrix-tbody')) {
+    renderPermissionMatrixTable();
+  }
+}
+
+function updateFilterDropdowns() {
+  // 1. Projects status filter (#pp-st)
+  const ppSt = document.getElementById('pp-st');
+  if (ppSt) {
+    const curVal = ppSt.value;
+    ppSt.innerHTML = `
+      <option value="">${t('filter_all_statuses')}</option>
+      <option value="Lên kế hoạch">${tStatus('Lên kế hoạch')}</option>
+      <option value="Đang thực hiện">${tStatus('Đang thực hiện')}</option>
+      <option value="Hoàn thành">${tStatus('Hoàn thành')}</option>
+      <option value="Tạm dừng">${tStatus('Tạm dừng')}</option>
+      <option value="Hủy">${tStatus('Hủy')}</option>
+    `;
+    ppSt.value = curVal;
+  }
+  
+  // 2. Tasks status filter (#pt-st)
+  const ptSt = document.getElementById('pt-st');
+  if (ptSt) {
+    const curVal = ptSt.value;
+    ptSt.innerHTML = `
+      <option value="">${t('filter_status_placeholder')}</option>
+      <option value="Quá hạn">${tStatus('Quá hạn')}</option>
+      <option value="Chờ thực hiện">${tStatus('Chờ thực hiện')}</option>
+      <option value="Đang thực hiện">${tStatus('Đang thực hiện')}</option>
+      <option value="Chờ duyệt">${tStatus('Chờ duyệt')}</option>
+      <option value="Hoàn thành">${tStatus('Hoàn thành')}</option>
+      <option value="Tạm dừng">${tStatus('Tạm dừng')}</option>
+      <option value="Hủy">${tStatus('Hủy')}</option>
+    `;
+    ptSt.value = curVal;
+  }
+  
+  // 3. Tasks priority filter (#pt-pr)
+  const ptPr = document.getElementById('pt-pr');
+  if (ptPr) {
+    const curVal = ptPr.value;
+    ptPr.innerHTML = `
+      <option value="">${t('filter_priority_placeholder')}</option>
+      <option value="Khẩn cấp">${tPriority('Khẩn cấp')}</option>
+      <option value="Cao">${tPriority('Cao')}</option>
+      <option value="Trung bình">${tPriority('Trung bình')}</option>
+      <option value="Thấp">${tPriority('Thấp')}</option>
+    `;
+    ptPr.value = curVal;
+  }
+
+  // 4. Update Staff dropdown label in Gantt
+  if (typeof updateStaffFilterLabel === 'function') {
+    updateStaffFilterLabel();
+  }
+}
+
+function openSysLangModal() {
+  document.getElementById('d-lang')?.classList.remove('show');
+  const sel = document.getElementById('sys-lang-sel');
+  if (sel) sel.value = S.systemDefaultLang || 'vi';
+  openModal('m-sys-lang');
+}
+
+function saveSysDefaultLang() {
+  const sel = document.getElementById('sys-lang-sel');
+  const val = sel ? sel.value : 'vi';
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        S.systemDefaultLang = val;
+        closeModal('m-sys-lang');
+        toast(t('msg_sys_default_saved'), 'success');
+      } else {
+        toast((res && res.error) || 'Lỗi khi lưu cài đặt', 'error');
+      }
+    })
+    .withFailureHandler(err => toast(err.message || 'Lỗi hệ thống', 'error'))
+    .setSystemDefaultLanguage(val);
+}
+
+function initI18n() {
+  const savedLang = localStorage.getItem('pm_user_lang');
+  if (savedLang && ['vi','en','ja'].includes(savedLang)) {
+    S.lang = savedLang;
+  } else {
+    const navLang = (navigator.language || '').slice(0, 2).toLowerCase();
+    S.lang = ['vi','en','ja'].includes(navLang) ? navLang : 'vi';
+  }
+  applyTranslations();
+  updateLangDropdownUI();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+</script>

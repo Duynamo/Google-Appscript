@@ -1,0 +1,266 @@
+    <!-- ══ PROJECTS ══ -->
+    <div class="page" id="page-projects">
+      <div class="pcrd">
+        <div class="pcrd-hd"><span class="cti" style="font-size:14px" data-i18n="pj_list_title">📁 Danh Sách Dự Án</span><button class="btn bp" onclick="openPjMod()" data-i18n="add_project">+ Thêm Dự Án</button></div>
+        <div class="toolbar">
+          <div class="psrch" style="min-width:190px"><span style="color:var(--t3)">🔍</span><input id="pp-s" placeholder="Tìm dự án..." data-i18n-ph="search_placeholder" oninput="filterPgPj()"></div>
+          <select class="fsel" id="pp-st" onchange="filterPgPj()">
+            <option value="">-- Tất cả trạng thái --</option>
+            <option value="Lên kế hoạch">Lên kế hoạch</option><option value="Đang thực hiện">Đang thực hiện</option><option value="Hoàn thành">Hoàn thành</option><option value="Tạm dừng">Tạm dừng</option><option value="Hủy">Hủy</option>
+          </select>
+        </div>
+        <div class="tblw">
+          <table>
+            <thead><tr><th>#</th><th data-i18n="pj_col_name">Tên Dự Án</th><th data-i18n="pj_col_pm">Manager</th><th data-i18n="pj_col_status">Trạng Thái</th><th data-i18n="pj_col_progress">Tiến Độ</th><th data-i18n="tk_col_deadline">Deadline</th><th data-i18n="pj_col_actions">Thao Tác</th></tr></thead>
+            <tbody id="pp-tb"><tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- ══ TASKS ══ -->
+    <div class="page" id="page-tasks">
+      <div class="pcrd">
+        <div class="pcrd-hd">
+          <span class="cti" style="font-size:14px" data-i18n="page_tasks_t">✅ Quản lý Nhiệm vụ</span>
+          <div style="display:flex;gap:7px;align-items:center">
+            <div class="psrch" style="min-width:180px"><span style="color:var(--t3)">🔍</span><input id="pt-s" placeholder="Tìm nhiệm vụ..." data-i18n-ph="search_placeholder" oninput="filterPgTk()"></div>
+            <select class="fsel" id="pt-st" onchange="filterPgTk()">
+              <option value="">-- Trạng thái --</option>
+              <option>Quá hạn</option><option>Chờ thực hiện</option><option>Đang thực hiện</option><option>Chờ duyệt</option><option>Hoàn thành</option><option>Tạm dừng</option><option>Hủy</option>
+            </select>
+            <select class="fsel" id="pt-pr" onchange="filterPgTk()">
+              <option value="">-- Ưu tiên --</option><option>Khẩn cấp</option><option>Cao</option><option>Trung bình</option><option>Thấp</option>
+            </select>
+            <button class="btn bp" id="btn-add-tk" onclick="openTkMod(null)" data-i18n="add_task">+ Tạo nhiệm vụ mới</button>
+          </div>
+        </div>
+        <div class="tk-stats" id="tk-stats"></div>
+        <div id="pt-groups"><div class="ldg"><div class="spn"></div></div></div>
+      </div>
+    </div>
+
+<!-- ══ MODAL: ADD/EDIT PROJECT ══ -->
+<div class="ov" id="m-pj">
+  <div class="modal">
+    <div class="mhd"><h3 id="mpj-ti">Thêm Dự Án</h3><button class="mcl" onclick="closeModal('m-pj')">✕</button></div>
+    <div class="mbd">
+      <input type="hidden" id="mpj-id">
+      <!-- Khối chọn dự án từ Danh mục tiêu chuẩn -->
+      <div class="fg" style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1.5px dashed #cbd5e1;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--p);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+          <span data-i18n="tax_select_pj_code">📁 Chọn từ Danh mục tiêu chuẩn</span>
+          <span style="font-size:10px;color:var(--t3);font-weight:normal" id="mpj-format-hint">Quy chuẩn: [Năm]_[STT]_[Mã]_[Tên đầy đủ]</span>
+        </div>
+        <div class="frow" style="gap:8px;align-items:center">
+          <div style="flex:1">
+            <select class="fc" id="mpj-tax-sel" onchange="onProjectTaxonomyControlChange()" style="font-size:12px;font-weight:600">
+              <option value="">-- Chọn dự án từ Danh mục tiêu chuẩn --</option>
+            </select>
+          </div>
+          <div>
+            <button type="button" class="btn bs" id="btn-update-pj-name" onclick="applyProjectNameFromTaxonomy(true)" style="height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--p);border-color:var(--p);background:#eef2ff">
+              <span data-i18n="btn_update_pj_name">🔄 Cập nhật</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl"><span data-i18n="pj_col_name">Tên Dự Án</span> <span class="req">*</span></label>
+        <input class="fc" id="mpj-nm" placeholder="Chọn dự án từ danh mục tiêu chuẩn..." style="font-weight:700;background:#f8fafc;cursor:not-allowed;color:var(--tx)" readonly>
+        <div style="font-size:10px;color:var(--t3);margin-top:2px" data-i18n="pj_name_readonly_hint">ℹ️ Tên dự án được sinh tự động theo chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]</div>
+      </div>
+      <div class="fg">
+        <label class="fl"><span data-i18n="ts_col_note">Ghi Chú Công Việc</span> <span style="font-size:10px;font-weight:normal;color:var(--t3)" data-i18n="pj_desc_readonly_hint">(Chế độ chỉ xem - Liên kết từ Danh mục tiêu chuẩn)</span></label>
+        <textarea class="fc" id="mpj-ds" placeholder="Ghi chú từ danh mục tiêu chuẩn..." readonly style="background:#f8fafc;cursor:not-allowed;color:var(--tx);min-height:56px"></textarea>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Ngày Bắt Đầu</label><input type="date" class="fc" id="mpj-sd"></div>
+        <div class="fg"><label class="fl">Ngày Kết Thúc</label><input type="date" class="fc" id="mpj-ed"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Manager</label><select class="fc" id="mpj-mg"></select></div>
+        <div class="fg"><label class="fl">Trạng Thái</label>
+          <select class="fc" id="mpj-st">
+            <option>Lên kế hoạch</option><option>Đang thực hiện</option><option>Hoàn thành</option><option>Tạm dừng</option><option>Hủy</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="mft"><button class="btn bs" onclick="closeModal('m-pj')">Hủy</button><button class="btn bp" onclick="savePj()">💾 Lưu</button></div>
+  </div>
+</div>
+
+<!-- ══ MODAL: DUPLICATE PROJECT ══ -->
+<div class="ov" id="m-dup-pj">
+  <div class="modal" style="max-width:380px">
+    <div class="mhd"><h3>Tạo bản sao dự án</h3><button class="mcl" onclick="closeModal('m-dup-pj')">✕</button></div>
+    <div class="mbd">
+      <input type="hidden" id="dup-pj-id">
+      <div class="fg"><label class="fl">Tên dự án mới <span class="req">*</span></label><input class="fc" id="dup-pj-nm" placeholder="Tên dự án mới..."></div>
+    </div>
+    <div class="mft"><button class="btn bs" onclick="closeModal('m-dup-pj')">Hủy</button><button class="btn bp" id="dup-pj-btn" onclick="doDupPj()">✦ Tạo bản sao</button></div>
+  </div>
+</div>
+
+<!-- ══ MODAL: QUICK ADD TASK (HỖ TRỢ ĐƠN LẺ & HÀNG LOẠT) ══ -->
+<div class="ov" id="m-qtk">
+  <div class="modal" id="m-qtk-dialog">
+    <div class="mhd">
+      <h3 id="mqtk-ti">Thêm Nhiệm Vụ</h3>
+      <button class="mcl" onclick="closeModal('m-qtk')">✕</button>
+    </div>
+    <!-- Tab Switcher (chỉ hiện khi tạo mới) -->
+    <div id="qtk-tabs-wrap" style="display:flex;gap:4px;padding:0 20px;border-bottom:1px solid var(--bdr);margin-top:6px">
+      <button type="button" class="qtk-tab-btn active" id="tab-btn-single" onclick="switchQtkTab('single')">📝 Tạo đơn lẻ</button>
+      <button type="button" class="qtk-tab-btn" id="tab-btn-bulk" onclick="switchQtkTab('bulk')">⚡ Tạo nhanh hàng loạt</button>
+    </div>
+
+    <!-- TAB 1: TẠO ĐƠN LẺ (GIỮ NGUYÊN 100% CÁC ELEMENT HIỆN TẠI) -->
+    <div class="mbd" id="qtk-body-single">
+      <input type="hidden" id="mqtk-id">
+      <!-- Phân loại chuẩn hóa (Category / Phase / Discipline) -->
+      <div class="fg" style="margin-bottom:8px">
+        <label class="fl" style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:600">📐 Mã phân loại chuẩn (Tùy chọn)</span>
+          <span style="font-size:10px;color:var(--t3);font-weight:normal" id="qtk-tax-preview-txt">[Mã tự chèn vào tên task]</span>
+        </label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div>
+            <select class="fc" id="mqtk-cat" onchange="onTaskTaxonomyChange('single')" style="font-size:11px;padding:4px 6px">
+              <option value="">-- Nhóm (Category) --</option>
+            </select>
+          </div>
+          <div>
+            <select class="fc" id="mqtk-phase" onchange="onTaskTaxonomyChange('single')" style="font-size:11px;padding:4px 6px">
+              <option value="">-- Giai đoạn (Phase) --</option>
+            </select>
+          </div>
+          <div>
+            <select class="fc" id="mqtk-disc" onchange="onTaskTaxonomyChange('single')" style="font-size:11px;padding:4px 6px">
+              <option value="">-- Chi tiết (Discipline) --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Tên Nhiệm Vụ <span class="req">*</span></label><input class="fc" id="mqtk-nm" placeholder="Nhập tên..."></div>
+      <div class="fg"><label class="fl">Dự Án <span class="req">*</span></label><select class="fc" id="mqtk-pj" onchange="refreshAsCombo('qtk')"></select></div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Người Thực Hiện</label>
+          <div class="as-combo" id="qtk-as-combo">
+            <div class="as-combo-box" onclick="focusAsInp('qtk')">
+              <div class="as-chips" id="qtk-as-chips"></div>
+              <input class="as-combo-inp" id="mqtk-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
+                oninput="showAsCombo('qtk')" onfocus="showAsCombo('qtk')" onkeydown="handleAsKeydown(event, 'qtk')">
+            </div>
+            <div class="as-combo-list" id="qtk-as-list"></div>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Độ Ưu Tiên</label>
+          <select class="fc" id="mqtk-pr"><option>Thấp</option><option selected>Trung bình</option><option>Cao</option><option>Khẩn cấp</option></select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Ngày Bắt Đầu</label><input type="date" class="fc" id="mqtk-sd"></div>
+        <div class="fg"><label class="fl">Deadline</label><input type="date" class="fc" id="mqtk-dl"></div>
+      </div>
+      <div class="fg"><label class="fl">Trạng Thái</label>
+        <select class="fc" id="mqtk-st"><option>Chờ thực hiện</option><option>Đang thực hiện</option><option>Chờ duyệt</option><option>Hoàn thành</option><option>Tạm dừng</option><option>Hủy</option></select>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;margin-top:6px">
+        <button class="btn bp" style="flex:1" onclick="saveQTk()">💾 Lưu nhanh</button>
+        <button class="btn bs" onclick="openNewFullTask()" style="font-size:11px">✏ Chỉnh sửa đầy đủ</button>
+      </div>
+    </div>
+
+    <!-- TAB 2: TẠO NHANH HÀNG LOẠT (TÍNH NĂNG MỚI CHO PM) -->
+    <div class="mbd" id="qtk-body-bulk" style="display:none">
+      <!-- Cấu hình mặc định áp dụng chung -->
+      <div class="bulk-presets-bar">
+        <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">
+          ⚙️ Cấu hình mặc định áp dụng chung
+        </div>
+        <div class="bulk-prow">
+          <div>
+            <label class="fl">Dự Án <span class="req">*</span></label>
+            <select class="fc" id="mbulk-pj" onchange="syncBulkProject()"></select>
+          </div>
+          <div>
+            <label class="fl">Phụ Trách Chung</label>
+            <select class="fc" id="mbulk-as" onchange="applyBulkDefaults()"></select>
+          </div>
+          <div>
+            <label class="fl">Ngày Bắt Đầu</label>
+            <input type="date" class="fc" id="mbulk-sd" onchange="applyBulkDefaults()">
+          </div>
+          <div>
+            <label class="fl">Deadline Chung</label>
+            <input type="date" class="fc" id="mbulk-dl" onchange="applyBulkDefaults()">
+          </div>
+          <div>
+            <label class="fl">Ưu Tiên</label>
+            <select class="fc" id="mbulk-pr" onchange="applyBulkDefaults()">
+              <option>Thấp</option>
+              <option selected>Trung bình</option>
+              <option>Cao</option>
+              <option>Khẩn cấp</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Khung hướng dẫn & dán danh sách -->
+      <div class="bulk-hint-box">
+        <span>💡</span>
+        <span><b>Mẹo dán:</b> Copy danh sách từ Excel, Google Sheets hoặc văn bản (mỗi dòng 1 việc). Hệ thống tự làm sạch số thứ tự <i>1., 2., •, -</i>. Dán từ Excel tự nhận diện cột <i>Tên | Người làm | Deadline | Ưu tiên</i>.</span>
+      </div>
+      <div class="fg">
+        <label class="fl">Dán hoặc nhập danh sách công việc (Mỗi dòng 1 việc):</label>
+        <textarea class="bulk-ta" id="mbulk-text" rows="4"
+          placeholder="Ví dụ dán vào đây:&#10;1. Khảo sát hiện trạng mặt bằng&#10;2. Lập bản vẽ sơ bộ kiến trúc&#10;3. Phối cảnh 3D nội ngoại thất&#10;4. Kiểm tra kết cấu và MEP"
+          oninput="handleBulkInput()"></textarea>
+      </div>
+
+      <!-- Bảng xem trước và tinh chỉnh trực tiếp -->
+      <div class="bulk-preview-wrap">
+        <div class="bulk-preview-head">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span>📋 Bảng xem trước & Hiệu chỉnh:</span>
+            <span class="badge" id="bulk-count-badge" style="background:#e0e7ff;color:#4f6ef7;font-weight:700">0 nhiệm vụ</span>
+          </div>
+          <button type="button" class="btn bs" style="font-size:11px;padding:3px 9px" onclick="addEmptyBulkRow()">+ Thêm dòng</button>
+        </div>
+        <div class="bulk-tbl-container">
+          <table class="bulk-tbl">
+            <thead>
+              <tr>
+                <th style="width:34px;text-align:center">#</th>
+                <th>Tên Nhiệm Vụ <span class="req">*</span></th>
+                <th style="width:130px">Người Làm</th>
+                <th style="width:125px">Ngày Bắt Đầu</th>
+                <th style="width:125px">Deadline</th>
+                <th style="width:105px">Ưu Tiên</th>
+                <th style="width:34px;text-align:center">✕</th>
+              </tr>
+            </thead>
+            <tbody id="bulk-tbl-body">
+              <tr>
+                <td colspan="7" style="text-align:center;padding:20px;color:var(--t3)">Chưa có dữ liệu. Hãy dán danh sách công việc vào ô trên hoặc bấm "+ Thêm dòng".</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Datalist gợi ý thành viên khi nhập ô người làm trong bảng -->
+      <datalist id="bulk-as-datalist"></datalist>
+
+      <!-- Thanh nút bấm hành động -->
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:14px">
+        <button type="button" class="btn bs" onclick="closeModal('m-qtk')">Hủy bỏ</button>
+        <button type="button" class="btn bp" id="btn-save-bulk" onclick="saveBulkTasks()" disabled>🚀 Tạo ngay (0 nhiệm vụ)</button>
+      </div>
+    </div>
+  </div>
+</div>
+

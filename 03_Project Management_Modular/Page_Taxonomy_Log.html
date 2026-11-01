@@ -1,0 +1,318 @@
+    <!-- ══ TAXONOMY ══ -->
+    <div class="page" id="page-taxonomy">
+      <div class="pcrd">
+        <div class="pcrd-hd" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div>
+            <span class="cti" style="font-size:15px;font-weight:700" data-i18n="tax_page_title">📐 Danh Mục Tiêu Chuẩn & Quy Định Mã Hóa</span>
+            <div style="font-size:11px;color:var(--t2);margin-top:2px" data-i18n="page_taxonomy_s">Quy định mã hóa & phân loại công việc chuẩn</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <button class="btn bs" onclick="openBatchTaskMod()" title="Quét & gắn mã tiền tố cho task cũ" data-i18n="tax_btn_batch">⚡ Chuẩn hóa task cũ</button>
+            <button class="btn bs" onclick="restoreDefaultTaxonomy()" title="Khôi phục danh mục chuẩn từ hệ thống" data-i18n="tax_btn_reload_sheet">🔄 Nạp mẫu chuẩn</button>
+            <button class="btn bp" onclick="openTaxonomyMod()" data-i18n="tax_btn_add">+ Thêm Tiêu Chuẩn</button>
+          </div>
+        </div>
+
+        <div style="padding:14px 16px">
+          <!-- 4 Sub-Tabs -->
+          <div class="tax-nav-tabs">
+            <button type="button" class="tax-tab-btn active" id="tax-subtab-cat" onclick="switchTaxSubTab('CATEGORY')" data-i18n="tax_tab_cat">1. Category (Nhóm lớn)</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-phase" onclick="switchTaxSubTab('PHASE')" data-i18n="tax_tab_phase">2. Phase dự án</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-disc" onclick="switchTaxSubTab('DISCIPLINE')" data-i18n="tax_tab_disc">3. Chi tiết công việc</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-pjcode" onclick="switchTaxSubTab('PROJECT_CODE')" data-i18n="tax_tab_pjcode">4. Mã dự án</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-emp" onclick="switchTaxSubTab('EMPLOYEE')" data-i18n="tax_tab_emp">5. Nhân viên</button>
+            <button type="button" class="tax-tab-btn" id="tax-subtab-matrix" onclick="switchTaxSubTab('MATRIX')" data-i18n="tax_tab_matrix">6. Ma trận phân quyền</button>
+          </div>
+
+          <!-- STANDARD TAXONOMY LIST CONTAINER (Tabs 1-5) -->
+          <div id="tax-standard-container">
+            <!-- Filter & Search Bar -->
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+              <div style="flex:1;min-width:220px;max-width:320px;position:relative">
+                <input type="text" id="tax-srch" class="fc" placeholder="Tìm theo mã, tên, mô tả..." oninput="filterTaxonomyTable()" style="padding-left:30px;height:34px;font-size:12px">
+                <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:12px">🔍</span>
+              </div>
+              <select id="tax-st-filter" class="fc" onchange="filterTaxonomyTable()" style="max-width:160px;height:34px;font-size:12px">
+                <option value="">Tất cả trạng thái</option>
+                <option value="Active">Đang dùng (Active)</option>
+                <option value="Archived">Tạm ngưng</option>
+              </select>
+              <span id="tax-count-badge" class="an-badge an-badge-blue" style="margin-left:auto;font-size:11px">0 mục</span>
+            </div>
+
+            <!-- Table -->
+            <div class="tblw">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:40px">#</th>
+                    <th data-i18n="tax_col_code">Mã viết tắt</th>
+                    <th data-i18n="tax_col_name">Tên phân loại</th>
+                    <th data-i18n="tax_col_fullname">Tên đầy đủ</th>
+                    <th data-i18n="tax_col_notes">Ghi chú bổ sung</th>
+                    <th data-i18n="user_col_status">Trạng thái</th>
+                    <th style="width:110px" data-i18n="pj_col_actions">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="tax-tbody">
+                  <tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUB-TAB 6: MA TRẬN PHÂN QUYỀN (DYNAMIC RBAC MATRIX) -->
+          <div id="tax-matrix-container" style="display:none">
+            <div class="matrix-topbar" style="background:#f8fafc;padding:12px 16px;border-radius:8px;border:1px solid var(--bdr);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+              <div>
+                <div style="font-weight:700;font-size:13px;color:var(--tx);display:flex;align-items:center;gap:8px">
+                  <span data-i18n="matrix_title">🛡️ Ma trận phân quyền hệ thống</span>
+                  <span id="matrix-status-badge" class="an-badge an-badge-blue" data-i18n="matrix_badge_default">🛡️ Đang áp dụng: Cấu hình chuẩn hệ thống</span>
+                </div>
+                <div style="font-size:11px;color:var(--t2);margin-top:3px" data-i18n="matrix_subtitle">Cấu hình trực tiếp mức quyền chi tiết cho từng vai trò trên từng phân hệ</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <button type="button" class="btn bs" onclick="resetPermissionMatrixClick()" data-i18n="matrix_btn_reset">↺ Khôi phục mặc định</button>
+                <button type="button" class="btn bp" onclick="savePermissionMatrixClick()" data-i18n="matrix_btn_save">💾 Lưu ma trận phân quyền</button>
+              </div>
+            </div>
+
+            <div class="tblw" style="max-height:calc(100vh - 320px);overflow-y:auto">
+              <table id="matrix-table" class="matrix-tbl">
+                <thead style="position:sticky;top:0;background:var(--card);z-index:3">
+                  <tr>
+                    <th style="width:36px;text-align:center">#</th>
+                    <th style="min-width:240px" data-i18n="matrix_col_module">Phân hệ & Chức năng</th>
+                    <th style="width:160px;text-align:center" data-i18n="tax_perm_level1">Cấp 1 - Admin</th>
+                    <th style="width:170px;text-align:center" data-i18n="tax_perm_level2">Cấp 2 - Leader</th>
+                    <th style="width:170px;text-align:center" data-i18n="tax_perm_level3">Cấp 3 - PJ Lead</th>
+                    <th style="width:170px;text-align:center" data-i18n="tax_perm_level4">Cấp 4 - Member</th>
+                  </tr>
+                </thead>
+                <tbody id="matrix-tbody">
+                  <tr><td colspan="6"><div class="ldg"><div class="spn"></div></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LOG ══ -->
+    <div class="page" id="page-log">
+      <div class="pcrd">
+        <div class="pcrd-hd"><span class="cti" style="font-size:14px" data-i18n="page_log_t">📋 Nhật Ký Hoạt Động</span></div>
+        <div class="tblw">
+          <table>
+            <thead><tr><th data-i18n="log_col_time">Thời Gian</th><th data-i18n="log_col_email">Email</th><th data-i18n="log_col_role">Vai Trò</th><th data-i18n="log_col_action">Hành Động</th><th data-i18n="log_col_detail">Chi Tiết</th></tr></thead>
+            <tbody id="pl-tb"><tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+<!-- ══ MODAL TAXONOMY ITEM (THÊM / SỬA TIÊU CHUẨN) ══ -->
+<div class="ov" id="m-tax">
+  <div class="modal" style="max-width:520px">
+    <div class="mhd">
+      <h3 id="mtax-modal-ti">📐 Thêm Tiêu Chuẩn Phân Loại</h3>
+      <button class="mcl" onclick="closeModal('m-tax')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <input type="hidden" id="mtax-id">
+      <div class="fg">
+        <label class="fl">Cấp độ phân loại <span class="req">*</span></label>
+        <select class="fc" id="mtax-type" onchange="onTaxModalTypeChange()">
+          <option value="CATEGORY">1. Category (Nhóm lớn: GE, DE, PC, M3...)</option>
+          <option value="PHASE">2. Phase dự án (Giai đoạn: BD, DD, IS...)</option>
+          <option value="DISCIPLINE">3. Chi tiết công việc (Discipline: AR, STR, MP, ELE...)</option>
+          <option value="PROJECT_CODE">4. Mã dự án (Project Code: HAG01, JJK01...)</option>
+          <option value="EMPLOYEE">5. Nhân viên (Mã NV, Tên, Cấp bậc, Sheet...)</option>
+        </select>
+      </div>
+
+      <!-- KHỐI NHẬP LIỆU RIÊNG CHO 4. MÃ DỰ ÁN (PROJECT_CODE) -->
+      <div id="mtax-pjc-section" style="display:none">
+        <div class="frow" style="gap:8px">
+          <div class="fg" style="flex:1">
+            <label class="fl"><span data-i18n="pj_year_lbl">Năm triển khai</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-pjc-year" placeholder="2026" maxlength="4" style="font-weight:700;text-align:center" oninput="syncTaxProjectName()">
+          </div>
+          <div class="fg" style="flex:1">
+            <label class="fl"><span data-i18n="pj_seq_lbl">STT</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-pjc-seq" placeholder="01" maxlength="4" style="font-weight:700;text-align:center" oninput="syncTaxProjectName()" onblur="formatTaxProjectSeq()">
+          </div>
+          <div class="fg" style="flex:1.5">
+            <label class="fl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-pjc-code" placeholder="VD: JJK01" maxlength="20" style="font-weight:700;letter-spacing:1px" oninput="this.value=this.value.toUpperCase(); syncTaxProjectName()">
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl"><span data-i18n="tax_col_fullname">Tên đầy đủ</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-pjc-desc" placeholder="VD: 十字会工房ヴィレッジ新築工事..." oninput="syncTaxProjectName()">
+        </div>
+
+        <div class="fg">
+          <label class="fl"><span data-i18n="tax_col_name">Tên phân loại</span> <span style="font-size:10px;font-weight:normal;color:var(--t3)">(Tự động ghép từ 4 trường trên)</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-pjc-name" placeholder="2026_01_JJK01_十字会工房ヴィレッジ新築工事..." readonly style="font-weight:700;background:#f8fafc;color:var(--tx);cursor:not-allowed">
+          <div style="font-size:10px;color:var(--t3);margin-top:2px">ℹ️ Định dạng: [Năm]_[STT]_[Mã viết tắt]_[Tên đầy đủ]</div>
+        </div>
+
+        <div class="fg">
+          <label class="fl" data-i18n="tax_col_notes">Ghi chú bổ sung</label>
+          <input type="text" class="fc" id="mtax-pjc-extra2" placeholder="VD: 十字会...">
+        </div>
+      </div>
+
+      <!-- KHỐI NHẬP LIỆU CHUẨN CHO CÁC NHÓM (CATEGORY, PHASE, DISCIPLINE, EMPLOYEE) -->
+      <div id="mtax-std-section">
+        <div class="frow">
+          <div class="fg" style="flex:1.5">
+            <label class="fl" id="mtax-code-lbl"><span data-i18n="tax_col_code">Mã viết tắt</span> <span class="req">*</span></label>
+            <input type="text" class="fc" id="mtax-code" placeholder="VD: AR, STR, M3..." maxlength="20" oninput="this.value=this.value.toUpperCase(); updateTaxPreview()" style="font-weight:700;letter-spacing:1px">
+            <div style="font-size:10px;color:var(--t3);margin-top:2px" id="mtax-code-hint" data-i18n="tax_code_hint">2-5 ký tự in hoa</div>
+          </div>
+          <div class="fg" style="flex:1" id="mtax-order-wrap">
+            <label class="fl"><span data-i18n="tax_col_order">Thứ tự (#)</span></label>
+            <input type="number" class="fc" id="mtax-order" placeholder="1" min="1" max="999" value="1" style="font-weight:700;text-align:center">
+          </div>
+        </div>
+
+        <!-- TÊN ĐA NGÔN NGỮ (VI - EN - JA) -->
+        <div class="fg" id="mtax-name-vi-wrap">
+          <label class="fl" id="mtax-name-lbl"><span style="display:inline-flex;align-items:center;gap:4px">🇻🇳 Tên Tiếng Việt</span> <span class="req">*</span></label>
+          <input type="text" class="fc" id="mtax-name-vi" placeholder="VD: Dựng hình kiến trúc..." oninput="syncTaxNameInputs(); updateTaxPreview()">
+          <input type="hidden" id="mtax-name">
+        </div>
+
+        <div class="frow" id="mtax-name-multilang-row">
+          <div class="fg" style="flex:1" id="mtax-name-en-wrap">
+            <label class="fl"><span style="display:inline-flex;align-items:center;gap:4px">🇺🇸 Tên Tiếng Anh</span></label>
+            <input type="text" class="fc" id="mtax-name-en" placeholder="VD: Architecture Modeling..." oninput="updateTaxPreview()">
+          </div>
+          <div class="fg" style="flex:1" id="mtax-name-jp-wrap">
+            <label class="fl"><span style="display:inline-flex;align-items:center;gap:4px">🇯🇵 Tên Tiếng Nhật</span></label>
+            <input type="text" class="fc" id="mtax-name-jp" placeholder="VD: 建築モデリング..." oninput="updateTaxPreview()">
+          </div>
+        </div>
+
+        <div class="fg">
+          <label class="fl" id="mtax-desc-lbl" data-i18n="tax_col_fullname">Tên đầy đủ / Nội dung</label>
+          <textarea class="fc" id="mtax-desc" rows="2" placeholder="Tên đầy đủ hoặc mô tả nội dung..."></textarea>
+        </div>
+
+        <div class="frow" id="mtax-extra-row">
+          <div class="fg" style="flex:1" id="mtax-extra1-wrap">
+            <label class="fl" id="mtax-extra1-lbl">Màu nhận diện (Hex)</label>
+            <div style="display:flex;align-items:center;gap:6px">
+              <input type="color" id="mtax-color-inp" value="#4f6ef7" onchange="pickTaxColor(this.value)" style="width:34px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:0">
+              <input type="text" class="fc" id="mtax-extra1" value="#4f6ef7" placeholder="#4f6ef7" oninput="pickTaxColor(this.value)" style="font-size:12px;height:34px">
+            </div>
+            <div class="tax-color-picker-group">
+              <span class="tax-color-opt" style="background:#4f6ef7" onclick="pickTaxColor('#4f6ef7')"></span>
+              <span class="tax-color-opt" style="background:#06b6d4" onclick="pickTaxColor('#06b6d4')"></span>
+              <span class="tax-color-opt" style="background:#8b5cf6" onclick="pickTaxColor('#8b5cf6')"></span>
+              <span class="tax-color-opt" style="background:#10b981" onclick="pickTaxColor('#10b981')"></span>
+              <span class="tax-color-opt" style="background:#f59e0b" onclick="pickTaxColor('#f59e0b')"></span>
+              <span class="tax-color-opt" style="background:#ec4899" onclick="pickTaxColor('#ec4899')"></span>
+              <span class="tax-color-opt" style="background:#64748b" onclick="pickTaxColor('#64748b')"></span>
+            </div>
+          </div>
+
+          <div class="fg" style="flex:1" id="mtax-extra2-wrap">
+            <label class="fl" id="mtax-extra2-lbl" data-i18n="tax_col_notes">Ghi chú bổ sung</label>
+            <input type="text" class="fc" id="mtax-extra2" placeholder="VD: 十字会..." style="height:34px">
+            <button type="button" class="btn bs" id="btn-create-staff-sheet" onclick="createStaffSheetClick()" style="display:none;margin-top:6px;width:100%;font-size:11px" data-i18n="tax_create_sheet">🪄 Tự động tạo Google Sheet cho nhân sự này</button>
+          </div>
+        </div>
+
+        <div class="fg" id="mtax-extra3-wrap" style="display:none">
+          <label class="fl" data-i18n="tax_col_perm">Phân quyền</label>
+          <select class="fc" id="mtax-extra3">
+            <option value="Admin" data-i18n="tax_perm_level1">Cấp 1 - Quản trị viên (Admin)</option>
+            <option value="Leader" data-i18n="tax_perm_level2">Cấp 2 - Trưởng bộ phận (Leader)</option>
+            <option value="PJ_Lead" data-i18n="tax_perm_level3">Cấp 3 - Quản lý dự án (PJ Lead)</option>
+            <option value="Member" selected data-i18n="tax_perm_level4">Cấp 4 - Thành viên (Member)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="fl" data-i18n="user_col_status">Trạng thái</label>
+        <select class="fc" id="mtax-status">
+          <option value="Active">Đang sử dụng (Active)</option>
+          <option value="Archived">Tạm ngưng (Archived)</option>
+        </select>
+      </div>
+
+      <!-- Live Preview Badge -->
+      <div class="tax-preview-box">
+        <div style="font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;margin-bottom:6px">Xem trước hiển thị:</div>
+        <div id="mtax-preview-badge" style="display:inline-flex;align-items:center;gap:6px">
+          <span class="tax-code-badge" style="background:#eef2ff;color:#4f6ef7;border-color:rgba(79,110,247,0.3)">CODE</span>
+          <span style="font-weight:600;font-size:12px;color:var(--tx)">Tên hiển thị</span>
+        </div>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bs" onclick="closeModal('m-tax')" data-i18n="btn_cancel">Hủy</button>
+      <button class="btn bp" onclick="submitTaxonomyItem()" data-i18n="btn_save">💾 Lưu tiêu chuẩn</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL BATCH STANDARDIZE TASKS (CHUẨN HÓA TASK CŨ) ══ -->
+<div class="ov" id="m-batch-tax">
+  <div class="modal" style="max-width:720px">
+    <div class="mhd">
+      <h3 data-i18n="tax_modal_batch_ti">⚡ Chuẩn Hóa Mã Tiền Tố Cho Nhiệm Vụ Cũ</h3>
+      <button class="mcl" onclick="closeModal('m-batch-tax')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.5" data-i18n="tax_modal_batch_sub">
+        Tự động nhận diện từ khóa trong tên nhiệm vụ và đề xuất tiền tố chuẩn [CATEGORY-PHASE-DISC] mà không làm thay đổi nội dung gốc.
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;background:#f8fafc;padding:10px 14px;border-radius:8px;border:1px solid var(--bdr);margin-bottom:14px">
+        <div style="flex:1">
+          <label class="fl" style="margin-bottom:4px">Lọc theo dự án</label>
+          <select class="fc" id="mbatch-tax-pj" style="font-size:12px;height:34px"></select>
+        </div>
+        <div style="padding-top:18px">
+          <button class="btn bp" onclick="runAutoDetectLegacyTasks()" style="height:34px">🔍 Quét nhiệm vụ chưa chuẩn</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;cursor:pointer">
+          <input type="checkbox" id="mbatch-check-all" onchange="toggleBatchAll(this.checked)" checked>
+          <span>Chọn tất cả (<span id="mbatch-scan-count">0</span> nhiệm vụ cần chuẩn hóa)</span>
+        </label>
+        <span style="font-size:11px;color:var(--t3)">* Có thể chỉnh sửa trực tiếp tên mới trước khi áp dụng</span>
+      </div>
+
+      <div class="tblw" style="max-height:300px;overflow-y:auto;border:1px solid var(--bdr);border-radius:8px">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:36px"><input type="checkbox" checked onchange="toggleBatchAll(this.checked)"></th>
+              <th>Tên hiện tại</th>
+              <th>Tiền tố gợi ý</th>
+              <th>Tên mới sau khi chuẩn hóa</th>
+            </tr>
+          </thead>
+          <tbody id="mbatch-tbody">
+            <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--t2)">Nhấn "Quét nhiệm vụ" để bắt đầu tìm kiếm các task chưa có mã tiền tố.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bs" onclick="closeModal('m-batch-tax')" data-i18n="btn_cancel">Hủy</button>
+      <button class="btn bp" id="mbatch-submit-btn" onclick="applyBatchTaskMigration()" disabled>⚡ Áp dụng chuẩn hóa</button>
+    </div>
+  </div>
+</div>
+

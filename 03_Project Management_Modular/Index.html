@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <base target="_top">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><?= appName ?></title>
+  <!-- CSS STYLESHEETS -->
+  <?!= include('App_Styles'); ?>
+</head>
+<body>
+<div id="toasts"></div>
+<div id="wrap">
+<!-- ══ SIDEBAR ══ -->
+<nav id="sb">
+  <div class="sb-logo">
+    <div class="sb-li">PM</div>
+    <div class="sb-ln"><div class="t1" data-i18n="app_name">Quản Lý Dự Án</div><div class="t2" data-i18n="app_sub">Quản lý thông minh</div></div>
+  </div>
+  <div class="sb-usr">
+    <div class="sb-av" id="sb-av">?</div>
+    <div><div class="sb-un" id="sb-nm">Đang tải...</div><div class="sb-ur" id="sb-rl">-</div></div>
+  </div>
+  <div class="sb-nav">
+    <div class="sni active" data-p="dashboard" onclick="goPage('dashboard',this)"><span class="ic">🏠</span><span data-i18n="nav_dashboard">Tổng quan</span></div>
+    <div class="sni" data-p="gantt" onclick="goPage('gantt',this)"><span class="ic">📅</span><span data-i18n="nav_gantt">Sơ đồ Gantt</span></div>
+    <div class="sni" data-p="analytics" onclick="goPage('analytics',this)"><span class="ic">📊</span><span data-i18n="nav_analytics">Biểu đồ chuyên sâu</span></div>
+    <div class="sni" data-p="projects" onclick="goPage('projects',this)"><span class="ic">📁</span><span data-i18n="nav_projects">Dự án</span></div>
+    <div class="sni" data-p="tasks" onclick="goPage('tasks',this)"><span class="ic">☑️</span><span data-i18n="nav_tasks">Nhiệm vụ</span></div>
+    <div class="sni" id="ni-timesheet" data-p="timesheet" onclick="goPage('timesheet',this)"><span class="ic">⏱️</span><span data-i18n="nav_timesheet">Quản lý thời gian</span></div>
+    <!-- [ni-usr hợp nhất vào Danh mục tiêu chuẩn] -->
+    <div class="sni" id="ni-tax" style="display:none" data-p="taxonomy" onclick="goPage('taxonomy',this)"><span class="ic">📐</span><span data-i18n="nav_taxonomy">Danh mục tiêu chuẩn</span></div>
+    <div class="sni" id="ni-log" style="display:none" data-p="log" onclick="goPage('log',this)"><span class="ic">📋</span><span data-i18n="nav_log">Nhật ký</span></div>
+  </div>
+  <div class="sb-out" onclick="doLogout()"><span class="ic" style="font-size:14px">🚪</span><span data-i18n="logout">Đăng xuất</span></div>
+  <div class="sb-ft"><a href="https://vudinhduy.vn" target="_blank">vudinhduy.vn</a><div style="margin-top:2px">© V2D</div></div>
+</nav>
+<!-- ══ MAIN ══ -->
+<div id="main">
+    <div id="topbar">
+    <div class="tb-l"><div class="pgt" id="pgt" data-i18n="page_dashboard_t">Tổng Quan</div><div class="pgs" id="pgs" data-i18n="page_dashboard_s">Chào mừng trở lại</div></div>
+    <div class="tb-r">
+      <div class="pj-filter">
+        🔽 <select id="pj-filter-sel" onchange="applyPjFilter()">
+          <option value="">Lọc theo dự án...</option>
+        </select>
+      </div>
+      <div class="tb-srch"><span style="color:var(--t3)">🔍</span><input id="g-srch" placeholder="Tìm kiếm..." data-i18n-ph="search_placeholder" oninput="gSearch(this.value)"></div>
+      <div class="drop-wrap">
+        <button class="btn-mk" onclick="togDrop('d-mk')"><span data-i18n="create_new">+ Tạo mới ▾</span></button>
+        <div class="drop" id="d-mk">
+          <div class="di" onclick="clDrop('d-mk');openPjMod()"><span>📁</span><span data-i18n="add_project">Thêm dự án</span></div>
+          <div class="di" onclick="clDrop('d-mk');openTkMod(null)"><span>✅</span><span data-i18n="add_task">Thêm nhiệm vụ</span></div>
+          <div class="di" id="d-usr-o" style="display:none" onclick="clDrop('d-mk');openUsrMod()"><span>👤</span><span data-i18n="add_user">Thêm nhân viên</span></div>
+        </div>
+      </div>
+      <!-- ── LANGUAGE DROPDOWN ── -->
+      <div class="drop-wrap">
+        <button class="btn-lang" onclick="togDrop('d-lang')" title="Ngôn ngữ / Language / 言語">
+          <span id="cur-lang-flag">🇻🇳</span> <span id="cur-lang-text">VI</span> ▾
+        </button>
+        <div class="drop lang-drop" id="d-lang">
+          <div class="lang-opt active" id="lang-opt-vi" onclick="selectLanguage('vi')">
+            <span>🇻🇳</span> <span data-i18n="lang_vi">Tiếng Việt</span> <span class="l-check" id="chk-vi">✔</span>
+          </div>
+          <div class="lang-opt" id="lang-opt-en" onclick="selectLanguage('en')">
+            <span>🇺🇸</span> <span data-i18n="lang_en">English</span> <span class="l-check" id="chk-en" style="display:none">✔</span>
+          </div>
+          <div class="lang-opt" id="lang-opt-ja" onclick="selectLanguage('ja')">
+            <span>🇯🇵</span> <span data-i18n="lang_ja">日本語</span> <span class="l-check" id="chk-ja" style="display:none">✔</span>
+          </div>
+          <div style="border-top:1px solid var(--bdr);margin:4px 0"></div>
+          <div class="lang-act" onclick="setAsMyDefaultLang()">
+            <span>⭐</span> <span data-i18n="set_as_my_default">Đặt làm mặc định</span>
+          </div>
+          <div class="lang-act" id="lang-act-sys" style="display:none" onclick="openSysLangModal()">
+            <span>⚙️</span> <span data-i18n="set_sys_default">Mặc định hệ thống</span>
+          </div>
+        </div>
+      </div>
+      <div class="drop-wrap">
+        <div class="btn-bell" onclick="togDrop('d-notif')" style="background:var(--w);color:#fff;border-color:var(--w)">🔔<div class="bell-dot" id="bell-dot"></div></div>
+        <div class="drop n-drop" id="d-notif">
+          <div class="n-hd"><span data-i18n="notifications">Thông báo</span><div class="notif-acts"><button class="nb nb-a" onclick="addNtfClick()" data-i18n="btn_add">+Thêm</button><button class="nb nb-r" onclick="markRd()" data-i18n="mark_read">Xóa đã đọc</button></div></div>
+          <div id="ntf-list"></div>
+        </div>
+      </div>
+      <button class="btn bs" onclick="reloadAll()" title="Làm mới" data-i18n-title="reload">🔄</button>
+    </div>
+  </div>
+  <div id="content">
+    <!-- ══ DASHBOARD ══ -->
+        <div class="page active" id="page-dashboard">
+      <div class="ldg" id="d-ldg"><div class="spn"></div>Đang tải...</div>
+      <div id="d-body" style="display:none">
+        <div class="srow" id="srow"></div>
+        <div class="d2col">
+          <div class="card">
+            <div class="chd"><span class="cti" data-i18n="dash_recent_activity">📋 Hoạt động gần đây</span><button class="btn bs" style="font-size:11px" onclick="renderActList()">↻</button></div>
+            <div class="act-list" id="act-list"><div class="ldg"><div class="spn"></div></div></div>
+          </div>
+          <div class="card">
+            <div class="chd"><span class="cti" data-i18n="dash_urgent_tasks">🔥 Nhiệm vụ ưu tiên cao</span><span style="font-size:11px;color:var(--p);cursor:pointer" onclick="goPage('tasks',document.querySelector('[data-p=tasks]'))">Xem tất cả ›</span></div>
+            <div class="ptk-grid" id="ptk-grid"><div class="ldg"><div class="spn"></div></div></div>
+          </div>
+        </div>
+        <div class="d3col">
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_status">Trạng thái nhiệm vụ</div><div style="height:160px;position:relative"><canvas id="c-st"></canvas></div><div class="c-leg" id="c-leg"></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_progress">Phân bổ tiến độ dự án</div><div style="height:180px"><canvas id="c-pg"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_priority">Phân bổ ưu tiên nhiệm vụ</div><div style="height:180px"><canvas id="c-pri"></canvas></div></div>
+        </div>
+        <div class="d3col">
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_staff">Hiệu quả nhân viên</div><div style="height:180px"><canvas id="c-sf"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_trend">Xu hướng hoàn thành (15 ngày)</div><div style="height:180px"><canvas id="c-tr"></canvas></div></div>
+          <div class="ccrd"><div class="cc-ti" data-i18n="dash_chart_compare">So sánh dự án</div><div style="height:180px"><canvas id="c-cmp"></canvas></div></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ══ ANALYTICS ══ -->
+        <!-- ══ ANALYTICS ══ -->
+    <div class="page" id="page-analytics">
+      <div class="an-wrap">
+        <!-- ══ ANALYTICS TOOLBAR ══ -->
+        <div class="an-toolbar">
+          <div class="an-tb-item">
+            <span class="an-tb-lbl" data-i18n="an_filter_range">📅 Khung thời gian:</span>
+            <div class="an-date-inputs">
+              <span style="font-size:11px;color:var(--t2)" data-i18n="an_from">Từ:</span>
+              <input type="date" class="fc an-date-inp" id="an-from" onchange="onAnalyticsDateManualChange()">
+              <span style="font-size:11px;color:var(--t2)" data-i18n="an_to">Đến:</span>
+              <input type="date" class="fc an-date-inp" id="an-to" onchange="onAnalyticsDateManualChange()">
+            </div>
+            <div class="an-presets">
+              <button class="an-preset-btn" data-preset="all" onclick="setAnalyticsPreset('all')" data-i18n="dash_preset_all">Tất cả</button>
+              <button class="an-preset-btn" data-preset="today" onclick="setAnalyticsPreset('today')" data-i18n="dash_preset_today">Hôm nay</button>
+              <button class="an-preset-btn" data-preset="week" onclick="setAnalyticsPreset('week')" data-i18n="dash_preset_week">Tuần này</button>
+              <button class="an-preset-btn active" data-preset="month" onclick="setAnalyticsPreset('month')" data-i18n="dash_preset_month">Tháng này</button>
+              <button class="an-preset-btn" data-preset="quarter" onclick="setAnalyticsPreset('quarter')" data-i18n="dash_preset_quarter">Quý này</button>
+              <button class="an-preset-btn" data-preset="year" onclick="setAnalyticsPreset('year')" data-i18n="dash_preset_year">Năm nay</button>
+            </div>
+          </div>
+          
+          <div class="an-tb-divider"></div>
+          
+          <div class="an-tb-item">
+            <span class="an-tb-lbl" data-i18n="an_filter_project">📁 Dự án:</span>
+            <select class="fsel an-sel" id="an-pj-sel" onchange="applyAnalyticsFilter()">
+              <option value="all" data-i18n="an_all_projects">Tất cả dự án</option>
+            </select>
+          </div>
+          
+          <div class="an-tb-item" style="position:relative" id="an-staff-wrap">
+            <span class="an-tb-lbl" data-i18n="an_filter_member">👤 Nhân viên:</span>
+            <div class="staff-filter-btn" id="an-staff-btn" onclick="togAnStaffDrop(event)">
+              <span id="an-staff-label" data-i18n="an_all_members">👤 Tất cả nhân viên</span>
+              <span style="color:var(--t3);font-size:10px">▾</span>
+            </div>
+            <div class="staff-filter-drop" id="an-staff-drop" style="min-width:240px;display:none">
+              <label class="staff-cb-all">
+                <input type="checkbox" id="an-staff-all" checked onchange="anStaffSelectAll(this)">
+                <span data-i18n="an_all_members">Tất cả nhân viên</span>
+              </label>
+              <div id="an-staff-checklist" style="max-height:200px;overflow-y:auto"></div>
+              <div class="staff-filter-footer">
+                <button class="btn bp" style="flex:1;font-size:11px" onclick="applyAnStaffFilter()" data-i18n="btn_apply">✔ Áp dụng</button>
+                <button class="btn bs" style="font-size:11px" onclick="resetAnStaffFilter()" data-i18n="btn_reset">↺ Reset</button>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn bs" onclick="resetAnalyticsFilters()" title="Đặt lại bộ lọc" data-i18n-title="an_reset_tooltip" style="padding:6px 10px;font-size:12px">↺</button>
+          <div class="an-filter-summary-badge" id="an-badge-summary">...</div>
+        </div>
+
+        <!-- ══ 4 KPI CARDS ══ -->
+        <div class="an-kpi-grid" id="an-kpis">
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#e0e7ff;color:var(--p)">👥</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-members">0</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_active_members">Nhân sự tham gia</div>
+            </div>
+          </div>
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#fef3c7;color:var(--w)">📁</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-projects">0</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_linked_projects">Dự án liên quan</div>
+            </div>
+          </div>
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#dcfce7;color:var(--g)">📋</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-tasks">0</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_total_tasks">Tổng nhiệm vụ</div>
+            </div>
+          </div>
+          <div class="an-kpi-card">
+            <div class="an-kpi-icon" style="background:#ccfbf1;color:var(--cy)">🎯</div>
+            <div>
+              <div class="an-kpi-val" id="an-val-ontime">0%</div>
+              <div class="an-kpi-lbl" data-i18n="an_kpi_ontime_rate">Tỷ lệ đúng hạn</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ CHARTS GRID (2 columns) ══ -->
+        <div class="an-chart-grid">
+          <!-- Chart 1: Workload & Status -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_workload">📊 Khối lượng & Tiến độ theo thành viên</span>
+              <span class="an-chart-sub" id="an-sub-workload"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-workload"></canvas>
+            </div>
+          </div>
+          
+          <!-- Chart 2: Radar Comparison -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_radar">🕸️ Đánh giá đa chiều năng lực đóng góp</span>
+              <span class="an-chart-sub" id="an-sub-radar"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-radar"></canvas>
+            </div>
+          </div>
+          
+          <!-- Chart 3: Project Participation Share -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_pj_share">🍩 Tỷ trọng tham gia các dự án</span>
+              <span class="an-chart-sub" id="an-sub-pj-share"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-pj-share"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 4: Workload Distribution per Project -->
+          <div class="an-chart-card">
+            <div class="an-chart-hd">
+              <span class="an-chart-ti" data-i18n="an_chart_trend">📈 Phân bổ công việc qua từng dự án</span>
+              <span class="an-chart-sub" id="an-sub-trend"></span>
+            </div>
+            <div style="position:relative;height:280px">
+              <canvas id="an-c-trend"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ DETAIL & DRILL-DOWN TABLE ══ -->
+        <div class="an-table-card">
+          <div class="an-table-hd">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="an-chart-ti" data-i18n="an_tbl_title">📋 Bảng Tổng Hợp Chi Tiết Đóng Góp & Dự Án</span>
+              <span class="an-badge an-badge-blue" id="an-tbl-count-badge">0 thành viên</span>
+            </div>
+            <div class="psrch" style="min-width:180px">
+              <span style="color:var(--t3)">🔍</span>
+              <input id="an-tbl-srch" placeholder="Tìm thành viên..." data-i18n-ph="an_search_member" oninput="filterAnalyticsTable(this.value)">
+            </div>
+          </div>
+          <div class="tblw" style="max-height:420px;overflow-y:auto">
+            <table class="an-table">
+              <thead>
+                <tr>
+                  <th data-i18n="an_tbl_member">Thành viên</th>
+                  <th data-i18n="an_tbl_projects">Dự án tham gia</th>
+                  <th style="text-align:center" data-i18n="an_tbl_tasks">Số task</th>
+                  <th style="text-align:center" data-i18n="an_tbl_done">Đã xong</th>
+                  <th style="text-align:center" data-i18n="an_tbl_progress">Đang làm</th>
+                  <th style="text-align:center" data-i18n="an_tbl_overdue">Quá hạn</th>
+                  <th style="min-width:130px" data-i18n="an_tbl_rate">Tỷ lệ hoàn thành</th>
+                  <th style="text-align:center" data-i18n="an_tbl_ranking">Đánh giá</th>
+                </tr>
+              </thead>
+              <tbody id="an-table-tbody">
+                <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--t2)">Đang tải...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROJECTS & TASKS ══ -->
+    <?!= include('Page_Projects_Tasks'); ?>
+
+    <!-- ══ GANTT CHART ══ -->
+    <?!= include('Page_Gantt'); ?>
+
+    <!-- ══ TIMESHEET (QUẢN LÝ THỜI GIAN) ══ -->
+    <?!= include('Page_Timesheet'); ?>
+
+    <!-- ══ TAXONOMY & ACTIVITY LOG ══ -->
+    <?!= include('Page_Taxonomy_Log'); ?>
+  </div>
+</div>
+</div><!-- /wrap -->
+
+<!-- ══ GLOBAL SHARED MODALS ══ -->
+<!-- ══ MODAL: PROJECT DETAIL ══ -->
+<div class="ov" id="m-pd">
+  <div class="modal modal-xl">
+    <div class="mhd" style="padding:14px 18px 0">
+      <h3 id="m-pd-ti">Chi tiết dự án</h3>
+      <div style="display:flex;gap:7px;align-items:center">
+        <button class="btn bg2" onclick="openTkMod(null,_pdPjId)" data-i18n="add_task">+ Thêm nhiệm vụ</button>
+        <button class="btn bp" style="font-size:12px;padding:6px 11px;display:inline-flex;align-items:center;gap:4px" onclick="openTkMod(null,_pdPjId,'bulk')" data-i18n="btn_bulk_add">⚡ Tạo hàng loạt</button>
+        <button class="mcl" onclick="closeModal('m-pd')">✕</button>
+      </div>
+    </div>
+    <div class="mbd" style="padding:12px">
+      <div class="pd-wrap">
+        <!-- LEFT PANEL (stats + members) -->
+        <div class="pd-left">
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px" data-i18n="nav_dashboard">Tổng quan</div>
+          <div class="pd-stat"><div class="pd-stat-num" id="pd-total">-</div><div class="pd-stat-lbl" data-i18n="dash_card_total_tasks">Tổng nhiệm vụ</div></div>
+          <div class="pd-stat" style="border-left:3px solid var(--g)"><div class="pd-stat-num" id="pd-done" style="color:var(--g)">-</div><div class="pd-stat-lbl" data-i18n="dash_stat_completed">Hoàn thành</div></div>
+          <div class="pd-stat" style="border-left:3px solid var(--p)"><div class="pd-stat-num" id="pd-ip" style="color:var(--p)">-</div><div class="pd-stat-lbl" data-i18n="st_in_progress">Đang thực hiện</div></div>
+          <div class="pd-stat" style="border-left:3px solid var(--d)"><div class="pd-stat-num" id="pd-ov" style="color:var(--d)">-</div><div class="pd-stat-lbl" data-i18n="st_overdue">Quá hạn</div></div>
+          <div class="pd-stat">
+            <div class="pd-prog">
+              <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--t2)" data-i18n="dash_chart_progress">Tiến độ chung</span><span class="pd-prog-pct" id="pd-pct">0%</span></div>
+              <div class="pd-prog-bar"><div class="pd-prog-fill" id="pd-bar" style="width:0%"></div></div>
+            </div>
+          </div>
+          <!-- ══ MEMBER SECTION ══ -->
+          <div style="border-top:1px solid var(--bdr);padding-top:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:12px;font-weight:700" data-i18n="nav_users">👥 Thành viên</span>
+              <span id="pd-mem-count" class="pd-mem-badge">0</span>
+            </div>
+            <div id="pd-mem-list" style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px">
+              <div style="font-size:10px;color:var(--t3)" data-i18n="dash_no_act">Chưa có thành viên</div>
+            </div>
+            <button class="pd-mem-btn" onclick="openMemMod()" data-i18n="manage_members">
+              ⚙ Quản lý thành viên
+            </button>
+          </div>
+        </div>
+        <div class="pd-right">
+          <div id="pd-tgrid" class="pd-tgrid"><div class="ldg"><div class="spn"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ALL TASKS ══ -->
+<div class="ov" id="m-at">
+  <div class="modal modal-xl">
+    <div class="mhd">
+      <h3 id="m-at-ti">Danh sách tất cả nhiệm vụ</h3>
+      <button class="mcl" onclick="closeModal('m-at')">✕</button>
+    </div>
+    <div class="at-search"><input id="at-srch" placeholder="🔍 Tìm kiếm..." oninput="filterAtGrid(this.value)"></div>
+    <div class="at-grid" id="at-grid"><div class="ldg"><div class="spn"></div></div></div>
+  </div>
+</div>
+
+<!-- ══ MODAL: MEMBER MANAGEMENT ══ -->
+<div class="ov" id="m-mem">
+  <div class="modal" style="max-width:500px">
+    <div class="mhd">
+      <h3 id="m-mem-ti">👥 Quản lý Thành viên Dự án</h3>
+      <button class="mcl" onclick="closeModal('m-mem')">✕</button>
+    </div>
+    <div class="mbd">
+      <!-- Add from existing users -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Thêm từ danh sách hệ thống</div>
+        <div style="display:flex;gap:6px">
+          <select class="fc" id="mem-sel" style="flex:1">
+            <option value="">-- Chọn thành viên --</option>
+          </select>
+          <button class="btn bp" onclick="addMemFromList()">+ Thêm</button>
+        </div>
+      </div>
+      <!-- Create new by name only -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Tạo thành viên mới (chỉ cần tên)</div>
+        <div style="display:flex;gap:6px">
+          <input class="fc" id="mem-new-name" placeholder="Ví dụ: Nguyễn Văn A, Member 1..." style="flex:1">
+          <button class="btn bg2" onclick="addMemByName()">✚ Tạo mới</button>
+        </div>
+        <div style="font-size:10px;color:var(--t3);margin-top:4px">💡 Không cần email — tạo nhanh để giao nhiệm vụ ngay</div>
+      </div>
+      <!-- Current list -->
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.4px">Thành viên hiện tại</span>
+          <span id="mem-cur-count" class="pd-mem-badge">0</span>
+        </div>
+        <div id="mem-cur-list" class="mem-list-wrap">
+          <div style="text-align:center;color:var(--t3);font-size:11px;padding:16px">Chưa có thành viên nào</div>
+        </div>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bs" onclick="closeModal('m-mem')" data-i18n="btn_close">Đóng</button>
+      <button class="btn bp" onclick="saveMembers()" data-i18n="btn_save">💾 Lưu thành viên</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADD NOTIF ══ -->
+<div class="ov" id="m-ntf">
+  <div class="modal" style="max-width:380px">
+    <div class="mhd"><h3 data-i18n="notifications">Thêm Thông Báo</h3><button class="mcl" onclick="closeModal('m-ntf')">✕</button></div>
+    <div class="mbd"><div class="fg"><label class="fl">Nội dung</label><textarea class="fc" id="ntf-inp" rows="3" placeholder="Nhập nội dung..."></textarea></div></div>
+    <div class="mft"><button class="btn bs" onclick="closeModal('m-ntf')" data-i18n="btn_cancel">Hủy</button><button class="btn bp" onclick="saveNtf()" data-i18n="btn_add">Thêm</button></div>
+  </div>
+</div>
+
+<!-- ══ TASK FULL EDIT PANEL ══ -->
+<div id="task-panel">
+  <div id="task-panel-inner">
+    <div class="tp-header">
+      <h3 data-i18n="modal_task_detail">✏ Chỉnh sửa nhiệm vụ</h3>
+      <div class="tp-hacts">
+        <button class="btn bp" onclick="saveFullTk()" data-i18n="btn_save">💾 Cập nhật</button>
+        <div style="position:relative">
+          <button class="btn" style="background:var(--w);color:#fff" onclick="togDrop('tp-rm-add')">🔔 Nhắc việc</button>
+          <div class="drop" id="tp-rm-add" style="right:0;min-width:260px;padding:12px">
+            <div style="font-size:12px;font-weight:600;margin-bottom:8px">Thêm nhắc việc</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <input type="date" class="fc" id="rm-new-date" style="font-size:11px">
+              <textarea class="fc" id="rm-new-text" rows="2" placeholder="Nội dung nhắc việc..." style="font-size:11px;min-height:60px"></textarea>
+              <button class="btn bp" onclick="addReminder()" data-i18n="btn_add">+ Thêm</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn bs" onclick="closeTaskPanel()" data-i18n="btn_close">✕ Đóng</button>
+      </div>
+    </div>
+    <div class="tp-body">
+      <!-- Col 1 -->
+      <div class="tp-col">
+        <div class="tp-col-ti">Thông tin cơ bản</div>
+        <input type="hidden" id="tp-id">
+        <!-- Khối phân loại ký tự chuẩn trong Task Panel -->
+        <div class="fg" style="background:#f8fafc;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;margin-bottom:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <label class="fl" style="margin:0;font-weight:700;color:var(--tx)" data-i18n="tax_prefix_badge">
+              📐 Ký tự phân loại chuẩn (Taxonomy Prefix)
+            </label>
+            <span id="tp-tax-preview-badge" style="font-size:11px;font-family:monospace;padding:2px 8px;border-radius:4px;background:#eef2ff;color:var(--p);border:1px solid #c7d2fe;font-weight:700">
+              [CHƯA GÁN MÃ]
+            </span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+            <div>
+              <label style="font-size:10px;color:var(--t2);font-weight:600" data-i18n="tax_lbl_cat">1. Nhóm (Category)</label>
+              <select class="fc" id="tp-cat" onchange="onTaskTaxonomyChange('tp')" style="font-size:11px;padding:4px 6px">
+                <option value="">-- Chọn Nhóm --</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:10px;color:var(--t2);font-weight:600" data-i18n="tax_lbl_phase">2. Giai đoạn (Phase)</label>
+              <select class="fc" id="tp-phase" onchange="onTaskTaxonomyChange('tp')" style="font-size:11px;padding:4px 6px">
+                <option value="">-- Chọn Phase --</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:10px;color:var(--t2);font-weight:600" data-i18n="tax_lbl_disc">3. Chi tiết (Discipline)</label>
+              <select class="fc" id="tp-disc" onchange="onTaskTaxonomyChange('tp')" style="font-size:11px;padding:4px 6px">
+                <option value="">-- Chọn Discipline --</option>
+              </select>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);margin-top:4px">
+            💡 Chọn các mục trên để tự động chèn tiền tố chuẩn vào tên công việc bên dưới.
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Tên nhiệm vụ <span class="req">*</span></label><input class="fc" id="tp-nm" placeholder="Tên nhiệm vụ..."></div>
+        <div class="fg"><label class="fl">Thuộc dự án <span class="req">*</span></label><select class="fc" id="tp-pj" onchange="refreshAsCombo('tp')"></select></div>
+        <div class="fg"><label class="fl">Mô tả</label><textarea class="fc" id="tp-ds" placeholder="Mô tả..."></textarea></div>
+        <div class="frow">
+          <div class="fg">
+            <label class="fl">Người thực hiện</label>
+            <div class="as-combo" id="tp-as-combo">
+              <div class="as-combo-box" onclick="focusAsInp('tp')">
+                <div class="as-chips" id="tp-as-chips"></div>
+                <input class="as-combo-inp" id="tp-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
+                  oninput="showAsCombo('tp')" onfocus="showAsCombo('tp')" onkeydown="handleAsKeydown(event, 'tp')">
+              </div>
+              <div class="as-combo-list" id="tp-as-list"></div>
+            </div>
+          </div>
+          <div class="fg"><label class="fl">Ưu tiên</label>
+            <select class="fc" id="tp-pr"><option>Thấp</option><option>Trung bình</option><option>Cao</option><option>Khẩn cấp</option></select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label class="fl">Ngày bắt đầu</label><input type="date" class="fc" id="tp-sd"></div>
+          <div class="fg"><label class="fl">Hạn chót</label><input type="date" class="fc" id="tp-dl"></div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label class="fl">Trạng thái</label>
+            <select class="fc" id="tp-st"><option>Chờ thực hiện</option><option>Đang thực hiện</option><option>Chờ duyệt</option><option>Hoàn thành</option><option>Tạm dừng</option><option>Hủy</option></select>
+          </div>
+          <div class="fg">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+              <label class="fl" style="margin:0">Tiến độ (<span id="tp-pv">0</span>%)</label>
+              <div style="display:flex;align-items:center;gap:3px">
+                <input type="number" id="tp-pg-num" class="fc" min="0" max="100" value="0"
+                  style="width:58px;height:24px;padding:2px 5px;font-size:12px;font-weight:600;text-align:right"
+                  oninput="syncTpProgress(this.value, 'num')"
+                  onchange="syncTpProgress(this.value, 'num')">
+                <span style="font-size:11px;font-weight:600;color:var(--t2)">%</span>
+              </div>
+            </div>
+            <input type="range" id="tp-pg" min="0" max="100" value="0" style="width:100%;accent-color:var(--p);cursor:pointer"
+              oninput="syncTpProgress(this.value, 'range')">
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Ngày hoàn thành</label><input type="date" class="fc" id="tp-fin"></div>
+        <div class="fg"><label class="fl">Ghi chú</label><textarea class="fc" id="tp-nt" rows="2" placeholder="Ghi chú..."></textarea></div>
+      </div>
+      <!-- Col 2 -->
+      <div class="tp-col">
+        <div class="tp-col-ti">Mục tiêu & Kết quả</div>
+        <div class="fg"><label class="fl">Mục tiêu</label><textarea class="fc" id="tp-tg" rows="4" placeholder="Mô tả mục tiêu..."></textarea></div>
+        <div class="fg">
+          <label class="fl">Link kết quả <span style="color:var(--t3);font-weight:400">(mỗi link 1 dòng)</span></label>
+          <textarea class="lr-area fc" id="tp-lr" rows="6" placeholder="https://link1.com&#10;https://link2.com&#10;..." oninput="previewLinks()"></textarea>
+          <div class="lr-preview" id="lr-preview"></div>
+        </div>
+        <div class="fg"><label class="fl">Kết quả đầu ra</label><textarea class="fc" id="tp-or" rows="4" placeholder="Mô tả kết quả..."></textarea></div>
+      </div>
+      <!-- Col 3 -->
+      <div class="tp-col" style="background:#fafbfd">
+        <div class="tp-col-ti" style="display:flex;justify-content:space-between">
+          <span>🔔 Lịch sử nhắc việc</span>
+          <span id="rm-count" style="font-size:10px;font-weight:400;color:var(--t2)"></span>
+        </div>
+        <div class="rm-list" id="rm-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL CÀI ĐẶT NGÔN NGỮ MẶC ĐỊNH HỆ THỐNG (ADMIN) ══ -->
+<div class="ov" id="m-sys-lang">
+  <div class="modal" style="max-width:420px">
+    <div class="mhd">
+      <h3 data-i18n="modal_sys_lang">⚙️ Cài đặt ngôn ngữ mặc định hệ thống</h3>
+      <button class="mcl" onclick="closeModal('m-sys-lang')">✕</button>
+    </div>
+    <div class="mbd" style="padding:16px 20px">
+      <div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.5" data-i18n="sys_lang_desc">
+        Chọn ngôn ngữ mặc định cho toàn bộ hệ thống. Người dùng mới khi truy cập lần đầu sẽ được áp dụng ngôn ngữ này nếu chưa thiết lập tùy chọn cá nhân.
+      </div>
+      <div class="fg">
+        <label class="fl" data-i18n="sys_lang_select_lbl">Ngôn ngữ mặc định hệ thống</label>
+        <select class="fc" id="sys-lang-sel">
+          <option value="vi">🇻🇳 Tiếng Việt</option>
+          <option value="en">🇺🇸 English</option>
+          <option value="ja">🇯🇵 日本語</option>
+        </select>
+      </div>
+    </div>
+    <div class="mft">
+      <button class="btn bs" onclick="closeModal('m-sys-lang')" data-i18n="btn_cancel">Hủy</button>
+      <button class="btn bp" onclick="saveSysDefaultLang()" data-i18n="btn_save">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ CLIENT-SIDE JAVASCRIPT MODULES ══ -->
+<?!= include('JS_I18n'); ?>
+<?!= include('JS_App'); ?>
+<?!= include('JS_Timesheet'); ?>
+
+</body>
+</html>

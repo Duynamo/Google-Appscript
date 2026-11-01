@@ -1,0 +1,1502 @@
+<script>
+
+// ═══════════════════════════════════════════════════════════
+//  TIMESHEET (QUẢN LÝ THỜI GIAN) CONTROLLER
+// ═══════════════════════════════════════════════════════════
+
+const TS_SLOT_DEFINITIONS = [
+  // Morning OT (06:00 - 08:00)
+  { start: "06:00", end: "06:30", type: "ot_morning", isOT: true },
+  { start: "06:30", end: "07:00", type: "ot_morning", isOT: true },
+  { start: "07:00", end: "07:30", type: "ot_morning", isOT: true },
+  { start: "07:30", end: "08:00", type: "ot_morning", isOT: true },
+
+  // Official Morning (08:00 - 12:00)
+  { start: "08:00", end: "08:30", type: "official_morning", isOT: false },
+  { start: "08:30", end: "09:00", type: "official_morning", isOT: false },
+  { start: "09:00", end: "09:30", type: "official_morning", isOT: false },
+  { start: "09:30", end: "10:00", type: "official_morning", isOT: false },
+  { start: "10:00", end: "10:30", type: "official_morning", isOT: false },
+  { start: "10:30", end: "11:00", type: "official_morning", isOT: false },
+  { start: "11:00", end: "11:30", type: "official_morning", isOT: false },
+  { start: "11:30", end: "12:00", type: "official_morning", isOT: false },
+
+  // Lunch Break (12:00 - 13:00) - 2 locked slots
+  { start: "12:00", end: "12:30", type: "lunch", isLunch: true },
+  { start: "12:30", end: "13:00", type: "lunch", isLunch: true },
+
+  // Official Afternoon (13:00 - 17:00)
+  { start: "13:00", end: "13:30", type: "official_afternoon", isOT: false },
+  { start: "13:30", end: "14:00", type: "official_afternoon", isOT: false },
+  { start: "14:00", end: "14:30", type: "official_afternoon", isOT: false },
+  { start: "14:30", end: "15:00", type: "official_afternoon", isOT: false },
+  { start: "15:00", end: "15:30", type: "official_afternoon", isOT: false },
+  { start: "15:30", end: "16:00", type: "official_afternoon", isOT: false },
+  { start: "16:00", end: "16:30", type: "official_afternoon", isOT: false },
+  { start: "16:30", end: "17:00", type: "official_afternoon", isOT: false },
+
+  // Evening OT (17:00 - 22:00)
+  { start: "17:00", end: "17:30", type: "ot_evening", isOT: true },
+  { start: "17:30", end: "18:00", type: "ot_evening", isOT: true },
+  { start: "18:00", end: "18:30", type: "ot_evening", isOT: true },
+  { start: "18:30", end: "19:00", type: "ot_evening", isOT: true },
+  { start: "19:00", end: "19:30", type: "ot_evening", isOT: true },
+  { start: "19:30", end: "20:00", type: "ot_evening", isOT: true },
+  { start: "20:00", end: "20:30", type: "ot_evening", isOT: true },
+  { start: "20:30", end: "21:00", type: "ot_evening", isOT: true },
+  { start: "21:00", end: "21:30", type: "ot_evening", isOT: true },
+  { start: "21:30", end: "22:00", type: "ot_evening", isOT: true }
+];
+
+let _tsCurrentStaff = null;
+let _tsStaffList = [];
+let _tsSelectedDate = "";
+let _tsHasExistingData = false;
+let _tsExistingCount = 0;
+let _tsEditModeActive = false;
+let _tsServerLoadedSlots = [];
+let _tsShowMorningOt = false;
+let _tsShowEveningOt = false;
+let _tsCopiedRow = null;
+
+function _formatDateYMD(d) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function loadPgTimesheet() {
+  if (!_tsSelectedDate) {
+    _tsSelectedDate = _formatDateYMD(new Date());
+  }
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+
+  // Fetch staff list if not loaded yet
+  if (!_tsStaffList || !_tsStaffList.length) {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success) {
+          _tsStaffList = res.staffList || [];
+          _initTimesheetStaffDropdown(res.currentStaffCode, res.isLevel2);
+          loadTimesheetData();
+        } else {
+          toast((res && res.error) || "Lỗi tải danh sách nhân sự", "error");
+        }
+      })
+      .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+      .getStaffListForTimesheet();
+  } else {
+    loadTimesheetData();
+  }
+}
+
+function _initTimesheetStaffDropdown(defaultStaffCode, isLevel2) {
+  const sel = document.getElementById('ts-staff-sel');
+  if (!sel) return;
+
+  sel.innerHTML = _tsStaffList.map(st => `
+    <option value="${st.code}">${st.code} - ${st.name}</option>
+  `).join('');
+
+  if (defaultStaffCode) {
+    sel.value = defaultStaffCode;
+  }
+  if (isLevel2) {
+    sel.disabled = true;
+    sel.title = "Quyền Cấp 2: Chỉ được xem và nhập thời gian cho chính mình";
+  } else {
+    sel.disabled = false;
+  }
+
+  _updateStaffInfoDisplay(sel.value);
+}
+
+function _updateStaffInfoDisplay(staffCode) {
+  const st = _tsStaffList.find(x => x.code === staffCode) || {};
+  _tsCurrentStaff = st;
+
+  const rankBadge = document.getElementById('ts-staff-rank-badge');
+  if (rankBadge) {
+    rankBadge.textContent = st.rank || 'Nhân viên';
+  }
+
+  const linkBtn = document.getElementById('ts-sheet-link-btn');
+  const linkWrap = document.getElementById('ts-sheet-link-wrap');
+  if (linkBtn && linkWrap) {
+    if (st.sheetUrl) {
+      linkBtn.href = st.sheetUrl;
+      linkBtn.style.display = 'inline-flex';
+    } else {
+      linkBtn.href = '#';
+      linkBtn.style.display = 'none';
+    }
+  }
+}
+
+function onTimesheetStaffChange(staffCode) {
+  _updateStaffInfoDisplay(staffCode);
+  loadTimesheetData();
+}
+
+function onTimesheetDateChange(val) {
+  if (!val) return;
+  _tsSelectedDate = val;
+  loadTimesheetData();
+}
+
+function stepTimesheetDate(delta) {
+  const cur = _tsSelectedDate ? new Date(_tsSelectedDate) : new Date();
+  cur.setDate(cur.getDate() + delta);
+  _tsSelectedDate = _formatDateYMD(cur);
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+  loadTimesheetData();
+}
+
+function setTimesheetQuickDate(type) {
+  const d = new Date();
+  if (type === 'yesterday') {
+    d.setDate(d.getDate() - 1);
+  }
+  _tsSelectedDate = _formatDateYMD(d);
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+  loadTimesheetData();
+}
+
+function toggleMorningOt() {
+  _tsShowMorningOt = !_tsShowMorningOt;
+  const badge = document.getElementById('ts-m-ot-badge');
+  if (badge) badge.textContent = _tsShowMorningOt ? '(Hiện)' : '(Ẩn)';
+  renderTimesheetGrid();
+}
+
+function toggleEveningOt() {
+  _tsShowEveningOt = !_tsShowEveningOt;
+  const badge = document.getElementById('ts-e-ot-badge');
+  if (badge) badge.textContent = _tsShowEveningOt ? '(Hiện)' : '(Ẩn)';
+  renderTimesheetGrid();
+}
+
+function loadTimesheetData(forceRefresh) {
+  const staffSel = document.getElementById('ts-staff-sel');
+  const staffCode = staffSel ? staffSel.value : '';
+  if (!staffCode || !_tsSelectedDate) return;
+
+  const tbody = document.getElementById('ts-tbody');
+  if (tbody) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="ldg"><div class="spn"></div></div></td></tr>`;
+  }
+  const syncStatus = document.getElementById('ts-sync-status');
+  if (syncStatus) syncStatus.textContent = "⏳ Đang tải dữ liệu...";
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (syncStatus) syncStatus.textContent = "✅ Đã đồng bộ";
+      if (res && res.success) {
+        _tsHasExistingData = !!res.hasData;
+        _tsExistingCount = res.count || 0;
+        _tsServerLoadedSlots = res.records || [];
+        _tsEditModeActive = false;
+
+        // Auto-show OT if existing records contain OT slots
+        const hasMorningOt = _tsServerLoadedSlots.some(r => r.isOT && (r.startTime < "08:00"));
+        const hasEveningOt = _tsServerLoadedSlots.some(r => r.isOT && (r.startTime >= "17:00"));
+        if (hasMorningOt) _tsShowMorningOt = true;
+        if (hasEveningOt) _tsShowEveningOt = true;
+
+        const mBadge = document.getElementById('ts-m-ot-badge');
+        if (mBadge) mBadge.textContent = _tsShowMorningOt ? '(Hiện)' : '(Ẩn)';
+        const eBadge = document.getElementById('ts-e-ot-badge');
+        if (eBadge) eBadge.textContent = _tsShowEveningOt ? '(Hiện)' : '(Ẩn)';
+
+        _updateTimesheetToolbarState();
+        renderTimesheetGrid(_tsServerLoadedSlots);
+      } else {
+        toast((res && res.error) || "Lỗi tải bảng chấm công", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (syncStatus) syncStatus.textContent = "❌ Lỗi tải";
+      toast(err.message || "Lỗi máy chủ", "error");
+    })
+    .getTimesheetData(staffCode, _tsSelectedDate);
+}
+
+function _updateTimesheetToolbarState() {
+  const existingBanner = document.getElementById('ts-existing-banner');
+  const editBanner = document.getElementById('ts-edit-banner');
+  const btnSave = document.getElementById('ts-btn-save');
+  const btnEditMode = document.getElementById('ts-btn-edit-mode');
+  const btnCancelEdit = document.getElementById('ts-btn-cancel-edit');
+  const btnOverwrite = document.getElementById('ts-btn-overwrite');
+
+  if (_tsHasExistingData) {
+    if (_tsEditModeActive) {
+      if (existingBanner) existingBanner.style.display = 'none';
+      if (editBanner) editBanner.style.display = 'flex';
+      if (btnSave) btnSave.style.display = 'none';
+      if (btnEditMode) btnEditMode.style.display = 'none';
+      if (btnCancelEdit) btnCancelEdit.style.display = 'inline-flex';
+      if (btnOverwrite) btnOverwrite.style.display = 'inline-flex';
+    } else {
+      if (existingBanner) existingBanner.style.display = 'flex';
+      if (editBanner) editBanner.style.display = 'none';
+      if (btnSave) {
+        btnSave.style.display = 'inline-flex';
+        btnSave.disabled = true;
+        btnSave.style.opacity = '0.5';
+        btnSave.style.cursor = 'not-allowed';
+        btnSave.title = t('ts_existing_data_warning');
+      }
+      if (btnEditMode) btnEditMode.style.display = 'inline-flex';
+      if (btnCancelEdit) btnCancelEdit.style.display = 'none';
+      if (btnOverwrite) btnOverwrite.style.display = 'none';
+    }
+  } else {
+    if (existingBanner) existingBanner.style.display = 'none';
+    if (editBanner) editBanner.style.display = 'none';
+    if (btnSave) {
+      btnSave.style.display = 'inline-flex';
+      btnSave.disabled = false;
+      btnSave.style.opacity = '1';
+      btnSave.style.cursor = 'pointer';
+      btnSave.title = "";
+    }
+    if (btnEditMode) btnEditMode.style.display = 'none';
+    if (btnCancelEdit) btnCancelEdit.style.display = 'none';
+    if (btnOverwrite) btnOverwrite.style.display = 'none';
+  }
+}
+
+function enableTimesheetEditMode() {
+  _tsEditModeActive = true;
+  _updateTimesheetToolbarState();
+  renderTimesheetGrid();
+  toast(t('ts_edit_mode_active'), 'info');
+}
+
+function cancelTimesheetEditMode() {
+  _tsEditModeActive = false;
+  _updateTimesheetToolbarState();
+  renderTimesheetGrid(_tsServerLoadedSlots);
+}
+
+function renderTimesheetGrid(prefillData) {
+  const tbody = document.getElementById('ts-tbody');
+  if (!tbody) return;
+
+  const currentValues = {};
+  if (!prefillData) {
+    // Preserve current input values from DOM before re-rendering
+    TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+      const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+      const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+      const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+      const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+      const note = document.getElementById(`ts-note-${idx}`)?.value || '';
+      if (pj || cat || ph || disc || note) {
+        currentValues[`${slot.start}-${slot.end}`] = { pj, cat, ph, disc, note };
+      }
+    });
+  } else {
+    prefillData.forEach(r => {
+      currentValues[`${r.startTime}-${r.endTime}`] = {
+        pj: r.projectCode || '',
+        cat: r.categoryCode || '',
+        ph: r.phaseCode || '',
+        disc: r.disciplineCode || '',
+        note: r.note || ''
+      };
+    });
+  }
+
+  // Build taxonomy dropdown options with localized labels
+  const pjOptions = `<option value="">-</option>` + (S.taxonomy?.projectCodes || []).map(p => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(p) : (p.name_vi || p.name || '');
+    return `<option value="${p.code}" title="${lbl}">${p.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const catOptions = `<option value="">-</option>` + (S.taxonomy?.categories || []).map(c => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(c) : (c.name_vi || c.name || '');
+    return `<option value="${c.code}" title="${lbl}">${c.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const phOptions = `<option value="">-</option>` + (S.taxonomy?.phases || []).map(ph => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(ph) : (ph.name_vi || ph.name || '');
+    return `<option value="${ph.code}" title="${lbl}">${ph.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const discOptions = `<option value="">-</option>` + (S.taxonomy?.disciplines || []).map(d => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(d) : (d.name_vi || d.name || '');
+    return `<option value="${d.code}" title="${lbl}">${d.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const isReadOnly = _tsHasExistingData && !_tsEditModeActive;
+  const roClass = isReadOnly ? ' readonly' : '';
+  const roAttr = isReadOnly ? ' disabled' : '';
+
+  let html = '';
+  let rowSeq = 1;
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    // Overtime visibility toggles
+    if (slot.type === 'ot_morning' && !_tsShowMorningOt) return;
+    if (slot.type === 'ot_evening' && !_tsShowEveningOt) return;
+
+    // OT section divider banners
+    if (slot.type === 'ot_morning' && slot.start === '06:00') {
+      html += `<tr class="ts-ot-header-row"><td colspan="8" style="padding:6px 12px">🌅 ${t('ts_morning_ot')}</td></tr>`;
+    }
+    if (slot.type === 'ot_evening' && slot.start === '17:00') {
+      html += `<tr class="ts-ot-header-row"><td colspan="8" style="padding:6px 12px">🌙 ${t('ts_evening_ot')}</td></tr>`;
+    }
+
+    if (slot.isLunch) {
+      html += `
+        <tr class="ts-lunch-row">
+          <td style="text-align:center;font-size:11px;opacity:0.7">${rowSeq++}</td>
+          <td><span class="ts-time-badge" style="background:#fef08a;color:#854d0e">${slot.start} - ${slot.end}</span></td>
+          <td colspan="5" style="padding:6px 14px">☕ ${t('ts_lunch_break')}</td>
+          <td style="text-align:center"><span style="font-size:11px;opacity:0.7">🔒</span></td>
+        </tr>
+      `;
+      return;
+    }
+
+    const val = currentValues[`${slot.start}-${slot.end}`] || {};
+    const badgeClass = slot.isOT ? 'ts-time-badge ot' : 'ts-time-badge';
+
+    html += `
+      <tr id="ts-row-${idx}" data-slot-idx="${idx}">
+        <td style="text-align:center;font-size:11px;color:var(--t3)">${rowSeq++}</td>
+        <td>
+          <span class="${badgeClass}">${slot.start} - ${slot.end}</span>
+          ${slot.isOT ? '<span style="font-size:9px;color:#ea580c;font-weight:700;margin-left:2px">OT</span>' : ''}
+        </td>
+        <td>
+          <select id="ts-pj-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${pjOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-cat-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${catOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-ph-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${phOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-disc-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${discOptions}
+          </select>
+        </td>
+        <td>
+          <input type="text" id="ts-note-${idx}" class="ts-input${roClass}"${roAttr} placeholder="Ghi chú công việc..." value="${(val.note || '').replace(/"/g, '&quot;')}" oninput="onTimesheetInputChange(${idx})">
+        </td>
+        <td style="text-align:center">
+          <div style="display:flex;align-items:center;justify-content:center;gap:4px">
+            <button type="button" class="btn bs" style="padding:2px 6px;font-size:11px" title="${t('ts_copy_down')}" onclick="copyRowDown(${idx})"${roAttr}>⬇️</button>
+            <button type="button" class="btn bs" style="padding:2px 6px;font-size:11px;color:var(--d);border-color:#fee2e2" title="Xóa dòng" onclick="clearSlotRow(${idx})"${roAttr}>✕</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+
+  // Restore selected dropdown values
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const val = currentValues[`${slot.start}-${slot.end}`];
+    if (val) {
+      const pjEl = document.getElementById(`ts-pj-${idx}`);
+      const catEl = document.getElementById(`ts-cat-${idx}`);
+      const phEl = document.getElementById(`ts-ph-${idx}`);
+      const discEl = document.getElementById(`ts-disc-${idx}`);
+      if (pjEl && val.pj) pjEl.value = val.pj;
+      if (catEl && val.cat) catEl.value = val.cat;
+      if (phEl && val.ph) phEl.value = val.ph;
+      if (discEl && val.disc) discEl.value = val.disc;
+    }
+  });
+
+  updateTimesheetStats();
+  _attachTimesheetClipboardListeners();
+}
+
+function onTimesheetInputChange(idx) {
+  updateTimesheetStats();
+}
+
+function updateTimesheetStats() {
+  let officialHours = 0;
+  let otHours = 0;
+  let filledSlots = 0;
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+    const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+    const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+    const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+    const note = document.getElementById(`ts-note-${idx}`)?.value || '';
+
+    if (pj || cat || ph || disc || note.trim()) {
+      filledSlots++;
+      if (slot.isOT) {
+        otHours += 0.5;
+      } else {
+        officialHours += 0.5;
+      }
+    }
+  });
+
+  const regEl = document.getElementById('ts-stat-reg');
+  const otEl = document.getElementById('ts-stat-ot');
+  const totalEl = document.getElementById('ts-stat-total');
+  const slotsEl = document.getElementById('ts-stat-slots');
+
+  if (regEl) regEl.textContent = `${officialHours.toFixed(1)}h / 8.0h`;
+  if (otEl) otEl.textContent = `${otHours.toFixed(1)}h`;
+  if (totalEl) totalEl.textContent = `${(officialHours + otHours).toFixed(1)}h`;
+  if (slotsEl) slotsEl.textContent = `${filledSlots}`;
+}
+
+function copyRowDown(idx) {
+  const source = _getSlotData(idx);
+  if (!source) return;
+
+  // Find next valid row (skipping lunch break)
+  let targetIdx = idx + 1;
+  while (targetIdx < TS_SLOT_DEFINITIONS.length && TS_SLOT_DEFINITIONS[targetIdx].isLunch) {
+    targetIdx++;
+  }
+
+  if (targetIdx < TS_SLOT_DEFINITIONS.length) {
+    _setSlotData(targetIdx, source);
+    _highlightRow(targetIdx);
+    updateTimesheetStats();
+  }
+}
+
+function clearSlotRow(idx) {
+  _setSlotData(idx, { pj: '', cat: '', ph: '', disc: '', note: '' });
+  updateTimesheetStats();
+}
+
+function clearTimesheetInputs() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  if (!confirm(t('ts_clear_all') + "?")) return;
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (!slot.isLunch) {
+      _setSlotData(idx, { pj: '', cat: '', ph: '', disc: '', note: '' });
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_clear_all'), 'info');
+}
+
+function _getSlotData(idx) {
+  return {
+    pj: document.getElementById(`ts-pj-${idx}`)?.value || '',
+    cat: document.getElementById(`ts-cat-${idx}`)?.value || '',
+    ph: document.getElementById(`ts-ph-${idx}`)?.value || '',
+    disc: document.getElementById(`ts-disc-${idx}`)?.value || '',
+    note: document.getElementById(`ts-note-${idx}`)?.value || ''
+  };
+}
+
+function _setSlotData(idx, data) {
+  const pj = document.getElementById(`ts-pj-${idx}`);
+  const cat = document.getElementById(`ts-cat-${idx}`);
+  const ph = document.getElementById(`ts-ph-${idx}`);
+  const disc = document.getElementById(`ts-disc-${idx}`);
+  const note = document.getElementById(`ts-note-${idx}`);
+
+  if (pj && data.pj !== undefined) pj.value = data.pj;
+  if (cat && data.cat !== undefined) cat.value = data.cat;
+  if (ph && data.ph !== undefined) ph.value = data.ph;
+  if (disc && data.disc !== undefined) disc.value = data.disc;
+  if (note && data.note !== undefined) note.value = data.note;
+}
+
+function _highlightRow(idx) {
+  const row = document.getElementById(`ts-row-${idx}`);
+  if (row) {
+    row.classList.add('ts-row-highlight');
+    setTimeout(() => row.classList.remove('ts-row-highlight'), 600);
+  }
+}
+
+function bulkFillMorning() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  // Source is 08:00 slot
+  const sourceIdx = TS_SLOT_DEFINITIONS.findIndex(s => s.start === "08:00");
+  if (sourceIdx < 0) return;
+  const sourceData = _getSlotData(sourceIdx);
+  if (!sourceData.pj && !sourceData.cat && !sourceData.disc) {
+    toast("Vui lòng nhập dữ liệu khung giờ 08:00 - 08:30 trước khi điền cả buổi sáng", "error");
+    return;
+  }
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.type === 'official_morning' && idx !== sourceIdx) {
+      _setSlotData(idx, sourceData);
+      _highlightRow(idx);
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_fill_morning'), 'success');
+}
+
+function bulkFillAfternoon() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  // Source is 13:00 slot
+  const sourceIdx = TS_SLOT_DEFINITIONS.findIndex(s => s.start === "13:00");
+  if (sourceIdx < 0) return;
+  const sourceData = _getSlotData(sourceIdx);
+  if (!sourceData.pj && !sourceData.cat && !sourceData.disc) {
+    toast("Vui lòng nhập dữ liệu khung giờ 13:00 - 13:30 trước khi điền cả buổi chiều", "error");
+    return;
+  }
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.type === 'official_afternoon' && idx !== sourceIdx) {
+      _setSlotData(idx, sourceData);
+      _highlightRow(idx);
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_fill_afternoon'), 'success');
+}
+
+function copyFromYesterdayClick() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+
+  const staffCode = document.getElementById('ts-staff-sel')?.value || '';
+  if (!staffCode || !_tsSelectedDate) return;
+
+  toast("Đang nạp dữ liệu ngày hôm trước...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        if (!res.hasData || !res.records || !res.records.length) {
+          toast(`Không tìm thấy dữ liệu ngày hôm trước (${res.prevDate})`, "info");
+          return;
+        }
+
+        renderTimesheetGrid(res.records);
+        toast(`Đã sao chép ${res.records.length} khung giờ từ ngày ${res.prevDate}!`, "success");
+      } else {
+        toast((res && res.error) || "Lỗi sao chép từ hôm qua", "error");
+      }
+    })
+    .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+    .copyTimesheetFromYesterday(staffCode, _tsSelectedDate);
+}
+
+// ── Multi-level Clipboard Copy/Paste Engine (Excel & Hotkeys) ──
+function _attachTimesheetClipboardListeners() {
+  const table = document.getElementById('ts-table');
+  if (!table) return;
+
+  table.onpaste = function(e) {
+    const clipboardData = (e.clipboardData || window.clipboardData);
+    if (!clipboardData) return;
+    const text = clipboardData.getData('text');
+    if (!text) return;
+
+    // Check if pasted content is multi-column or multi-row from Excel/Sheets
+    const isTabbed = text.includes('\t');
+    const isMultiLine = text.includes('\n');
+
+    if (isTabbed || isMultiLine) {
+      e.preventDefault();
+      _handleExcelPaste(e.target, text);
+    }
+  };
+
+  table.onkeydown = function(e) {
+    // Hotkey Ctrl+C: Copy current row
+    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+      const activeRow = e.target.closest('tr[data-slot-idx]');
+      if (activeRow) {
+        const idx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+        _tsCopiedRow = _getSlotData(idx);
+        toast("Đã sao chép dòng vào bộ nhớ tạm", "info");
+      }
+    }
+    // Hotkey Ctrl+V: Paste copied row
+    else if ((e.ctrlKey || e.metaKey) && e.key === 'v' && _tsCopiedRow) {
+      const activeRow = e.target.closest('tr[data-slot-idx]');
+      if (activeRow) {
+        const idx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+        if (!TS_SLOT_DEFINITIONS[idx].isLunch) {
+          _setSlotData(idx, _tsCopiedRow);
+          _highlightRow(idx);
+          updateTimesheetStats();
+        }
+      }
+    }
+  };
+}
+
+function _handleExcelPaste(targetEl, rawText) {
+  const activeRow = targetEl.closest('tr[data-slot-idx]');
+  if (!activeRow) return;
+
+  let currentSlotIdx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+  const rows = rawText.trim().split(/\r?\n/).map(r => r.split('\t'));
+
+  let pastedCount = 0;
+  for (let r = 0; r < rows.length; r++) {
+    // Skip to next non-lunch slot
+    while (currentSlotIdx < TS_SLOT_DEFINITIONS.length && TS_SLOT_DEFINITIONS[currentSlotIdx].isLunch) {
+      currentSlotIdx++;
+    }
+    if (currentSlotIdx >= TS_SLOT_DEFINITIONS.length) break;
+
+    const cols = rows[r];
+    // Expected Excel columns: [Project, Category, Phase, Discipline, Note]
+    const data = {
+      pj: (cols[0] || '').trim().toUpperCase(),
+      cat: (cols[1] || '').trim().toUpperCase(),
+      ph: (cols[2] || '').trim().toUpperCase(),
+      disc: (cols[3] || '').trim().toUpperCase(),
+      note: (cols[4] || '').trim()
+    };
+
+    _setSlotData(currentSlotIdx, data);
+    _highlightRow(currentSlotIdx);
+    pastedCount++;
+    currentSlotIdx++;
+  }
+
+  updateTimesheetStats();
+  toast(`Đã dán ${pastedCount} dòng từ bảng tính (đã tự động bỏ qua giờ nghỉ trưa)!`, 'success');
+}
+
+// ── Save & Safe Overwrite Protocol ──
+function saveTimesheetClick() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  submitTimesheetData(false);
+}
+
+function confirmOverwriteClick() {
+  const msgEl = document.getElementById('m-confirm-overwrite-msg');
+  if (msgEl) {
+    msgEl.textContent = t('ts_confirm_overwrite_msg', { date: _tsSelectedDate, count: _tsExistingCount });
+  }
+  openModal('m-confirm-overwrite');
+}
+
+function submitTimesheetData(isOverwrite) {
+  if (isOverwrite) {
+    closeModal('m-confirm-overwrite');
+  }
+
+  const staffCode = document.getElementById('ts-staff-sel')?.value || '';
+  if (!staffCode || !_tsSelectedDate) {
+    toast("Vui lòng chọn nhân viên và ngày làm việc", "error");
+    return;
+  }
+
+  const entries = [];
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+    const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+    const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+    const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+    const note = (document.getElementById(`ts-note-${idx}`)?.value || '').trim();
+
+    if (pj || cat || ph || disc || note) {
+      entries.push({
+        startTime: slot.start,
+        endTime: slot.end,
+        isOT: !!slot.isOT,
+        projectCode: pj,
+        categoryCode: cat,
+        phaseCode: ph,
+        disciplineCode: disc,
+        note: note
+      });
+    }
+  });
+
+  if (!entries.length) {
+    toast("Vui lòng nhập ít nhất một khung giờ làm việc", "error");
+    return;
+  }
+
+  const payload = {
+    staffCode: staffCode,
+    dateStr: _tsSelectedDate,
+    entries: entries,
+    isOverwrite: !!isOverwrite
+  };
+
+  const btnSave = document.getElementById('ts-btn-save');
+  const btnOverwrite = document.getElementById('ts-btn-overwrite');
+  if (btnSave) btnSave.textContent = t('ts_btn_saving');
+  if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_saving');
+
+  toast("Đang lưu thời gian làm việc vào Google Sheet cá nhân...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (btnSave) btnSave.textContent = t('ts_btn_save');
+      if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_overwrite');
+
+      if (res && res.success) {
+        toast(`Đã lưu thành công ${res.savedCount || entries.length} khung giờ vào Sheet!`, "success");
+        loadTimesheetData(true);
+      } else if (res && res.requireOverwriteConfirm) {
+        // Safe check caught on server
+        _tsHasExistingData = true;
+        _tsExistingCount = res.existingCount || entries.length;
+        _updateTimesheetToolbarState();
+        confirmOverwriteClick();
+      } else {
+        toast((res && res.error) || "Lỗi khi lưu thời gian làm việc", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (btnSave) btnSave.textContent = t('ts_btn_save');
+      if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_overwrite');
+      toast(err.message || "Lỗi máy chủ", "error");
+    })
+    .saveTimesheetData(payload);
+}
+
+
+// ════════════════════════════════════════════════════════════
+//  TIMESHEET v4.7 SUB-TAB CONTROLLER & ADVANCED ANALYTICS
+// ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  TIMESHEET v4.7 SUB-TAB CONTROLLER & ADVANCED ANALYTICS
+// ════════════════════════════════════════════════════════════
+
+let _tsActiveSubTab = 'ENTRY';
+
+function switchTsSubTab(tabKey) {
+  _tsActiveSubTab = tabKey;
+  
+  ['ENTRY', 'PROJECT', 'STAFF', 'MATRIX'].forEach(k => {
+    const btn = document.getElementById('ts-subtab-btn-' + k.toLowerCase());
+    const pane = document.getElementById('ts-pane-' + k.toLowerCase());
+    if (btn) {
+      if (k === tabKey) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+    if (pane) {
+      pane.style.display = (k === tabKey) ? 'block' : 'none';
+    }
+  });
+
+  if (tabKey === 'PROJECT') {
+    initProjectActualTimeTab();
+  } else if (tabKey === 'STAFF') {
+    initStaffWorkBreakdownTab();
+  } else if (tabKey === 'MATRIX') {
+    initBatchMatrixTab();
+  }
+}
+
+// ── 1. SUB-TAB 2: PROJECT ACTUAL TIME REPORT ──
+
+
+function updateProjectScopeDropdownI18n() {
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  if (!scopeSel) return;
+  const curVal = scopeSel.value || 'all';
+  scopeSel.innerHTML = `
+    <option value="all">${t('ts_scope_all')}</option>
+    <option value="current">${t('ts_scope_current')}</option>
+    <option value="custom">${t('ts_scope_custom')}</option>
+  `;
+  scopeSel.value = curVal;
+}
+
+function initProjectActualTimeTab() {
+  const sel = document.getElementById('ts-rep-pj-sel');
+  if (!sel) return;
+
+  // Danh mục mã lỗi thời cần lọc sạch (ngăn chặn dự án bóng ma lọt vào dropdown)
+  const obsoleteCodes = new Set(["MRR01", "AMK01", "TSK01", "JUJ01", "DA010", "HAG01"]);
+
+  // 4 Dự án chuẩn chính thức của công ty
+  const officialProjects = [
+    { id: "MUR01", name: "2026_01_MUR01_室蘭市蘭東下水処理場" },
+    { id: "JJK01", name: "2026_02_JJK01_工房ヴィレッジ新築工事" },
+    { id: "AMA01", name: "2026_03_AMA01_天草市本渡浄化センター" },
+    { id: "TES01", name: "2026_04_TES01_弟子屈町弟子屈浄化センター" }
+  ];
+
+  let projectList = [];
+  const seenIds = new Set();
+
+  // Ưu tiên nạp 4 dự án chuẩn trước
+  officialProjects.forEach(dp => {
+    seenIds.add(dp.id);
+    projectList.push({ id: dp.id, name: dp.name });
+  });
+
+  // Nạp thêm các dự án hợp lệ khác từ S.projects nếu không nằm trong danh sách lỗi thời
+  if (S && S.projects && S.projects.length) {
+    S.projects.forEach(p => {
+      const pid = String(p.id || '').trim().toUpperCase();
+      if (pid && !seenIds.has(pid) && !obsoleteCodes.has(pid)) {
+        seenIds.add(pid);
+        projectList.push({
+          id: pid,
+          name: p.name || pid
+        });
+      }
+    });
+  }
+
+  // Nạp thêm từ Taxonomy nếu có
+  if (S && S.taxonomy && S.taxonomy.projectCodes && S.taxonomy.projectCodes.length) {
+    S.taxonomy.projectCodes.forEach(p => {
+      const pCode = String(p.code || p.id || '').trim().toUpperCase();
+      if (pCode && !seenIds.has(pCode) && !obsoleteCodes.has(pCode)) {
+        seenIds.add(pCode);
+        projectList.push({
+          id: pCode,
+          name: typeof tTaxonomy === 'function' ? tTaxonomy(p) : (p.name_vi || p.name || pCode)
+        });
+      }
+    });
+  }
+
+  updateProjectScopeDropdownI18n();
+  let opts = '<option value="">' + t('ts_opt_select_pj') + '</option>';
+  projectList.forEach(p => {
+    const label = (p.name && p.name.includes(p.id)) ? p.name : (p.id + ' - ' + (p.name || ''));
+    opts += '<option value="' + p.id + '">' + label + '</option>';
+  });
+  sel.innerHTML = opts;
+
+  if (projectList.length > 0 && !sel.value) {
+    sel.value = projectList[0].id;
+    loadProjectActualTimeReport();
+  }
+}
+
+function onProjectScopeChange(scope) {
+  const customDates = document.getElementById('ts-rep-custom-dates');
+  if (customDates) {
+    customDates.style.display = (scope === 'custom') ? 'flex' : 'none';
+  }
+  if (scope !== 'custom') {
+    loadProjectActualTimeReport();
+  }
+}
+
+function loadProjectActualTimeReport() {
+  const pjSel = document.getElementById('ts-rep-pj-sel');
+  const projectCode = pjSel ? pjSel.value : '';
+  if (!projectCode) return;
+
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  const scope = scopeSel ? scopeSel.value : 'all';
+  const fromDate = (document.getElementById('ts-rep-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-rep-to')?.value || '').trim();
+
+  const kpiContainer = document.getElementById('ts-rep-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+  const tbMembers = document.getElementById('ts-rep-tbody-members');
+  if (tbMembers) tbMembers.innerHTML = '<tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr>';
+  const tbDisc = document.getElementById('ts-rep-tbody-disciplines');
+  if (tbDisc) tbDisc.innerHTML = '<tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        renderProjectActualTimeReport(res);
+      } else {
+        toast((res && res.error) || 'Lỗi tải báo cáo dự án', 'error');
+      }
+    })
+    .withFailureHandler(err => toast(err.message || 'Lỗi kết nối máy chủ', 'error'))
+    .getProjectActualTimeReport(projectCode, scope, fromDate, toDate);
+}
+
+function renderProjectActualTimeReport(data) {
+  // 1. KPI Cards
+  const kpiContainer = document.getElementById('ts-rep-kpi-container');
+  if (kpiContainer) {
+    const isLifetime = (data.scope === 'all');
+    kpiContainer.innerHTML = `
+      <div class="ts-kpi-card" style="border-left:4px solid var(--p)">
+        <div class="ts-kpi-lbl">${isLifetime ? t('ts_kpi_lifetime_hours') : t('ts_kpi_actual_hours')}</div>
+        <div class="ts-kpi-val" style="color:var(--p)">${Number(data.totalLifetimeHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${isLifetime ? t('ts_kpi_lifetime_sub') : t('ts_kpi_scope_sub')}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #10b981">
+        <div class="ts-kpi-lbl">${t('ts_kpi_current_year', { year: '2026' })}</div>
+        <div class="ts-kpi-val" style="color:#10b981">${Number(data.currentYearHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_standard_hours', { hours: data.officialHours || 0 })}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #f59e0b">
+        <div class="ts-kpi-lbl">${t('ts_kpi_ot')}</div>
+        <div class="ts-kpi-val" style="color:#f59e0b">${Number(data.otHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_ot_rate', { rate: data.currentYearHours > 0 ? ((data.otHours / data.currentYearHours) * 100).toFixed(1) : 0 })}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #6366f1">
+        <div class="ts-kpi-lbl">${t('ts_kpi_engineers')}</div>
+        <div class="ts-kpi-val" style="color:#6366f1">${(data.members || []).length}</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_engineers_sub')}</div>
+      </div>
+    `;
+  }
+
+  // 2. Budget Variance & Progress Alert
+  const budgetWrap = document.getElementById('ts-rep-budget-bar-wrap');
+  if (budgetWrap) {
+    if (data.budgetHours && data.budgetHours > 0) {
+      budgetWrap.style.display = 'block';
+      const pct = data.budgetUsagePercent || 0;
+      const isOver = data.isOverBudget;
+      const barColor = isOver ? '#ef4444' : (pct > 80 ? '#f59e0b' : '#10b981');
+      const badgeClass = isOver ? 'an-badge an-badge-warn' : 'an-badge an-badge-green';
+      const badgeText = isOver
+        ? '⚠️ ' + t('ts_budget_over', { variance: data.varianceHours, pct: (pct - 100).toFixed(1) })
+        : '✅ ' + t('ts_budget_used', { pct });
+
+      budgetWrap.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div>
+            <span style="font-weight:700;font-size:13px;color:var(--tx)">${t('ts_budget_control')}</span>
+            <span style="font-size:12px;color:var(--t2);margin-left:6px">${t('ts_budget_plan')} <b>${data.budgetHours}h</b> | ${t('ts_budget_actual')} <b>${data.totalLifetimeHours}h</b></span>
+          </div>
+          <div>
+            <span class="${badgeClass}" style="font-weight:700">${badgeText}</span>
+          </div>
+        </div>
+        <div style="height:10px;background:#e2e8f0;border-radius:5px;overflow:hidden">
+          <div style="height:100%;width:${Math.min(pct, 100)}%;background:${barColor};transition:.3s"></div>
+        </div>
+      `;
+    } else {
+      budgetWrap.style.display = 'none';
+    }
+  }
+
+  // 3. Historical Snapshot Wrap (for 3-5 Year Multi-Year Projects)
+  const histWrap = document.getElementById('ts-rep-historical-wrap');
+  if (histWrap) {
+    const histYears = Object.keys(data.historicalByYear || {});
+    if (histYears.length > 0) {
+      histWrap.style.display = 'block';
+      let histHtml = `
+        <div style="background:#f8fafc;border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 14px">
+          <div style="font-weight:700;font-size:12px;color:var(--tx);margin-bottom:8px">${t('ts_historical_title')}</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+      `;
+      histYears.forEach(yr => {
+        histHtml += `
+          <div style="background:#fff;border:1px solid var(--bdr);border-radius:6px;padding:6px 12px;font-size:12px">
+            <span style="font-weight:700;color:var(--tx)">${t('ts_historical_year', { year: yr })}</span>
+            <span style="font-weight:800;color:var(--p);margin-left:4px">${data.historicalByYear[yr]}h</span>
+            <span class="badge bg-bl" style="font-size:10px;margin-left:4px">${t('ts_historical_closed')}</span>
+          </div>
+        `;
+      });
+      histHtml += `
+            <div style="background:#fff;border:1px solid var(--bdr);border-radius:6px;padding:6px 12px;font-size:12px">
+              <span style="font-weight:700;color:var(--tx)">${t('ts_historical_year', { year: '2026' })}</span>
+              <span style="font-weight:800;color:#10b981;margin-left:4px">${data.currentYearHours}h</span>
+              <span class="badge bg-gr" style="font-size:10px;margin-left:4px">${t('ts_historical_running')}</span>
+            </div>
+          </div>
+        </div>
+      `;
+      histWrap.innerHTML = histHtml;
+    } else {
+      histWrap.style.display = 'none';
+    }
+  }
+
+  // 4. Staff Contribution Table
+  const tbMembers = document.getElementById('ts-rep-tbody-members');
+  const countMembers = document.getElementById('ts-rep-member-count');
+  if (countMembers) countMembers.textContent = t('ts_count_engineers', { count: (data.members || []).length });
+
+  if (tbMembers) {
+    if (!data.members || !data.members.length) {
+      tbMembers.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_empty_project_data')}</td></tr>`;
+    } else {
+      tbMembers.innerHTML = data.members.map((m, idx) => `
+        <tr>
+          <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+          <td style="font-weight:700;color:var(--tx)">${m.code}</td>
+          <td>${m.name}</td>
+          <td style="text-align:right;font-weight:700;color:var(--p)">${m.hours}h</td>
+          <td style="text-align:right">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+              <span style="font-size:11px;font-weight:600;min-width:36px">${m.percentage}%</span>
+              <div style="width:50px;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+                <div style="width:${Math.min(m.percentage, 100)}%;height:100%;background:var(--p)"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  // 5. Discipline Breakdown Table (Hỗ trợ đa ngôn ngữ Nhật / Anh / Việt)
+  const tbDisc = document.getElementById('ts-rep-tbody-disciplines');
+  const countDisc = document.getElementById('ts-rep-disc-count');
+  if (countDisc) countDisc.textContent = t('ts_count_disciplines', { count: (data.disciplines || []).length });
+
+  if (tbDisc) {
+    if (!data.disciplines || !data.disciplines.length) {
+      tbDisc.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_empty_disc_data')}</td></tr>`;
+    } else {
+      tbDisc.innerHTML = data.disciplines.map((d, idx) => {
+        const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === d.code);
+        const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : (d.name || d.code);
+        return `
+          <tr>
+            <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+            <td style="font-weight:700;color:var(--tx)"><span class="badge bg-bl">${d.code}</span></td>
+            <td>${discName}</td>
+            <td style="text-align:right;font-weight:700;color:#0f766e">${d.hours}h</td>
+            <td style="text-align:right">
+              <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+                <span style="font-size:11px;font-weight:600;min-width:36px">${d.percentage}%</span>
+                <div style="width:50px;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+                  <div style="width:${Math.min(d.percentage, 100)}%;height:100%;background:#0f766e"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
+}
+
+// ── 2. SUB-TAB 3: STAFF WORK BREAKDOWN ──
+
+function initStaffWorkBreakdownTab() {
+  const sel = document.getElementById('ts-stf-sel');
+  if (!sel) return;
+
+  if (_tsStaffList && _tsStaffList.length) {
+    sel.innerHTML = _tsStaffList.map(st => `
+      <option value="${st.code}">${st.code} - ${st.name}</option>
+    `).join('');
+    const curVal = document.getElementById('ts-staff-sel')?.value;
+    if (curVal && sel.querySelector(`option[value="${curVal}"]`)) {
+      sel.value = curVal;
+    }
+  } else {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success) {
+          _tsStaffList = res.staffList || [];
+          sel.innerHTML = _tsStaffList.map(st => `
+            <option value="${st.code}">${st.code} - ${st.name}</option>
+          `).join('');
+          const curVal = document.getElementById('ts-staff-sel')?.value;
+          if (curVal && sel.querySelector(`option[value="${curVal}"]`)) {
+            sel.value = curVal;
+          }
+          loadStaffWorkBreakdown();
+        }
+      })
+      .getStaffListForTimesheet();
+  }
+
+  const isLevel2 = (S && S.user && S.user.role === 'Member');
+  if (isLevel2) {
+    sel.disabled = true;
+  }
+
+  setStaffQuickRange('this_month');
+}
+
+function setStaffQuickRange(type) {
+  const now = new Date();
+  let fromD = null;
+  let toD = null;
+
+  if (type === 'this_month') {
+    fromD = new Date(now.getFullYear(), now.getMonth(), 1);
+    toD = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  } else if (type === 'last_month') {
+    fromD = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    toD = new Date(now.getFullYear(), now.getMonth(), 0);
+  } else if (type === 'all') {
+    fromD = null;
+    toD = null;
+  }
+
+  const fromInp = document.getElementById('ts-stf-from');
+  const toInp = document.getElementById('ts-stf-to');
+  if (fromInp) fromInp.value = fromD ? _formatDateYMD(fromD) : '';
+  if (toInp) toInp.value = toD ? _formatDateYMD(toD) : '';
+
+  loadStaffWorkBreakdown();
+}
+
+function loadStaffWorkBreakdown() {
+  const staffSel = document.getElementById('ts-stf-sel');
+  const staffCode = staffSel ? staffSel.value : '';
+  const fromDate = (document.getElementById('ts-stf-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-stf-to')?.value || '').trim();
+
+  if (!staffCode) {
+    toast("Vui lòng chọn nhân viên cần xem", "error");
+    return;
+  }
+
+  const kpiContainer = document.getElementById('ts-stf-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = '<div style="width:100%;text-align:center;padding:15px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+  const treeContainer = document.getElementById('ts-stf-tree-container');
+  if (treeContainer) {
+    treeContainer.innerHTML = '<div style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        renderStaffWorkBreakdown(res);
+      } else {
+        toast((res && res.error) || "Lỗi tải bóc tách công việc", "error");
+      }
+    })
+    .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+    .getStaffWorkBreakdownByRange(staffCode, fromDate, toDate);
+}
+
+function renderStaffWorkBreakdown(data) {
+  // 1. KPI Chips
+  const kpiContainer = document.getElementById('ts-stf-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = `
+      <div class="ts-stat-chip" style="background:#eef2ff">
+        <span style="font-weight:600">${t('ts_stf_total_hours')}</span> <span class="ts-stat-num" style="color:var(--p);font-size:15px">${data.totalHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_official_hours')}</span> <span class="ts-stat-num">${data.officialHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_ot_hours')}</span> <span class="ts-stat-num" style="color:#ea580c">${data.otHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_active_days')}</span> <span class="ts-stat-num">${t('ts_stf_days_unit', { count: data.activeDays || 0 })}</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_pjs_count')}</span> <span class="ts-stat-num">${t('ts_stf_pjs_unit', { count: (data.projects || []).length })}</span>
+      </div>
+    `;
+  }
+
+  // 2. Hierarchical Tree Breakdown
+  const treeContainer = document.getElementById('ts-stf-tree-container');
+  if (!treeContainer) return;
+
+  if (!data.projects || !data.projects.length) {
+    treeContainer.innerHTML = `<div style="text-align:center;padding:30px;color:var(--t3)">${t('ts_stf_no_data')}</div>`;
+    return;
+  }
+
+  let treeHtml = `<div style="font-weight:700;font-size:13px;color:var(--tx);margin-bottom:12px">${t('ts_stf_tree_header', { staff: data.staffCode + ' - ' + data.staffName })}</div>`;
+
+  data.projects.forEach((p, pIdx) => {
+    treeHtml += `
+      <div style="margin-bottom:10px;border:1px solid var(--bdr);border-radius:6px;overflow:hidden">
+        <div class="ts-tree-pj-hdr" onclick="toggleTreeSection('ts-tree-pj-body-${pIdx}')">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:14px">📁</span>
+            <span style="font-weight:700;color:var(--tx);font-size:13px">${p.projectCode}</span>
+            <span class="badge bg-bl" style="font-size:10px">${p.percentage}%</span>
+          </div>
+          <div style="font-weight:800;color:var(--p);font-size:13px">${p.totalHours}h ▾</div>
+        </div>
+        <div id="ts-tree-pj-body-${pIdx}" style="padding:6px 0;background:#fff">
+    `;
+
+    (p.disciplines || []).forEach(d => {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === d.code);
+      const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : (d.name || d.code);
+      treeHtml += `
+        <div class="ts-tree-disc-row">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="badge bg-gr" style="font-size:10px">${d.code}</span>
+            <span style="font-weight:600;color:var(--tx)">${discName}</span>
+          </div>
+          <div style="font-weight:700;color:#0f766e">${d.hours}h (${d.percentage}%)</div>
+        </div>
+      `;
+
+      if (d.logs && d.logs.length) {
+        treeHtml += `<div class="ts-tree-notes">`;
+        d.logs.slice(0, 5).forEach(l => {
+          treeHtml += `<div>• <b>${l.date}</b> (${l.timeSlot}): ${l.note || t('ts_no_note')}</div>`;
+        });
+        treeHtml += `</div>`;
+      }
+    });
+
+    treeHtml += `
+        </div>
+      </div>
+    `;
+  });
+
+  treeContainer.innerHTML = treeHtml;
+}
+
+function toggleTreeSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+  }
+}
+
+// ── 3. SUB-TAB 4: BATCH COMPARISON MATRIX (PIVOT GRID) ──
+
+function initBatchMatrixTab() {
+  const mInp = document.getElementById('ts-mat-month');
+  if (mInp && !mInp.value) {
+    const now = new Date();
+    const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    mInp.value = ym;
+  }
+  loadBatchComparisonMatrix();
+}
+
+function stepMatrixMonth(delta) {
+  const mInp = document.getElementById('ts-mat-month');
+  if (!mInp || !mInp.value) return;
+
+  const parts = mInp.value.split('-');
+  let y = parseInt(parts[0], 10);
+  let m = parseInt(parts[1], 10) + delta;
+
+  if (m > 12) { m = 1; y++; }
+  else if (m < 1) { m = 12; y--; }
+
+  mInp.value = `${y}-${String(m).padStart(2, '0')}`;
+  loadBatchComparisonMatrix();
+}
+
+function loadBatchComparisonMatrix(isAllTime) {
+  let startDate = '';
+  let endDate = '';
+
+  const mInp = document.getElementById('ts-mat-month');
+  const statusEl = document.getElementById('ts-mat-status');
+
+  if (isAllTime) {
+    if (mInp) mInp.value = '';
+    if (statusEl) statusEl.textContent = t('ts_mat_status_loading');
+  } else {
+    const ym = mInp ? mInp.value : '';
+    if (!ym) {
+      startDate = '';
+      endDate = '';
+    } else {
+      const parts = ym.split('-');
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10);
+      startDate = `${ym}-01`;
+      const lastDay = new Date(y, m, 0).getDate();
+      endDate = `${ym}-${String(lastDay).padStart(2, '0')}`;
+    }
+    if (statusEl) statusEl.textContent = t('ts_mat_status_loading');
+  }
+
+  const hideZero = !!document.getElementById('ts-mat-hide-zero')?.checked;
+  const tbody = document.getElementById('ts-mat-tbody');
+  if (tbody) tbody.innerHTML = '<tr><td style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (statusEl) statusEl.textContent = isAllTime ? t('ts_mat_status_all_done') : t('ts_mat_status_done');
+      if (res && res.success) {
+        renderBatchComparisonMatrix(res);
+      } else {
+        toast((res && res.error) || 'Lỗi tải ma trận đối chiếu', 'error');
+      }
+    })
+    .withFailureHandler(err => {
+      if (statusEl) statusEl.textContent = t('ts_mat_status_err');
+      toast(err.message || 'Lỗi máy chủ', 'error');
+    })
+    .getBatchStaffComparisonMatrix(startDate, endDate, hideZero);
+}
+
+function renderBatchComparisonMatrix(data) {
+  const thead = document.getElementById('ts-mat-thead');
+  const tbody = document.getElementById('ts-mat-tbody');
+  const tfoot = document.getElementById('ts-mat-tfoot');
+  if (!thead || !tbody || !tfoot) return;
+
+  const projects = data.projectColumns || [];
+  const rows = data.rows || [];
+  const colTotals = data.columnTotals || {};
+  const grandTotal = data.grandTotalHours || 0;
+
+  // 1. Build Thead
+  let thHtml = '<tr>';
+  thHtml += '<th class="sticky-col-idx">#</th>';
+  thHtml += `<th class="sticky-col-code">${t('ts_col_staff_code')}</th>`;
+  thHtml += `<th class="sticky-col-name">${t('ts_col_staff_name')}</th>`;
+  projects.forEach(p => {
+    thHtml += `<th style="text-align:right;min-width:75px">${p}</th>`;
+  });
+  thHtml += `<th style="text-align:right;min-width:90px;background:#eef2ff;color:var(--p)">${t('ts_mat_col_total')}</th>`;
+  thHtml += '</tr>';
+  thead.innerHTML = thHtml;
+
+  // 2. Build Tbody
+  if (!rows.length) {
+    const colSpan = Math.max(projects.length + 4, 5);
+    const msg = data.isAllTime
+      ? t('ts_stf_no_data')
+      : t('ts_empty_project_data');
+    tbody.innerHTML = `<tr><td colspan="${colSpan}" style="text-align:center;padding:35px 20px;color:var(--t2);font-size:13px">${msg}</td></tr>`;
+    tfoot.innerHTML = '';
+    return;
+  }
+
+  let tbHtml = '';
+  rows.forEach((s, idx) => {
+    tbHtml += '<tr>';
+    tbHtml += `<td class="sticky-col-idx">${idx + 1}</td>`;
+    tbHtml += `<td class="sticky-col-code">${s.staffCode}</td>`;
+    tbHtml += `<td class="sticky-col-name">${s.staffName}</td>`;
+
+    projects.forEach(p => {
+      const hrs = (s.projectHours && s.projectHours[p]) || 0;
+      if (hrs > 0) {
+        tbHtml += `<td class="ts-matrix-cell has-val" onclick="openTsDrilldownModal('${s.staffCode}', '${s.staffName.replace(/'/g, "\\'")}', '${p}')" title="${t('ts_mat_hint')}">${hrs.toFixed(1)}</td>`;
+      } else {
+        tbHtml += `<td class="ts-matrix-cell" style="color:#cbd5e1">-</td>`;
+      }
+    });
+
+    tbHtml += `<td class="ts-matrix-cell" style="font-weight:800;color:var(--p);background:#f8fafc">${s.totalHours.toFixed(1)}</td>`;
+    tbHtml += '</tr>';
+  });
+  tbody.innerHTML = tbHtml;
+
+  // 3. Build Tfoot (Summary Row)
+  let tfHtml = '<tr>';
+  tfHtml += '<td class="sticky-col-idx">∑</td>';
+  tfHtml += `<td class="sticky-col-code">${t('ts_mat_grand_total')}</td>`;
+  tfHtml += `<td class="sticky-col-name">${t('ts_mat_all_projects')}</td>`;
+  projects.forEach(p => {
+    const tot = colTotals[p] || 0;
+    tfHtml += `<td style="text-align:right;font-weight:800;color:#0f766e">${tot.toFixed(1)}</td>`;
+  });
+  tfHtml += `<td style="text-align:right;font-weight:900;color:var(--p);font-size:13px;background:#e0e7ff">${grandTotal.toFixed(1)}</td>`;
+  tfHtml += '</tr>';
+  tfoot.innerHTML = tfHtml;
+}
+
+// ── 4. DRILLDOWN DETAIL MODAL ON CELL CLICK ──
+
+function openTsDrilldownModal(staffCode, staffName, projectCode) {
+  const mTitle = document.getElementById('m-ts-drill-title');
+  const mSub = document.getElementById('m-ts-drill-sub');
+  const tb = document.getElementById('m-ts-drill-tbody');
+
+  if (mTitle) mTitle.textContent = t('ts_mat_drilldown_title', { staff: `${staffCode} (${staffName})`, project: projectCode });
+  if (mSub) mSub.textContent = t('ts_mat_drilldown_sub', { project: projectCode });
+  if (tb) tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:25px"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  openModal('m-ts-drilldown');
+
+  const mInp = document.getElementById('ts-mat-month');
+  const ym = mInp ? mInp.value : '';
+  let startDate = '', endDate = '';
+  if (ym) {
+    const parts = ym.split('-');
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    startDate = `${ym}-01`;
+    const lastDay = new Date(y, m, 0).getDate();
+    endDate = `${ym}-${String(lastDay).padStart(2, '0')}`;
+  }
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success && res.slots) {
+        if (!res.slots.length) {
+          tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_drill_no_records')}</td></tr>`;
+        } else {
+          tb.innerHTML = res.slots.map(s => {
+            const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === s.disciplineCode);
+            const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : s.disciplineCode;
+            const typeLabel = s.isOT ? t('ts_drill_type_ot') : t('ts_drill_type_standard');
+            return `
+              <tr>
+                <td style="font-weight:600">${s.date}</td>
+                <td><span class="ts-time-badge">${s.timeSlot}</span></td>
+                <td style="text-align:right;font-weight:700;color:var(--p)">${s.durHours}h</td>
+                <td><span class="badge ${s.isOT ? 'bg-re' : 'bg-bl'}">${typeLabel}</span></td>
+                <td><span class="badge bg-gr" title="${discName}">${s.disciplineCode} - ${discName}</span></td>
+                <td style="font-size:11px;color:var(--tx)">${s.note || '-'}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } else {
+        tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">${(res && res.error) || 'Lỗi tải dữ liệu'}</td></tr>`;
+      }
+    })
+    .withFailureHandler(err => {
+      tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">${err.message || 'Lỗi máy chủ'}</td></tr>`;
+    })
+    .getTimesheetCellDrilldown(staffCode, projectCode, startDate, endDate);
+}
+
+window.updateProjectScopeDropdownI18n = updateProjectScopeDropdownI18n;
+window.switchTsSubTab = switchTsSubTab;
+window.initProjectActualTimeTab = initProjectActualTimeTab;
+window.onProjectScopeChange = onProjectScopeChange;
+window.loadProjectActualTimeReport = loadProjectActualTimeReport;
+window.exportJapaneseProjectReportClick = exportJapaneseProjectReportClick;
+window.initStaffWorkBreakdownTab = initStaffWorkBreakdownTab;
+window.setStaffQuickRange = setStaffQuickRange;
+window.loadStaffWorkBreakdown = loadStaffWorkBreakdown;
+window.toggleTreeSection = toggleTreeSection;
+window.initBatchMatrixTab = initBatchMatrixTab;
+window.stepMatrixMonth = stepMatrixMonth;
+window.loadBatchComparisonMatrix = loadBatchComparisonMatrix;
+window.openTsDrilldownModal = openTsDrilldownModal;
+
+</script>
+
+</script>
