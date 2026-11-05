@@ -1307,3 +1307,173 @@ function seedActualProjectsFromGreenTables() {
     lock.releaseLock();
   }
 }
+
+// ============================================================
+//  TỰ ĐỘNG KHỞI TẠO BẢN TEMPLATE TRẮNG (BLANK TEMPLATE CREATOR)
+//  Dùng khi muốn chia sẻ file cho người khác dùng độc lập:
+//  - Xóa sạch 100% dữ liệu dự án cũ (Dự án, Task, Giờ công, Nhật ký).
+//  - Giữ nguyên cấu trúc Header, Công thức và 46 Danh mục Tiêu chuẩn (Phase, Discipline).
+//  - Tự động nhận diện Email người tạo để cấp quyền Root Admin.
+// ============================================================
+function createCleanBlankTemplate() {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(30000)) {
+    Logger.log("⚠️ Hệ thống đang bận. Vui lòng thử lại sau.");
+    return { success: false, error: "Hệ thống đang bận xử lý tiến trình khác." };
+  }
+
+  // Hàm phụ trợ dọn sạch sheet an toàn tuyệt đối, chống lỗi non-frozen rows của Google Sheets
+  function safelyClearSheetData(sh) {
+    if (!sh) return;
+    const lastRow = sh.getLastRow();
+    const maxRows = sh.getMaxRows();
+    const lastCol = Math.max(sh.getLastColumn(), 1);
+    const frozenRows = sh.getFrozenRows();
+
+    // 1. Xóa sạch toàn bộ nội dung từ hàng 2 trở xuống
+    if (lastRow >= 2) {
+      sh.getRange(2, 1, lastRow - 1, lastCol).clearContent();
+    }
+
+    // 2. Thu gọn các hàng trống nếu có quá nhiều hàng thừa (đảm bảo luôn giữ lại ít nhất 1 dòng không đóng băng)
+    const minRowsToKeep = Math.max(frozenRows + 1, 2);
+    if (maxRows > minRowsToKeep) {
+      try {
+        sh.deleteRows(minRowsToKeep + 1, maxRows - minRowsToKeep);
+      } catch(e) {
+        // An toàn: Nếu Google Sheets không cho xóa hàng vật lý thì clearContent ở bước 1 đã xóa sạch 100% data
+      }
+    }
+  }
+
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let curEmail = "";
+    try {
+      curEmail = Session.getActiveUser().getEmail() || 
+                 (Session.getEffectiveUser() ? Session.getEffectiveUser().getEmail() : "") ||
+                 (ss.getOwner() ? ss.getOwner().getEmail() : "");
+    } catch(e) {}
+    
+    if (!curEmail) curEmail = "admin@example.com";
+    const curEmailLower = curEmail.toLowerCase().trim();
+    const adminName = curEmailLower.includes("vudinhduy") ? "Vũ Đình Duy" : (curEmail.split("@")[0] || "Quản trị viên (Admin)");
+
+    Logger.log("=================================================================");
+    Logger.log("🧹 BẮT ĐẦU DỌN SẠCH DỮ LIỆU ĐỂ TẠO TEMPLATE TRẮNG...");
+    Logger.log(`👉 Tài khoản Root Admin sẽ thiết lập: ${adminName} (${curEmail})`);
+    Logger.log("=================================================================");
+
+    // 0. Đảm bảo cấu trúc các bảng tồn tại
+    if (typeof initSheets === "function") initSheets();
+    if (typeof initTaxonomySheet === "function") initTaxonomySheet();
+    if (typeof initTimesheetCentralSheets === "function") initTimesheetCentralSheets();
+
+    // 1. Dọn bảng PROJECTS (Giữ dòng 1 Header, xóa sạch toàn bộ dự án cũ)
+    const shProjects = ss.getSheetByName(CONFIG.SHEET_PROJECTS || "PROJECTS");
+    if (shProjects) {
+      safelyClearSheetData(shProjects);
+      Logger.log("  ✅ Đã làm sạch bảng PROJECTS (0 dự án)");
+    }
+
+    // 2. Dọn bảng TASKS (Giữ dòng 1 Header, xóa sạch toàn bộ nhiệm vụ cũ)
+    const shTasks = ss.getSheetByName(CONFIG.SHEET_TASKS || "TASKS");
+    if (shTasks) {
+      safelyClearSheetData(shTasks);
+      Logger.log("  ✅ Đã làm sạch bảng TASKS (0 nhiệm vụ)");
+    }
+
+    // 3. Dọn bảng ACTIVITY_LOG (Giữ dòng 1 Header, xóa sạch nhật ký cũ)
+    const shLog = ss.getSheetByName(CONFIG.SHEET_LOG || "ACTIVITY_LOG");
+    if (shLog) {
+      safelyClearSheetData(shLog);
+      Logger.log("  ✅ Đã làm sạch bảng ACTIVITY_LOG");
+    }
+
+    // 4. Dọn tất cả các bảng TIMESHEET và ROLLUP
+    const sheets = ss.getSheets();
+    sheets.forEach(sh => {
+      const name = sh.getName();
+      if (name.startsWith("TIMESHEET") || name === "TIMESHEET_DAILY_ROLLUP" || name === "TIMESHEET_YEARLY_SUMMARY") {
+        safelyClearSheetData(sh);
+        Logger.log(`  ✅ Đã làm sạch bảng ${name} (0 giờ công)`);
+      }
+    });
+
+    // 5. Làm sạch bảng TAXONOMY:
+    // - Giữ nguyên CATEGORY, PHASE, DISCIPLINE (Bộ danh mục chuẩn 46 tác nghiệp Nhật-Việt)
+    // - Xóa các dòng PROJECT cũ
+    // - Xóa nhân viên cũ
+    const shTax = ss.getSheetByName(CONFIG.SHEET_TAXONOMY || "TAXONOMY");
+    if (shTax && shTax.getLastRow() >= 1) {
+      const taxData = shTax.getDataRange().getValues();
+      const headers = taxData[0];
+      const preservedRows = [headers];
+
+      for (let i = 1; i < taxData.length; i++) {
+        const row = taxData[i];
+        const type = String(row[1] || "").trim().toUpperCase();
+        if (["CATEGORY", "PHASE", "DISCIPLINE"].includes(type)) {
+          preservedRows.push(row);
+        }
+      }
+
+      shTax.clearContents();
+      shTax.getRange(1, 1, preservedRows.length, headers.length).setValues(preservedRows);
+      
+      // Cắt tỉa hàng thừa bảng TAXONOMY an toàn
+      const frozenRowsTax = shTax.getFrozenRows();
+      const minKeepTax = Math.max(frozenRowsTax + 1, preservedRows.length);
+      if (shTax.getMaxRows() > minKeepTax) {
+        try { shTax.deleteRows(minKeepTax + 1, shTax.getMaxRows() - minKeepTax); } catch(e) {}
+      }
+
+      Logger.log(`  ✅ Đã bảo toàn ${preservedRows.length - 1} danh mục tiêu chuẩn (Phase, Discipline 46 tác nghiệp)`);
+    }
+
+    // 6. Làm sạch bảng USERS:
+    // Giữ dòng 1 (Header), cài đặt duy nhất 1 dòng Root Admin ở dòng 2
+    const shUsers = ss.getSheetByName(CONFIG.SHEET_USERS || "USERS");
+    if (shUsers) {
+      safelyClearSheetData(shUsers);
+      const userHeaders = ["ID", "Email", "Họ Tên", "Vai Trò", "Trạng Thái", "Ngày Tạo", "Ghi Chú", "Link Bảng Tính"];
+      if (shUsers.getLastRow() < 1) {
+        shUsers.getRange(1, 1, 1, userHeaders.length).setValues([userHeaders]);
+      }
+      shUsers.getRange(2, 1, 1, userHeaders.length).setValues([[
+        "NV001",
+        curEmail,
+        adminName,
+        "Admin",
+        "Active",
+        new Date(),
+        "Tài khoản Quản trị viên (Khởi tạo template)",
+        ""
+      ]]);
+      Logger.log(`  ✅ Đã cài đặt tài khoản Admin trong bảng USERS: ${curEmail}`);
+    }
+
+    SpreadsheetApp.flush();
+    if (typeof invalidateCache === "function") {
+      invalidateCache();
+    }
+
+    Logger.log("=================================================================");
+    Logger.log("🎉 HOÀN TẤT TẠO BẢN TEMPLATE TRẮNG SẠCH 100%!");
+    Logger.log("   - Giữ nguyên: Toàn bộ cấu trúc Sheet, công thức, mã code Apps Script.");
+    Logger.log("   - Giữ nguyên: 8 Nhóm Category, 3 Giai đoạn Phase, 46 Tác nghiệp Discipline chuẩn.");
+    Logger.log("   - Đã xóa sạch: 100% Dự án, Nhiệm vụ, Giờ công, Nhật ký, Nhân viên cũ.");
+    Logger.log("=================================================================");
+
+    return {
+      success: true,
+      message: "Đã làm sạch và tạo bản Template trắng thành công 100%!",
+      admin: { name: adminName, email: curEmail }
+    };
+  } catch(err) {
+    Logger.log("❌ LỖI KHI TẠO TEMPLATE TRẮNG: " + err.message);
+    return { success: false, error: err.message };
+  } finally {
+    lock.releaseLock();
+  }
+}

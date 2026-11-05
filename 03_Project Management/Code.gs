@@ -18,6 +18,12 @@ const CONFIG = {
 };
 
 function doGet(e) {
+  try {
+    const curUrl = ScriptApp.getService().getUrl();
+    if (curUrl && curUrl.includes("/exec")) {
+      PropertiesService.getScriptProperties().setProperty("WEBAPP_URL", curUrl);
+    }
+  } catch(err) {}
   initSheets();
   const tmpl = HtmlService.createTemplateFromFile("Index");
   tmpl.appName = CONFIG.APP_NAME;
@@ -233,7 +239,8 @@ function ensureAdminPersistence(email, userRow, emp) {
         }
       }
       if (!found) {
-        shUsers.appendRow([generateId(), email, "Vũ Đình Duy", "Admin", "Active", new Date(), "Tài khoản Quản trị"]);
+        const autoName = emailLower.includes("vudinhduy") ? "Vũ Đình Duy" : (email.split("@")[0] || "Quản trị viên");
+        shUsers.appendRow([generateId(), email, autoName, "Admin", "Active", new Date(), "Tài khoản Quản trị"]);
         SpreadsheetApp.flush();
         invalidateCache([CONFIG.SHEET_USERS]);
       }
