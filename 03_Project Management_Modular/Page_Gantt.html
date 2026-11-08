@@ -321,7 +321,7 @@ function renderGantt() {
     </div>`;
   applyGanttDisplayOpts();
   const gL=document.getElementById("gantt-left"),gR=document.getElementById("gantt-right");
-  gR.addEventListener("scroll",()=>{ gL.scrollTop=gR.scrollTop; });
+  gR.addEventListener("scroll",()=>{ gL.scrollTop=gR.scrollTop; }); if(gL){ gL.addEventListener("wheel",(e)=>{ gR.scrollTop+=e.deltaY; e.preventDefault(); },{passive:false}); }
 }
 function togGPj(pjId) {
   const tasks=document.getElementById(pjId+"-tasks"), tasksR=document.getElementById(pjId+"-tasks-r"), ic=document.getElementById(pjId+"-ic");
