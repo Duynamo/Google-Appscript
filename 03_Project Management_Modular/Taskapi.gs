@@ -3,6 +3,23 @@
 //  Tối ưu: invalidateCache sau write, trả về task mới trong response
 // ============================================================
 
+function parseInputDate(str) {
+  if (!str) return "";
+  if (str instanceof Date) return str;
+  const s = String(str).trim();
+  if (!s) return "";
+  const mIso = s.match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})/);
+  if (mIso) {
+    return new Date(parseInt(mIso[1], 10), parseInt(mIso[2], 10) - 1, parseInt(mIso[3], 10), 12, 0, 0);
+  }
+  const mDmy = s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
+  if (mDmy) {
+    return new Date(parseInt(mDmy[3], 10), parseInt(mDmy[2], 10) - 1, parseInt(mDmy[1], 10), 12, 0, 0);
+  }
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? "" : d;
+}
+
 function getTaskDetail(taskId) {
   const user = getCurrentUser();
   if (!user || !user.registered) return { success:false, error:"Chưa đăng nhập" };
@@ -26,8 +43,8 @@ function addTask(payload) {
   const existing = getSheetData(CONFIG.SHEET_TASKS).filter(t=>t[1]===payload.projectId);
   const maxOrder = existing.reduce((m,t)=>Math.max(m,Number(t[19])||0),0);
   const now = new Date();
-  const startD = payload.startDate ? new Date(payload.startDate) : now;
-  const deadD  = payload.deadline  ? new Date(payload.deadline)  : "";
+  const startD = payload.startDate ? parseInputDate(payload.startDate) : now;
+  const deadD  = payload.deadline  ? parseInputDate(payload.deadline)  : "";
 
   sh.appendRow([
     id, payload.projectId, project[1], payload.name, payload.desc||"",
@@ -113,10 +130,18 @@ function updateTask(payload) {
           }
         }
         const set = (col, val) => { if (val !== undefined) sh.getRange(i+1, col).setValue(val); };
+        if (payload.projectId !== undefined && payload.projectId) {
+          sh.getRange(i+1, 2).setValue(payload.projectId);
+          const allPjs = getSheetData(CONFIG.SHEET_PROJECTS);
+          const matchedPj = allPjs.find(p => String(p[0]).trim() === String(payload.projectId).trim());
+          if (matchedPj && matchedPj[1]) {
+            sh.getRange(i+1, 3).setValue(matchedPj[1]);
+          }
+        }
         set(4, payload.name); set(5, payload.desc); set(6, payload.assignee);
         set(7, payload.priority); set(8, payload.status);
-        if (payload.startDate !== undefined) sh.getRange(i+1, 9).setValue(payload.startDate ? new Date(payload.startDate) : "");
-        if (payload.deadline  !== undefined) sh.getRange(i+1, 10).setValue(payload.deadline ? new Date(payload.deadline) : "");
+        if (payload.startDate !== undefined) sh.getRange(i+1, 9).setValue(payload.startDate ? parseInputDate(payload.startDate) : "");
+        if (payload.deadline  !== undefined) sh.getRange(i+1, 10).setValue(payload.deadline ? parseInputDate(payload.deadline) : "");
         if (payload.progress  !== undefined) sh.getRange(i+1, 11).setValue(payload.progress);
         set(12, payload.note); set(16, payload.target); set(17, payload.linkResults); set(18, payload.outputResult);
         if (payload.reminders !== undefined) sh.getRange(i+1, 19).setValue(JSON.stringify(payload.reminders));
@@ -138,27 +163,36 @@ function updateTask(payload) {
 
 function deleteTask(taskId) {
   const user = getCurrentUser();
-  if (!user || !hasPermission(user.role, "manage_tasks")) return { success:false, error:"Không có quyền" };
+  if (!user || (!hasPermission(user.role, "manage_tasks") && !hasPermission(user.role, "tk_delete"))) {
+    return { success:false, error:"Không có quyền xóa nhiệm vụ" };
+  }
+  if (!taskId) return { success:false, error:"Thiếu mã nhiệm vụ cần xóa" };
+
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sh = ss.getSheetByName(CONFIG.SHEET_TASKS);
+  if (!sh) return { success:false, error:"Không tìm thấy bảng TASKS" };
   const rows = sh.getDataRange().getValues();
 
+  const targetId = String(taskId).trim().toLowerCase();
   for (let i = 1; i < rows.length; i++) {
-    if (rows[i][0] === taskId) {
-      if (user.role === "Manager") {
-        const pj = getSheetData(CONFIG.SHEET_PROJECTS).find(p => p[0] === rows[i][1]);
-        if (pj && pj[3] !== user.email) return { success:false, error:"Không có quyền xóa task của dự án này" };
+    const rowId = String(rows[i][0] || "").trim().toLowerCase();
+    if (rowId === targetId) {
+      if (user.role === "Manager" || user.role === "PJ_Lead") {
+        const pj = getSheetData(CONFIG.SHEET_PROJECTS).find(p => String(p[0] || "").trim().toLowerCase() === String(rows[i][1] || "").trim().toLowerCase());
+        if (pj && !userMatchesAssignee(pj[3], user.email, user.name)) {
+          return { success:false, error:"Không có quyền xóa task của dự án này" };
+        }
       }
       const pjId = rows[i][1];
       sh.deleteRow(i+1);
       SpreadsheetApp.flush();
       updateProjectProgress(pjId);
       invalidateCache([CONFIG.SHEET_TASKS, CONFIG.SHEET_PROJECTS]);
-      writeLog("DELETE_TASK", `Xóa task: ${taskId}`);
-      return { success:true, message:"Đã xóa", projectId:pjId };
+      writeLog("DELETE_TASK", `Xóa task ID: ${taskId}`);
+      return { success:true, message:"Đã xóa nhiệm vụ thành công", projectId:pjId };
     }
   }
-  return { success:false, error:"Không tìm thấy" };
+  return { success:false, error:"Không tìm thấy nhiệm vụ cần xóa" };
 }
 
 function duplicateTask(taskId) {

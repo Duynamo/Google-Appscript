@@ -3,6 +3,23 @@
 //  Tối ưu: invalidateCache sau write, trả về task mới trong response
 // ============================================================
 
+function parseInputDate(str) {
+  if (!str) return "";
+  if (str instanceof Date) return str;
+  const s = String(str).trim();
+  if (!s) return "";
+  const mIso = s.match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})/);
+  if (mIso) {
+    return new Date(parseInt(mIso[1], 10), parseInt(mIso[2], 10) - 1, parseInt(mIso[3], 10), 12, 0, 0);
+  }
+  const mDmy = s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
+  if (mDmy) {
+    return new Date(parseInt(mDmy[3], 10), parseInt(mDmy[2], 10) - 1, parseInt(mDmy[1], 10), 12, 0, 0);
+  }
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? "" : d;
+}
+
 function getTaskDetail(taskId) {
   const user = getCurrentUser();
   if (!user || !user.registered) return { success:false, error:"Chưa đăng nhập" };
@@ -26,8 +43,8 @@ function addTask(payload) {
   const existing = getSheetData(CONFIG.SHEET_TASKS).filter(t=>t[1]===payload.projectId);
   const maxOrder = existing.reduce((m,t)=>Math.max(m,Number(t[19])||0),0);
   const now = new Date();
-  const startD = payload.startDate ? new Date(payload.startDate) : now;
-  const deadD  = payload.deadline  ? new Date(payload.deadline)  : "";
+  const startD = payload.startDate ? parseInputDate(payload.startDate) : now;
+  const deadD  = payload.deadline  ? parseInputDate(payload.deadline)  : "";
 
   sh.appendRow([
     id, payload.projectId, project[1], payload.name, payload.desc||"",
@@ -123,8 +140,8 @@ function updateTask(payload) {
         }
         set(4, payload.name); set(5, payload.desc); set(6, payload.assignee);
         set(7, payload.priority); set(8, payload.status);
-        if (payload.startDate !== undefined) sh.getRange(i+1, 9).setValue(payload.startDate ? new Date(payload.startDate) : "");
-        if (payload.deadline  !== undefined) sh.getRange(i+1, 10).setValue(payload.deadline ? new Date(payload.deadline) : "");
+        if (payload.startDate !== undefined) sh.getRange(i+1, 9).setValue(payload.startDate ? parseInputDate(payload.startDate) : "");
+        if (payload.deadline  !== undefined) sh.getRange(i+1, 10).setValue(payload.deadline ? parseInputDate(payload.deadline) : "");
         if (payload.progress  !== undefined) sh.getRange(i+1, 11).setValue(payload.progress);
         set(12, payload.note); set(16, payload.target); set(17, payload.linkResults); set(18, payload.outputResult);
         if (payload.reminders !== undefined) sh.getRange(i+1, 19).setValue(JSON.stringify(payload.reminders));

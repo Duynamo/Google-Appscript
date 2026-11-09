@@ -1398,7 +1398,33 @@ function toggleTaskDone(taskId, isChecked) {
     .updateTask({ id: taskId, status: newStatus, progress: newProgress });
 }
 
+function toDateInputVal(val) {
+  if (!val) return "";
+  if (typeof val === 'string') {
+    const v = val.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+    const p = v.split('/');
+    if (p.length === 3 && p[2].length === 4) return `${p[2]}-${p[1].padStart(2, '0')}-${p[0].padStart(2, '0')}`;
+  }
+  try {
+    const d = (val instanceof Date) ? val : new Date(val);
+    if (!isNaN(d.getTime())) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+  } catch(e) {}
+  return "";
+}
+
 function openNewFullTask() {
+  const existingId = document.getElementById("mqtk-id")?.value;
+  if (existingId) {
+    closeModal("m-qtk");
+    openFullTaskEdit(existingId);
+    return;
+  }
   closeModal("m-qtk");
   document.getElementById("task-panel").classList.add("show");
   document.getElementById("tp-id").value = "";
@@ -1441,7 +1467,8 @@ function openNewFullTask() {
       badge.style.color = "var(--p)";
       badge.style.borderColor = "#c7d2fe";
     } else {
-      badge.textContent = t('tax_prefix_none') || "[CHƯA GÁN MÃ]";
+      const noneTxt = (typeof t === 'function' ? t('tax_prefix_none') : null) || "[CHƯA GÁN MÃ]";
+      badge.textContent = noneTxt;
       badge.style.background = "#fff7ed";
       badge.style.color = "#ea580c";
       badge.style.borderColor = "#fdba74";
@@ -1452,17 +1479,19 @@ function openNewFullTask() {
 function openFullTaskEdit(taskId) {
   if (!taskId) { openNewFullTask(); return; }
   document.getElementById("task-panel").classList.add("show");
-  document.getElementById("tp-id").value=taskId;
-  const t=S.tasks.find(x=>x.id===taskId);
-  if (t) fillTpForm(t);
-  else google.script.run.withSuccessHandler(res=>{ if(res.success) fillTpForm(res.data); }).getTaskDetail(taskId);
+  document.getElementById("tp-id").value = taskId;
+  const existing = S.tasks.find(x => x.id === taskId);
+  if (existing) fillTpForm(existing);
+  else google.script.run.withSuccessHandler(res => { if(res.success) fillTpForm(res.data); }).getTaskDetail(taskId);
 }
-function fillTpForm(t) {
-  document.getElementById("tp-id").value=t.id;
-  document.getElementById("tp-nm").value=t.name;
-  document.getElementById("tp-ds").value=t.desc||"";
-  document.getElementById("tp-st").value=t.status;
-  document.getElementById("tp-pr").value=t.priority;
+
+function fillTpForm(task) {
+  if (!task) return;
+  document.getElementById("tp-id").value = task.id || "";
+  document.getElementById("tp-nm").value = task.name || "";
+  document.getElementById("tp-ds").value = task.desc || "";
+  document.getElementById("tp-st").value = task.status || "Chờ thực hiện";
+  document.getElementById("tp-pr").value = task.priority || "Trung bình";
 
   popTaskTaxonomySelects();
   const catSel = document.getElementById("tp-cat");
@@ -1473,43 +1502,62 @@ function fillTpForm(t) {
   if (catSel) catSel.value = "";
   if (phaseSel) phaseSel.value = "";
   if (discSel) discSel.value = "";
+  const noneTxt = (typeof t === 'function' ? t('tax_prefix_none') : null) || "[CHƯA GÁN MÃ]";
   if (prevBadge) {
-    prevBadge.textContent = t('tax_prefix_none') || "[CHƯA GÁN MÃ]";
+    prevBadge.textContent = noneTxt;
     prevBadge.style.background = "#fff7ed";
     prevBadge.style.color = "#ea580c";
     prevBadge.style.borderColor = "#fdba74";
   }
 
-  // Parse existing prefix e.g. [M3-BD-AR] or [M3-AR]
-  const prefixMatch = (t.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
+  // Parse existing prefix e.g. [MD-DD-MD04] or [M3-BD-AR] or [M3-AR]
+  const prefixMatch = (task.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
   if (prefixMatch) {
-    const codes = prefixMatch[1].toUpperCase().split('-');
-    if (catSel && codes[0]) catSel.value = codes[0];
-    if (phaseSel && codes[1]) phaseSel.value = codes[1];
-    if (discSel && (codes[2] || codes[1])) discSel.value = codes[2] || codes[1];
+    const rawCodes = prefixMatch[1].toUpperCase().split('-');
+    if (rawCodes.length >= 3) {
+      if (catSel) catSel.value = rawCodes[0];
+      if (phaseSel) phaseSel.value = rawCodes[1];
+      if (discSel) discSel.value = rawCodes[2];
+    } else if (rawCodes.length === 2) {
+      if (catSel) catSel.value = rawCodes[0];
+      const isPhase = ((S.taxonomy && S.taxonomy.phases) || []).some(p => p.code === rawCodes[1]);
+      if (isPhase) {
+        if (phaseSel) phaseSel.value = rawCodes[1];
+      } else {
+        if (discSel) discSel.value = rawCodes[1];
+      }
+    } else if (rawCodes.length === 1) {
+      if (catSel) catSel.value = rawCodes[0];
+    }
+
+    const parts = [catSel ? catSel.value : '', phaseSel ? phaseSel.value : '', discSel ? discSel.value : ''].filter(Boolean);
     if (prevBadge) {
-      prevBadge.textContent = "[" + prefixMatch[1].toUpperCase() + "]";
+      prevBadge.textContent = parts.length ? `[${parts.join('-')}]` : `[${prefixMatch[1].toUpperCase()}]`;
       prevBadge.style.background = "#eef2ff";
       prevBadge.style.color = "var(--p)";
       prevBadge.style.borderColor = "#c7d2fe";
     }
   }
-  document.getElementById("tp-nt").value=t.note||"";
-  const prog = t.progress || 0;
+
+  document.getElementById("tp-nt").value = task.note || "";
+  const prog = Number(task.progress) || 0;
   document.getElementById("tp-pg").value = prog;
   if (document.getElementById("tp-pg-num")) document.getElementById("tp-pg-num").value = prog;
   document.getElementById("tp-pv").textContent = prog;
-  document.getElementById("tp-tg").value=t.target||"";
-  document.getElementById("tp-lr").value=t.linkResults||"";
-  document.getElementById("tp-or").value=t.outputResult||"";
-  if (t.startRaw)    document.getElementById("tp-sd").value=t.startRaw;
-  if (t.deadlineRaw) document.getElementById("tp-dl").value=t.deadlineRaw;
-  ldPjSel("tp-pj",t.projectId,true);
-  setAssignees('tp', t.assignee || '');
-  _currTkReminders=t.reminders||[];
+  document.getElementById("tp-tg").value = task.target || "";
+  document.getElementById("tp-lr").value = task.linkResults || "";
+  document.getElementById("tp-or").value = task.outputResult || "";
+
+  document.getElementById("tp-sd").value = toDateInputVal(task.startRaw || task.startDate);
+  document.getElementById("tp-dl").value = toDateInputVal(task.deadlineRaw || task.deadline);
+
+  ldPjSel("tp-pj", task.projectId, false);
+  setAssignees('tp', task.assignee || '');
+  _currTkReminders = task.reminders || [];
   renderReminders();
   previewLinks();
 }
+
 function closeTaskPanel() { document.getElementById("task-panel").classList.remove("show"); _currTkReminders=[]; }
 function saveFullTk() {
   const id=document.getElementById("tp-id").value;
@@ -1535,11 +1583,13 @@ function saveFullTk() {
   const fmtD = d => { if(!d) return ""; const p=d.split("-"); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d; };
   if (idx>=0) {
     const existing=S.tasks[idx];
+    const targetPj = (S.projects || []).find(p => p.id === payload.projectId);
     const updated=Object.assign({},existing,payload,{
+      projectName: targetPj ? targetPj.name : (existing.projectName || ""),
       deadlineRaw:payload.deadline||"",
       startRaw:payload.startDate||"",
-      deadline: payload.deadline ? fmtD(payload.deadline) : existing.deadline,
-      startDate: payload.startDate ? fmtD(payload.startDate) : existing.startDate,
+      deadline: payload.deadline ? fmtD(payload.deadline) : "",
+      startDate: payload.startDate ? fmtD(payload.startDate) : "",
     });
     updated.isOverdue=isTaskOverdue(updated);
     S.tasks[idx]=updated;
@@ -2072,7 +2122,7 @@ function openTkMod(taskId, defaultPjId, initialTab) {
   ["mqtk-nm", "mqtk-sd", "mqtk-dl"].forEach(x => document.getElementById(x).value = "");
   document.getElementById("mqtk-st").value = "Chờ thực hiện";
   document.getElementById("mqtk-pr").value = "Trung bình";
-  document.getElementById("mqtk-pj").disabled = !!taskId;
+  document.getElementById("mqtk-pj").disabled = false;
   ldPjSel("mqtk-pj", defaultPjId || "");
   setAssignees('qtk', '');
 
@@ -2092,18 +2142,33 @@ function openTkMod(taskId, defaultPjId, initialTab) {
     switchQtkTab('single');
     const t = S.tasks.find(x => x.id === taskId);
     if (t) {
-      document.getElementById("mqtk-nm").value = t.name;
-      document.getElementById("mqtk-st").value = t.status;
-      document.getElementById("mqtk-pr").value = t.priority;
-      setAssignees('qtk', t.assignee);
+      document.getElementById("mqtk-nm").value = t.name || "";
+      document.getElementById("mqtk-st").value = t.status || "Chờ thực hiện";
+      document.getElementById("mqtk-pr").value = t.priority || "Trung bình";
+      document.getElementById("mqtk-sd").value = toDateInputVal(t.startRaw || t.startDate);
+      document.getElementById("mqtk-dl").value = toDateInputVal(t.deadlineRaw || t.deadline);
+      ldPjSel("mqtk-pj", t.projectId || defaultPjId || "");
+      setAssignees('qtk', t.assignee || "");
 
-      // Parse existing prefix e.g. [M3-BD-AR] or [M3-AR]
+      // Parse existing prefix e.g. [MD-DD-MD04] or [M3-BD-AR] or [M3-AR]
       const prefixMatch = (t.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
       if (prefixMatch) {
-        const codes = prefixMatch[1].toUpperCase().split('-');
-        if (catSel && codes[0]) catSel.value = codes[0];
-        if (phaseSel && codes[1]) phaseSel.value = codes[1];
-        if (discSel && (codes[2] || codes[1])) discSel.value = codes[2] || codes[1];
+        const rawCodes = prefixMatch[1].toUpperCase().split('-');
+        if (rawCodes.length >= 3) {
+          if (catSel) catSel.value = rawCodes[0];
+          if (phaseSel) phaseSel.value = rawCodes[1];
+          if (discSel) discSel.value = rawCodes[2];
+        } else if (rawCodes.length === 2) {
+          if (catSel) catSel.value = rawCodes[0];
+          const isPhase = ((S.taxonomy && S.taxonomy.phases) || []).some(p => p.code === rawCodes[1]);
+          if (isPhase) {
+            if (phaseSel) phaseSel.value = rawCodes[1];
+          } else {
+            if (discSel) discSel.value = rawCodes[1];
+          }
+        } else if (rawCodes.length === 1) {
+          if (catSel) catSel.value = rawCodes[0];
+        }
         if (prevTxt) prevTxt.textContent = "Tiền tố: [" + prefixMatch[1].toUpperCase() + "]";
       }
     }

@@ -404,25 +404,36 @@ function userMatchesAssignee(assigneeStr, userEmail, userName) {
   return false;
 }
 
+function safeFmtDate(val, tz, fmt) {
+  if (!val) return "";
+  try {
+    const d = (val instanceof Date) ? val : new Date(val);
+    if (isNaN(d.getTime())) return "";
+    return Utilities.formatDate(d, tz, fmt);
+  } catch(e) {
+    return "";
+  }
+}
+
 // ── mapTaskFull: isOverdue dùng midnight comparison ──
 function mapTaskFull(t) {
-  const deadlineDate = t[9] ? new Date(t[9]) : null;
+  const tz = "Asia/Ho_Chi_Minh";
+  const deadlineDate = t[9] ? (t[9] instanceof Date ? t[9] : new Date(t[9])) : null;
   const todayMidnight = new Date(); todayMidnight.setHours(0,0,0,0);
-  const isOverdue = deadlineDate && t[7]!=="Hoàn thành" && t[7]!=="Hủy" && deadlineDate < todayMidnight;
+  const isOverdue = deadlineDate && !isNaN(deadlineDate.getTime()) && t[7]!=="Hoàn thành" && t[7]!=="Hủy" && deadlineDate < todayMidnight;
   let reminders = [];
   try { reminders = t[18] ? JSON.parse(t[18]) : []; } catch(e) {}
-  const tz = "Asia/Ho_Chi_Minh";
   return {
     id:t[0], projectId:t[1], projectName:t[2], name:t[3], desc:t[4], assignee:t[5],
     priority:t[6], status:t[7],
-    startDate  : t[8]          ? Utilities.formatDate(new Date(t[8]),  tz,"dd/MM/yyyy") : "",
-    deadline   : deadlineDate  ? Utilities.formatDate(deadlineDate,    tz,"dd/MM/yyyy") : "",
-    deadlineRaw: deadlineDate  ? Utilities.formatDate(deadlineDate,    tz,"yyyy-MM-dd") : "",
-    startRaw   : t[8]          ? Utilities.formatDate(new Date(t[8]),  tz,"yyyy-MM-dd") : "",
+    startDate  : safeFmtDate(t[8], tz, "dd/MM/yyyy"),
+    deadline   : safeFmtDate(t[9], tz, "dd/MM/yyyy"),
+    deadlineRaw: safeFmtDate(t[9], tz, "yyyy-MM-dd"),
+    startRaw   : safeFmtDate(t[8], tz, "yyyy-MM-dd"),
     progress:Number(t[10])||0, note:t[11]||"",
-    created    : t[12] ? Utilities.formatDate(new Date(t[12]),tz,"dd/MM/yyyy HH:mm") : "",
+    created    : safeFmtDate(t[12], tz, "dd/MM/yyyy HH:mm"),
     createdBy  : t[13]||"",
-    updatedAt  : t[14] ? Utilities.formatDate(new Date(t[14]),tz,"dd/MM/yyyy HH:mm") : "",
+    updatedAt  : safeFmtDate(t[14], tz, "dd/MM/yyyy HH:mm"),
     target:t[15]||"", linkResults:t[16]||"", outputResult:t[17]||"",
     reminders, sortOrder:Number(t[19])||999, isOverdue,
   };
