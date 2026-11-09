@@ -1690,6 +1690,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
       <h3 data-i18n="modal_task_detail">✏ Chỉnh sửa nhiệm vụ</h3>
       <div class="tp-hacts">
         <button class="btn bp" onclick="saveFullTk()" data-i18n="btn_save">💾 Cập nhật</button>
+        <button class="btn" style="background:#ef4444;color:#fff" onclick="delTkFromPanel()" data-i18n="btn_delete">🗑 Xóa</button>
         <div style="position:relative">
           <button class="btn" style="background:var(--w);color:#fff" onclick="togDrop('tp-rm-add')">🔔 Nhắc việc</button>
           <div class="drop" id="tp-rm-add" style="right:0;min-width:260px;padding:12px">
@@ -3767,8 +3768,11 @@ function localAddBulkTasks(newTasks, projectId) {
   }
 }
 function localDeleteTask(taskId) {
-  S.tasks = S.tasks.filter(t=>t.id!==taskId);
+  S.tasks = (S.tasks || []).filter(t=>t.id!==taskId);
   _refreshUI();
+  if (_pdPjId && document.getElementById("m-pd")?.classList.contains("show")) {
+    openPjDetail(_pdPjId);
+  }
 }
 function localAddProject(newProject) { S.projects.push(newProject); _refreshUIProjects(); }
 function localUpdateProject(payload) {
@@ -6172,11 +6176,32 @@ function saveQTk() {
     [id?"updateTask":"addTask"](payload);
 }
 function delTk(id) {
-  const t = S.tasks.find(x => x.id === id);
-  const name = t ? t.name : id;
-  if (!confirm(`${t("btn_delete")} "${name}"?`)) return;
-  localDeleteTask(id); toast(t("msg_delete_success"),"success");
-  google.script.run.withSuccessHandler(r=>{ if(!r.success){toast(r.error,"error");loadApp();} }).deleteTask(id);
+  const tkItem = (S.tasks || []).find(x => x.id === id);
+  const name = tkItem ? tkItem.name : id;
+  const actionText = (typeof t === "function" ? t("btn_delete") : "") || "Xóa";
+  const confirmText = (typeof t === "function" ? t("msg_confirm_delete") : "") || "";
+  if (!confirm(`${actionText} "${name}"? ${confirmText}`.trim())) return;
+  localDeleteTask(id);
+  const successMsg = (typeof t === "function" ? t("msg_delete_success") : "") || "Đã xóa nhiệm vụ";
+  toast(successMsg, "success");
+  google.script.run
+    .withSuccessHandler(r => {
+      if (!r.success) {
+        toast(r.error || "Không thể xóa nhiệm vụ", "error");
+        loadApp();
+      }
+    })
+    .withFailureHandler(e => {
+      toast(e.message || "Lỗi máy chủ khi xóa", "error");
+      loadApp();
+    })
+    .deleteTask(id);
+}
+function delTkFromPanel() {
+  const id = document.getElementById("tp-id")?.value;
+  if (!id) return;
+  closeTaskPanel();
+  delTk(id);
 }
 function doDupTk(id) {
   if (!confirm(t("msg_confirm_dup_pj") || "Tạo bản sao?")) return;

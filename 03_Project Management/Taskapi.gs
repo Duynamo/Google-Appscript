@@ -138,27 +138,36 @@ function updateTask(payload) {
 
 function deleteTask(taskId) {
   const user = getCurrentUser();
-  if (!user || !hasPermission(user.role, "manage_tasks")) return { success:false, error:"Không có quyền" };
+  if (!user || (!hasPermission(user.role, "manage_tasks") && !hasPermission(user.role, "tk_delete"))) {
+    return { success:false, error:"Không có quyền xóa nhiệm vụ" };
+  }
+  if (!taskId) return { success:false, error:"Thiếu mã nhiệm vụ cần xóa" };
+
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sh = ss.getSheetByName(CONFIG.SHEET_TASKS);
+  if (!sh) return { success:false, error:"Không tìm thấy bảng TASKS" };
   const rows = sh.getDataRange().getValues();
 
+  const targetId = String(taskId).trim().toLowerCase();
   for (let i = 1; i < rows.length; i++) {
-    if (rows[i][0] === taskId) {
-      if (user.role === "Manager") {
-        const pj = getSheetData(CONFIG.SHEET_PROJECTS).find(p => p[0] === rows[i][1]);
-        if (pj && pj[3] !== user.email) return { success:false, error:"Không có quyền xóa task của dự án này" };
+    const rowId = String(rows[i][0] || "").trim().toLowerCase();
+    if (rowId === targetId) {
+      if (user.role === "Manager" || user.role === "PJ_Lead") {
+        const pj = getSheetData(CONFIG.SHEET_PROJECTS).find(p => String(p[0] || "").trim().toLowerCase() === String(rows[i][1] || "").trim().toLowerCase());
+        if (pj && !userMatchesAssignee(pj[3], user.email, user.name)) {
+          return { success:false, error:"Không có quyền xóa task của dự án này" };
+        }
       }
       const pjId = rows[i][1];
       sh.deleteRow(i+1);
       SpreadsheetApp.flush();
       updateProjectProgress(pjId);
       invalidateCache([CONFIG.SHEET_TASKS, CONFIG.SHEET_PROJECTS]);
-      writeLog("DELETE_TASK", `Xóa task: ${taskId}`);
-      return { success:true, message:"Đã xóa", projectId:pjId };
+      writeLog("DELETE_TASK", `Xóa task ID: ${taskId}`);
+      return { success:true, message:"Đã xóa nhiệm vụ thành công", projectId:pjId };
     }
   }
-  return { success:false, error:"Không tìm thấy" };
+  return { success:false, error:"Không tìm thấy nhiệm vụ cần xóa" };
 }
 
 function duplicateTask(taskId) {
