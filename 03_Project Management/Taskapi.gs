@@ -113,6 +113,14 @@ function updateTask(payload) {
           }
         }
         const set = (col, val) => { if (val !== undefined) sh.getRange(i+1, col).setValue(val); };
+        if (payload.projectId !== undefined && payload.projectId) {
+          sh.getRange(i+1, 2).setValue(payload.projectId);
+          const allPjs = getSheetData(CONFIG.SHEET_PROJECTS);
+          const matchedPj = allPjs.find(p => String(p[0]).trim() === String(payload.projectId).trim());
+          if (matchedPj && matchedPj[1]) {
+            sh.getRange(i+1, 3).setValue(matchedPj[1]);
+          }
+        }
         set(4, payload.name); set(5, payload.desc); set(6, payload.assignee);
         set(7, payload.priority); set(8, payload.status);
         if (payload.startDate !== undefined) sh.getRange(i+1, 9).setValue(payload.startDate ? new Date(payload.startDate) : "");

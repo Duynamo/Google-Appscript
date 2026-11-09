@@ -891,6 +891,8 @@ input[type=range]{width:100%;accent-color:var(--p)}
               <option value="">-- Ưu tiên --</option><option>Khẩn cấp</option><option>Cao</option><option>Trung bình</option><option>Thấp</option>
             </select>
             <button class="btn bp" id="btn-add-tk" onclick="openTkMod(null)" data-i18n="add_task">+ Tạo nhiệm vụ mới</button>
+            <button type="button" class="btn bs" style="padding:5px 9px;font-size:11px" onclick="toggleAllPjGroups(false)" title="Thu nhỏ tất cả dự án">📁 Thu nhỏ hết</button>
+            <button type="button" class="btn bs" style="padding:5px 9px;font-size:11px" onclick="toggleAllPjGroups(true)" title="Mở rộng tất cả dự án">📂 Mở rộng hết</button>
           </div>
         </div>
         <div class="tk-stats" id="tk-stats"></div>
@@ -3732,6 +3734,11 @@ const S = {
 let _pdPjId = null;
 let _currTkReminders = [];
 let _usrMode = 'full';
+let _collapsedPjGroups = new Set();
+try {
+  const saved = JSON.parse(localStorage.getItem('pm3_collapsed_groups') || '[]');
+  if (Array.isArray(saved)) _collapsedPjGroups = new Set(saved);
+} catch(e) {}
 
 const STCOL = {
   "Đang thực hiện":"#4f6ef7","Hoàn thành":"#22c55e","Tạm dừng":"#f59e0b",
@@ -5328,10 +5335,27 @@ function renderPgTkGroups(tasks) {
       el.innerHTML = '<div class="empty"><div class="empty-ic">✅</div>' + t('dash_no_act') + '</div>';
       return;
     }
+
+    // Thu thập trạng thái thu nhỏ hiện tại từ DOM để luôn giữ nguyên trải nghiệm người dùng
+    document.querySelectorAll(".pjg-body").forEach(b => {
+      if (b.id) {
+        if (!b.classList.contains("open")) {
+          _collapsedPjGroups.add(b.id);
+        } else {
+          _collapsedPjGroups.delete(b.id);
+        }
+      }
+    });
+
     const groups = {};
     tasks.forEach(tk => {
-      const pid = tk.projectId || 'other';
-      const pname = tk.projectName || (S.projects.find(p => p.id === pid)?.name) || t('dash_card_total_projects');
+      // Tìm project chuẩn tương ứng trong S.projects bằng ID hoặc Tên
+      const pjObj = (S.projects || []).find(p => 
+        (tk.projectId && String(p.id).trim().toLowerCase() === String(tk.projectId).trim().toLowerCase()) || 
+        (tk.projectName && p.name && String(p.name).trim().toLowerCase() === String(tk.projectName).trim().toLowerCase())
+      );
+      const pid = pjObj ? pjObj.id : (tk.projectId || tk.projectName || 'other');
+      const pname = pjObj ? pjObj.name : (tk.projectName || (S.projects.find(p => p.id === pid)?.name) || t('dash_card_total_projects'));
       if (!groups[pid]) groups[pid] = { name: pname, tasks: [] };
       groups[pid].tasks.push(tk);
     });
@@ -5340,16 +5364,21 @@ function renderPgTkGroups(tasks) {
     el.innerHTML = Object.entries(groups).map(([pjId, g]) => {
       const pjObj = (S.projects || []).find(p => p.id === pjId);
       const pjStatus = pjObj ? pjObj.status : '';
+      const groupId = `pg-${pjId}`;
+      const isCollapsed = _collapsedPjGroups.has(groupId);
+      const bodyClass = isCollapsed ? "pjg-body" : "pjg-body open";
+      const iconClass = isCollapsed ? "pjg-arr" : "pjg-arr open";
+
       return `
       <div class="pjg">
-        <div class="pjg-hd" onclick="togPjG('pg-${pjId}')">
-          <span class="pjg-arr open" id="pg-${pjId}-ic">▶</span>
+        <div class="pjg-hd" onclick="togPjG('${groupId}')">
+          <span class="${iconClass}" id="${groupId}-ic">▶</span>
           <span class="pjg-nm">${g.name || ""}</span>
           ${pjStatus ? `<span class="badge ${sBadge(pjStatus)}">${tStatus(pjStatus)}</span>` : ""}
           <span class="pjg-cnt">${g.tasks.length} ${unitLabel}</span>
           ${canMgTk(pjId) ? `<button class="btn bp" style="font-size:10px;padding:4px 8px;margin-left:auto" onclick="event.stopPropagation();openTkMod(null,'${pjId}')">+ ${t('btn_add')}</button>` : ""}
         </div>
-        <div class="pjg-body open" id="pg-${pjId}">
+        <div class="${bodyClass}" id="${groupId}">
           <div class="tblw"><table>
             <thead><tr><th></th><th>${t('tk_col_name')}</th><th>${t('tk_col_assignee')}</th><th>${t('tk_col_status')}</th><th>${t('tk_col_priority')}</th><th>${t('tk_col_progress')}</th><th>Link KQ</th><th>${t('pj_col_start')}</th><th>${t('tk_col_deadline')}</th><th>${t('pj_col_actions')}</th></tr></thead>
             <tbody>${g.tasks.map(tk => {
@@ -5397,7 +5426,33 @@ function filterPgTk() {
   });
   renderPgTkGroups(filtered);
 }
-function togPjG(id) { const el=document.getElementById(id),ic=document.getElementById(id+"-ic"); el.classList.toggle("open"); if(ic) ic.classList.toggle("open"); }
+function togPjG(id) {
+  const el = document.getElementById(id);
+  const ic = document.getElementById(id + "-ic");
+  if (!el) return;
+  const isNowOpen = el.classList.toggle("open");
+  if (ic) ic.classList.toggle("open", isNowOpen);
+  if (isNowOpen) {
+    _collapsedPjGroups.delete(id);
+  } else {
+    _collapsedPjGroups.add(id);
+  }
+  try {
+    localStorage.setItem("pm3_collapsed_groups", JSON.stringify(Array.from(_collapsedPjGroups)));
+  } catch(e) {}
+}
+function toggleAllPjGroups(expand) {
+  document.querySelectorAll(".pjg-body").forEach(b => {
+    b.classList.toggle("open", expand);
+    const ic = document.getElementById(b.id + "-ic");
+    if (ic) ic.classList.toggle("open", expand);
+    if (expand) _collapsedPjGroups.delete(b.id);
+    else _collapsedPjGroups.add(b.id);
+  });
+  try {
+    localStorage.setItem("pm3_collapsed_groups", JSON.stringify(Array.from(_collapsedPjGroups)));
+  } catch(e) {}
+}
 
 // ═══════════════════════════════════════
 //  TASK PANEL
@@ -5557,7 +5612,9 @@ function saveFullTk() {
   const fmtD = d => { if(!d) return ""; const p=d.split("-"); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d; };
   if (idx>=0) {
     const existing=S.tasks[idx];
+    const targetPj = (S.projects || []).find(p => p.id === payload.projectId);
     const updated=Object.assign({},existing,payload,{
+      projectName: targetPj ? targetPj.name : (existing.projectName || ""),
       deadlineRaw:payload.deadline||"",
       startRaw:payload.startDate||"",
       deadline: payload.deadline ? fmtD(payload.deadline) : existing.deadline,
