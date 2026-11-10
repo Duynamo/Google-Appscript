@@ -527,4 +527,194 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .ts-tree-disc-row { padding:6px 12px 6px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px dashed var(--bdr); font-size:12px; }
 .ts-tree-notes { margin:4px 0 8px 48px; font-size:11px; color:var(--t2); }
 
-</style>
+</style>
+
+/* ═══════════════════════════════════════════════════════════
+   EXPORT & PRINT STYLES
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --export-paper-size: A4;
+  --export-paper-orientation: landscape;
+  --export-paper-margin: 10mm;
+}
+
+#m-export-report .modal {
+  max-width: 1240px;
+  width: 95vw;
+  height: 90vh;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.export-modal-body {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 16px;
+}
+.export-ctrl-col {
+  width: 360px;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.export-preview-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #525659;
+  border-radius: var(--r2);
+  overflow: hidden;
+  border: 1px solid var(--bdr);
+}
+.export-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #323639;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+.export-preview-viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.export-preview-paper {
+  background: #fff;
+  color: #1e293b;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+.export-preview-paper.a4-landscape { width: 842px; min-height: 595px; }
+.export-preview-paper.a4-portrait  { width: 595px; min-height: 842px; }
+.export-preview-paper.a3-landscape { width: 1191px; min-height: 842px; }
+.export-preview-paper.a3-portrait  { width: 842px; min-height: 1191px; }
+.export-preview-paper.letter-landscape { width: 792px; min-height: 612px; }
+.export-preview-paper.letter-portrait  { width: 612px; min-height: 792px; }
+
+.exp-sec {
+  background: #f8fafc;
+  border: 1px solid var(--bdr);
+  border-radius: var(--r2);
+  padding: 12px;
+}
+.exp-sec-title {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--tx);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.exp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.exp-row input[type="checkbox"], .exp-row input[type="radio"] {
+  cursor: pointer;
+  accent-color: var(--p);
+}
+.exp-label {
+  font-size: 11px;
+  color: var(--t2);
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+.exp-input, .exp-select {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: var(--r2);
+  border: 1px solid var(--bdr);
+  font-size: 12px;
+  background: #fff;
+}
+.exp-tab-wrap {
+  display: flex;
+  border-radius: var(--r2);
+  background: #e2e8f0;
+  padding: 3px;
+  gap: 3px;
+}
+.exp-tab-btn {
+  flex: 1;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--t2);
+  transition: all 0.15s ease;
+}
+.exp-tab-btn.active {
+  background: #fff;
+  color: var(--p);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.exp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+#print-export-container {
+  display: none;
+}
+@media print {
+  @page {
+    size: var(--export-paper-size, A4) var(--export-paper-orientation, landscape);
+    margin: var(--export-paper-margin, 10mm);
+  }
+  body * {
+    visibility: hidden;
+  }
+  #print-export-container, #print-export-container * {
+    visibility: visible;
+  }
+  #print-export-container {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+  .export-page {
+    page-break-after: always;
+    break-after: page;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8mm;
+  }
+  .export-page:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  .export-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

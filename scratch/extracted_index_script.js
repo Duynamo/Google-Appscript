@@ -1,0 +1,10204 @@
+
+// ═══════════════════════════════════════════════════════════
+//  I18N DICTIONARY & MULTI-LANGUAGE ENGINE
+// ═══════════════════════════════════════════════════════════
+const I18N = {
+  vi: {
+    app_name: "Quản Lý Dự Án",
+    app_sub: "Quản lý thông minh",
+    nav_dashboard: "Tổng quan",
+    nav_gantt: "Sơ đồ Gantt",
+    nav_projects: "Dự án",
+    nav_tasks: "Nhiệm vụ",
+    nav_users: "Người dùng",
+    nav_log: "Nhật ký",
+    logout: "Đăng xuất",
+    loading: "Đang tải...",
+    no_permission: "Không có quyền",
+    contact_admin: "Liên hệ Admin để được cấp quyền",
+    
+    page_dashboard_t: "Tổng Quan",
+    page_dashboard_s: "Chào mừng trở lại",
+    page_gantt_t: "Sơ đồ Gantt",
+    page_gantt_s: "Quản lý tiến độ trực quan",
+    page_projects_t: "Dự Án",
+    page_projects_s: "Quản lý tất cả dự án",
+    page_tasks_t: "Nhiệm Vụ",
+    page_tasks_s: "Quản lý tất cả nhiệm vụ",
+    page_users_t: "Người Dùng",
+    page_users_s: "Phân quyền & quản lý",
+    page_log_t: "Nhật Ký",
+    page_log_s: "Lịch sử hoạt động",
+    filter_by_project: "Lọc theo dự án...",
+    filter_all_projects: "Tất cả dự án",
+    search_placeholder: "Tìm kiếm...",
+    create_new: "+ Tạo mới ▾",
+    add_project: "Thêm dự án",
+    add_task: "Thêm nhiệm vụ",
+    add_user: "Thêm nhân viên",
+    notifications: "Thông báo",
+    mark_read: "Xóa đã đọc",
+    reload: "Làm mới",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "Đặt làm mặc định",
+    set_sys_default: "Mặc định hệ thống",
+    modal_sys_lang: "⚙️ Cài đặt ngôn ngữ mặc định hệ thống",
+    sys_lang_desc: "Chọn ngôn ngữ mặc định cho toàn bộ hệ thống. Người dùng mới khi truy cập lần đầu sẽ được áp dụng ngôn ngữ này nếu chưa thiết lập tùy chọn cá nhân.",
+    sys_lang_select_lbl: "Ngôn ngữ mặc định hệ thống",
+    
+    dash_card_total_projects: "TỔNG DỰ ÁN",
+    dash_card_total_tasks: "TỔNG NHIỆM VỤ",
+    dash_card_in_progress: "NHIỆM VỤ ĐANG LÀM",
+    dash_card_overdue: "NHIỆM VỤ QUÁ HẠN",
+    dash_stat_completed: "Hoàn thành",
+    dash_stat_rate: "Tỷ lệ",
+    dash_stat_not_started: "Chưa bắt đầu",
+    dash_stat_paused: "Tạm dừng",
+    dash_stat_active_users: "Nhân viên active",
+    dash_click_detail: "Nhấn để xem chi tiết",
+    dash_chart_status: "Phân Bổ Trạng Thái",
+    dash_chart_priority: "Độ Ưu Tiên",
+    dash_chart_staff: "Phân Công Nhân Sự",
+    dash_chart_trend: "Tiến Độ Hoàn Thành (15 ngày)",
+    dash_chart_progress: "Tiến Độ Dự Án",
+    dash_chart_compare: "So Sánh Kế Hoạch & Thực Tế",
+    dash_recent_activity: "Hoạt Động Gần Đây",
+    dash_urgent_tasks: "Việc Khẩn Cấp / Quá Hạn",
+    dash_no_urgent: "Không có nhiệm vụ khẩn cấp cần xử lý",
+    dash_no_act: "Chưa có hoạt động nào",
+    
+    gantt_all_staff: "Tất cả nhân viên",
+    gantt_today: "Hôm nay",
+    gantt_zoom_week: "Tuần",
+    gantt_zoom_month: "Tháng",
+    gantt_zoom_quarter: "Quý",
+    
+    pj_list_title: "Danh Sách Dự Án",
+    pj_col_code: "Mã DA",
+    pj_col_name: "Tên Dự Án",
+    pj_col_pm: "Quản Lý (PM)",
+    pj_col_start: "Bắt Đầu",
+    pj_col_end: "Kết Thúc",
+    pj_col_progress: "Tiến Độ",
+    pj_col_status: "Trạng Thái",
+    pj_col_actions: "Thao Tác",
+    
+    tk_tab_kanban: "Bảng Kanban",
+    tk_tab_list: "Danh Sách",
+    tk_filter_staff: "Lọc nhân viên...",
+    tk_filter_priority: "Độ ưu tiên...",
+    tk_filter_status: "Trạng thái...",
+    tk_all_staff: "Tất cả nhân viên",
+    tk_all_priorities: "Tất cả độ ưu tiên",
+    tk_all_statuses: "Tất cả trạng thái",
+    tk_col_name: "Tên Công Việc",
+    tk_col_project: "Dự Án",
+    tk_col_assignee: "Người Phụ Trách",
+    tk_col_deadline: "Hạn Chót",
+    tk_col_priority: "Độ Ưu Tiên",
+    tk_col_progress: "Tiến Độ",
+    tk_col_status: "Trạng Thái",
+    
+    btn_save: "💾 Lưu",
+    btn_cancel: "Hủy",
+    btn_add: "+ Thêm",
+    btn_edit: "Sửa",
+    btn_delete: "Xóa",
+    btn_close: "Đóng",
+    btn_confirm: "Xác nhận",
+    btn_duplicate: "📋 Tạo bản sao",
+    btn_bulk_add: "⚡ Thêm nhanh hàng loạt",
+    btn_single_add: "📝 Thêm từng nhiệm vụ",
+    btn_filter: "Lọc",
+    btn_export: "Xuất dữ liệu",
+    
+    st_pending: "Chờ thực hiện",
+    st_in_progress: "Đang thực hiện",
+    st_review: "Chờ duyệt",
+    st_completed: "Hoàn thành",
+    st_paused: "Tạm dừng",
+    st_cancelled: "Hủy",
+    st_overdue: "Quá hạn",
+    st_planning: "Lên kế hoạch",
+    
+    pr_low: "Thấp",
+    pr_medium: "Trung bình",
+    pr_high: "Cao",
+    pr_urgent: "Khẩn cấp",
+    
+    role_admin: "Quản trị viên",
+    role_manager: "Quản lý",
+    role_member: "Thành viên",
+    role_viewer: "Người xem",
+    
+    msg_lang_changed: "Đã chuyển đổi sang Tiếng Việt",
+    msg_default_saved: "Đã lưu Tiếng Việt làm ngôn ngữ mặc định của bạn",
+    msg_sys_default_saved: "Đã lưu ngôn ngữ mặc định hệ thống thành công",
+    msg_save_success: "Lưu thành công!",
+    msg_delete_success: "Đã xóa thành công!",
+    msg_confirm_delete: "Bạn có chắc chắn muốn xóa không? Thao tác này không thể hoàn tác.",
+    msg_confirm_dup_pj: "Bạn có chắc muốn nhân bản dự án này?",
+
+    gantt_from: "Từ:",
+    gantt_to: "Đến:",
+    gantt_cb_flag: "🚩 Cờ mốc",
+    gantt_cb_date: "📅 Ngày hạn",
+    gantt_col_name: "Tên",
+    gantt_task_unit: "việc",
+    gantt_pj_deadline: "Hạn DA",
+    btn_apply: "✔ Áp dụng",
+    btn_reset: "↺ Reset",
+    btn_view: "Xem",
+    filter_all_statuses: "-- Tất cả trạng thái --",
+    filter_status_placeholder: "-- Trạng thái --",
+    filter_priority_placeholder: "-- Ưu tiên --",
+    user_col_id: "Tên / ID",
+    user_col_name: "Họ Tên",
+    user_col_role: "Vai Trò",
+    user_col_status: "Trạng Thái",
+    user_col_created: "Ngày Tạo",
+    log_col_time: "Thời Gian",
+    log_col_email: "Email",
+    log_col_role: "Vai Trò",
+    log_col_action: "Hành Động",
+    log_col_detail: "Chi Tiết",
+    empty_no_users: "Chưa có người dùng nào",
+    desc: "Mô tả",
+    note: "Ghi chú",
+    manage_members: "⚙ Quản lý thành viên",
+    
+    nav_analytics: "Biểu đồ chuyên sâu",
+    page_analytics_t: "Biểu Đồ Chuyên Sâu",
+    page_analytics_s: "Phân tích hiệu suất & mức độ đóng góp thành viên",
+    an_filter_range: "📅 Khung thời gian:",
+    an_from: "Từ:",
+    an_to: "Đến:",
+    dash_preset_all: "Tất cả",
+    dash_preset_today: "Hôm nay",
+    dash_preset_week: "Tuần này",
+    dash_preset_month: "Tháng này",
+    dash_preset_quarter: "Quý này",
+    dash_preset_year: "Năm nay",
+    an_filter_project: "📁 Dự án:",
+    an_filter_member: "👤 Nhân viên:",
+    an_all_projects: "Tất cả dự án",
+    an_all_members: "👤 Tất cả nhân viên",
+    an_kpi_active_members: "Nhân sự tham gia",
+    an_kpi_linked_projects: "Dự án liên quan",
+    an_kpi_total_tasks: "Tổng nhiệm vụ",
+    an_kpi_ontime_rate: "Tỷ lệ đúng hạn",
+    an_chart_workload: "📊 Khối lượng & Tiến độ theo thành viên",
+    an_chart_radar: "🕸️ Đánh giá đa chiều năng lực đóng góp",
+    an_chart_pj_share: "🍩 Tỷ trọng tham gia các dự án",
+    an_chart_trend: "📈 Phân bổ công việc qua từng dự án",
+    an_tbl_title: "📋 Bảng Tổng Hợp Chi Tiết Đóng Góp & Dự Án",
+    an_tbl_member: "Thành viên",
+    an_tbl_projects: "Dự án tham gia",
+    an_tbl_tasks: "Số task",
+    an_tbl_done: "Đã xong",
+    an_tbl_progress: "Đang làm",
+    an_tbl_overdue: "Quá hạn",
+    an_tbl_rate: "Tỷ lệ hoàn thành",
+    an_tbl_ranking: "Đánh giá",
+    an_search_member: "Tìm thành viên...",
+    an_comparing_members: "Đang so sánh: {n} thành viên",
+    an_reset_tooltip: "Đặt lại bộ lọc",
+    an_no_data: "Không có dữ liệu trong khoảng thời gian đã chọn",
+    an_rank_excellent: "🏆 Xuất sắc",
+    an_rank_good: "⭐ Tích cực",
+    an_rank_steady: "Đang ổn định",
+    an_rank_support: "⚠️ Cần hỗ trợ",
+    an_radar_workload: "Khối lượng",
+    an_radar_completion: "Hoàn thành",
+    an_radar_ontime: "Đúng hạn",
+    an_radar_highpri: "Việc khó/Cao",
+    an_radar_velocity: "Tiến độ TB",
+
+    nav_taxonomy: "Danh mục tiêu chuẩn",
+    page_taxonomy_t: "Danh Mục Tiêu Chuẩn",
+    page_taxonomy_s: "Quy định mã hóa & phân loại công việc chuẩn",
+    tax_page_title: "📐 Danh Mục Tiêu Chuẩn & Quy Định Mã Hóa",
+    tax_tab_cat: "1. Category (Nhóm lớn)",
+    tax_tab_phase: "2. Phase dự án",
+    tax_tab_disc: "3. Chi tiết công việc",
+    tax_tab_pjcode: "4. Mã dự án",
+    tax_col_code: "Mã viết tắt",
+    tax_col_name: "Tên phân loại",
+    tax_col_desc: "Tên đầy đủ",
+    tax_col_fullname: "Tên đầy đủ",
+    tax_col_extra: "Ghi chú bổ sung",
+    tax_col_notes: "Ghi chú bổ sung",
+    tax_btn_add: "+ Thêm Tiêu Chuẩn",
+    tax_btn_reload_sheet: "Nạp mẫu chuẩn",
+    tax_btn_batch: "Chuẩn hóa task cũ",
+    tax_reload_title: "Khôi phục danh mục mẫu chuẩn từ hệ thống",
+    tax_batch_title: "Quét và gán mã tiền tố cho các task cũ",
+    tax_srch_ph: "Tìm theo mã, tên, mô tả...",
+    tax_code_hint: "2-5 ký tự in hoa",
+    disc_preview_badge: "Xem trước nhãn:",
+    tax_lbl_cat: "Category (Nhóm lớn)",
+    tax_lbl_phase: "Phase (Giai đoạn)",
+    tax_lbl_disc: "Chi tiết (Discipline)",
+    tax_modal_batch_ti: "⚡ Chuẩn Hóa Mã Tiền Tố Cho Nhiệm Vụ Cũ",
+    tax_modal_batch_sub: "Tự động nhận diện từ khóa và gán tiền tố [CATEGORY-PHASE-DISC] cho các nhiệm vụ chưa có mã",
+    tax_item_saved: "Đã lưu tiêu chuẩn thành công!",
+    tax_item_deleted: "Đã xóa tiêu chuẩn thành công!",
+    tax_batch_success: "Đã chuẩn hóa {n} nhiệm vụ thành công!",
+    pj_year_lbl: "Năm",
+    pj_seq_lbl: "Số TT (STT)",
+    pj_seq_hint: "VD: 01, 02...",
+    tax_select_pj_code: "Chọn từ Danh mục tiêu chuẩn",
+    tax_custom_pj_name: "-- Tự nhập nội dung xxxxx --",
+    btn_update_pj_name: "🔄 Cập nhật",
+    pj_naming_rule: "📐 Quy chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]",
+    pj_name_readonly_hint: "ℹ️ Tên dự án được sinh tự động theo chuẩn: [Năm]_[STT]_[Tên viết tắt]_[Tên đầy đủ]",
+    pj_select_code_hint: "-- Chọn dự án từ Danh mục tiêu chuẩn --",
+    pj_name_updated_toast: "Đã cập nhật tên và mô tả dự án theo chuẩn!",
+    pj_desc_hint: "(Tự động lấy từ Ghi chú bổ sung trong danh mục tiêu chuẩn)",
+    pj_desc_readonly_hint: "(Chế độ chỉ xem - Liên kết từ Danh mục tiêu chuẩn)",
+    pj_select_taxonomy_warn: "Vui lòng chọn dự án từ Danh mục tiêu chuẩn trước khi cập nhật",
+    tax_prefix_badge: "Ký tự phân loại chuẩn",
+    tax_prefix_none: "[CHƯA GÁN MÃ]",
+    nav_timesheet: "Quản lý thời gian",
+    page_timesheet_t: "Quản Lý Thời Gian",
+    page_timesheet_s: "Ghi nhận và kiểm soát thời gian làm việc chi tiết 30 phút",
+    ts_date: "Ngày làm việc",
+    ts_today: "Hôm nay",
+    ts_yesterday: "Hôm qua",
+    ts_prev_day: "◀ Ngày trước",
+    ts_next_day: "Ngày sau ▶",
+    ts_staff_code: "Nhân viên",
+    ts_staff_rank: "Cấp bậc",
+    ts_sheet_link: "Google Sheet cá nhân",
+    ts_sheet_open: "Mở Sheet lưu trữ ↗",
+    ts_sheet_none: "Chưa cấu hình Sheet",
+    ts_col_time: "Khung Giờ",
+    ts_col_project: "Mã Dự Án",
+    ts_col_category: "Mã Category",
+    ts_col_phase: "Phase",
+    ts_col_discipline: "Mã Công Việc",
+    ts_col_note: "Ghi Chú Công Việc",
+    ts_col_actions: "Thao tác",
+    ts_lunch_break: "☕ NGHỈ TRƯA (12:00 - 13:00) — Không tính giờ làm việc",
+    ts_morning_ot: "🌅 TĂNG CA SÁNG (06:00 - 08:00)",
+    ts_evening_ot: "🌙 TĂNG CA TỐI (17:00 - 22:00)",
+    ts_toggle_ot: "Mở rộng tăng ca",
+    ts_btn_save: "💾 Lưu thời gian",
+    ts_btn_saving: "⏳ Đang lưu...",
+    ts_btn_reload: "🔄 Tải lại",
+    ts_btn_edit_mode: "✏️ Bật Chế Độ Chỉnh Sửa",
+    ts_btn_overwrite: "🔄 Cập Nhật & Ghi Đè (Overwrite)",
+    ts_btn_cancel_edit: "❌ Hủy chỉnh sửa",
+    ts_existing_data_warning: "⚠️ Ngày này đã có dữ liệu lưu trữ. Nút Lưu đã bị khóa để bảo vệ dữ liệu. Vui lòng bấm 'Bật Chế Độ Chỉnh Sửa' nếu muốn ghi đè.",
+    ts_edit_mode_active: "🔔 Chế độ chỉnh sửa đang BẬT. Khi nhấn 'Cập Nhật & Ghi Đè', dữ liệu ngày này trên Google Sheet sẽ được thay thế hoàn toàn.",
+    ts_copy_down: "Sao chép xuống dòng dưới",
+    ts_copy_yesterday: "📋 Sao chép từ Hôm Qua",
+    ts_fill_morning: "☀️ Áp dụng cho cả buổi sáng",
+    ts_fill_afternoon: "🌤️ Áp dụng cho cả buổi chiều",
+    ts_clear_all: "🧹 Xóa trắng",
+    ts_confirm_overwrite_title: "Xác nhận ghi đè dữ liệu",
+    ts_confirm_overwrite_msg: "Ngày {date} đã có {count} bản ghi trên Google Sheet của bạn. Bạn có chắc chắn muốn ghi đè toàn bộ dữ liệu ngày này?",
+    ts_stat_official: "Giờ chính thức",
+    ts_stat_ot: "Giờ tăng ca",
+    ts_stat_total: "Tổng cộng",
+    ts_stat_slots: "Khung giờ đã nhập",
+    ts_subtab_entry: "Nhập Giờ Chi Tiết (30 Phút)",
+    ts_subtab_project: "Báo Cáo Thực Tế Dự Án",
+    ts_subtab_staff: "Bóc Tách Theo Nhân Viên",
+    ts_subtab_matrix: "Ma Trận Đối Chiếu Hàng Loạt",
+    ts_lbl_select_pj: "Dự án:",
+    ts_lbl_scope: "Phạm vi:",
+    ts_scope_all: "🌐 Toàn bộ vòng đời (3 - 5 năm)",
+    ts_scope_current: "📅 Chỉ năm hiện hành (Real-time)",
+    ts_scope_custom: "📆 Khoảng ngày tùy chọn...",
+    ts_btn_export_jp: "Xuất File Nghiệm Thu (Format Nhật)",
+    ts_tbl_staff_contrib: "👥 Đóng Góp Theo Nhân Sự",
+    ts_tbl_disc_breakdown: "📐 Phân Bổ Theo Tác Nghiệp (Discipline)",
+    ts_btn_reload: "🔄 Tải lại",
+    ts_btn_filter: "Lọc",
+    ts_opt_select_pj: "-- Chọn dự án cần xem --",
+    ts_kpi_lifetime_hours: "Tổng Giờ Vòng Đời (Lifetime)",
+    ts_kpi_actual_hours: "Tổng Giờ Thực Làm",
+    ts_kpi_lifetime_sub: "Gồm cả năm cũ đã chốt sổ",
+    ts_kpi_scope_sub: "Phạm vi đã chọn",
+    ts_kpi_current_year: "Năm Hiện Hành ({year})",
+    ts_kpi_standard_hours: "Giờ tiêu chuẩn: {hours}h",
+    ts_kpi_ot: "Tăng Ca (OT)",
+    ts_kpi_ot_rate: "Tỷ lệ OT: {rate}%",
+    ts_kpi_engineers: "Kỹ Sư Tham Gia",
+    ts_kpi_engineers_sub: "Số nhân sự có đóng góp",
+    ts_budget_control: "🎯 Kiểm Soát Ngân Sách Giờ Công:",
+    ts_budget_plan: "Dự toán:",
+    ts_budget_actual: "Thực tế:",
+    ts_budget_used: "ĐÃ DÙNG {pct}%",
+    ts_budget_over: "VƯỢT BUDGET +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 Lũy Kế Snapshot Các Niên Độ Quá Khứ (Đã Chốt Sổ):",
+    ts_historical_year: "Năm {year}:",
+    ts_historical_closed: "Đã chốt sổ",
+    ts_historical_running: "Đang chạy",
+    ts_col_staff_code: "Mã NV",
+    ts_col_staff_name: "Họ Tên",
+    ts_col_hours: "Số Giờ",
+    ts_col_ratio: "Tỷ Trọng",
+    ts_col_disc_code: "Mã",
+    ts_col_disc_name: "Tên Tác Nghiệp",
+    ts_count_engineers: "{count} kỹ sư",
+    ts_count_disciplines: "{count} tác nghiệp",
+    ts_empty_project_data: "Không có dữ liệu thời gian cho dự án này",
+    ts_empty_disc_data: "Không có dữ liệu tác nghiệp",
+    ts_select_project_hint: "Chọn dự án để xem dữ liệu",
+    ts_stf_select: "Nhân viên:",
+    ts_stf_from: "Từ ngày:",
+    ts_stf_to: "Đến ngày:",
+    ts_stf_btn_this_month: "Tháng này",
+    ts_stf_btn_last_month: "Tháng trước",
+    ts_stf_btn_all: "📅 Toàn bộ thời gian",
+    ts_stf_btn_view: "🔍 Xem Bóc Tách",
+    ts_stf_total_hours: "Tổng Giờ Làm:",
+    ts_stf_official_hours: "Giờ Chuẩn:",
+    ts_stf_ot_hours: "Tăng Ca (OT):",
+    ts_stf_active_days: "Số Ngày Làm:",
+    ts_stf_days_unit: "{count} ngày",
+    ts_stf_pjs_count: "Số Dự Án:",
+    ts_stf_pjs_unit: "{count} dự án",
+    ts_stf_tree_header: "🌳 Cây Bóc Tách Công Việc Của [{staff}]:",
+    ts_stf_empty_hint: "Vui lòng bấm [🔍 Xem Bóc Tách] để hiển thị cây công việc",
+    ts_stf_no_data: "Không phát sinh giờ làm việc trong khoảng thời gian này",
+    ts_no_note: "Không có ghi chú",
+    ts_mat_month: "Tháng đối chiếu:",
+    ts_mat_prev_month: "◀ Tháng trước",
+    ts_mat_next_month: "Tháng sau ▶",
+    ts_mat_all_months: "📅 Tất cả các tháng",
+    ts_mat_hide_zero: "Ẩn dự án 0 giờ (Hide Zero Columns)",
+    ts_mat_status_ready: "Sẵn sàng",
+    ts_mat_status_loading: "⏳ Đang tổng hợp ma trận...",
+    ts_mat_status_done: "✅ Đã tải xong",
+    ts_mat_status_all_done: "✅ Toàn bộ thời gian",
+    ts_mat_status_err: "❌ Lỗi tải",
+    ts_mat_hint: "Mẹo: Cuộn ngang/dọc tự do, cột Tên & dòng Tiêu đề luôn ghim cố định (Sticky Freeze). Click vào ô bất kỳ để mở Popup bóc tách chi tiết!",
+    ts_mat_loading: "Đang nạp ma trận...",
+    ts_mat_col_total: "TỔNG (h)",
+    ts_mat_grand_total: "TỔNG CỘNG",
+    ts_mat_all_projects: "Toàn bộ dự án",
+    ts_mat_drilldown_title: "Chi Tiết Thời Gian: {staff} × {project}",
+    ts_mat_drilldown_sub: "Bóc tách tác nghiệp và nhật ký cho dự án [{project}]",
+    ts_mat_drilldown_default_title: "Chi Tiết Thời Gian Làm Việc",
+    ts_mat_drilldown_default_sub: "Bóc tách tác nghiệp và nhật ký theo từng slot",
+    ts_drill_col_date: "Ngày",
+    ts_drill_col_slot: "Khung Giờ",
+    ts_drill_col_hours: "Số Giờ",
+    ts_drill_col_type: "Loại Ca",
+    ts_drill_col_disc: "Tác Nghiệp",
+    ts_drill_col_note: "Ghi Chú Công Việc",
+    ts_drill_type_standard: "Chuẩn",
+    ts_drill_type_ot: "OT",
+    ts_drill_no_records: "Không có bản ghi chi tiết",
+    ts_placeholder_note: "Ghi chú công việc...",
+    ts_clear_row: "Xóa dòng",
+    ts_morning_ot: "TĂNG CA SÁNG",
+    ts_evening_ot: "TĂNG CA TỐI",
+    ts_lunch_break: "Nghỉ trưa",
+    ts_badge_hidden: "(Ẩn)",
+    ts_badge_shown: "(Hiện)",
+    ts_status_ready: "Đã sẵn sàng",
+    ts_copy_hint: "Mẹo: Bấm Ctrl+C / Ctrl+V để sao chép dòng hoặc dán nhiều dòng từ Excel/Google Sheets",
+    tax_tab_emp: "5. Nhân viên",
+    tax_tab_matrix: "6. Ma trận phân quyền",
+    tax_create_sheet: "🪄 Tự động tạo Google Sheet cho nhân sự này",
+    tax_create_sheet_success: "Đã tạo bảng tính Google Sheet thành công!",
+    tax_col_perm: "Phân quyền",
+    tax_perm_level1: "Cấp 1 - Quản trị viên (Admin)",
+    tax_perm_level2: "Cấp 2 - Trưởng bộ phận (Leader)",
+    tax_perm_level3: "Cấp 3 - Quản lý dự án (PJ Lead)",
+    tax_perm_level4: "Cấp 4 - Thành viên (Member)",
+    matrix_title: "Ma trận phân quyền hệ thống",
+    matrix_subtitle: "Cấu hình trực tiếp mức quyền chi tiết cho từng vai trò trên từng phân hệ",
+    matrix_btn_save: "💾 Lưu ma trận phân quyền",
+    matrix_btn_reset: "↺ Khôi phục mặc định",
+    matrix_badge_custom: "⚙️ Đang áp dụng: Cấu hình tùy biến",
+    matrix_badge_default: "🛡️ Đang áp dụng: Cấu hình chuẩn hệ thống",
+    matrix_col_module: "Phân hệ & Chức năng",
+    perm_full: "🟢 Toàn quyền",
+    perm_lead_scope: "🟡 Quản trị dự án Lead",
+    perm_view_all: "⚪ Xem toàn cảnh (Chỉ xem)",
+    perm_own: "🔵 Việc cá nhân",
+    perm_deny: "❌ Không có quyền (Ẩn)",
+    matrix_saved_success: "Đã lưu cấu hình ma trận phân quyền thành công!",
+    matrix_reset_confirm: "Bạn có chắc muốn khôi phục ma trận về thiết lập mặc định chuẩn?",
+    pj_badge_mylead: "👑 Tôi phụ trách",
+    pj_badge_viewonly: "👁️ Chế độ tham chiếu",
+    matrix_saving: "Đang lưu ma trận phân quyền...",
+    matrix_resetting: "Đang khôi phục ma trận về mặc định...",
+    matrix_admin_only_save: "Chỉ Admin mới có quyền lưu ma trận phân quyền",
+    matrix_admin_only_reset: "Chỉ Admin mới có quyền khôi phục ma trận phân quyền",
+    btn_print_export: "In Báo Cáo",
+    btn_print_gantt: "In Báo Cáo",
+    btn_print_analytics: "In Báo Cáo",
+    export_report_title: "🖨️ In & Xuất Báo Cáo",
+    export_report_sub: "Tùy chọn xuất báo cáo PDF và Excel theo nhu cầu",
+    export_scope_title: "1. Chọn Nội Dung Báo Cáo",
+    export_scope_overview: "Báo cáo Tổng quan (Dashboard)",
+    export_scope_analytics: "Biểu đồ phân tích chuyên sâu",
+    export_scope_gantt: "Sơ đồ tiến độ Gantt (Timeline)",
+    export_package_title: "2. Cấu Trúc Đóng Gói",
+    export_merge_single: "Gộp tất cả vào 1 file duy nhất",
+    export_split_files: "Tách thành từng file riêng biệt",
+    export_filename_title: "3. Đặt Tên File Xuất",
+    export_filename_overview: "Tên file Tổng quan",
+    export_filename_analytics: "Tên file Phân tích",
+    export_filename_gantt: "Tên file Gantt",
+    export_filename_merged: "Tên file Báo cáo tổng hợp",
+    export_format_title: "4. Định Dạng & Trang In",
+    export_format_pdf: "Xuất PDF / In ấn",
+    export_format_excel: "Xuất Excel (.xlsx)",
+    export_paper_size: "Khổ giấy",
+    export_orientation: "Hướng in",
+    export_orientation_landscape: "Khổ ngang (Landscape)",
+    export_orientation_portrait: "Khổ dọc (Portrait)",
+    export_margin: "Lề trang",
+    export_margin_normal: "Tiêu chuẩn (10mm)",
+    export_margin_narrow: "Hẹp (5mm)",
+    export_margin_none: "Không lề (0mm)",
+    export_excel_gantt_grid: "Kèm lưới Gantt mô phỏng ngày",
+    export_live_preview: "👁️ Xem trước bản in (Live Preview)",
+    export_btn_native_print: "🖨️ In / Lưu PDF (Vector 300 DPI)",
+    export_btn_download_pdf: "⬇️ Tải PDF Trực Tiếp",
+    export_btn_download_excel: "📊 Tải File Excel (.xlsx)",
+    export_no_selection_warn: "Vui lòng chọn ít nhất 1 nội dung báo cáo!",
+    export_processing: "Đang khởi tạo báo cáo...",
+    export_success: "Xuất báo cáo thành công!",
+    export_chart_generating: "Đang chuyển đổi biểu đồ...",
+    export_excel_sheet_overview: "Tổng quan",
+    export_excel_sheet_analytics: "Phân tích chuyên sâu",
+    export_excel_sheet_gantt: "Sơ đồ Gantt",
+    export_preview_refresh: "↺ Làm mới xem trước",
+    export_exporting: "Đang xử lý xuất...",
+    export_report_generated_at: "Thời gian xuất",
+    export_report_generated_by: "Người thực hiện",
+    export_report_project: "Dự án",
+    export_report_date_range: "Khung thời gian",
+    export_total_tasks: "Tổng nhiệm vụ",
+    export_done_tasks: "Hoàn thành",
+    export_inprogress_tasks: "Đang thực hiện",
+    export_overdue_tasks: "Quá hạn",
+    export_ontime_rate: "Tỷ lệ đúng hạn",
+    export_completion_rate: "Tiến độ bình quân",
+  },
+
+  en: {
+    app_name: "Project Manager",
+    app_sub: "Smart Management",
+    nav_dashboard: "Dashboard",
+    nav_gantt: "Gantt Chart",
+    nav_projects: "Projects",
+    nav_tasks: "Tasks",
+    nav_users: "Users",
+    nav_log: "Activity Log",
+    logout: "Log out",
+    loading: "Loading...",
+    no_permission: "Access Denied",
+    contact_admin: "Please contact an Administrator for access",
+    
+    page_dashboard_t: "Dashboard",
+    page_dashboard_s: "Welcome back",
+    page_gantt_t: "Gantt Chart",
+    page_gantt_s: "Visual timeline & progress",
+    page_projects_t: "Projects",
+    page_projects_s: "Manage all projects",
+    page_tasks_t: "Tasks",
+    page_tasks_s: "Manage all tasks",
+    page_users_t: "Users",
+    page_users_s: "Permissions & team members",
+    page_log_t: "Activity Log",
+    page_log_s: "System history & audit trail",
+    filter_by_project: "Filter by project...",
+    filter_all_projects: "All Projects",
+    search_placeholder: "Search...",
+    create_new: "+ Create ▾",
+    add_project: "New Project",
+    add_task: "New Task",
+    add_user: "New User",
+    notifications: "Notifications",
+    mark_read: "Clear read",
+    reload: "Refresh",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "Set as my default",
+    set_sys_default: "System default",
+    modal_sys_lang: "⚙️ System Default Language Settings",
+    sys_lang_desc: "Choose the default language for the entire system. New users visiting for the first time will use this language unless they set a personal preference.",
+    sys_lang_select_lbl: "System Default Language",
+    
+    dash_card_total_projects: "TOTAL PROJECTS",
+    dash_card_total_tasks: "TOTAL TASKS",
+    dash_card_in_progress: "IN PROGRESS",
+    dash_card_overdue: "OVERDUE TASKS",
+    dash_stat_completed: "Completed",
+    dash_stat_rate: "Rate",
+    dash_stat_not_started: "Not started",
+    dash_stat_paused: "On hold",
+    dash_stat_active_users: "Active members",
+    dash_click_detail: "Click to view details",
+    dash_chart_status: "Status Distribution",
+    dash_chart_priority: "Priority Breakdown",
+    dash_chart_staff: "Staff Workload",
+    dash_chart_trend: "Completion Trend (15 days)",
+    dash_chart_progress: "Project Progress",
+    dash_chart_compare: "Planned vs Actual",
+    dash_recent_activity: "Recent Activity",
+    dash_urgent_tasks: "Urgent & Overdue Tasks",
+    dash_no_urgent: "No urgent tasks pending",
+    dash_no_act: "No recent activity",
+    
+    gantt_all_staff: "All staff",
+    gantt_today: "Today",
+    gantt_zoom_week: "Week",
+    gantt_zoom_month: "Month",
+    gantt_zoom_quarter: "Quarter",
+    
+    pj_list_title: "Project List",
+    pj_col_code: "Code",
+    pj_col_name: "Project Name",
+    pj_col_pm: "Manager (PM)",
+    pj_col_start: "Start Date",
+    pj_col_end: "End Date",
+    pj_col_progress: "Progress",
+    pj_col_status: "Status",
+    pj_col_actions: "Actions",
+    
+    tk_tab_kanban: "Kanban Board",
+    tk_tab_list: "List View",
+    tk_filter_staff: "Filter staff...",
+    tk_filter_priority: "Priority...",
+    tk_filter_status: "Status...",
+    tk_all_staff: "All staff",
+    tk_all_priorities: "All priorities",
+    tk_all_statuses: "All statuses",
+    tk_col_name: "Task Name",
+    tk_col_project: "Project",
+    tk_col_assignee: "Assignee",
+    tk_col_deadline: "Deadline",
+    tk_col_priority: "Priority",
+    tk_col_progress: "Progress",
+    tk_col_status: "Status",
+    
+    btn_save: "💾 Save",
+    btn_cancel: "Cancel",
+    btn_add: "+ Add",
+    btn_edit: "Edit",
+    btn_delete: "Delete",
+    btn_close: "Close",
+    btn_confirm: "Confirm",
+    btn_duplicate: "📋 Duplicate",
+    btn_bulk_add: "⚡ Bulk Add Tasks",
+    btn_single_add: "📝 Single Task",
+    btn_filter: "Filter",
+    btn_export: "Export",
+    
+    st_pending: "To Do",
+    st_in_progress: "In Progress",
+    st_review: "Under Review",
+    st_completed: "Completed",
+    st_paused: "On Hold",
+    st_cancelled: "Cancelled",
+    st_overdue: "Overdue",
+    st_planning: "Planning",
+    
+    pr_low: "Low",
+    pr_medium: "Medium",
+    pr_high: "High",
+    pr_urgent: "Urgent",
+    
+    role_admin: "Admin",
+    role_manager: "Manager",
+    role_member: "Member",
+    role_viewer: "Viewer",
+    
+    msg_lang_changed: "Language changed to English",
+    msg_default_saved: "English set as your default language",
+    msg_sys_default_saved: "System default language saved successfully",
+    msg_save_success: "Saved successfully!",
+    msg_delete_success: "Deleted successfully!",
+    msg_confirm_delete: "Are you sure you want to delete this? This action cannot be undone.",
+    msg_confirm_dup_pj: "Are you sure you want to duplicate this project?",
+
+    gantt_from: "From:",
+    gantt_to: "To:",
+    gantt_cb_flag: "🚩 Milestone",
+    gantt_cb_date: "📅 Due Date",
+    gantt_col_name: "Name",
+    gantt_task_unit: "tasks",
+    gantt_pj_deadline: "Proj Due",
+    btn_apply: "✔ Apply",
+    btn_reset: "↺ Reset",
+    btn_view: "View",
+    filter_all_statuses: "-- All Statuses --",
+    filter_status_placeholder: "-- Status --",
+    filter_priority_placeholder: "-- Priority --",
+    user_col_id: "Name / ID",
+    user_col_name: "Full Name",
+    user_col_role: "Role",
+    user_col_status: "Status",
+    user_col_created: "Created Date",
+    log_col_time: "Time",
+    log_col_email: "Email",
+    log_col_role: "Role",
+    log_col_action: "Action",
+    log_col_detail: "Details",
+    empty_no_users: "No users found",
+    desc: "Description",
+    note: "Notes",
+    manage_members: "⚙ Manage Members",
+    
+    nav_analytics: "Advanced Analytics",
+    page_analytics_t: "Advanced Analytics",
+    page_analytics_s: "Measure member performance & project participation",
+    an_filter_range: "📅 Time Range:",
+    an_from: "From:",
+    an_to: "To:",
+    dash_preset_all: "All",
+    dash_preset_today: "Today",
+    dash_preset_week: "This Week",
+    dash_preset_month: "This Month",
+    dash_preset_quarter: "This Quarter",
+    dash_preset_year: "This Year",
+    an_filter_project: "📁 Project:",
+    an_filter_member: "👤 Member:",
+    an_all_projects: "All Projects",
+    an_all_members: "👤 All Members",
+    an_kpi_active_members: "Active Members",
+    an_kpi_linked_projects: "Linked Projects",
+    an_kpi_total_tasks: "Total Tasks",
+    an_kpi_ontime_rate: "On-time Delivery Rate",
+    an_chart_workload: "📊 Workload & Progress by Member",
+    an_chart_radar: "🕸️ Multi-dimensional Contribution Radar",
+    an_chart_pj_share: "🍩 Project Participation Share",
+    an_chart_trend: "📈 Workload Distribution per Project",
+    an_tbl_title: "📋 Detailed Contribution & Project Breakdown",
+    an_tbl_member: "Member",
+    an_tbl_projects: "Participating Projects",
+    an_tbl_tasks: "Tasks",
+    an_tbl_done: "Done",
+    an_tbl_progress: "In Progress",
+    an_tbl_overdue: "Overdue",
+    an_tbl_rate: "Completion Rate",
+    an_tbl_ranking: "Rating",
+    an_search_member: "Search member...",
+    an_comparing_members: "Comparing: {n} members",
+    an_reset_tooltip: "Reset filters",
+    an_no_data: "No data in selected date range",
+    an_rank_excellent: "🏆 Excellent",
+    an_rank_good: "⭐ High Impact",
+    an_rank_steady: "Steady",
+    an_rank_support: "⚠️ Needs Support",
+    an_radar_workload: "Workload",
+    an_radar_completion: "Completion",
+    an_radar_ontime: "On-time",
+    an_radar_highpri: "High/Urgent",
+    an_radar_velocity: "Avg Progress",
+
+    nav_taxonomy: "Standard Taxonomy",
+    page_taxonomy_t: "Standard Taxonomy",
+    page_taxonomy_s: "Standardized codes and classifications",
+    tax_page_title: "📐 Master Taxonomy & Code Standards",
+    tax_tab_cat: "1. Category Master",
+    tax_tab_phase: "2. Project Phase",
+    tax_tab_disc: "3. Work Discipline",
+    tax_tab_pjcode: "4. Project Codes",
+    tax_col_code: "Short Code",
+    tax_col_name: "Classification Name",
+    tax_col_desc: "Full Name",
+    tax_col_fullname: "Full Name",
+    tax_col_extra: "Additional Notes",
+    tax_col_notes: "Additional Notes",
+    tax_btn_add: "+ Add Standard",
+    tax_btn_reload_sheet: "Load Defaults",
+    tax_btn_batch: "Standardize Tasks",
+    tax_reload_title: "Restore default taxonomy template",
+    tax_batch_title: "Scan and auto-prefix legacy tasks",
+    tax_srch_ph: "Search code, name, description...",
+    tax_code_hint: "2-5 uppercase letters",
+    disc_preview_badge: "Live preview:",
+    tax_lbl_cat: "Category",
+    tax_lbl_phase: "Project Phase",
+    tax_lbl_disc: "Work Discipline",
+    tax_modal_batch_ti: "⚡ Standardize Task Prefixes",
+    tax_modal_batch_sub: "Auto-detect keywords and assign [CATEGORY-PHASE-DISC] prefix to legacy tasks",
+    tax_item_saved: "Standard saved successfully!",
+    tax_item_deleted: "Standard deleted successfully!",
+    tax_batch_success: "Successfully standardized {n} tasks!",
+    pj_year_lbl: "Year",
+    pj_seq_lbl: "Seq No. (STT)",
+    pj_seq_hint: "e.g. 01, 02...",
+    tax_select_pj_code: "Select from Standard Project Codes",
+    tax_custom_pj_name: "-- Custom project content xxxxx --",
+    btn_update_pj_name: "🔄 Update",
+    pj_naming_rule: "📐 Standard: [Year]_[Seq]_[Short Code]_[Full Name]",
+    pj_name_readonly_hint: "ℹ️ Project name is auto-generated: [Year]_[Seq]_[Short Code]_[Full Name]",
+    pj_select_code_hint: "-- Select project from Standard Taxonomy --",
+    pj_name_updated_toast: "Project name and description updated to standard!",
+    pj_desc_hint: "(Auto-filled from Additional Notes in standard taxonomy)",
+    pj_desc_readonly_hint: "(Read-only - Linked from Standard Taxonomy)",
+    pj_select_taxonomy_warn: "Please select a project from standard taxonomy before updating",
+    tax_prefix_badge: "Standard Taxonomy Prefix",
+    tax_prefix_none: "[NO CODE ASSIGNED]",
+    nav_timesheet: "Timesheet",
+    page_timesheet_t: "Timesheet Management",
+    page_timesheet_s: "Detailed 30-minute block work time tracking & control",
+    ts_date: "Work Date",
+    ts_today: "Today",
+    ts_yesterday: "Yesterday",
+    ts_prev_day: "◀ Prev Day",
+    ts_next_day: "Next Day ▶",
+    ts_staff_code: "Employee",
+    ts_staff_rank: "Rank / Title",
+    ts_sheet_link: "Personal Google Sheet",
+    ts_sheet_open: "Open Google Sheet ↗",
+    ts_sheet_none: "No Sheet Configured",
+    ts_col_time: "Time Slot",
+    ts_col_project: "Project Code",
+    ts_col_category: "Category",
+    ts_col_phase: "Phase",
+    ts_col_discipline: "Discipline",
+    ts_col_note: "Task Notes",
+    ts_col_actions: "Actions",
+    ts_lunch_break: "☕ LUNCH BREAK (12:00 - 13:00) — Excluded from work hours",
+    ts_morning_ot: "🌅 MORNING OVERTIME (06:00 - 08:00)",
+    ts_evening_ot: "🌙 EVENING OVERTIME (17:00 - 22:00)",
+    ts_toggle_ot: "Toggle Overtime",
+    ts_btn_save: "💾 Save Timesheet",
+    ts_btn_saving: "⏳ Saving...",
+    ts_btn_reload: "🔄 Refresh",
+    ts_btn_edit_mode: "✏️ Enable Edit Mode",
+    ts_btn_overwrite: "🔄 Update & Overwrite",
+    ts_btn_cancel_edit: "❌ Cancel Edit",
+    ts_existing_data_warning: "⚠️ Data already exists for this date. Save is locked to protect data. Click 'Enable Edit Mode' to overwrite.",
+    ts_edit_mode_active: "🔔 Edit Mode is ON. Clicking 'Update & Overwrite' will completely replace this date's records on Google Sheet.",
+    ts_copy_down: "Copy to row below",
+    ts_copy_yesterday: "📋 Copy from Yesterday",
+    ts_fill_morning: "☀️ Fill Entire Morning",
+    ts_fill_afternoon: "🌤️ Fill Entire Afternoon",
+    ts_clear_all: "🧹 Clear All",
+    ts_confirm_overwrite_title: "Confirm Overwrite Data",
+    ts_confirm_overwrite_msg: "Date {date} already has {count} records in your Google Sheet. Are you sure you want to overwrite all records for this date?",
+    ts_stat_official: "Regular Hours",
+    ts_stat_ot: "Overtime Hours",
+    ts_stat_total: "Total Hours",
+    ts_stat_slots: "Slots Logged",
+    ts_subtab_entry: "Detailed Timesheet (30m)",
+    ts_subtab_project: "Project Actual Report",
+    ts_subtab_staff: "Staff Work Breakdown",
+    ts_subtab_matrix: "Batch Comparison Matrix",
+    ts_lbl_select_pj: "Project:",
+    ts_lbl_scope: "Scope:",
+    ts_scope_all: "🌐 Full Lifecycle (3 - 5 Years)",
+    ts_scope_current: "📅 Current Year Only (Real-time)",
+    ts_scope_custom: "📆 Custom Date Range...",
+    ts_btn_export_jp: "Export Acceptance File (JP Format)",
+    ts_tbl_staff_contrib: "👥 Staff Contribution",
+    ts_tbl_disc_breakdown: "📐 Discipline Breakdown",
+    ts_btn_reload: "🔄 Reload",
+    ts_btn_filter: "Filter",
+    ts_opt_select_pj: "-- Select Project --",
+    ts_kpi_lifetime_hours: "Lifetime Hours",
+    ts_kpi_actual_hours: "Total Actual Hours",
+    ts_kpi_lifetime_sub: "Including closed past years",
+    ts_kpi_scope_sub: "Selected range",
+    ts_kpi_current_year: "Current Year ({year})",
+    ts_kpi_standard_hours: "Standard hours: {hours}h",
+    ts_kpi_ot: "Overtime (OT)",
+    ts_kpi_ot_rate: "OT rate: {rate}%",
+    ts_kpi_engineers: "Engineers Involved",
+    ts_kpi_engineers_sub: "Contributors count",
+    ts_budget_control: "🎯 Work Budget Control:",
+    ts_budget_plan: "Budget:",
+    ts_budget_actual: "Actual:",
+    ts_budget_used: "USED {pct}%",
+    ts_budget_over: "OVER BUDGET +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 Historical Snapshot by Past Fiscal Years (Closed):",
+    ts_historical_year: "Year {year}:",
+    ts_historical_closed: "Closed",
+    ts_historical_running: "Running",
+    ts_col_staff_code: "Staff ID",
+    ts_col_staff_name: "Full Name",
+    ts_col_hours: "Hours",
+    ts_col_ratio: "Ratio",
+    ts_col_disc_code: "Code",
+    ts_col_disc_name: "Discipline Name",
+    ts_count_engineers: "{count} engineers",
+    ts_count_disciplines: "{count} disciplines",
+    ts_empty_project_data: "No timesheet data for this project",
+    ts_empty_disc_data: "No discipline data",
+    ts_select_project_hint: "Select a project to view data",
+    ts_stf_select: "Staff:",
+    ts_stf_from: "From:",
+    ts_stf_to: "To:",
+    ts_stf_btn_this_month: "This Month",
+    ts_stf_btn_last_month: "Last Month",
+    ts_stf_btn_all: "📅 All Time",
+    ts_stf_btn_view: "🔍 View Breakdown",
+    ts_stf_total_hours: "Total Hours:",
+    ts_stf_official_hours: "Standard Hours:",
+    ts_stf_ot_hours: "Overtime (OT):",
+    ts_stf_active_days: "Active Days:",
+    ts_stf_days_unit: "{count} days",
+    ts_stf_pjs_count: "Projects Count:",
+    ts_stf_pjs_unit: "{count} projects",
+    ts_stf_tree_header: "🌳 Work Breakdown Tree of [{staff}]:",
+    ts_stf_empty_hint: "Click [🔍 View Breakdown] to display tree",
+    ts_stf_no_data: "No logged hours in this period",
+    ts_no_note: "No note",
+    ts_mat_month: "Comparison Month:",
+    ts_mat_prev_month: "◀ Prev Month",
+    ts_mat_next_month: "Next Month ▶",
+    ts_mat_all_months: "📅 All Months",
+    ts_mat_hide_zero: "Hide 0h projects (Hide Zero Columns)",
+    ts_mat_status_ready: "Ready",
+    ts_mat_status_loading: "⏳ Calculating matrix...",
+    ts_mat_status_done: "✅ Loaded",
+    ts_mat_status_all_done: "✅ All Time Loaded",
+    ts_mat_status_err: "❌ Failed",
+    ts_mat_hint: "Tip: Scroll freely, Name & Headers are sticky frozen. Click any cell to inspect details!",
+    ts_mat_loading: "Loading matrix...",
+    ts_mat_col_total: "TOTAL (h)",
+    ts_mat_grand_total: "GRAND TOTAL",
+    ts_mat_all_projects: "All Projects",
+    ts_mat_drilldown_title: "Timesheet Detail: {staff} × {project}",
+    ts_mat_drilldown_sub: "Breakdown and work logs for project [{project}]",
+    ts_mat_drilldown_default_title: "Working Time Details",
+    ts_mat_drilldown_default_sub: "Slot-by-slot task and work log breakdown",
+    ts_drill_col_date: "Date",
+    ts_drill_col_slot: "Time Slot",
+    ts_drill_col_hours: "Hours",
+    ts_drill_col_type: "Type",
+    ts_drill_col_disc: "Discipline",
+    ts_drill_col_note: "Work Note",
+    ts_drill_type_standard: "Standard",
+    ts_drill_type_ot: "OT",
+    ts_drill_no_records: "No detailed records",
+    ts_placeholder_note: "Work note...",
+    ts_clear_row: "Clear row",
+    ts_morning_ot: "MORNING OVERTIME",
+    ts_evening_ot: "EVENING OVERTIME",
+    ts_lunch_break: "Lunch break",
+    ts_badge_hidden: "(Hidden)",
+    ts_badge_shown: "(Shown)",
+    ts_status_ready: "Ready",
+    ts_copy_hint: "Tip: Use Ctrl+C / Ctrl+V to copy rows or paste multiple lines from Excel/Google Sheets",
+    tax_tab_emp: "5. Employees",
+    tax_tab_matrix: "6. Permission Matrix",
+    tax_create_sheet: "🪄 Auto-generate Google Sheet for this staff",
+    tax_create_sheet_success: "Google Sheet created successfully!",
+    tax_col_perm: "Access Level",
+    tax_perm_level1: "Level 1 - Administrator (Admin)",
+    tax_perm_level2: "Level 2 - Department Leader (Leader)",
+    tax_perm_level3: "Level 3 - Project Lead (PJ Lead)",
+    tax_perm_level4: "Level 4 - Team Member (Member)",
+    matrix_title: "System Permission Matrix",
+    matrix_subtitle: "Configure granular permissions dynamically per role across all system modules",
+    matrix_btn_save: "💾 Save Permission Matrix",
+    matrix_btn_reset: "↺ Reset to Default",
+    matrix_badge_custom: "⚙️ Active: Custom Configuration",
+    matrix_badge_default: "🛡️ Active: Standard Default",
+    matrix_col_module: "Module & Action",
+    perm_full: "🟢 Full Access",
+    perm_lead_scope: "🟡 Lead Project Scope",
+    perm_view_all: "⚪ View All (Read Only)",
+    perm_own: "🔵 Own Items Only",
+    perm_deny: "❌ Denied (Hidden)",
+    matrix_saved_success: "Permission matrix saved successfully!",
+    matrix_reset_confirm: "Are you sure you want to reset the matrix to default settings?",
+    pj_badge_mylead: "👑 My Lead",
+    pj_badge_viewonly: "👁️ Reference View",
+    matrix_saving: "Saving permission matrix...",
+    matrix_resetting: "Resetting matrix to default...",
+    matrix_admin_only_save: "Only Admin can save the permission matrix",
+    matrix_admin_only_reset: "Only Admin can reset the permission matrix",
+    btn_print_export: "Print Report",
+    btn_print_gantt: "Print Report",
+    btn_print_analytics: "Print Report",
+    export_report_title: "🖨️ Print & Export Report",
+    export_report_sub: "Customizable PDF and Excel reporting options",
+    export_scope_title: "1. Select Report Content",
+    export_scope_overview: "Overview Report (Dashboard)",
+    export_scope_analytics: "Deep-dive Analytics Charts",
+    export_scope_gantt: "Gantt Timeline Schedule",
+    export_package_title: "2. Packaging Options",
+    export_merge_single: "Merge into single file",
+    export_split_files: "Split into separate files",
+    export_filename_title: "3. File Naming",
+    export_filename_overview: "Overview file name",
+    export_filename_analytics: "Analytics file name",
+    export_filename_gantt: "Gantt file name",
+    export_filename_merged: "Merged report file name",
+    export_format_title: "4. Format & Page Setup",
+    export_format_pdf: "Export PDF / Print",
+    export_format_excel: "Export Excel (.xlsx)",
+    export_paper_size: "Paper Size",
+    export_orientation: "Orientation",
+    export_orientation_landscape: "Landscape",
+    export_orientation_portrait: "Portrait",
+    export_margin: "Margin",
+    export_margin_normal: "Normal (10mm)",
+    export_margin_narrow: "Narrow (5mm)",
+    export_margin_none: "None (0mm)",
+    export_excel_gantt_grid: "Include simulated Gantt calendar grid",
+    export_live_preview: "👁️ Live Print Preview",
+    export_btn_native_print: "🖨️ Print / Save PDF (Vector 300 DPI)",
+    export_btn_download_pdf: "⬇️ Download PDF Directly",
+    export_btn_download_excel: "📊 Download Excel (.xlsx)",
+    export_no_selection_warn: "Please select at least one report section!",
+    export_processing: "Generating report...",
+    export_success: "Report exported successfully!",
+    export_chart_generating: "Rendering charts...",
+    export_excel_sheet_overview: "Overview",
+    export_excel_sheet_analytics: "Analytics",
+    export_excel_sheet_gantt: "Gantt Schedule",
+    export_preview_refresh: "↺ Refresh Preview",
+    export_exporting: "Exporting...",
+    export_report_generated_at: "Generated at",
+    export_report_generated_by: "Generated by",
+    export_report_project: "Project",
+    export_report_date_range: "Date Range",
+    export_total_tasks: "Total Tasks",
+    export_done_tasks: "Completed",
+    export_inprogress_tasks: "In Progress",
+    export_overdue_tasks: "Overdue",
+    export_ontime_rate: "On-time Rate",
+    export_completion_rate: "Average Progress",
+  },
+
+  ja: {
+    app_name: "プロジェクト管理",
+    app_sub: "スマート管理システム",
+    nav_dashboard: "ダッシュボード",
+    nav_gantt: "ガントチャート",
+    nav_projects: "プロジェクト",
+    nav_tasks: "タスク一覧",
+    nav_users: "ユーザー管理",
+    nav_log: "操作ログ",
+    logout: "ログアウト",
+    loading: "読み込み中...",
+    no_permission: "アクセス権限がありません",
+    contact_admin: "システム管理者に権限を申請してください",
+    
+    page_dashboard_t: "ダッシュボード",
+    page_dashboard_s: "おかえりなさい",
+    page_gantt_t: "ガントチャート",
+    page_gantt_s: "視覚的な進捗・工程管理",
+    page_projects_t: "プロジェクト",
+    page_projects_s: "全プロジェクトの管理",
+    page_tasks_t: "タスク一覧",
+    page_tasks_s: "全タスクの進捗管理",
+    page_users_t: "ユーザー管理",
+    page_users_s: "権限およびメンバー管理",
+    page_log_t: "操作ログ",
+    page_log_s: "システムの操作履歴",
+    filter_by_project: "プロジェクトで絞り込み...",
+    filter_all_projects: "すべてのプロジェクト",
+    search_placeholder: "検索...",
+    create_new: "+ 新規作成 ▾",
+    add_project: "プロジェクト追加",
+    add_task: "タスク追加",
+    add_user: "メンバー追加",
+    notifications: "通知",
+    mark_read: "既読をクリア",
+    reload: "更新",
+    
+    lang_vi: "Tiếng Việt",
+    lang_en: "English",
+    lang_ja: "日本語",
+    set_as_my_default: "既定言語に設定",
+    set_sys_default: "システム既定言語",
+    modal_sys_lang: "⚙️ システム既定言語設定",
+    sys_lang_desc: "システム全体の標準言語を選択します。個別設定がない新規ユーザーにこの言語が適用されます。",
+    sys_lang_select_lbl: "システム標準言語",
+    
+    dash_card_total_projects: "総プロジェクト数",
+    dash_card_total_tasks: "総タスク数",
+    dash_card_in_progress: "進行中のタスク",
+    dash_card_overdue: "期限超過タスク",
+    dash_stat_completed: "完了",
+    dash_stat_rate: "達成率",
+    dash_stat_not_started: "未着手",
+    dash_stat_paused: "保留",
+    dash_stat_active_users: "アクティブ担当者",
+    dash_click_detail: "クリックして詳細を表示",
+    dash_chart_status: "ステータス別分布",
+    dash_chart_priority: "優先度別タスク",
+    dash_chart_staff: "担当者別タスク",
+    dash_chart_trend: "完了推移 (過去15日間)",
+    dash_chart_progress: "プロジェクト進捗率",
+    dash_chart_compare: "計画と実績の比較",
+    dash_recent_activity: "最近のアクティビティ",
+    dash_urgent_tasks: "緊急・期限切れタスク",
+    dash_no_urgent: "現在、至急対応のタスクはありません",
+    dash_no_act: "最近のアクティビティはありません",
+    
+    gantt_all_staff: "全担当者",
+    gantt_today: "今日",
+    gantt_zoom_week: "週表示",
+    gantt_zoom_month: "月表示",
+    gantt_zoom_quarter: "四半期表示",
+    
+    pj_list_title: "プロジェクト一覧",
+    pj_col_code: "コード",
+    pj_col_name: "プロジェクト名",
+    pj_col_pm: "管理者 (PM)",
+    pj_col_start: "開始日",
+    pj_col_end: "完了予定日",
+    pj_col_progress: "進捗率",
+    pj_col_status: "状態",
+    pj_col_actions: "操作",
+    
+    tk_tab_kanban: "カンバン形式",
+    tk_tab_list: "リスト形式",
+    tk_filter_staff: "担当者で絞り込み...",
+    tk_filter_priority: "優先度...",
+    tk_filter_status: "状態...",
+    tk_all_staff: "全担当者",
+    tk_all_priorities: "すべての優先度",
+    tk_all_statuses: "すべての状態",
+    tk_col_name: "タスク名",
+    tk_col_project: "プロジェクト",
+    tk_col_assignee: "担当者",
+    tk_col_deadline: "期限",
+    tk_col_priority: "優先度",
+    tk_col_progress: "進捗",
+    tk_col_status: "状態",
+    
+    btn_save: "💾 保存",
+    btn_cancel: "キャンセル",
+    btn_add: "+ 追加",
+    btn_edit: "編集",
+    btn_delete: "削除",
+    btn_close: "閉じる",
+    btn_confirm: "確認",
+    btn_duplicate: "📋 複製する",
+    btn_bulk_add: "⚡ タスク一括追加",
+    btn_single_add: "📝 個別タスク追加",
+    btn_filter: "フィルター",
+    btn_export: "エクスポート",
+    
+    st_pending: "未着手",
+    st_in_progress: "進行中",
+    st_review: "確認待ち",
+    st_completed: "完了",
+    st_paused: "保留",
+    st_cancelled: "中止",
+    st_overdue: "期限超過",
+    st_planning: "計画中",
+    
+    pr_low: "低",
+    pr_medium: "中",
+    pr_high: "高",
+    pr_urgent: "至急",
+    
+    role_admin: "管理者 (Admin)",
+    role_manager: "責任者 (Manager)",
+    role_member: "担当者 (Member)",
+    role_viewer: "閲覧者 (Viewer)",
+    
+    msg_lang_changed: "言語を日本語に変更しました",
+    msg_default_saved: "日本語を既定言語に設定しました",
+    msg_sys_default_saved: "システム既定言語を正常に保存しました",
+    msg_save_success: "正常に保存されました！",
+    msg_delete_success: "正常に削除されました！",
+    msg_confirm_delete: "本当に削除しますか？この操作は取り消せません。",
+    msg_confirm_dup_pj: "このプロジェクトを複製してもよろしいですか？",
+
+    gantt_from: "開始:",
+    gantt_to: "終了:",
+    gantt_cb_flag: "🚩 マイルストーン",
+    gantt_cb_date: "📅 期限日",
+    gantt_col_name: "名前",
+    gantt_task_unit: "件",
+    gantt_pj_deadline: "PJ期限",
+    btn_apply: "✔ 適用",
+    btn_reset: "↺ リセット",
+    btn_view: "表示",
+    filter_all_statuses: "-- すべてのステータス --",
+    filter_status_placeholder: "-- 状態 --",
+    filter_priority_placeholder: "-- 優先度 --",
+    user_col_id: "名前 / ID",
+    user_col_name: "氏名",
+    user_col_role: "権限",
+    user_col_status: "状態",
+    user_col_created: "作成日",
+    log_col_time: "日時",
+    log_col_email: "メール",
+    log_col_role: "権限",
+    log_col_action: "操作",
+    log_col_detail: "詳細",
+    empty_no_users: "登録されたユーザーはいません",
+    desc: "説明",
+    note: "備考",
+    manage_members: "⚙ メンバー管理",
+    
+    nav_analytics: "高度な分析",
+    page_analytics_t: "高度な分析",
+    page_analytics_s: "メンバーの貢献度とプロジェクト参加状況の分析",
+    an_filter_range: "📅 期間指定:",
+    an_from: "開始:",
+    an_to: "終了:",
+    dash_preset_all: "すべて",
+    dash_preset_today: "今日",
+    dash_preset_week: "今週",
+    dash_preset_month: "今月",
+    dash_preset_quarter: "今四半期",
+    dash_preset_year: "今年",
+    an_filter_project: "📁 プロジェクト:",
+    an_filter_member: "👤 メンバー:",
+    an_all_projects: "すべてのプロジェクト",
+    an_all_members: "👤 すべてのメンバー",
+    an_kpi_active_members: "稼働メンバー",
+    an_kpi_linked_projects: "関連プロジェクト",
+    an_kpi_total_tasks: "総タスク数",
+    an_kpi_ontime_rate: "期日遵守率",
+    an_chart_workload: "📊 メンバー別の業務量と進捗",
+    an_chart_radar: "🕸️ 多角的貢献度レーダー",
+    an_chart_pj_share: "🍩 プロジェクト参加比率",
+    an_chart_trend: "📈 プロジェクト別の業務配分",
+    an_tbl_title: "📋 貢献度およびプロジェクト参加の詳細一覧",
+    an_tbl_member: "メンバー",
+    an_tbl_projects: "参加プロジェクト",
+    an_tbl_tasks: "タスク数",
+    an_tbl_done: "完了",
+    an_tbl_progress: "進行中",
+    an_tbl_overdue: "遅延",
+    an_tbl_rate: "完了率",
+    an_tbl_ranking: "評価",
+    an_search_member: "メンバー検索...",
+    an_comparing_members: "比較中: {n} 名",
+    an_reset_tooltip: "フィルターをリセット",
+    an_no_data: "指定された期間のデータがありません",
+    an_rank_excellent: "🏆 優秀",
+    an_rank_good: "⭐ 積極的",
+    an_rank_steady: "安定",
+    an_rank_support: "⚠️ 要支援",
+    an_radar_workload: "業務量",
+    an_radar_completion: "完了率",
+    an_radar_ontime: "期日遵守",
+    an_radar_highpri: "高難度/至急",
+    an_radar_velocity: "平均進捗",
+
+    nav_taxonomy: "基準管理",
+    page_taxonomy_t: "基準管理・区分設定",
+    page_taxonomy_s: "標準コード・工種区分の一元管理",
+    tax_page_title: "📐 標準コード・工種区分マスター",
+    tax_tab_cat: "1. 大分類（Category）",
+    tax_tab_phase: "2. 業務フェーズ（Phase）",
+    tax_tab_disc: "3. 工種・詳細（Discipline）",
+    tax_tab_pjcode: "4. プロジェクトコード",
+    tax_col_code: "略称コード",
+    tax_col_name: "区分・名称",
+    tax_col_desc: "正式名称",
+    tax_col_fullname: "正式名称",
+    tax_col_extra: "補足メモ",
+    tax_col_notes: "補足メモ",
+    tax_btn_add: "+ 基準を追加",
+    tax_btn_reload_sheet: "標準読込",
+    tax_btn_batch: "既存タスク標準化",
+    tax_reload_title: "システムの標準テンプレートを復元",
+    tax_batch_title: "既存タスクをスキャンしてプレフィックスを付与",
+    tax_srch_ph: "コード、名称、説明で検索...",
+    tax_code_hint: "英大文字2〜5文字",
+    disc_preview_badge: "表示プレビュー:",
+    tax_lbl_cat: "大分類（Category）",
+    tax_lbl_phase: "フェーズ（Phase）",
+    tax_lbl_disc: "工種・専門（Discipline）",
+    tax_modal_batch_ti: "⚡ 既存タスクのコード標準化",
+    tax_modal_batch_sub: "キーワードを自動認識し [CATEGORY-PHASE-DISC] プレフィックスを付与します",
+    tax_item_saved: "基準マスターを保存しました！",
+    tax_item_deleted: "基準マスターを削除しました！",
+    tax_batch_success: "{n} 件のタスクを標準化しました！",
+    pj_year_lbl: "年度",
+    pj_seq_lbl: "連番 (No.)",
+    pj_seq_hint: "例: 01, 02...",
+    tax_select_pj_code: "標準プロジェクトコードから選択",
+    tax_custom_pj_name: "-- 自由入力（コード外）xxxxx --",
+    btn_update_pj_name: "🔄 反映・更新",
+    pj_naming_rule: "📐 命名規則: [年]_[連番]_[略称コード]_[正式名称]",
+    pj_name_readonly_hint: "ℹ️ プロジェクト名は標準規約に従い自動生成されます: [年]_[連番]_[略称コード]_[正式名称]",
+    pj_select_code_hint: "-- 基準マスタからプロジェクトを選択 --",
+    pj_name_updated_toast: "プロジェクト名と説明を標準形式に更新しました！",
+    pj_desc_hint: "(基準マスタの補足メモから自動取得)",
+    pj_desc_readonly_hint: "(閲覧のみ - 基準マスタと連携)",
+    pj_select_taxonomy_warn: "反映する前に基準マスタからプロジェクトを選択してください",
+    tax_prefix_badge: "標準分類プレフィックス",
+    tax_prefix_none: "[コード未設定]",
+    nav_timesheet: "工数・勤務管理",
+    page_timesheet_t: "工数・勤務時間管理",
+    page_timesheet_s: "30分単位での詳細な業務実績・工数入力",
+    ts_date: "勤務日",
+    ts_today: "今日",
+    ts_yesterday: "昨日",
+    ts_prev_day: "◀ 前日",
+    ts_next_day: "翌日 ▶",
+    ts_staff_code: "社員番号・氏名",
+    ts_staff_rank: "等級・役職",
+    ts_sheet_link: "個人用Googleスプレッドシート",
+    ts_sheet_open: "シートを開く ↗",
+    ts_sheet_none: "シート未設定",
+    ts_col_time: "時間帯",
+    ts_col_project: "案件コード",
+    ts_col_category: "大分類コード",
+    ts_col_phase: "フェーズ",
+    ts_col_discipline: "作業詳細コード",
+    ts_col_note: "作業メモ・備考",
+    ts_col_actions: "操作",
+    ts_lunch_break: "☕ 昼休憩 (12:00 - 13:00) — 勤務時間外",
+    ts_morning_ot: "🌅 早朝残業 (06:00 - 08:00)",
+    ts_evening_ot: "🌙 夜間残業 (17:00 - 22:00)",
+    ts_toggle_ot: "残業枠を表示/非表示",
+    ts_btn_save: "💾 工数を保存",
+    ts_btn_saving: "⏳ 保存中...",
+    ts_btn_reload: "🔄 再読込",
+    ts_btn_edit_mode: "✏️ 編集モードを有効化",
+    ts_btn_overwrite: "🔄 更新・上書き保存 (Overwrite)",
+    ts_btn_cancel_edit: "❌ 編集キャンセル",
+    ts_existing_data_warning: "⚠️ この日のデータは保存済みです。誤操作防止のため保存ボタンはロックされています。上書きする場合は「編集モードを有効化」してください。",
+    ts_edit_mode_active: "🔔 編集モード有効中。「更新・上書き保存」を実行するとGoogleシート上のデータが完全に置換されます。",
+    ts_copy_down: "下の行にコピー",
+    ts_copy_yesterday: "📋 前日データから複写",
+    ts_fill_morning: "☀️ 午前の全枠に適用",
+    ts_fill_afternoon: "🌤️ 午後の全枠に適用",
+    ts_clear_all: "🧹 全てクリア",
+    ts_confirm_overwrite_title: "データ上書きの確認",
+    ts_confirm_overwrite_msg: "{date} にはすでに {count} 件の記録があります。この日のデータを完全に上書きしてよろしいですか？",
+    ts_stat_official: "定時勤務",
+    ts_stat_ot: "残業時間",
+    ts_stat_total: "合計時間",
+    ts_stat_slots: "入力済み枠数",
+    ts_subtab_entry: "詳細工数入力 (30分)",
+    ts_subtab_project: "プロジェクト別実績報告",
+    ts_subtab_staff: "担当者別詳細分析",
+    ts_subtab_matrix: "一括突合マトリクス",
+    ts_lbl_select_pj: "プロジェクト:",
+    ts_lbl_scope: "集計範囲:",
+    ts_scope_all: "🌐 全期間 (3〜5年)",
+    ts_scope_current: "📅 当該年のみ (リアルタイム)",
+    ts_scope_custom: "📆 期間指定...",
+    ts_btn_export_jp: "検収ファイル出力 (日本形式)",
+    ts_tbl_staff_contrib: "👥 担当者別稼働工数",
+    ts_tbl_disc_breakdown: "📐 業務・作業別工数配分",
+    ts_btn_reload: "🔄 再読み込み",
+    ts_btn_filter: "絞り込み",
+    ts_opt_select_pj: "-- プロジェクトを選択 --",
+    ts_kpi_lifetime_hours: "累計総工数 (全期間)",
+    ts_kpi_actual_hours: "実績総工数",
+    ts_kpi_lifetime_sub: "過去年度締め切り分を含む",
+    ts_kpi_scope_sub: "指定された集計範囲",
+    ts_kpi_current_year: "当該年度 ({year})",
+    ts_kpi_standard_hours: "定時時間: {hours}h",
+    ts_kpi_ot: "残業時間 (OT)",
+    ts_kpi_ot_rate: "残業比率: {rate}%",
+    ts_kpi_engineers: "参加エンジニア",
+    ts_kpi_engineers_sub: "稼働スタッフ数",
+    ts_budget_control: "🎯 工数予算管理:",
+    ts_budget_plan: "予算:",
+    ts_budget_actual: "実績:",
+    ts_budget_used: "消化率 {pct}%",
+    ts_budget_over: "予算超過 +{variance}h (+{pct}%)",
+    ts_historical_title: "📜 過去年度確定スナップショット (決算済み):",
+    ts_historical_year: "{year}年度:",
+    ts_historical_closed: "締め切り済み",
+    ts_historical_running: "進行中",
+    ts_col_staff_code: "社員番号",
+    ts_col_staff_name: "氏名",
+    ts_col_hours: "工数 (h)",
+    ts_col_ratio: "構成比",
+    ts_col_disc_code: "コード",
+    ts_col_disc_name: "業務項目名",
+    ts_count_engineers: "{count} 名",
+    ts_count_disciplines: "{count} 業務項目",
+    ts_empty_project_data: "このプロジェクトの工数データはありません",
+    ts_empty_disc_data: "業務項目データはありません",
+    ts_select_project_hint: "プロジェクトを選択してください",
+    ts_stf_select: "担当者:",
+    ts_stf_from: "開始日:",
+    ts_stf_to: "終了日:",
+    ts_stf_btn_this_month: "今月",
+    ts_stf_btn_last_month: "先月",
+    ts_stf_btn_all: "📅 全期間",
+    ts_stf_btn_view: "🔍 詳細分析表示",
+    ts_stf_total_hours: "総稼働時間:",
+    ts_stf_official_hours: "定時時間:",
+    ts_stf_ot_hours: "残業時間 (OT):",
+    ts_stf_active_days: "稼働日数:",
+    ts_stf_days_unit: "{count} 日",
+    ts_stf_pjs_count: "対象プロジェクト:",
+    ts_stf_pjs_unit: "{count} 件",
+    ts_stf_tree_header: "🌳 業務ブレークダウン [{staff}]:",
+    ts_stf_empty_hint: "「🔍 詳細分析表示」をクリックして業務ツリーを展開してください",
+    ts_stf_no_data: "指定期間内に稼働実績はありません",
+    ts_no_note: "メモなし",
+    ts_mat_month: "対象月:",
+    ts_mat_prev_month: "◀ 前月",
+    ts_mat_next_month: "翌月 ▶",
+    ts_mat_all_months: "📅 全月表示",
+    ts_mat_hide_zero: "0時間プロジェクトを非表示",
+    ts_mat_status_ready: "準備完了",
+    ts_mat_status_loading: "⏳ マトリクス集計中...",
+    ts_mat_status_done: "✅ 読み込み完了",
+    ts_mat_status_all_done: "✅ 全期間表示完了",
+    ts_mat_status_err: "❌ 読み込み失敗",
+    ts_mat_hint: "ヒント: 縦横スクロール可能、社員名とヘッダーは固定表示。任意のセルをクリックすると詳細内訳が開きます。",
+    ts_mat_loading: "マトリクスを読み込み中...",
+    ts_mat_col_total: "合計 (h)",
+    ts_mat_grand_total: "総合計",
+    ts_mat_all_projects: "全プロジェクト",
+    ts_mat_drilldown_title: "工数詳細内訳: {staff} × {project}",
+    ts_mat_drilldown_sub: "案件 [{project}] の作業項目・ログ詳細",
+    ts_mat_drilldown_default_title: "勤務工数詳細",
+    ts_mat_drilldown_default_sub: "枠ごとの作業項目および業務ログ詳細",
+    ts_drill_col_date: "日付",
+    ts_drill_col_slot: "時間枠",
+    ts_drill_col_hours: "工数 (h)",
+    ts_drill_col_type: "区分",
+    ts_drill_col_disc: "業務項目",
+    ts_drill_col_note: "業務内容・メモ",
+    ts_drill_type_standard: "定時",
+    ts_drill_type_ot: "残業",
+    ts_drill_no_records: "詳細レコードはありません",
+    ts_placeholder_note: "業務内容・メモ...",
+    ts_clear_row: "行をクリア",
+    ts_morning_ot: "早朝残業",
+    ts_evening_ot: "夜間残業",
+    ts_lunch_break: "昼休憩",
+    ts_badge_hidden: "(非表示)",
+    ts_badge_shown: "(表示中)",
+    ts_status_ready: "準備完了",
+    ts_copy_hint: "ヒント: Ctrl+C / Ctrl+V で行コピーまたはExcel/Googleスプレッドシートから複数行貼り付け可能",
+    tax_tab_emp: "5. 社員・スタッフ",
+    tax_tab_matrix: "6. 権限マトリクス",
+    tax_create_sheet: "🪄 この社員用スプレッドシートを自動作成",
+    tax_create_sheet_success: "Googleスプレッドシートを正常に作成しました！",
+    tax_col_perm: "権限区分",
+    tax_perm_level1: "第1階層 - システム管理者 (Admin)",
+    tax_perm_level2: "第2階層 - 部門リーダー (Leader)",
+    tax_perm_level3: "第3階層 - PJリーダー (PJ Lead)",
+    tax_perm_level4: "第4階層 - 一般メンバー (Member)",
+    matrix_title: "システム権限マトリクス",
+    matrix_subtitle: "各業務モジュールにおけるロール別の詳細な操作権限を設定",
+    matrix_btn_save: "💾 権限マトリクスを保存",
+    matrix_btn_reset: "↺ デフォルトに戻す",
+    matrix_badge_custom: "⚙️ 適用中: カスタム設定",
+    matrix_badge_default: "🛡️ 適用中: 標準デフォルト設定",
+    matrix_col_module: "機能・操作区分",
+    perm_full: "🟢 フル権限",
+    perm_lead_scope: "🟡 担当PJ管理",
+    perm_view_all: "⚪ 全体参照のみ",
+    perm_own: "🔵 自身の業務のみ",
+    perm_deny: "❌ 権限なし (非表示)",
+    matrix_saved_success: "権限マトリクスが正常に保存されました！",
+    matrix_reset_confirm: "権限マトリクスをデフォルト設定に初期化しますか？",
+    pj_badge_mylead: "👑 担当案件",
+    pj_badge_viewonly: "👁️ 参照のみ",
+    matrix_saving: "権限マトリクスを保存中...",
+    matrix_resetting: "マトリクスをデフォルトに初期化中...",
+    matrix_admin_only_save: "システム管理者のみが権限マトリクスを保存できます",
+    matrix_admin_only_reset: "システム管理者のみが権限マトリクスを初期化できます",
+    btn_print_export: "レポート印刷",
+    btn_print_gantt: "レポート印刷",
+    btn_print_analytics: "レポート印刷",
+    export_report_title: "🖨️ レポート印刷・出力",
+    export_report_sub: "PDFおよびExcelレポートの出力オプション",
+    export_scope_title: "1. レポート対象の選択",
+    export_scope_overview: "概要レポート (ダッシュボード)",
+    export_scope_analytics: "詳細分析グラフ",
+    export_scope_gantt: "ガントチャート工程表",
+    export_package_title: "2. ファイル構成",
+    export_merge_single: "1つのファイルに統合",
+    export_split_files: "項目ごとに別ファイルに分割",
+    export_filename_title: "3. ファイル名設定",
+    export_filename_overview: "概要ファイル名",
+    export_filename_analytics: "分析ファイル名",
+    export_filename_gantt: "ガントファイル名",
+    export_filename_merged: "統合レポートファイル名",
+    export_format_title: "4. 出力形式・ページ設定",
+    export_format_pdf: "PDF出力 / 印刷",
+    export_format_excel: "Excel出力 (.xlsx)",
+    export_paper_size: "用紙サイズ",
+    export_orientation: "印刷の向き",
+    export_orientation_landscape: "横向き (Landscape)",
+    export_orientation_portrait: "縦向き (Portrait)",
+    export_margin: "余白",
+    export_margin_normal: "標準 (10mm)",
+    export_margin_narrow: "狭い (5mm)",
+    export_margin_none: "なし (0mm)",
+    export_excel_gantt_grid: "日別ガントマトリクスを含める",
+    export_live_preview: "👁️ 印刷プレビュー (Live Preview)",
+    export_btn_native_print: "🖨️ 印刷 / PDF保存 (ベクター300 DPI)",
+    export_btn_download_pdf: "⬇️ PDF直接ダウンロード",
+    export_btn_download_excel: "📊 Excelダウンロード (.xlsx)",
+    export_no_selection_warn: "少なくとも1つのレポート対象を選択してください！",
+    export_processing: "レポート生成中...",
+    export_success: "レポートの出力が完了しました！",
+    export_chart_generating: "グラフ変換中...",
+    export_excel_sheet_overview: "概要",
+    export_excel_sheet_analytics: "詳細分析",
+    export_excel_sheet_gantt: "ガント工程表",
+    export_preview_refresh: "↺ プレビュー更新",
+    export_exporting: "出力処理中...",
+    export_report_generated_at: "出力日時",
+    export_report_generated_by: "作成者",
+    export_report_project: "対象プロジェクト",
+    export_report_date_range: "対象期間",
+    export_total_tasks: "総タスク数",
+    export_done_tasks: "完了タスク",
+    export_inprogress_tasks: "進行中",
+    export_overdue_tasks: "期限超過",
+    export_ontime_rate: "納期遵守率",
+    export_completion_rate: "平均進捗率",
+  }
+};
+
+const STATUS_I18N = {
+  "Chờ thực hiện": { vi: "Chờ thực hiện", en: "To Do", ja: "未着手" },
+  "Đang thực hiện": { vi: "Đang thực hiện", en: "In Progress", ja: "進行中" },
+  "Đang tiến hành": { vi: "Đang tiến hành", en: "In Progress", ja: "進行中" },
+  "Chờ duyệt": { vi: "Chờ duyệt", en: "Under Review", ja: "確認待ち" },
+  "Hoàn thành": { vi: "Hoàn thành", en: "Completed", ja: "完了" },
+  "Tạm dừng": { vi: "Tạm dừng", en: "On Hold", ja: "保留" },
+  "Hủy": { vi: "Hủy", en: "Cancelled", ja: "中止" },
+  "Quá hạn": { vi: "Quá hạn", en: "Overdue", ja: "期限超過" },
+  "Lên kế hoạch": { vi: "Lên kế hoạch", en: "Planning", ja: "計画中" }
+};
+
+const PRIORITY_I18N = {
+  "Thấp": { vi: "Thấp", en: "Low", ja: "低" },
+  "Trung bình": { vi: "Trung bình", en: "Medium", ja: "中" },
+  "Cao": { vi: "Cao", en: "High", ja: "高" },
+  "Khẩn cấp": { vi: "Khẩn cấp", en: "Urgent", ja: "至急" }
+};
+
+const ROLE_I18N = {
+  "Admin":   { vi: "Quản trị viên (Cấp 1)", en: "Administrator (Level 1)", ja: "システム管理者 (第1階層)" },
+  "Leader":  { vi: "Trưởng bộ phận (Cấp 2)", en: "Department Leader (Level 2)", ja: "部門リーダー (第2階層)" },
+  "PJ_Lead": { vi: "Quản lý dự án (Cấp 3)", en: "Project Lead (Level 3)", ja: "PJリーダー (第3階層)" },
+  "Manager": { vi: "Quản lý dự án (Cấp 3)", en: "Project Lead (Level 3)", ja: "PJリーダー (第3階層)" },
+  "Member":  { vi: "Thành viên (Cấp 4)", en: "Team Member (Level 4)", ja: "一般メンバー (第4階層)" },
+  "Viewer":  { vi: "Người xem", en: "Viewer", ja: "閲覧者" },
+  "Level2":  { vi: "Thành viên (Cấp 4)", en: "Team Member (Level 4)", ja: "一般メンバー (第4階層)" }
+};
+
+function t(key, params) {
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  const dict = I18N[lang] || I18N['vi'];
+  let val = dict[key] || I18N['vi'][key] || key;
+  if (params && typeof params === 'object') {
+    Object.keys(params).forEach(k => {
+      val = val.replace(new RegExp(`{${k}}`, 'g'), params[k]);
+    });
+  }
+  return val;
+}
+
+function tStatus(status) {
+  if (!status) return "";
+  const item = STATUS_I18N[status];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return status;
+  return item[lang] || item['vi'] || status;
+}
+
+function tPriority(priority) {
+  if (!priority) return "";
+  const item = PRIORITY_I18N[priority];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return priority;
+  return item[lang] || item['vi'] || priority;
+}
+
+function tRole(role) {
+  if (!role) return "";
+  const item = ROLE_I18N[role];
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+  if (!item) return role;
+  return item[lang] || item['vi'] || role;
+}
+
+// Chuẩn hóa tên mã dự án theo cú pháp: [Năm]_[STT]_[Mã viết tắt]_[Tên đầy đủ]
+function formatStandardProjectCodeName(item) {
+  if (!item) return '';
+  const seqMatch = (item.name || item.name_en || item.desc || '').match(/^(\d{4})[-_](\d{1,3})[-_]([A-Za-z0-9]+)[-_](.*)$/);
+  const yr = item.extra1 || (seqMatch ? seqMatch[1] : '2026');
+  const seq = item.extra3 || (seqMatch ? seqMatch[2] : (item.sortOrder ? String(item.sortOrder) : '01'));
+  const seqPad = String(seq).padStart(2, '0');
+  const code = (item.code || (seqMatch ? seqMatch[3] : '')).toUpperCase().trim();
+  
+  let cleanDesc = item.desc || item.name_jp || item.name_vi || item.name || '';
+  cleanDesc = cleanDesc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+  if (code) {
+    cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+  }
+
+  return `${yr}_${seqPad}_${code}_${cleanDesc}`;
+}
+
+function tTaxonomy(item, lang) {
+  if (!item) return "";
+  if (item.type === 'PROJECT_CODE') {
+    return formatStandardProjectCodeName(item);
+  }
+  const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
+  let text = "";
+  if (curLang === 'ja') text = item.name_jp || item.name_en || item.name_vi || item.name || item.code || "";
+  else if (curLang === 'en') text = item.name_en || item.name_vi || item.name_jp || item.name || item.code || "";
+  else text = item.name_vi || item.name_en || item.name || item.code || "";
+
+  // Tự động loại bỏ tiền tố mã bị lặp nếu có (VD: "PM01_..." hoặc "PM01 - ...")
+  if (text && item.code) {
+    const rx = new RegExp('^' + item.code + '[_\\-\\s:]+', 'i');
+    text = text.replace(rx, '').trim();
+  }
+  return text;
+}
+
+function formatDisplayDate(dStr) {
+  if (!dStr) return "";
+  try {
+    if (dStr instanceof Date) {
+      const y = dStr.getFullYear();
+      const m = String(dStr.getMonth() + 1).padStart(2, '0');
+      const d = String(dStr.getDate()).padStart(2, '0');
+      const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      return lang === 'ja' ? `${y}/${m}/${d}` : `${d}/${m}/${y}`;
+    }
+    const s = String(dStr).trim();
+    if (!s) return "";
+    const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+    if (lang === 'ja') {
+      if (s.includes('/')) {
+        const parts = s.split('/');
+        if (parts.length === 3 && parts[2].length === 4) {
+          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+      } else if (s.includes('-')) {
+        const parts = s.split('-');
+        if (parts.length === 3 && parts[0].length === 4) {
+          return `${parts[0]}/${parts[1]}/${parts[2].slice(0, 2)}`;
+        }
+      }
+    }
+    return s;
+  } catch(e) {
+    return String(dStr || "");
+  }
+}
+
+function setLanguage(lang, saveAsDefault) {
+  if (!['vi', 'en', 'ja'].includes(lang)) return;
+  S.lang = lang;
+  localStorage.setItem('pm_user_lang', lang);
+  
+  if (saveAsDefault) {
+    try { google.script.run.setUserLanguagePreference(lang); } catch(e) {}
+    toast(t('msg_default_saved'), 'success');
+  }
+  
+  applyTranslations();
+  updateLangDropdownUI();
+  
+  // Re-render current page title
+  const curPage = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
+  const [pt, ps] = PTITLES[curPage] || [curPage, ""];
+  const pgt = document.getElementById("pgt");
+  const pgs = document.getElementById("pgs");
+  if (pgt) pgt.textContent = t('page_' + curPage + '_t') || pt;
+  if (pgs) pgs.textContent = t('page_' + curPage + '_s') || ps;
+  
+  if (S.user) {
+    updateSbUser(S.user);
+  }
+  
+  // Re-render UI components
+  if (S.tasks && S.tasks.length) {
+    _refreshUI();
+  }
+  if (curPage === 'projects' && S.projects) {
+    renderPgPj(S.projects);
+  } else if (curPage === 'tasks' && S.tasks) {
+    loadPgTk();
+  } else if (curPage === 'gantt') {
+    loadGantt();
+  } else if (curPage === 'analytics') {
+    loadAnalytics();
+  } else if (curPage === 'taxonomy') {
+    if (typeof _activeTaxSubTab !== 'undefined' && _activeTaxSubTab === 'MATRIX') {
+      if (typeof renderPermissionMatrixTable === 'function') renderPermissionMatrixTable();
+    } else {
+      loadPgTaxonomy();
+    }
+  } else if (curPage === 'users') {
+    loadPgUsr();
+  } else if (curPage === 'log') {
+    loadPgLog();
+  } else if (curPage === 'timesheet') {
+    if (typeof _tsActiveSubTab !== 'undefined') {
+      if (_tsActiveSubTab === 'ENTRY' && typeof renderTimesheetGrid === 'function') {
+        renderTimesheetGrid();
+      } else if (_tsActiveSubTab === 'PROJECT') {
+        if (typeof updateProjectScopeDropdownI18n === 'function') updateProjectScopeDropdownI18n();
+        if (typeof initProjectActualTimeTab === 'function') initProjectActualTimeTab();
+        else if (typeof loadProjectActualTimeReport === 'function') loadProjectActualTimeReport();
+      } else if (_tsActiveSubTab === 'STAFF') {
+        if (typeof initStaffWorkBreakdownTab === 'function') initStaffWorkBreakdownTab();
+        else if (typeof loadStaffWorkBreakdown === 'function') loadStaffWorkBreakdown();
+      } else if (_tsActiveSubTab === 'MATRIX') {
+        if (typeof loadBatchComparisonMatrix === 'function') loadBatchComparisonMatrix();
+      }
+    } else if (typeof renderTimesheetGrid === 'function') {
+      renderTimesheetGrid();
+    }
+  }
+  popPjFilter();
+  if (typeof popTaskTaxonomySelects === 'function') popTaskTaxonomySelects();
+}
+
+function selectLanguage(lang) {
+  setLanguage(lang, false);
+  toast(t('msg_lang_changed'), 'info');
+  document.getElementById('d-lang')?.classList.remove('show');
+}
+
+function setAsMyDefaultLang() {
+  setLanguage(S.lang, true);
+  document.getElementById('d-lang')?.classList.remove('show');
+}
+
+function updateLangDropdownUI() {
+  const flags = { vi: '🇻🇳', en: '🇺🇸', ja: '🇯🇵' };
+  const codes = { vi: 'VI', en: 'EN', ja: 'JA' };
+  const curFlag = document.getElementById('cur-lang-flag');
+  const curText = document.getElementById('cur-lang-text');
+  if (curFlag) curFlag.textContent = flags[S.lang] || '🌐';
+  if (curText) curText.textContent = codes[S.lang] || S.lang.toUpperCase();
+  
+  ['vi', 'en', 'ja'].forEach(l => {
+    const opt = document.getElementById('lang-opt-' + l);
+    const chk = document.getElementById('chk-' + l);
+    if (opt) {
+      if (l === S.lang) opt.classList.add('active');
+      else opt.classList.remove('active');
+    }
+    if (chk) {
+      chk.style.display = (l === S.lang) ? 'inline-block' : 'none';
+    }
+  });
+}
+
+function applyTranslations() {
+  document.documentElement.lang = S.lang;
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.textContent = translated;
+      }
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.placeholder = translated;
+      }
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (key) {
+      const translated = t(key);
+      if (translated && translated !== key) {
+        el.title = translated;
+      }
+    }
+  });
+
+  updateFilterDropdowns();
+
+  if (typeof renderPermissionMatrixTable === 'function' && document.getElementById('matrix-tbody')) {
+    renderPermissionMatrixTable();
+  }
+}
+
+function updateFilterDropdowns() {
+  // 1. Projects status filter (#pp-st)
+  const ppSt = document.getElementById('pp-st');
+  if (ppSt) {
+    const curVal = ppSt.value;
+    ppSt.innerHTML = `
+      <option value="">${t('filter_all_statuses')}</option>
+      <option value="Lên kế hoạch">${tStatus('Lên kế hoạch')}</option>
+      <option value="Đang thực hiện">${tStatus('Đang thực hiện')}</option>
+      <option value="Hoàn thành">${tStatus('Hoàn thành')}</option>
+      <option value="Tạm dừng">${tStatus('Tạm dừng')}</option>
+      <option value="Hủy">${tStatus('Hủy')}</option>
+    `;
+    ppSt.value = curVal;
+  }
+  
+  // 2. Tasks status filter (#pt-st)
+  const ptSt = document.getElementById('pt-st');
+  if (ptSt) {
+    const curVal = ptSt.value;
+    ptSt.innerHTML = `
+      <option value="">${t('filter_status_placeholder')}</option>
+      <option value="Quá hạn">${tStatus('Quá hạn')}</option>
+      <option value="Chờ thực hiện">${tStatus('Chờ thực hiện')}</option>
+      <option value="Đang thực hiện">${tStatus('Đang thực hiện')}</option>
+      <option value="Chờ duyệt">${tStatus('Chờ duyệt')}</option>
+      <option value="Hoàn thành">${tStatus('Hoàn thành')}</option>
+      <option value="Tạm dừng">${tStatus('Tạm dừng')}</option>
+      <option value="Hủy">${tStatus('Hủy')}</option>
+    `;
+    ptSt.value = curVal;
+  }
+  
+  // 3. Tasks priority filter (#pt-pr)
+  const ptPr = document.getElementById('pt-pr');
+  if (ptPr) {
+    const curVal = ptPr.value;
+    ptPr.innerHTML = `
+      <option value="">${t('filter_priority_placeholder')}</option>
+      <option value="Khẩn cấp">${tPriority('Khẩn cấp')}</option>
+      <option value="Cao">${tPriority('Cao')}</option>
+      <option value="Trung bình">${tPriority('Trung bình')}</option>
+      <option value="Thấp">${tPriority('Thấp')}</option>
+    `;
+    ptPr.value = curVal;
+  }
+
+  // 4. Update Staff dropdown label in Gantt
+  if (typeof updateStaffFilterLabel === 'function') {
+    updateStaffFilterLabel();
+  }
+  if (typeof popGanttPjOptions === 'function') popGanttPjOptions();
+  if (typeof popAnalyticsPjOptions === 'function') popAnalyticsPjOptions();
+}
+
+function openSysLangModal() {
+  document.getElementById('d-lang')?.classList.remove('show');
+  const sel = document.getElementById('sys-lang-sel');
+  if (sel) sel.value = S.systemDefaultLang || 'vi';
+  openModal('m-sys-lang');
+}
+
+function saveSysDefaultLang() {
+  const sel = document.getElementById('sys-lang-sel');
+  const val = sel ? sel.value : 'vi';
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        S.systemDefaultLang = val;
+        closeModal('m-sys-lang');
+        toast(t('msg_sys_default_saved'), 'success');
+      } else {
+        toast((res && res.error) || 'Lỗi khi lưu cài đặt', 'error');
+      }
+    })
+    .withFailureHandler(err => toast(err.message || 'Lỗi hệ thống', 'error'))
+    .setSystemDefaultLanguage(val);
+}
+
+function initI18n() {
+  const savedLang = localStorage.getItem('pm_user_lang');
+  if (savedLang && ['vi','en','ja'].includes(savedLang)) {
+    S.lang = savedLang;
+  } else {
+    const navLang = (navigator.language || '').slice(0, 2).toLowerCase();
+    S.lang = ['vi','en','ja'].includes(navLang) ? navLang : 'vi';
+  }
+  applyTranslations();
+  updateLangDropdownUI();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+const S = {
+  user:null, role:null,
+  projects:[], tasks:[], members:[],
+  projectMembers:{}, // { projectId: [{id,name,email,role}] }
+  notifs: JSON.parse(localStorage.getItem('pm3ntf')||'[]'),
+  charts:{}, pjFilter:'',
+  _loading: false,
+  lang: 'vi',
+  systemDefaultLang: 'vi',
+  taxonomy: { categories: [], phases: [], disciplines: [], projectCodes: [] },
+};
+let _pdPjId = null;
+let _currTkReminders = [];
+let _usrMode = 'full';
+let _collapsedPjGroups = new Set();
+try {
+  const saved = JSON.parse(localStorage.getItem('pm3_collapsed_groups') || '[]');
+  if (Array.isArray(saved)) _collapsedPjGroups = new Set(saved);
+} catch(e) {}
+
+const STCOL = {
+  "Đang thực hiện":"#4f6ef7","Hoàn thành":"#22c55e","Tạm dừng":"#f59e0b",
+  "Chờ thực hiện":"#94a3b8","Chờ duyệt":"#8b5cf6","Quá hạn":"#ef4444",
+  "Đang tiến hành":"#06b6d4","Hủy":"#6b7280","Lên kế hoạch":"#cbd5e1"
+};
+
+// ── Optimistic UI helpers ──
+function isTaskOverdue(t) {
+  if (!t.deadlineRaw||t.status==="Hoàn thành"||t.status==="Hủy") return false;
+  const dl=new Date(t.deadlineRaw); dl.setHours(0,0,0,0);
+  const tod=new Date(); tod.setHours(0,0,0,0);
+  return dl<tod;
+}
+function localUpdateTask(updatedTask) {
+  const idx = S.tasks.findIndex(t=>t.id===updatedTask.id);
+  if (idx>=0) { updatedTask.isOverdue = isTaskOverdue(updatedTask); S.tasks[idx] = updatedTask; }
+  _refreshUI();
+}
+function localAddTask(newTask) {
+  newTask.isOverdue = isTaskOverdue(newTask);
+  S.tasks.push(newTask);
+  _refreshUI();
+}
+function localAddBulkTasks(newTasks, projectId) {
+  if (!Array.isArray(newTasks) || !newTasks.length) return;
+  newTasks.forEach(t => {
+    t.isOverdue = isTaskOverdue(t);
+    S.tasks.push(t);
+  });
+  _refreshUI();
+  if (_pdPjId && _pdPjId === projectId) {
+    openPjDetail(_pdPjId);
+  }
+}
+function localDeleteTask(taskId) {
+  S.tasks = (S.tasks || []).filter(t=>t.id!==taskId);
+  _refreshUI();
+  if (_pdPjId && document.getElementById("m-pd")?.classList.contains("show")) {
+    openPjDetail(_pdPjId);
+  }
+}
+function localAddProject(newProject) { S.projects.push(newProject); _refreshUIProjects(); }
+function localUpdateProject(payload) {
+  const idx=S.projects.findIndex(p=>p.id===payload.id);
+  if (idx>=0) {
+    const oldName = S.projects[idx].name;
+    Object.assign(S.projects[idx], payload);
+    if (payload.name && payload.name !== oldName) {
+      (S.tasks || []).forEach(t => {
+        if (t.projectId === payload.id || t.projectName === oldName) {
+          t.projectName = payload.name;
+        }
+      });
+    }
+  }
+  _refreshUIProjects();
+  if (typeof popAnalyticsPjOptions === "function") popAnalyticsPjOptions();
+  if (typeof applyAnalyticsFilter === "function" && document.getElementById("page-analytics")?.classList.contains("active")) {
+    applyAnalyticsFilter();
+  }
+}
+function localDeleteProject(id) {
+  S.projects = S.projects.filter(p=>p.id!==id);
+  S.tasks    = S.tasks.filter(t=>t.projectId!==id);
+  _refreshUI();
+}
+function _computeSummary() {
+  const taskByStatus={};
+  ["Chờ thực hiện","Đang thực hiện","Chờ duyệt","Hoàn thành","Tạm dừng","Hủy"].forEach(k=>taskByStatus[k]=0);
+  S.tasks.forEach(t=>{ if(taskByStatus[t.status]!==undefined) taskByStatus[t.status]++; });
+  return { taskByStatus, totalTasks:S.tasks.length, overdue:S.tasks.filter(t=>isTaskOverdue(t)).length, totalProjects:S.projects.length };
+}
+function _refreshUI() {
+  const sm = _computeSummary();
+  renderStats(sm);
+  renderPtkGrid();
+  renderCharts(sm.taskByStatus, S.tasks);
+  const ap = document.querySelector(".page.active")?.id;
+  if (ap==="page-tasks") { renderTkStats(); renderPgTkGroups(S.tasks); }
+}
+function _refreshUIProjects() {
+  _refreshUI();
+  const ap = document.querySelector(".page.active")?.id;
+  if (ap==="page-projects") renderPgPj(S.projects);
+  popPjFilter();
+}
+
+// ═══════════════════════════════════════
+//  PROJECT MEMBERS (Google Sheets + localStorage cache)
+// ═══════════════════════════════════════
+function _memKey(pjId) { return 'pm3mem_' + pjId; }
+function _loadProjectMembers(pjId) {
+  const p = S.projects.find(x => x.id === pjId);
+  if (p && p.members && Array.isArray(p.members) && p.members.length) return p.members;
+  try { return JSON.parse(localStorage.getItem(_memKey(pjId))||'[]'); } catch(e){ return []; }
+}
+function _saveProjectMembers(pjId, list) {
+  localStorage.setItem(_memKey(pjId), JSON.stringify(list));
+  S.projectMembers[pjId] = list;
+  const p = S.projects.find(x => x.id === pjId);
+  if (p) p.members = list;
+  google.script.run
+    .withFailureHandler(e => console.warn('Sync project members error:', e))
+    .saveProjectMembers(pjId, list);
+}
+function _initProjectMembers() {
+  S.projects.forEach(p => {
+    S.projectMembers[p.id] = _loadProjectMembers(p.id);
+    // Also merge project members into global S.members so they appear in assignee combos
+    S.projectMembers[p.id].forEach(pm => {
+      if (!S.members.find(m=>m.email===pm.email)) S.members.push(pm);
+    });
+  });
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+document.addEventListener("DOMContentLoaded", () => {
+  initI18n();
+  initGanttDates();
+  renderNtfDot();
+  loadApp();
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".drop-wrap")&&!e.target.closest("#tp-rm-add")&&!e.target.closest('[onclick*="togDrop(\'tp-rm-add\')"]'))
+      document.querySelectorAll(".drop.show").forEach(d=>d.classList.remove("show"));
+    if (!e.target.closest('#staff-filter-wrap')) {
+      const sd=document.getElementById('staff-filter-drop');
+      if (sd) sd.style.display='none';
+    }
+    // close assignee combos on outside click
+    if (!e.target.closest('.as-combo')) {
+      document.querySelectorAll('.as-combo-list').forEach(l=>l.classList.remove('show'));
+    }
+  });
+});
+
+function loadApp() {
+  document.getElementById("d-ldg").style.display = "flex";
+  document.getElementById("d-body").style.display = "none";
+  google.script.run
+    .withSuccessHandler(res => {
+      if (!res.success) {
+        document.getElementById("d-ldg").innerHTML =
+          '<div style="text-align:center;padding:60px"><div style="font-size:42px;margin-bottom:12px">🔒</div>'+
+          '<div style="color:#ef4444;font-size:14px;font-weight:600">'+( res.error||t("no_permission"))+'</div>'+
+          '<div style="color:#94a3b8;font-size:12px;margin-top:4px">'+t("contact_admin")+'</div></div>';
+        return;
+      }
+      S.user     = res.user;
+      S.role     = res.user.role;
+      S.projects = res.projects || [];
+      S.tasks    = res.tasks    || [];
+      S.members  = res.members  || [];
+      _usersCache = [...S.members];
+
+      if (res.systemDefaultLang) {
+        S.systemDefaultLang = res.systemDefaultLang;
+      }
+      if (!localStorage.getItem('pm_user_lang')) {
+        if (res.userLang && ['vi','en','ja'].includes(res.userLang)) {
+          S.lang = res.userLang;
+        } else if (res.systemDefaultLang && ['vi','en','ja'].includes(res.systemDefaultLang)) {
+          S.lang = res.systemDefaultLang;
+        }
+      }
+      if (res.user && res.user.role === 'Admin') {
+        const sysOpt = document.getElementById('lang-act-sys');
+        if (sysOpt) sysOpt.style.display = 'flex';
+      }
+      applyTranslations();
+      updateLangDropdownUI();
+
+      // Merge extra name-only members from localStorage (if any)
+      const extraMembers = JSON.parse(localStorage.getItem('pm3extra_members')||'[]');
+      extraMembers.forEach(m=>{ if(!S.members.find(x=>x.email===m.email)) { S.members.push(m); _usersCache.push(m); } });
+
+      // Init project members
+      _initProjectMembers();
+
+      document.getElementById("d-ldg").style.display = "none";
+      document.getElementById("d-body").style.display = "block";
+
+      updateSbUser(res.user);
+      renderStats(res.summary);
+      renderPtkGrid();
+      renderActList();
+      renderNtfList();
+      renderCharts(res.summary.taskByStatus);
+      popPjFilter();
+      popGanttStaff();
+
+      if (res.taxonomy) {
+        S.taxonomy = res.taxonomy;
+      }
+      if (res.permissionMatrix) {
+        S.permissionMatrix = res.permissionMatrix;
+      }
+      popTaskTaxonomySelects();
+
+      if (res.isTimesheetOnly) {
+        goPage('timesheet', document.getElementById('ni-timesheet'));
+        return;
+      }
+
+      const curPageId = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
+      if (curPageId === "tasks") loadPgTk();
+      else if (curPageId === "projects") renderPgPj(S.projects);
+      else if (curPageId === "gantt") loadGantt();
+      else if (curPageId === "analytics") loadAnalytics();
+      else if (curPageId === "taxonomy") loadPgTaxonomy();
+      else if (curPageId === "users") loadPgUsr();
+      else if (curPageId === "log") loadPgLog();
+      else if (curPageId === "timesheet") loadPgTimesheet();
+    })
+    .withFailureHandler(e => toast(e.message||"Lỗi tải ứng dụng","error"))
+    .getInitData();
+}
+
+// ═══════════════════════════════════════
+//  TOAST / MODAL
+// ═══════════════════════════════════════
+function toast(m, t="info") {
+  const ic={success:"✅",error:"❌",info:"ℹ️"};
+  const el=document.createElement("div");
+  el.className="toast t"+t[0];
+  el.innerHTML="<span>"+(ic[t]||"ℹ️")+"</span>"+m;
+  document.getElementById("toasts").appendChild(el);
+  setTimeout(()=>el.remove(),3500);
+}
+function openModal(id)  { document.getElementById(id).classList.add("show");    }
+function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+function togDrop(id)    { document.getElementById(id).classList.toggle("show"); }
+function clDrop(id)     { document.getElementById(id).classList.remove("show"); }
+
+// ═══════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════
+const PTITLES = {
+  dashboard:["Tổng Quan","Chào mừng trở lại"],
+  gantt    :["Sơ đồ Gantt","Quản lý tiến độ trực quan"],
+  analytics:["Biểu đồ chuyên sâu","Phân tích hiệu suất & mức độ đóng góp"],
+  projects :["Dự Án","Quản lý tất cả dự án"],
+  tasks    :["Nhiệm Vụ","Quản lý tất cả nhiệm vụ"],
+  timesheet:["Quản Lý Thời Gian","Ghi nhận và kiểm soát thời gian làm việc chi tiết 30 phút"],
+  taxonomy :["Danh Mục Tiêu Chuẩn","Quy định mã hóa & phân loại công việc chuẩn"],
+  users    :["Người Dùng","Phân quyền & quản lý"],
+  log      :["Nhật Ký","Lịch sử hoạt động"],
+};
+function goPage(p, el) {
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".sni").forEach(x=>x.classList.remove("active"));
+  const targetPage = document.getElementById("page-"+p);
+  if (targetPage) targetPage.classList.add("active");
+  if (el) el.classList.add("active");
+  const[tDef,sDef]=PTITLES[p]||[p,""];
+  document.getElementById("pgt").textContent = t('page_' + p + '_t') || tDef;
+  document.getElementById("pgs").textContent = t('page_' + p + '_s') || sDef;
+  if (p==="projects") renderPgPj(S.projects);
+  else if (p==="tasks") loadPgTk();
+  else if (p==="users") loadPgUsr();
+  else if (p==="log")   loadPgLog();
+  else if (p==="gantt") loadGantt();
+  else if (p==="analytics") loadAnalytics();
+  else if (p==="taxonomy") loadPgTaxonomy();
+  else if (p==="timesheet") loadPgTimesheet();
+}
+
+// ═══════════════════════════════════════
+//  USER INFO
+// ═══════════════════════════════════════
+function updateSbUser(u) {
+  document.getElementById("sb-av").textContent=(u.name||u.email).slice(0,2).toUpperCase();
+  document.getElementById("sb-nm").textContent=u.name||u.email;
+  document.getElementById("sb-rl").textContent=tRole(u.role);
+
+  const role = u.role || "Member";
+  const permLevel = Number(u.permissionLevel) || 4;
+
+  const btnMk = document.querySelector(".btn-mk");
+  const dUsrO = document.getElementById("d-usr-o");
+  const pjFilter = document.querySelector(".pj-filter");
+  const tbSrch = document.querySelector(".tb-srch");
+
+  if (pjFilter) pjFilter.style.display = "flex";
+  if (tbSrch) tbSrch.style.display = "flex";
+
+  // CẤP 4: Member (Thành viên)
+  if (role === "Member" || role === "Viewer" || role === "Level2" || permLevel === 4) {
+    document.querySelectorAll(".sni").forEach(el => {
+      const p = el.getAttribute('data-p');
+      if (['dashboard', 'projects', 'tasks', 'timesheet'].includes(p)) {
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    });
+    if (btnMk) btnMk.style.display = "none";
+    if (dUsrO) dUsrO.style.display = "none";
+    return;
+  }
+
+  // CẤP 3: PJ Lead (Quản lý dự án)
+  if (role === "PJ_Lead" || role === "Manager" || permLevel === 3) {
+    document.querySelectorAll(".sni").forEach(el => {
+      const p = el.getAttribute('data-p');
+      if (['dashboard', 'gantt', 'projects', 'tasks', 'timesheet'].includes(p)) {
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    });
+    if (btnMk) btnMk.style.display = "flex";
+    if (dUsrO) dUsrO.style.display = "none";
+    return;
+  }
+
+  // CẤP 2: Leader (Trưởng bộ phận)
+  if (role === "Leader" || permLevel === 2) {
+    document.querySelectorAll(".sni").forEach(el => {
+      const p = el.getAttribute('data-p');
+      if (['dashboard', 'gantt', 'analytics', 'projects', 'tasks', 'timesheet', 'taxonomy'].includes(p)) {
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    });
+    if (btnMk) btnMk.style.display = "flex";
+    if (dUsrO) dUsrO.style.display = "none";
+    return;
+  }
+
+  // CẤP 1: Admin (Quản trị viên)
+  document.querySelectorAll(".sni").forEach(el => {
+    el.style.display = "flex";
+  });
+  if (btnMk) btnMk.style.display = "flex";
+  if (dUsrO) dUsrO.style.display = "flex";
+}
+
+// ═══════════════════════════════════════
+//  PROJECT FILTER
+// ═══════════════════════════════════════
+function applyPjFilter() {
+  S.pjFilter=document.getElementById("pj-filter-sel").value;
+    const gSel = document.getElementById("g-pj-sel");
+    if (gSel && gSel.value !== (S.pjFilter || 'all')) gSel.value = S.pjFilter || 'all';
+    const anSel = document.getElementById("an-pj-sel");
+    if (anSel && anSel.value !== (S.pjFilter || 'all')) anSel.value = S.pjFilter || 'all';
+  const filtered=S.pjFilter?S.tasks.filter(t=>t.projectId===S.pjFilter):S.tasks;
+  const taskByStatus={};
+  ["Chờ thực hiện","Đang thực hiện","Chờ duyệt","Hoàn thành","Tạm dừng","Hủy"].forEach(k=>taskByStatus[k]=filtered.filter(t=>t.status===k).length);
+  renderStats({ taskByStatus, totalTasks:filtered.length, overdue:filtered.filter(t=>isTaskOverdue(t)).length, totalProjects:S.pjFilter?1:S.projects.length });
+  renderCharts(taskByStatus, filtered);
+  renderPtkGrid(filtered);
+}
+
+// ═══════════════════════════════════════
+//  NOTIFICATIONS
+// ═══════════════════════════════════════
+function renderNtfDot() { document.getElementById("bell-dot").style.display=S.notifs.filter(n=>!n.read).length>0?"block":"none"; }
+function renderNtfList() {
+  const el=document.getElementById("ntf-list");
+  if (!S.notifs.length) { el.innerHTML='<div style="padding:12px;text-align:center;color:#94a3b8;font-size:11px">Không có thông báo</div>'; return; }
+  el.innerHTML=S.notifs.slice().reverse().map((n,i)=>{
+    const ri=S.notifs.length-1-i;
+    return '<div class="n-it" onclick="rdNtf('+ri+')"><div class="n-av" style="background:'+(n.read?'#94a3b8':'#f59e0b')+'">'+( n.read?"📖":"🔔")+'</div><div><div class="n-tx">'+n.text+'</div><div class="n-tm">'+n.time+'</div></div></div>';
+  }).join("");
+}
+function addNtfClick() { clDrop("d-notif"); openModal("m-ntf"); document.getElementById("ntf-inp").value=""; }
+function saveNtf() { const t=document.getElementById("ntf-inp").value.trim(); if(!t) return; S.notifs.push({text:t,time:new Date().toLocaleString("vi-VN"),read:false}); localStorage.setItem("pm3ntf",JSON.stringify(S.notifs)); closeModal("m-ntf"); renderNtfDot(); toast("Đã thêm thông báo","success"); }
+function rdNtf(i) { S.notifs[i].read=true; localStorage.setItem("pm3ntf",JSON.stringify(S.notifs)); renderNtfList(); renderNtfDot(); }
+function markRd() { S.notifs.forEach(n=>n.read=true); localStorage.setItem("pm3ntf",JSON.stringify(S.notifs)); renderNtfList(); renderNtfDot(); }
+
+// ═══════════════════════════════════════
+//  STAT CARDS
+// ═══════════════════════════════════════
+function renderStats(s) {
+  const cPj=S.projects.filter(p=>p.status==="Hoàn thành").length;
+  const tPj=s.totalProjects??S.projects.length;
+  const cTk=s.taskByStatus["Hoàn thành"]||0;
+  const tTk=s.totalTasks;
+  const ip=(s.taskByStatus["Đang thực hiện"]||0)+(s.taskByStatus["Đang tiến hành"]||0);
+  const ns=s.taskByStatus["Chờ thực hiện"]||0;
+  const pa=s.taskByStatus["Tạm dừng"]||0;
+  const ov=s.overdue||0;
+  const cards=[
+    {ic:"📁",icl:"ic-p",num:tPj,lbl:t('dash_card_total_projects'),s1:`${t('dash_stat_completed')}: <b>${cPj}</b>`,s2:`${t('dash_stat_rate')}: <b>${tPj?Math.round(cPj/tPj*100):0}%</b>`,pct:tPj?cPj/tPj*100:0,cls:"sc-p",onclick:"onStatCard('projects')"},
+    {ic:"☑️",icl:"ic-g",num:tTk,lbl:t('dash_card_total_tasks'),s1:`${t('dash_stat_completed')}: <b>${cTk}</b>`,s2:`${t('dash_stat_rate')}: <b>${tTk?Math.round(cTk/tTk*100):0}%</b>`,pct:tTk?cTk/tTk*100:0,cls:"sc-g",onclick:"onStatCard('tasks')"},
+    {ic:"⚙️",icl:"ic-or",num:ip,lbl:t('dash_card_in_progress'),s1:`${t('dash_stat_not_started')}: <b>${ns}</b>`,s2:`${t('dash_stat_paused')}: <b>${pa}</b>`,pct:tTk?ip/tTk*100:0,cls:"sc-or",onclick:"onStatCard('inprogress')"},
+    {ic:"⚠️",icl:"ic-d",num:ov,lbl:t('dash_card_overdue'),s1:`${t('dash_card_total_tasks')}: <b>${tTk}</b>`,s2:`${t('dash_stat_rate')}: <b>${tTk?Math.round(ov/tTk*100):0}%</b>`,pct:tTk?ov/tTk*100:0,cls:"sc-d",onclick:"onStatCard('overdue')"},
+  ];
+  if (s.totalUsers!==null&&s.totalUsers!==undefined) cards[3].s2=`${t('dash_stat_active_users')}: <b>${s.totalUsers}</b>`;
+  document.getElementById("srow").innerHTML=cards.map(c=>`
+    <div class="sc ${c.cls}" onclick="${c.onclick}" title="${t('dash_click_detail')}">
+      <div class="sc-top">
+        <div><div class="sc-num">${c.num}</div><div class="sc-lbl">${c.lbl}</div></div>
+        <div class="sc-ic ${c.icl}">${c.ic}</div>
+      </div>
+      <div class="sc-line"><div class="sc-bar" style="width:${Math.min(c.pct,100)}%;background:var(--${c.cls.replace('sc-','')},var(--p))"></div></div>
+      <div class="sc-subs"><div class="sc-sub">${c.s1}</div><div class="sc-sub">${c.s2}</div></div>
+    </div>`).join("");
+}
+function onStatCard(type) {
+  if (type==="projects")  openAllProjectsModal();
+  else if (type==="tasks")       openAllTasksModal(S.tasks, "📋 " + t('nav_tasks'));
+  else if (type==="inprogress")  openAllTasksModal(S.tasks.filter(t=>t.status==="Đang thực hiện"||t.status==="Đang tiến hành"), "⚙️ " + tStatus("Đang thực hiện"));
+  else if (type==="overdue")     openAllTasksModal(S.tasks.filter(t=>isTaskOverdue(t)), "⚠️ " + tStatus("Quá hạn"));
+}
+
+// ═══════════════════════════════════════
+//  ACTIVITY LOG
+// ═══════════════════════════════════════
+function renderActList() {
+  const el=document.getElementById("act-list");
+  el.innerHTML='<div class="ldg"><div class="spn"></div></div>';
+  google.script.run.withSuccessHandler(data=>{
+    if (!data||!data.length) { el.innerHTML='<div style="text-align:center;padding:16px;color:#94a3b8;font-size:12px">' + t('dash_no_act') + '</div>'; return; }
+    const ic={ADD_PROJECT:"📁",UPDATE_PROJECT:"✏️",DELETE_PROJECT:"🗑️",ADD_TASK:"✅",UPDATE_TASK:"🔄",DELETE_TASK:"🗑️",ADD_USER:"👤",EXPORT_REPORT:"📤",DUPLICATE_PROJECT:"📋",DUPLICATE_TASK:"📋"};
+    el.innerHTML=data.slice().reverse().slice(0,15).map(r=>`
+      <div class="act-it">
+        <div class="act-ic">${ic[r[3]]||"⚡"}</div>
+        <div class="act-main">
+          <div class="act-ti">${r[3]||""}</div>
+          <div class="act-sub">${r[4]||""}</div>
+          <div class="act-tm">${r[1]||""} · ${r[0]||""}</div>
+        </div>
+      </div>`).join("");
+  }).withFailureHandler(e=>el.innerHTML=`<div class="empty">Không tải được: ${e.message}</div>`).getLogData();
+}
+
+// ═══════════════════════════════════════
+//  PRIORITY TASKS GRID
+// ═══════════════════════════════════════
+function renderPtkGrid(tasks) {
+  tasks=tasks||S.tasks;
+  const high=tasks.filter(t=>(t.priority==="Cao"||t.priority==="Khẩn cấp")&&t.status!=="Hoàn thành"&&t.status!=="Hủy").slice(0,6);
+  const el=document.getElementById("ptk-grid");
+  if (!high.length) { el.innerHTML='<div class="empty" style="padding:20px"><div class="empty-ic">🎉</div>' + t('dash_no_urgent') + '</div>'; return; }
+  el.innerHTML=high.map(t=>`
+    <div class="ptk ${isTaskOverdue(t)?'ov':''}" onclick="openFullTaskEdit('${t.id}')">
+      <div class="ptk-nm">${_taskDisplayName(t)}${isTaskOverdue(t)?`<span class="badge bg-rd" style="font-size:9px">${tStatus('Quá hạn').toUpperCase()}</span>`:""}</div>
+      <div class="ptk-ds">${t.desc||t.projectName}</div>
+      <div class="ptk-rows">
+        <div class="ptk-row">📁 <b>${t.projectName}</b></div>
+        ${t.assignee?`<div class="ptk-row">👤 ${_displayName(t.assignee)}</div>`:""}
+        ${t.deadline?`<div class="ptk-row" style="color:${isTaskOverdue(t)?"#ef4444":""}">📅 ${formatDisplayDate(t.deadline)}</div>`:""}
+      </div>
+      <div class="ptk-bw"><div class="ptk-bf" style="width:${t.progress}%;background:${isTaskOverdue(t)?"#ef4444":"#f97316"}"></div></div>
+      <div class="ptk-pct">${t.progress}%</div>
+    </div>`).join("");
+}
+
+// ═══════════════════════════════════════
+//  ASSIGNEE RESOLVER & DISPLAY HELPERS
+// ═══════════════════════════════════════
+// Helper: Lấy danh sách toàn bộ nhân sự (Gộp USERS + TAXONOMY EMPLOYEES + PROJECT MEMBERS)
+function _getAllAssignees(projectId) {
+  const map = new Map();
+  // 1. S.members (từ USERS sheet)
+  (S.members || []).forEach(m => {
+    const key = (m.email || m.code || m.id || m.name || '').toLowerCase().trim();
+    if (key) {
+      map.set(key, {
+        id: m.id || m.code || '',
+        code: m.code || m.id || '',
+        email: m.email || '',
+        name: m.name || m.email || '',
+        role: m.role || 'Member',
+        rank: m.rank || '',
+        isProjectMember: false
+      });
+    }
+  });
+
+  // 2. S.taxonomy.employees (từ TAXONOMY sheet)
+  const taxEmps = (S.taxonomy && S.taxonomy.employees) || [];
+  taxEmps.forEach(emp => {
+    const empCode = emp.code || emp.id || '';
+    const empEmail = emp.extra1 || '';
+    const empName = emp.name || '';
+    const key = (empEmail || empCode || empName || '').toLowerCase().trim();
+    if (key) {
+      const existing = map.get(key) || (empCode ? map.get(empCode.toLowerCase()) : null) || (empName ? map.get(empName.toLowerCase()) : null);
+      if (existing) {
+        if (!existing.code && empCode) existing.code = empCode;
+        if (!existing.email && empEmail) existing.email = empEmail;
+        if (!existing.name && empName) existing.name = empName;
+        if (!existing.rank && emp.desc) existing.rank = emp.desc;
+      } else {
+        map.set(key, {
+          id: empCode,
+          code: empCode,
+          email: empEmail,
+          name: empName,
+          role: emp.extra3 || 'Member',
+          rank: emp.desc || '',
+          isProjectMember: false
+        });
+      }
+    }
+  });
+
+  // 3. Project members (Thành viên theo từng dự án)
+  const pmems = (projectId && S.projectMembers && S.projectMembers[projectId]) || [];
+  pmems.forEach(pm => {
+    const key = (pm.email || pm.code || pm.id || pm.name || '').toLowerCase().trim();
+    if (key) {
+      const existing = map.get(key) || (pm.email ? map.get(pm.email.toLowerCase()) : null) || (pm.name ? map.get(pm.name.toLowerCase()) : null);
+      if (existing) {
+        existing.isProjectMember = true;
+      } else {
+        map.set(key, {
+          id: pm.id || pm.code || '',
+          code: pm.code || pm.id || '',
+          email: pm.email || '',
+          name: pm.name || pm.email || '',
+          role: pm.role || 'Member',
+          rank: pm.rank || '',
+          isProjectMember: true
+        });
+      }
+    }
+  });
+
+  return Array.from(map.values());
+}
+
+// Helper: Tra cứu thông tin nhân sự theo email, họ tên, mã nhân sự
+function _findMember(query, projectId) {
+  if (!query) return null;
+  const q = String(query).trim().toLowerCase();
+  if (!q || q === '—') return null;
+
+  const all = _getAllAssignees(projectId);
+  // Khớp chính xác email, mã nhân viên, ID hoặc họ tên
+  let found = all.find(m => 
+    (m.email && m.email.toLowerCase() === q) ||
+    (m.name && m.name.toLowerCase() === q) ||
+    (m.code && m.code.toLowerCase() === q) ||
+    (m.id && m.id.toLowerCase() === q)
+  );
+  if (found) return found;
+
+  // Khớp email không kèm tên miền
+  if (q.includes('@')) {
+    const pfx = q.split('@')[0];
+    found = all.find(m => 
+      (m.email && m.email.toLowerCase().split('@')[0] === pfx) ||
+      (m.name && m.name.toLowerCase() === pfx)
+    );
+    if (found) return found;
+  }
+
+  // Khớp chứa họ tên (partial match)
+  found = all.find(m => m.name && (m.name.toLowerCase() === q || m.name.toLowerCase().includes(q) || q.includes(m.name.toLowerCase())));
+  return found || null;
+}
+
+// Helper: Chuyển 1 giá trị (email/mã NV/tên) sang Tên Hiển Thị chuẩn
+function _displayNameSingle(v, projectId) {
+  if (!v) return '';
+  const s = String(v).trim();
+  if (!s || s === '—') return '';
+  const m = _findMember(s, projectId);
+  if (m && m.name) return m.name;
+  if (s.includes('@')) {
+    return s.split('@')[0].replace(/^(member_|user_)/i, '');
+  }
+  return s;
+}
+
+// Helper: Lấy chuỗi Tên Người Đảm Nhận (hỗ trợ nhiều người, chống trùng lặp, tương thích dữ liệu cũ)
+function _displayName(val, projectId) {
+  if (!val) return '—';
+  const str = String(val).trim();
+  if (!str || str === '—') return '—';
+
+  const parts = str.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+  if (!parts.length) return '—';
+
+  const names = [];
+  const seen = new Set();
+
+  parts.forEach(p => {
+    const name = _displayNameSingle(p, projectId);
+    if (name && name !== '—') {
+      const lower = name.toLowerCase();
+      if (!seen.has(lower)) {
+        seen.add(lower);
+        names.push(name);
+      }
+    }
+  });
+
+  return names.length ? names.join(', ') : '—';
+}
+
+
+// =========================================================================
+// 46 STANDARD DISCIPLINES DICTIONARY (VI / EN / JA) FOR DYNAMIC LOCALIZATION
+// =========================================================================
+const STANDARD_DISCIPLINE_NAMES = {
+  "PN01": { vi: "Tạo ảnh Panorama Memo", en: "Panorama Memo Creation", ja: "【パノラマメモ】作成" },
+  "PN10": { vi: "Kiểm tra Panorama Memo", en: "Panorama Memo Check", ja: "【パノラマメモ】チェック" },
+  "PN11": { vi: "Chỉnh sửa Panorama Memo", en: "Panorama Memo Revision", ja: "【パノラマメモ】修正" },
+  "PC01": { vi: "Xử lý dữ liệu Point Cloud", en: "Point Cloud Processing", ja: "【点群データ】処理" },
+  "PC02": { vi: "Phân lớp Point Cloud", en: "Point Cloud Layering", ja: "【点群データ】レイヤー分け" },
+  "PC10": { vi: "Kiểm tra Point Cloud", en: "Point Cloud Check", ja: "【点群データ】チェック" },
+  "PC11": { vi: "Sửa dữ liệu Point Cloud", en: "Point Cloud Revision", ja: "【点群データ】修正" },
+  "PC12": { vi: "Sửa phân lớp Point Cloud", en: "Point Cloud Layering Revision", ja: "【点群データ】レイヤー分け修正" },
+  "MD01": { vi: "Dựng hình Kết cấu", en: "Structure Modeling", ja: "【モデル】躯体作成" },
+  "MD02": { vi: "Dựng hình Máy móc / Thiết bị", en: "Equipment Modeling", ja: "【モデル】機械作成" },
+  "MD03": { vi: "Dựng hình Đường ống", en: "Piping Modeling", ja: "【モデル】配管作成" },
+  "MD04": { vi: "Hợp nhất mô hình tổng thể", en: "Model Federation", ja: "【モデル】合成" },
+  "MD05": { vi: "Dựng hình hạng mục khác", en: "Other Modeling", ja: "【モデル】作成（その他）" },
+  "MD10": { vi: "Kiểm tra mô hình BIM", en: "Model Quality Check", ja: "【モデル】チェック" },
+  "MD11": { vi: "Sửa mô hình Kết cấu", en: "Structure Revision", ja: "【モデル】躯体修正" },
+  "MD12": { vi: "Sửa mô hình Thiết bị", en: "Equipment Revision", ja: "【モデル】機械修正" },
+  "MD13": { vi: "Sửa mô hình Đường ống", en: "Piping Revision", ja: "【モデル】配管修正" },
+  "MD14": { vi: "Sửa hợp nhất mô hình", en: "Federation Revision", ja: "【モデル】合成修正" },
+  "MD15": { vi: "Sửa mô hình khác", en: "Other Model Revision", ja: "【モデル】修正（その他）" },
+  "MD16": { vi: "Nhập thuộc tính thông tin BIM", en: "BIM Data Input", ja: "【モデル】情報入力" },
+  "SD01": { vi: "Tổng hợp đóng tập bản vẽ", en: "Drawing Compilation", ja: "【施工図】図面取りまとめ" },
+  "SD02": { vi: "Chuẩn bị bản vẽ nền Underlay", en: "Background Drawing Prep", ja: "【施工図】下図準備" },
+  "SD03": { vi: "Triển khai bản vẽ mặt bằng & mặt cắt", en: "Plan & Section Drawing Creation", ja: "【施工図】平断面図作成" },
+  "SD04": { vi: "Bản vẽ sơ đồ không gian ống", en: "Piping Isometric Drawing", ja: "【施工図】配管スケルトン図作成" },
+  "SD05": { vi: "Triển khai bản vẽ móng bệ", en: "Foundation Drawing", ja: "【施工図】基礎図作成" },
+  "SD06": { vi: "Bản vẽ gia công kết cấu thép", en: "Steel Fabrication Drawing", ja: "【施工図】鋼製加工品図作成" },
+  "SD07": { vi: "Bản vẽ phối hợp đa bộ môn", en: "Combined Services Drawing", ja: "【施工図】複合工図作成" },
+  "SD08": { vi: "Bản vẽ thi công khác", en: "Other Shop Drawing", ja: "【施工図】その他" },
+  "MC01": { vi: "Check va chạm vs Bản vẽ thiết kế", en: "Clash Check vs Tender Drawing", ja: "【レポート・発注図】干渉・相違点チェック" },
+  "MC02": { vi: "Check va chạm vs Bản vẽ thi công", en: "Clash Check vs Shop Drawing", ja: "【レポート・施工図】干渉・相違点チェック" },
+  "MC03": { vi: "Đề xuất giải pháp xử lý va chạm", en: "Clash Resolution Proposal", ja: "【レポート】干渉・相違点の改善提案" },
+  "MC04": { vi: "Nghiên cứu biện pháp vận chuyển", en: "Equipment Route Study", ja: "【レポート】機器搬出入検討" },
+  "MC05": { vi: "Kiểm tra xác nhận kích thước", en: "Dimension Verification", ja: "【レポート】寸法確認" },
+  "MC06": { vi: "Báo cáo kỹ thuật khác", en: "Other Technical Report", ja: "【レポート】その他" },
+  "MC07": { vi: "Tạo video mô phỏng Walkthrough", en: "3D Walkthrough Animation", ja: "【レポート】ウォークスルー動画作成" },
+  "MT00": { vi: "Họp giao ban đầu/cuối ngày", en: "Daily Standup Meeting", ja: "【MTG】朝礼・終礼" },
+  "MT01": { vi: "Họp đối tác / Khách hàng", en: "External Meeting", ja: "【MTG】社外" },
+  "MT02": { vi: "Họp nội bộ nhóm dự án", en: "Internal Team Meeting", ja: "【MTG】社内" },
+  "MT03": { vi: "Họp giải đáp thắc mắc Q&A", en: "Q&A Clarification Meeting", ja: "【MTG】問い合わせ" },
+  "MT04": { vi: "Họp nghiệm thu đóng dự án", en: "Project Closeout Meeting", ja: "【MTG】クローズ" },
+  "PM01": { vi: "Lập kế hoạch & phân rã tiến độ", en: "Project Planning & Scheduling", ja: "【管理】計画策定" },
+  "PM02": { vi: "Giám sát & điều phối nguồn lực", en: "Monitoring & Coordination", ja: "【管理】進捗管理" },
+  "MJ01": { vi: "Tự học chuyên môn & nâng cao kỹ năng", en: "Self-Study & Professional Skills", ja: "【研修】自己研鑽" },
+  "MJ02": { vi: "Đào tạo thành viên mới / Chuyển giao", en: "Mentoring & Onboarding", ja: "【研修】教育・指導" },
+  "DE01": { vi: "Nghiên cứu & phát triển giải pháp mới", en: "R&D & Engineering Innovation", ja: "【開発】技術開発" },
+  "LN01": { vi: "Nghỉ phép theo chế độ", en: "Leave & Non-Project Time", ja: "【勤怠】休暇" }
+};
+
+// =========================================================================
+// HELPER: ĐỊNH DẠNG TÊN NHIỆM VỤ CHUẨN ĐA NGÔN NGỮ (VI / EN / JA)
+// Định dạng: [CAT-PHASE-DISC]-<Tên chi tiết đa ngôn ngữ> [- Ghi chú tùy chọn]
+// =========================================================================
+function _taskDisplayName(taskOrName, lang) {
+  if (!taskOrName) return '';
+  const rawName = (typeof taskOrName === 'object' && taskOrName !== null) ? (taskOrName.name || '') : String(taskOrName);
+  if (!rawName) return '';
+
+  const match = rawName.match(/^\s*\[([A-Za-z0-9_\-]+)\](.*)$/);
+  if (!match) return rawName;
+
+  const codeStr = match[1].toUpperCase();
+  const rawSuffix = match[2] || '';
+  const parts = codeStr.split('-');
+
+  let discCode = null;
+  if (parts.length >= 3) {
+    discCode = parts[2];
+  } else if (parts.length === 2) {
+    discCode = parts[1];
+  } else if (parts.length === 1) {
+    discCode = parts[0];
+  }
+
+  if (!discCode) return rawName;
+
+  const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
+
+  let discTax = null;
+  if (typeof S !== 'undefined' && S.taxonomy && Array.isArray(S.taxonomy.disciplines)) {
+    discTax = S.taxonomy.disciplines.find(d => String(d.code || '').toUpperCase() === discCode);
+  }
+
+  let discName = '';
+  if (discTax && typeof tTaxonomy === 'function') {
+    discName = tTaxonomy(discTax, curLang);
+  }
+  if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[discCode]) {
+    const std = STANDARD_DISCIPLINE_NAMES[discCode];
+    discName = std[curLang] || std['vi'] || '';
+  }
+
+  if (!discName) return rawName;
+
+  let remainder = rawSuffix.trim().replace(/^[-–—:]\s*/, '').trim();
+
+  const candidates = [];
+  if (discTax) {
+    if (discTax.name_vi) candidates.push(discTax.name_vi);
+    if (discTax.name_en) candidates.push(discTax.name_en);
+    if (discTax.name_jp) candidates.push(discTax.name_jp);
+    if (discTax.name) candidates.push(discTax.name);
+  }
+  if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[discCode]) {
+    const std = STANDARD_DISCIPLINE_NAMES[discCode];
+    if (std.vi) candidates.push(std.vi);
+    if (std.en) candidates.push(std.en);
+    if (std.ja) candidates.push(std.ja);
+  }
+  candidates.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成', '設備モデル作成');
+
+  for (const c of candidates) {
+    if (!c) continue;
+    const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+    const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\// Helper: Render badge người đảm nhận hiển thị ngoài bảng nhiệm vụ') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+    if (rx1.test(remainder)) {
+      remainder = remainder.replace(rx1, '').trim();
+    }
+    if (cleanCand && cleanCand !== c) {
+      const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\// Helper: Render badge người đảm nhận hiển thị ngoài bảng nhiệm vụ') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+      if (rx2.test(remainder)) {
+        remainder = remainder.replace(rx2, '').trim();
+      }
+    }
+  }
+
+  remainder = remainder.replace(/^[-–—:]\s*/, '').trim();
+
+  let formatted = `[${codeStr}]-${discName}`;
+  if (remainder) {
+    formatted += ` - ${remainder}`;
+  }
+  return formatted;
+}
+
+// Helper: Render badge người đảm nhận hiển thị ngoài bảng nhiệm vụ
+function _renderAssigneeCell(assignee, taskId) {
+  const disp = _displayName(assignee);
+  const safeId = String(taskId || '').replace(/'/g, "\\'");
+  if (!disp || disp === '—') {
+    return `<span class="tk-as-cell empty" onclick="event.stopPropagation();openFullTaskEdit('${safeId}')" title="Chưa có người đảm nhận - Bấm để phân công">` +
+      `<span class="tk-as-ic">👤</span>` +
+      `<span class="tk-as-txt">— Chưa gán</span>` +
+    `</span>`;
+  }
+  const names = disp.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+  if (names.length <= 1) {
+    const name = names[0] || disp;
+    const initial = (name || '?').slice(0, 2).toUpperCase();
+    return `<span class="tk-as-cell assigned" onclick="event.stopPropagation();openFullTaskEdit('${safeId}')" title="Người phụ trách: ${name}">` +
+      `<span class="tk-as-av">${initial}</span>` +
+      `<span class="tk-as-name">${name}</span>` +
+    `</span>`;
+  }
+  const first = names[0];
+  const initial = (first || '?').slice(0, 2).toUpperCase();
+  const restCount = names.length - 1;
+  return `<span class="tk-as-cell assigned multi" onclick="event.stopPropagation();openFullTaskEdit('${safeId}')" title="Người phụ trách: ${disp}">` +
+    `<span class="tk-as-av">${initial}</span>` +
+    `<span class="tk-as-name">${first}</span>` +
+    `<span class="tk-as-more">+${restCount}</span>` +
+  `</span>`;
+}
+
+// ═══════════════════════════════════════
+//  CHARTS
+// ═══════════════════════════════════════
+function renderCharts(taskByStatus, filteredTasks) {
+  const tasks = filteredTasks || (S.pjFilter ? S.tasks.filter(t => t.projectId === S.pjFilter) : S.tasks);
+  renderChartStatus(taskByStatus, tasks);
+  renderChartProgress();
+  renderChartPriority(tasks);
+  renderChartStaff(tasks);
+  renderChartTrend(tasks);
+  renderChartCompare();
+}
+function renderChartStatus(bs, tasks) {
+  const tkList = tasks || (S.pjFilter ? S.tasks.filter(t => t.projectId === S.pjFilter) : S.tasks) || [];
+  const ALL_STATUS_KEYS = [
+    "Quá hạn",
+    "Đang thực hiện",
+    "Chờ thực hiện",
+    "Chờ duyệt",
+    "Hoàn thành",
+    "Tạm dừng",
+    "Hủy"
+  ];
+  const statusCounts = {};
+  ALL_STATUS_KEYS.forEach(k => { statusCounts[k] = 0; });
+  tkList.forEach(t => {
+    if (isTaskOverdue(t)) {
+      statusCounts["Quá hạn"]++;
+    } else if (t.status === "Đang thực hiện" || t.status === "Đang tiến hành") {
+      statusCounts["Đang thực hiện"]++;
+    } else if (t.status === "Lên kế hoạch") {
+      statusCounts["Chờ thực hiện"]++;
+    } else if (ALL_STATUS_KEYS.includes(t.status)) {
+      statusCounts[t.status]++;
+    } else if (t.status) {
+      if (statusCounts[t.status] === undefined) {
+        statusCounts[t.status] = 0;
+        if (!ALL_STATUS_KEYS.includes(t.status)) ALL_STATUS_KEYS.push(t.status);
+      }
+      statusCounts[t.status]++;
+    } else {
+      statusCounts["Chờ thực hiện"]++;
+    }
+  });
+
+  const total = tkList.length;
+  const activeKeys = ALL_STATUS_KEYS.filter(k => statusCounts[k] > 0);
+  let chartLabels, chartData, chartColors;
+  if (activeKeys.length > 0) {
+    chartLabels = activeKeys.map(k => tStatus(k));
+    chartData = activeKeys.map(k => statusCounts[k]);
+    chartColors = activeKeys.map(k => STCOL[k] || "#94a3b8");
+  } else {
+    chartLabels = [t("dash_no_act")];
+    chartData = [1];
+    chartColors = ["#e2e8f0"];
+  }
+
+  if (S.charts.st) S.charts.st.destroy();
+  const canvasEl = document.getElementById("c-st");
+  if (canvasEl) {
+    S.charts.st = new Chart(canvasEl, {
+      type: "doughnut",
+      data: {
+        labels: chartLabels,
+        datasets: [{
+          data: chartData,
+          backgroundColor: chartColors,
+          borderWidth: 2,
+          borderColor: "#ffffff",
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "66%",
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(c) {
+                if (total === 0) return " Chưa có nhiệm vụ";
+                const pct = Math.round((c.raw / total) * 100);
+                return ` ${c.label}: ${c.raw} (${pct}%)`;
+              }
+            }
+          }
+        },
+        onClick: function(evt, elements) {
+          if (elements && elements.length > 0 && activeKeys.length > 0) {
+            const idx = elements[0].index;
+            const clickedStatus = chartLabels[idx];
+            if (clickedStatus && clickedStatus !== "Chưa có nhiệm vụ") {
+              filterTasksByStatusModal(clickedStatus);
+            }
+          }
+        },
+        onHover: function(event, chartElement) {
+          if (event && event.native && event.native.target) {
+            event.native.target.style.cursor = chartElement && chartElement[0] ? 'pointer' : 'default';
+          }
+        }
+      },
+      plugins: [{
+        id: 'stCenterText',
+        beforeDraw: function(chart) {
+          const { ctx, width, height } = chart;
+          ctx.save();
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const centerX = width / 2;
+          const centerY = height / 2;
+          ctx.font = 'bold 18px Outfit, -apple-system, sans-serif';
+          ctx.fillStyle = '#0f172a';
+          ctx.fillText(total + '', centerX, centerY - 7);
+          ctx.font = '500 10px Outfit, -apple-system, sans-serif';
+          ctx.fillStyle = '#64748b';
+          ctx.fillText('Nhiệm vụ', centerX, centerY + 10);
+          ctx.restore();
+        }
+      }]
+    });
+  }
+
+  const legEl = document.getElementById("c-leg");
+  if (legEl) {
+    legEl.innerHTML = ALL_STATUS_KEYS.map(k => {
+      const cnt = statusCounts[k] || 0;
+      const col = STCOL[k] || "#94a3b8";
+      const hasCnt = cnt > 0;
+      return `<div class="c-li ${hasCnt ? 'has-cnt' : 'no-cnt'}" onclick="filterTasksByStatusModal('${k}')" title="${hasCnt ? 'Xem ' + cnt + ' nhiệm vụ: ' + k : 'Chưa có nhiệm vụ: ' + k}">`
+        + `<span class="c-dot" style="background:${col}"></span>`
+        + `<span>${k}</span>`
+        + `<span style="font-size:10px;font-weight:700">(${cnt})</span>`
+        + `</div>`;
+    }).join("");
+  }
+}
+function filterTasksByStatusModal(status) {
+  const base = S.pjFilter ? S.tasks.filter(t => t.projectId === S.pjFilter) : S.tasks;
+  let filtered = [];
+  let title = "📋 Nhiệm vụ " + status;
+  if (status === "Quá hạn") {
+    filtered = base.filter(t => isTaskOverdue(t));
+    title = "⚠️ Nhiệm vụ quá hạn";
+  } else if (status === "Đang thực hiện") {
+    filtered = base.filter(t => (t.status === "Đang thực hiện" || t.status === "Đang tiến hành") && !isTaskOverdue(t));
+    title = "⚙️ Nhiệm vụ đang thực hiện (Đúng hạn)";
+  } else if (status === "Hoàn thành") {
+    filtered = base.filter(t => t.status === "Hoàn thành");
+    title = "✅ Nhiệm vụ hoàn thành";
+  } else {
+    filtered = base.filter(t => (t.status === status || (status === "Chờ thực hiện" && t.status === "Lên kế hoạch")) && !isTaskOverdue(t));
+    title = "📋 Nhiệm vụ: " + status;
+  }
+  openAllTasksModal(filtered, title);
+}
+function renderChartProgress() {
+  const counts=[S.projects.filter(p=>p.progress<=25).length,S.projects.filter(p=>p.progress>25&&p.progress<=50).length,S.projects.filter(p=>p.progress>50&&p.progress<=75).length,S.projects.filter(p=>p.progress>75&&p.progress<100).length,S.projects.filter(p=>p.progress>=100).length];
+  if (S.charts.pg) S.charts.pg.destroy();
+  S.charts.pg=new Chart(document.getElementById("c-pg"),{type:"bar",data:{labels:["0-25%","26-50%","51-75%","76-99%","100%"],datasets:[{label:"Số lượng",data:counts,backgroundColor:["#ef4444","#f59e0b","#fb923c","#06b6d4","#22c55e"],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}},grid:{color:"#f1f5f9"}},x:{ticks:{font:{size:9}},grid:{display:false}}}}});
+}
+function renderChartPriority(tasks) {
+  const pris=["Thấp","Trung bình","Cao","Khẩn cấp"];
+  const counts=pris.map(p=>tasks.filter(t=>t.priority===p).length);
+  const displayLabels = pris.map(p => tPriority(p));
+  if (S.charts.pr) S.charts.pr.destroy();
+  S.charts.pr=new Chart(document.getElementById("c-pri"),{type:"pie",data:{labels:displayLabels,datasets:[{data:counts,backgroundColor:["#22c55e","#4f6ef7","#f59e0b","#ef4444"],borderWidth:2,borderColor:"#fff"}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:"bottom",labels:{font:{size:9},boxWidth:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw}`}}}}});
+}
+function renderChartStaff(tasks) {
+  const ms={};
+  const allStaff = _getAllAssignees();
+  allStaff.forEach(m => {
+    const mt = (tasks || S.tasks).filter(t => {
+      if (!t.assignee) return false;
+      const disp = _displayName(t.assignee).toLowerCase();
+      const mNameLower = (m.name || '').toLowerCase();
+      const mEmailLower = (m.email || '').toLowerCase();
+      const mCodeLower = (m.code || '').toLowerCase();
+      if (mNameLower && disp.includes(mNameLower)) return true;
+      const parts = String(t.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+      return (mEmailLower && parts.includes(mEmailLower)) || (mCodeLower && parts.includes(mCodeLower)) || (mNameLower && parts.includes(mNameLower));
+    });
+    if (mt.length > 0) {
+      const done = mt.filter(t => t.status === "Hoàn thành").length;
+      ms[m.name] = { total: mt.length, rate: Math.round(done / mt.length * 100) };
+    }
+  });
+  const labels=Object.keys(ms).slice(0,8);
+  if (!labels.length) return;
+  if (S.charts.sf) S.charts.sf.destroy();
+  S.charts.sf=new Chart(document.getElementById("c-sf"),{data:{labels,datasets:[{type:"bar",label:t("dash_card_total_tasks"),data:labels.map(l=>ms[l].total),backgroundColor:"#22c55e88",borderRadius:4,yAxisID:"y"},{type:"line",label:"% " + t("dash_stat_completed"),data:labels.map(l=>ms[l].rate),borderColor:"#4f6ef7",backgroundColor:"#4f6ef718",tension:.4,pointRadius:3,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{font:{size:9},boxWidth:8}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}},grid:{color:"#f1f5f9"},position:"left"},y2:{beginAtZero:true,max:100,ticks:{callback:v=>v+"%",font:{size:9}},grid:{display:false},position:"right"},x:{ticks:{font:{size:9}},grid:{display:false}}}}});
+}
+function renderChartTrend(tasks) {
+  tasks = tasks || S.tasks;
+  const days = 15;
+  const today = new Date(); today.setHours(23,59,59,999);
+  const labels = [], data = [];
+  const dateMap = {};
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today.getTime() - i * 86400000);
+    const k = `${d.getDate()}/${d.getMonth()+1}`;
+    labels.push(k);
+    dateMap[k] = 0;
+  }
+  tasks.filter(t => t.status === "Hoàn thành").forEach(t => {
+    const dStr = t.updatedAt || t.created;
+    if (dStr) {
+      const parts = dStr.split(" ")[0].split("/");
+      if (parts.length >= 2) {
+        const k = `${parseInt(parts[0])}/${parseInt(parts[1])}`;
+        if (dateMap[k] !== undefined) dateMap[k]++;
+      }
+    }
+  });
+  const chartData = labels.map(l => dateMap[l]);
+  if (S.charts.tr) S.charts.tr.destroy();
+  S.charts.tr = new Chart(document.getElementById("c-tr"),{
+    type:"line",
+    data:{
+      labels,
+      datasets:[{
+        label:"Hoàn thành",
+        data: chartData,
+        borderColor:"#22c55e",
+        backgroundColor:"#22c55e18",
+        tension:.4,
+        pointRadius:3,
+        fill:true
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:true,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}},grid:{color:"#f1f5f9"}},
+        x:{ticks:{font:{size:8}},grid:{display:false}}
+      }
+    }
+  });
+}
+function renderChartCompare() {
+  const pjs=S.projects.slice(0,6);
+  const labels=pjs.map(p=>p.name.substring(0,12)+(p.name.length>12?"...":""));
+  const totals=pjs.map(p=>S.tasks.filter(t=>t.projectId===p.id).length);
+  const rates=pjs.map(p=>{ const pt=S.tasks.filter(t=>t.projectId===p.id); const done=pt.filter(t=>t.status==="Hoàn thành").length; return pt.length?Math.round(done/pt.length*100):0; });
+  if (S.charts.cmp) S.charts.cmp.destroy();
+  S.charts.cmp=new Chart(document.getElementById("c-cmp"),{data:{labels,datasets:[{type:"bar",label:"Tổng nhiệm vụ",data:totals,backgroundColor:"#4f6ef788",borderRadius:4,yAxisID:"y"},{type:"line",label:"% Hoàn thành",data:rates,borderColor:"#ef4444",backgroundColor:"transparent",tension:.4,pointRadius:3,yAxisID:"y2"}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{font:{size:9},boxWidth:8}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:9}},grid:{color:"#f1f5f9"},position:"left"},y2:{beginAtZero:true,max:100,ticks:{callback:v=>v+"%",font:{size:9}},grid:{display:false},position:"right"},x:{ticks:{font:{size:8},maxRotation:30},grid:{display:false}}}}});
+}
+
+// ═══════════════════════════════════════
+//  ASSIGNEE MULTI-SELECT COMBO & PROGRESS SYNC
+// ═══════════════════════════════════════
+const _selectedAssignees = { tp: [], qtk: [] };
+
+function syncTpProgress(val, source) {
+  let num = parseInt(val, 10);
+  if (isNaN(num)) num = 0;
+  if (num < 0) num = 0;
+  if (num > 100) num = 100;
+  const range = document.getElementById('tp-pg');
+  const numInp = document.getElementById('tp-pg-num');
+  const pv = document.getElementById('tp-pv');
+  if (source !== 'range' && range) range.value = num;
+  if (source !== 'num' && numInp && numInp.value != num) numInp.value = num;
+  if (pv) pv.textContent = num;
+}
+
+function togAsComboDropdown(prefix, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const l = document.getElementById(prefix + '-as-list');
+  if (l && l.classList.contains('show')) {
+    hideAsCombo(prefix);
+  } else {
+    focusAsInp(prefix);
+    showAsCombo(prefix);
+  }
+}
+
+function focusAsInp(prefix) {
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) inp.focus();
+}
+
+function renderAsChips(prefix) {
+  const chipsEl = document.getElementById(prefix + '-as-chips');
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (!chipsEl) return;
+  const list = _selectedAssignees[prefix] || [];
+  chipsEl.innerHTML = list.map((item, idx) => {
+    const name = item.name || item.email || item.code || '?';
+    const initial = (name || '?').slice(0, 2).toUpperCase();
+    return `<span class="as-chip" title="${name}${item.role ? ' (' + item.role + ')' : ''}">` +
+      `<span class="as-chip-av">${initial}</span>` +
+      `<span class="as-chip-name">${name}</span>` +
+      `<span class="as-chip-del" onclick="removeAssignee('${prefix}', ${idx}, event)" title="Xóa người này">✕</span>` +
+      `</span>`;
+  }).join('');
+  if (inp) {
+    inp.placeholder = list.length ? '+ Thêm người khác...' : 'Chọn hoặc nhập tên người thực hiện...';
+  }
+}
+
+function setAssignees(prefix, rawVal, projectId) {
+  _selectedAssignees[prefix] = [];
+  if (rawVal) {
+    const pjId = projectId || (prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value);
+    const items = Array.isArray(rawVal) ? rawVal : String(rawVal).split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+    const seen = new Set();
+
+    items.forEach(item => {
+      const trimmed = String(item).trim();
+      if (!trimmed || trimmed === '—') return;
+      const m = _findMember(trimmed, pjId);
+      if (m) {
+        const canonicalKey = (m.code || m.email || m.name).toLowerCase();
+        if (!seen.has(canonicalKey)) {
+          seen.add(canonicalKey);
+          _selectedAssignees[prefix].push({
+            id: m.code || m.id || '',
+            code: m.code || '',
+            email: m.email || '',
+            name: m.name,
+            role: m.role || '',
+            rank: m.rank || ''
+          });
+        }
+      } else {
+        const canonicalKey = trimmed.toLowerCase();
+        if (!seen.has(canonicalKey)) {
+          seen.add(canonicalKey);
+          _selectedAssignees[prefix].push({
+            id: '',
+            code: '',
+            email: trimmed.includes('@') ? trimmed : '',
+            name: trimmed.includes('@') ? trimmed.split('@')[0].replace(/^(member_|user_)/i, '') : trimmed,
+            role: 'Bên ngoài',
+            rank: ''
+          });
+        }
+      }
+    });
+  }
+  renderAsChips(prefix);
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) inp.value = '';
+}
+
+function showAsCombo(prefix) {
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  const list = document.getElementById(prefix + '-as-list');
+  if (!inp || !list) return;
+  const q = (inp.value || '').trim().toLowerCase();
+  const pjId = prefix === 'qtk'
+    ? document.getElementById('mqtk-pj')?.value
+    : document.getElementById('tp-pj')?.value;
+  const members = _getAllAssignees(pjId);
+  const filtered = q ? members.filter(m => 
+    (m.name || '').toLowerCase().includes(q) || 
+    (m.email || '').toLowerCase().includes(q) ||
+    (m.code || '').toLowerCase().includes(q) ||
+    (m.role || '').toLowerCase().includes(q)
+  ) : members;
+  
+  let html = '';
+  const selList = _selectedAssignees[prefix] || [];
+  if (selList.length > 0) {
+    html += `<div class="as-opt as-opt-clear" onmousedown="clearAllAs('${prefix}', event)"><span style="color:#ef4444;font-size:11px">✕ Bỏ chọn tất cả (${selList.length} người đang chọn)</span></div>`;
+  }
+
+  const pjMembers = filtered.filter(m => m.isProjectMember);
+  const otherMembers = filtered.filter(m => !m.isProjectMember);
+
+  const renderOpt = (m) => {
+    const isSel = selList.some(a => 
+      (m.email && a.email && a.email.toLowerCase() === m.email.toLowerCase()) || 
+      (m.code && a.code && a.code.toLowerCase() === m.code.toLowerCase()) ||
+      (m.name && a.name && a.name.toLowerCase() === m.name.toLowerCase())
+    );
+    const safeEmail = (m.email || m.name || '').replace(/'/g, "\\'");
+    const safeName = (m.name || '').replace(/'/g, "\\'");
+    const initial = (m.name || '?').slice(0, 2).toUpperCase();
+    const tag = m.rank || m.role || (m.code ? `Mã: ${m.code}` : '');
+    return `<div class="as-opt ${isSel ? 'selected' : ''}" onmousedown="toggleAsMember('${prefix}', '${safeEmail}', '${safeName}', event)">` +
+      `<span class="mem-avatar" style="width:22px;height:22px;font-size:9px;background:var(--p);color:#fff">${initial}</span>` +
+      `<div style="flex:1;min-width:0">` +
+        `<div style="font-weight:600;font-size:12px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name}</div>` +
+        (tag ? `<div style="color:var(--t3);font-size:10px">${tag}${m.isProjectMember ? ' • Thành viên DA' : ''}</div>` : '') +
+      `</div>` +
+      (isSel ? `<span class="as-opt-check">✓ Đã chọn</span>` : '') +
+      `</div>`;
+  };
+
+  if (pjMembers.length > 0 && otherMembers.length > 0) {
+    html += `<div style="padding:4px 10px;font-size:10px;font-weight:700;color:var(--p);background:#f8fafc;border-bottom:1px solid var(--bdr)">👥 THÀNH VIÊN DỰ ÁN</div>`;
+    html += pjMembers.map(renderOpt).join('');
+    html += `<div style="padding:4px 10px;font-size:10px;font-weight:700;color:var(--t2);background:#f8fafc;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)">🏢 NHÂN SỰ TOÀN CÔNG TY</div>`;
+    html += otherMembers.map(renderOpt).join('');
+  } else if (filtered.length) {
+    html += filtered.map(renderOpt).join('');
+  } else if (!q) {
+    html += `<div style="padding:16px;text-align:center;color:var(--t3);font-size:11px">Chưa có danh sách nhân sự</div>`;
+  }
+
+  if (q) {
+    const alreadyExact = members.find(m => (m.name || '').toLowerCase() === q || (m.email || '').toLowerCase() === q);
+    if (!alreadyExact) {
+      const safeQ = q.replace(/'/g, "\\'");
+      html += `<div class="as-opt as-opt-sep as-opt-new" onmousedown="addAsCustom('${prefix}', event)">✚ Dùng tên mới: "<b>${q}</b>"</div>`;
+    }
+  }
+  list.innerHTML = html;
+  list.classList.add('show');
+}
+
+function hideAsCombo(prefix) {
+  const l = document.getElementById(prefix + '-as-list');
+  if (l) l.classList.remove('show');
+}
+
+function toggleAsMember(prefix, email, name, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  if (!_selectedAssignees[prefix]) _selectedAssignees[prefix] = [];
+  const list = _selectedAssignees[prefix];
+  const pjId = prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value;
+  const m = _findMember(email || name, pjId);
+  const targetName = (m && m.name) || name || email;
+  const targetEmail = (m && m.email) || (email && email.includes('@') ? email : '');
+  const targetCode = (m && m.code) || '';
+
+  const idx = list.findIndex(a => 
+    (targetEmail && a.email && a.email.toLowerCase() === targetEmail.toLowerCase()) || 
+    (targetCode && a.code && a.code.toLowerCase() === targetCode.toLowerCase()) ||
+    (targetName && a.name && a.name.toLowerCase() === targetName.toLowerCase())
+  );
+  if (idx >= 0) {
+    list.splice(idx, 1);
+  } else {
+    list.push({
+      id: targetCode,
+      code: targetCode,
+      email: targetEmail,
+      name: targetName,
+      role: (m && m.role) || '',
+      rank: (m && m.rank) || ''
+    });
+  }
+  renderAsChips(prefix);
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) {
+    inp.value = '';
+    inp.focus();
+  }
+  showAsCombo(prefix);
+}
+
+function addAsCustom(prefix, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (!inp) return;
+  const rawText = inp.value.trim();
+  if (!rawText) return;
+
+  if (!_selectedAssignees[prefix]) _selectedAssignees[prefix] = [];
+  const list = _selectedAssignees[prefix];
+  const pjId = prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value;
+  const m = _findMember(rawText, pjId);
+
+  if (m) {
+    const key = (m.code || m.email || m.name).toLowerCase();
+    if (!list.some(a => (a.code || a.email || a.name || '').toLowerCase() === key)) {
+      list.push({
+        id: m.code || m.id || '',
+        code: m.code || '',
+        email: m.email || '',
+        name: m.name,
+        role: m.role || '',
+        rank: m.rank || ''
+      });
+    }
+  } else {
+    const key = rawText.toLowerCase();
+    if (!list.some(a => (a.name || a.email || '').toLowerCase() === key)) {
+      list.push({
+        id: '',
+        code: '',
+        email: rawText.includes('@') ? rawText : '',
+        name: rawText.includes('@') ? rawText.split('@')[0].replace(/^(member_|user_)/i, '') : rawText,
+        role: 'Bên ngoài',
+        rank: ''
+      });
+    }
+  }
+  inp.value = '';
+  renderAsChips(prefix);
+  showAsCombo(prefix);
+  inp.focus();
+}
+
+function clearAllAs(prefix, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  _selectedAssignees[prefix] = [];
+  renderAsChips(prefix);
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (inp) {
+    inp.value = '';
+    inp.focus();
+  }
+  showAsCombo(prefix);
+}
+
+function removeAssignee(prefix, index, e) {
+  if (e) { e.stopPropagation(); }
+  if (_selectedAssignees[prefix]) {
+    _selectedAssignees[prefix].splice(index, 1);
+    renderAsChips(prefix);
+    const l = document.getElementById(prefix + '-as-list');
+    if (l && l.classList.contains('show')) showAsCombo(prefix);
+  }
+}
+
+function handleAsKeydown(e, prefix) {
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  if (!inp) return;
+  if (e.key === 'Backspace' && !inp.value) {
+    if (_selectedAssignees[prefix] && _selectedAssignees[prefix].length > 0) {
+      _selectedAssignees[prefix].pop();
+      renderAsChips(prefix);
+      showAsCombo(prefix);
+    }
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (inp.value.trim()) {
+      addAsCustom(prefix, e);
+    }
+  }
+}
+
+function refreshAsCombo(prefix) {
+  renderAsChips(prefix);
+  const l = document.getElementById(prefix + '-as-list');
+  if (l && l.classList.contains('show')) showAsCombo(prefix);
+}
+
+// Legacy compat
+function ldAsSel(id, sel) {
+  const el = document.getElementById(id); if (!el) return;
+  if (el.tagName==='INPUT') { el.value = sel ? _displayName(sel) : ''; return; }
+  el.innerHTML='<option value="">-- Người thực hiện --</option>';
+  (S.members || []).forEach(m=>{ const o=document.createElement("option"); o.value=m.email; o.textContent=`${m.name}(${m.role})`; if(sel&&m.email===sel) o.selected=true; el.appendChild(o); });
+}
+
+// Get raw assignee value (chuẩn hóa định dạng chuỗi lưu trữ tương thích cao)
+function _getAssigneeVal(prefix) {
+  const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  const pjId = prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value;
+  const list = [...(_selectedAssignees[prefix] || [])];
+
+  if (inp && inp.value.trim()) {
+    const text = inp.value.trim();
+    const m = _findMember(text, pjId);
+    const item = m ? {
+      id: m.code || m.id || '',
+      code: m.code || '',
+      email: m.email || '',
+      name: m.name,
+      role: m.role || '',
+      rank: m.rank || ''
+    } : {
+      id: '',
+      code: '',
+      email: text.includes('@') ? text : '',
+      name: text.includes('@') ? text.split('@')[0].replace(/^(member_|user_)/i, '') : text,
+      role: 'Bên ngoài',
+      rank: ''
+    };
+    const key = (item.code || item.email || item.name).toLowerCase();
+    if (!list.some(a => (a.code || a.email || a.name || '').toLowerCase() === key)) {
+      list.push(item);
+    }
+  }
+
+  const formatted = list.map(a => {
+    if (a.email && a.email.includes('@') && a.name && a.name !== a.email) {
+      return `${a.email}, ${a.name}`;
+    }
+    return a.name || a.email || a.code;
+  }).filter(Boolean);
+
+  return formatted.join(', ');
+}
+
+// ═══════════════════════════════════════
+//  PROJECT MEMBERS MODAL
+// ═══════════════════════════════════════
+let _editMemPjId = null;
+let _editMemList = [];
+
+function openMemMod() {
+  if (!_pdPjId) { toast('Chưa chọn dự án','error'); return; }
+  _editMemPjId = _pdPjId;
+  _editMemList = [...(_loadProjectMembers(_pdPjId)||[])];
+  const pj = S.projects.find(p=>p.id===_pdPjId);
+  document.getElementById('m-mem-ti').textContent = '👥 Thành viên: ' + (pj?pj.name:'');
+  // populate select with global members not yet added
+  const sel = document.getElementById('mem-sel');
+  sel.innerHTML = '<option value="">-- Chọn từ hệ thống --</option>';
+  S.members.filter(m=>m.role!=='Viewer').forEach(m=>{
+    if (!_editMemList.find(x=>x.email===m.email)) {
+      const o=document.createElement('option'); o.value=m.email; o.textContent=`${m.name} (${m.role})`; sel.appendChild(o);
+    }
+  });
+  document.getElementById('mem-new-name').value='';
+  renderMemCurList();
+  openModal('m-mem');
+}
+
+function renderMemCurList() {
+  const el = document.getElementById('mem-cur-list');
+  const cnt = document.getElementById('mem-cur-count');
+  if (cnt) cnt.textContent = _editMemList.length;
+  if (!_editMemList.length) {
+    el.innerHTML='<div style="text-align:center;color:var(--t3);font-size:11px;padding:16px">Chưa có thành viên nào</div>';
+    return;
+  }
+  el.innerHTML = _editMemList.map((m,i)=>`
+    <div class="mem-item">
+      <div class="mem-avatar">${(m.name||'?').slice(0,2).toUpperCase()}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:600">${m.name}</div>
+        <div style="font-size:10px;color:var(--t2)">${m.email.startsWith('member_')?'🏷 Thành viên nội bộ':m.email}</div>
+      </div>
+      <span class="badge bg-gy" style="font-size:9px">${m.role||'Member'}</span>
+      <div style="display:flex;gap:3px">
+        ${m.email.startsWith('member_') ? `<button class="bic" style="width:22px;height:22px;font-size:10px;flex-shrink:0" onclick="renameProjectMem(${i})" title="Sửa tên thành viên">✏</button>` : ''}
+        <button class="bic del" style="width:22px;height:22px;font-size:10px;flex-shrink:0" onclick="removeEditMem(${i})" title="Xóa khỏi dự án">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function renameProjectMem(idx) {
+  const m = _editMemList[idx];
+  if (!m) return;
+  const newName = prompt('Nhập tên mới cho thành viên:', m.name);
+  if (!newName || !newName.trim() || newName.trim() === m.name) return;
+  const updatedName = newName.trim();
+  m.name = updatedName;
+  // Cập nhật S.members
+  const globalM = S.members.find(x => x.email === m.email || (m.id && x.id === m.id));
+  if (globalM) globalM.name = updatedName;
+  // Cập nhật _usersCache nếu có
+  const cacheM = _usersCache.find(x => x.email === m.email || (m.id && x.id === m.id));
+  if (cacheM) cacheM.name = updatedName;
+  renderMemCurList();
+  toast(`Đã đổi tên thành "${updatedName}"`, 'success');
+  // Đồng bộ lên Google Sheets
+  google.script.run
+    .withFailureHandler(e => console.warn('Could not update member name on sheet:', e))
+    .updateUser({ id: m.id || m.email, email: m.email, name: updatedName });
+}
+
+function addMemFromList() {
+  const sel = document.getElementById('mem-sel');
+  const email = sel.value; if (!email) { toast('Chọn thành viên','error'); return; }
+  const m = S.members.find(x=>x.email===email);
+  if (!m) return;
+  if (_editMemList.find(x=>x.email===email)) { toast('Đã có trong danh sách','error'); return; }
+  _editMemList.push({id:email, email:email, name:m.name, role:m.role});
+  sel.querySelector(`option[value="${CSS.escape(email)}"]`)?.remove();
+  sel.value='';
+  renderMemCurList();
+  toast(`Đã thêm ${m.name}`,'success');
+}
+
+function addMemByName() {
+  const nameEl = document.getElementById('mem-new-name');
+  const name = nameEl.value.trim();
+  if (!name) { toast('Nhập tên thành viên','error'); return; }
+  if (_editMemList.find(x=>x.name===name)) { toast('Tên đã tồn tại trong dự án này','error'); return; }
+  const id = 'member_' + Date.now().toString(36).toUpperCase();
+  const newMem = {id, email:id, name, role:'Member'};
+  _editMemList.push(newMem);
+  if (!S.members.find(m=>m.name===name)) {
+    S.members.push({id, email:id, name, role:'Member'});
+  }
+  // Đồng bộ vào Sheet USERS trên Google Sheets
+  google.script.run
+    .withFailureHandler(e => console.warn('Could not save internal member to sheet:', e))
+    .addUser({ name, email: id, role: 'Member', status: 'Active', note: 'Thành viên nội bộ' });
+  nameEl.value='';
+  renderMemCurList();
+  toast(`Đã tạo thành viên "${name}"`,'success');
+}
+
+function removeEditMem(idx) {
+  const removed = _editMemList.splice(idx, 1)[0];
+  if (removed) {
+    const sel = document.getElementById('mem-sel');
+    const gm = S.members.find(m=>m.email===removed.email&&!removed.email.startsWith('member_'));
+    if (gm && sel) {
+      const o=document.createElement('option'); o.value=gm.email; o.textContent=`${gm.name} (${gm.role})`; sel.appendChild(o);
+    }
+  }
+  renderMemCurList();
+}
+
+function saveMembers() {
+  if (!_editMemPjId) return;
+  _saveProjectMembers(_editMemPjId, _editMemList);
+  // Merge new members into global S.members
+  _editMemList.forEach(m=>{ if(!S.members.find(x=>x.email===m.email)) S.members.push(m); });
+  closeModal('m-mem');
+  renderPdMembers(_editMemPjId);
+  toast(`Đã lưu ${_editMemList.length} thành viên cho dự án`,'success');
+}
+
+function renderPdMembers(pjId) {
+  const mems = S.projectMembers[pjId] || _loadProjectMembers(pjId);
+  S.projectMembers[pjId] = mems;
+  const cntEl = document.getElementById('pd-mem-count');
+  const listEl = document.getElementById('pd-mem-list');
+  if (cntEl) cntEl.textContent = mems.length;
+  if (!listEl) return;
+  if (!mems.length) {
+    listEl.innerHTML='<div style="font-size:10px;color:var(--t3);padding:4px 0">Chưa có thành viên</div>';
+    return;
+  }
+  const show = mems.slice(0, 6);
+  listEl.innerHTML = show.map(m=>{
+    let mName = "";
+    if (typeof m === "string") {
+      const found = (S.members || []).find(u => u.email === m || u.name === m);
+      mName = found ? found.name : m;
+    } else if (m && typeof m === "object") {
+      mName = m.name || (m.email ? ((S.members || []).find(u => u.email === m.email) || {}).name : "") || m.email || "Thành viên";
+    } else {
+      mName = "Thành viên";
+    }
+    const initials = (mName || "?").slice(0, 2).toUpperCase();
+    return `
+    <div class="mem-mini-row">
+      <div class="mem-avatar" style="width:22px;height:22px;font-size:9px">${initials}</div>
+      <span style="font-size:11px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${mName}">${mName}</span>
+    </div>`;
+  }).join('') + (mems.length>6?`<div style="font-size:10px;color:var(--t3);padding:2px 0">+${mems.length-6} người khác...</div>`:'');
+}
+
+// ═══════════════════════════════════════
+//  USER MODE (full email / name-only)
+// ═══════════════════════════════════════
+function setUsrMode(mode) {
+  _usrMode = mode;
+  const emWrap = document.getElementById('musr-em-wrap');
+  const nameInfo = document.getElementById('musr-name-info');
+  const tabFull = document.getElementById('musr-tab-full');
+  const tabName = document.getElementById('musr-tab-name');
+  emWrap.style.display  = mode==='full' ? 'block' : 'none';
+  nameInfo.style.display = mode==='name' ? 'block' : 'none';
+  tabFull.className = 'usr-mode-tab' + (mode==='full'?' active-full':'');
+  tabName.className = 'usr-mode-tab' + (mode==='name'?' active-name':'');
+}
+
+// ═══════════════════════════════════════
+//  PROJECT MODALS
+// ═══════════════════════════════════════
+function openAllProjectsModal() {
+  openModal("m-pd");
+  document.getElementById("m-pd-ti").textContent="Tất cả dự án"; _pdPjId=null;
+  const el=document.getElementById("pd-tgrid"); el.className="";
+  el.innerHTML=S.projects.map(p=>`
+    <div style="border:1px solid var(--bdr);border-radius:var(--r2);padding:12px;margin-bottom:10px;cursor:pointer;background:#fff;transition:.2s" onmouseenter="this.style.borderColor='#c7d7f8'" onmouseleave="this.style.borderColor='#e2e8f0'" onclick="openPjDetail('${p.id}')">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><b style="font-size:13px">${p.name}</b><span class="badge ${sBadge(p.status)}">${p.status}</span></div>
+      <div style="font-size:11px;color:#64748b;margin-bottom:7px">${p.desc||""}</div>
+      <div style="display:flex;gap:10px;font-size:10px;color:#94a3b8;margin-bottom:7px">
+        <span>👤 ${_displayName(p.manager)}</span>
+        ${p.startDate?`<span>📅 ${p.startDate}</span>`:""}
+        ${p.endDate?`<span>🏁 ${p.endDate}</span>`:""}
+      </div>
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="flex:1;background:#e2e8f0;border-radius:2px;height:5px;overflow:hidden"><div style="width:${p.progress}%;height:100%;background:#4f6ef7;border-radius:2px"></div></div>
+        <span style="font-size:11px;font-weight:600">${p.progress}%</span>
+      </div>
+    </div>`).join("");
+  document.querySelector(".pd-left").style.display="none";
+  document.querySelector(".pd-right").style.width="100%";
+}
+
+function openPjDetail(projectId) {
+  _pdPjId=projectId;
+  document.querySelector(".pd-left").style.display="flex";
+  document.querySelector(".pd-right").style.width="";
+  const el=document.getElementById("pd-tgrid"); el.className="pd-tgrid";
+  el.innerHTML='<div class="ldg"><div class="spn"></div></div>';
+  // Render members immediately from cache
+  renderPdMembers(projectId);
+  openModal("m-pd");
+  google.script.run.withSuccessHandler(res=>{
+    if (!res.success) { toast(res.error,"error"); return; }
+    const p=res.project;
+    document.getElementById("m-pd-ti").textContent="Chi tiết dự án: "+p.name;
+    document.getElementById("pd-total").textContent=res.stats.total;
+    document.getElementById("pd-done").textContent=res.stats.completed;
+    document.getElementById("pd-ip").textContent=res.stats.inProgress;
+    document.getElementById("pd-ov").textContent=res.stats.overdue;
+    document.getElementById("pd-pct").textContent=res.stats.progress+"%";
+    document.getElementById("pd-bar").style.width=res.stats.progress+"%";
+    if (!res.tasks.length) { el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ic">📋</div>Chưa có nhiệm vụ</div>'; return; }
+    el.innerHTML=res.tasks.map((t,i)=>`
+      <div class="pd-tcard ${isTaskOverdue(t)?'ov':''}" onclick="openFullTaskEdit('${t.id}');closeModal('m-pd')">
+        <div class="pd-tc-top">
+          <div class="pd-tc-nm">${i+1}. ${t.name}</div>
+          <div class="pd-tc-acts" onclick="event.stopPropagation()">
+            <button class="bic grn" onclick="openFullTaskEdit('${t.id}');closeModal('m-pd')">✏</button>
+            <button class="bic del" onclick="delTk('${t.id}')">🗑</button>
+          </div>
+        </div>
+        <div class="pd-tc-id">${t.id||""} &nbsp; ${t.deadline?`<span style="color:${isTaskOverdue(t)?"#ef4444":""}">📅 ${t.deadline}</span>`:""}</div>
+        <div class="pd-tc-tags">
+          <span class="badge ${sBadge(t.status)}">${t.status}</span>
+          <span class="badge ${pBadge(t.priority)}">${t.priority}</span>
+          ${isTaskOverdue(t)?'<span class="badge bg-rd">Quá hạn</span>':""}
+        </div>
+        <div class="pd-tc-meta">
+          <span class="pd-tc-as">👤 ${t.assignee?_displayName(t.assignee):"—"}</span>
+          <span style="font-size:10px;font-weight:600">${t.progress}%</span>
+        </div>
+        <div class="pd-tc-bw"><div class="pd-tc-bf" style="width:${t.progress}%;background:${t.progress>=100?"#22c55e":"#4f6ef7"}"></div></div>
+      </div>`).join("");
+  }).withFailureHandler(e=>toast(e.message,"error")).getProjectDetail(projectId);
+}
+
+// ═══════════════════════════════════════
+//  ALL TASKS MODAL
+// ═══════════════════════════════════════
+let _atTasks=[];
+function openAllTasksModal(tasks, title) {
+  _atTasks=tasks||S.tasks;
+  document.getElementById("m-at-ti").textContent=(title||"Danh sách nhiệm vụ")+" ("+_atTasks.length+")";
+  document.getElementById("at-srch").value="";
+  renderAtGrid(_atTasks);
+  openModal("m-at");
+}
+function renderAtGrid(tasks) {
+  const el=document.getElementById("at-grid"); if (!el) return;
+  if (!tasks||!tasks.length) { el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ic">✅</div>Không có nhiệm vụ</div>'; return; }
+  const parts=[];
+  for (let i=0;i<tasks.length;i++) {
+    const t=tasks[i], ov=isTaskOverdue(t);
+    const nm=(_taskDisplayName(t)||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const pj=(t.projectName||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const pct=Number(t.progress)||0;
+    parts.push(
+      '<div class="at-card'+(ov?' ov':'')+'" onclick="openFullTaskEdit(\''+t.id+'\');closeModal(\'m-at\')">'
+      +'<div class="at-top"><div class="at-nm">'+nm+'</div><span class="badge '+sBadge(t.status)+'">'+t.status+'</span></div>'
+      +'<div class="at-pj">📁 '+pj+'</div>'
+      +'<div class="at-row">👤 '+_displayName(t.assignee)+'</div>'
+      +'<div class="at-row" style="color:'+(ov?"#ef4444":"")+'"><span style="width:7px;height:7px;border-radius:50%;background:'+(ov?"#ef4444":"#22c55e")+';display:inline-block;margin-right:4px"></span>'+(t.deadline||"Chưa có deadline")+(ov?' ⚠':'')+'</div>'
+      +'<div class="at-bw"><div class="at-bf" style="width:'+pct+'%;background:'+(pct>=100?"#22c55e":"#4f6ef7")+'"></div></div>'
+      +'<div class="at-pct">'+pct+'%</div></div>'
+    );
+  }
+  el.innerHTML=parts.join("");
+}
+function filterAtGrid(q) {
+  const lq=(q||"").toLowerCase();
+  renderAtGrid(_atTasks.filter(t=>!lq||(t.name||"").toLowerCase().includes(lq)||_taskDisplayName(t).toLowerCase().includes(lq)||(t.projectName||"").toLowerCase().includes(lq)||(t.assignee||"").toLowerCase().includes(lq)||_displayName(t.assignee).toLowerCase().includes(lq)));
+}
+
+// ═══════════════════════════════════════
+//  GANTT
+// ═══════════════════════════════════════
+let GANTT={startDate:null,endDate:null,data:[],pixelsPerDay:28};
+let _ganttInitialised = false;
+
+function initGanttDates() {
+  initGanttFilterBar();
+}
+
+function initGanttFilterBar() {
+  popGanttPjOptions();
+  popGanttStaff();
+  setGanttPreset('year', true);
+  try {
+    const sf = localStorage.getItem('gantt_show_flags');
+    const sd = localStorage.getItem('gantt_show_dates');
+    if (sf !== null && document.getElementById('g-cb-flag')) document.getElementById('g-cb-flag').checked = (sf === '1');
+    if (sd !== null && document.getElementById('g-cb-date')) document.getElementById('g-cb-date').checked = (sd === '1');
+  } catch(e) {}
+}
+
+function popGanttPjOptions() {
+  const sel = document.getElementById("g-pj-sel");
+  if (!sel) return;
+  const curVal = sel.value || (S.pjFilter || 'all');
+  sel.innerHTML = `<option value="all">${t('an_all_projects')}</option>`;
+  if (S.projects) {
+    const sorted = (S.projects || []).slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
+    sorted.forEach(p => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = p.name;
+      if (p.id === curVal) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+function onGanttPjChange() {
+  const gSel = document.getElementById("g-pj-sel");
+  const val = gSel ? gSel.value : 'all';
+  S.pjFilter = (val === 'all') ? '' : val;
+
+  const topSel = document.getElementById("pj-filter-sel");
+  if (topSel) topSel.value = S.pjFilter;
+  const anSel = document.getElementById("an-pj-sel");
+  if (anSel) anSel.value = val;
+
+  loadGantt();
+}
+
+function setGanttPreset(preset, skipLoad) {
+  const now = new Date();
+  let fStr = '', tStr = '';
+
+  function fmtYMD(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  if (preset === 'today') {
+    fStr = tStr = fmtYMD(now);
+  } else if (preset === 'week') {
+    const dayOfWeek = now.getDay() || 7;
+    const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek + 1);
+    const sun = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 6);
+    fStr = fmtYMD(mon);
+    tStr = fmtYMD(sun);
+  } else if (preset === 'month') {
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    fStr = fmtYMD(firstDay);
+    tStr = fmtYMD(lastDay);
+  } else if (preset === 'quarter') {
+    const curQ = Math.floor(now.getMonth() / 3);
+    const qStart = new Date(now.getFullYear(), curQ * 3, 1);
+    const qEnd = new Date(now.getFullYear(), curQ * 3 + 3, 0);
+    fStr = fmtYMD(qStart);
+    tStr = fmtYMD(qEnd);
+  } else if (preset === 'year') {
+    fStr = `${now.getFullYear()}-01-01`;
+    tStr = `${now.getFullYear()}-12-31`;
+  } else if (preset === 'all') {
+    fStr = '';
+    tStr = '';
+  }
+
+  const inpF = document.getElementById('g-from');
+  const inpT = document.getElementById('g-to');
+  if (inpF) inpF.value = fStr;
+  if (inpT) inpT.value = tStr;
+
+  document.querySelectorAll('.gantt-preset-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-gpreset') === preset);
+  });
+
+  if (!skipLoad) {
+    loadGantt();
+  }
+}
+
+function onGanttDateManualChange() {
+  document.querySelectorAll('.gantt-preset-btn').forEach(btn => btn.classList.remove('active'));
+  loadGantt();
+}
+
+function resetGanttFilters() {
+  const selPj = document.getElementById('g-pj-sel');
+  if (selPj) selPj.value = 'all';
+  S.pjFilter = '';
+  const topSel = document.getElementById("pj-filter-sel");
+  if (topSel) topSel.value = '';
+  const anSel = document.getElementById("an-pj-sel");
+  if (anSel) anSel.value = 'all';
+
+  resetStaffFilter();
+  setGanttPreset('year');
+}
+
+function updateGanttSummaryBadge(numPjs, numTasks, numStaff) {
+  const badge = document.getElementById("g-badge-summary");
+  if (!badge) return;
+  badge.textContent = `${numPjs} ${t('nav_projects')} · ${numTasks} ${t('nav_tasks')} · ${numStaff} ${t('nav_users')}`;
+}
+
+function updateGanttDisplayOpts() {
+  const showFlag = document.getElementById('g-cb-flag') ? document.getElementById('g-cb-flag').checked : true;
+  const showDate = document.getElementById('g-cb-date') ? document.getElementById('g-cb-date').checked : true;
+  try {
+    localStorage.setItem('gantt_show_flags', showFlag ? '1' : '0');
+    localStorage.setItem('gantt_show_dates', showDate ? '1' : '0');
+  } catch(e) {}
+  applyGanttDisplayOpts();
+}
+
+function applyGanttDisplayOpts() {
+  const showFlag = document.getElementById('g-cb-flag') ? document.getElementById('g-cb-flag').checked : true;
+  const showDate = document.getElementById('g-cb-date') ? document.getElementById('g-cb-date').checked : true;
+  const el = document.getElementById('gantt-inner');
+  if (el) {
+    el.classList.toggle('hide-gflags', !showFlag);
+    el.classList.toggle('hide-gdates', !showDate);
+  }
+}
+
+function isProjectOverdue(p) {
+  if (!p || !p.endRaw || p.status === "Hoàn thành" || p.status === "Hủy") return false;
+  const dl = new Date(p.endRaw); dl.setHours(0, 0, 0, 0);
+  const tod = new Date(); tod.setHours(0, 0, 0, 0);
+  return dl < tod;
+}
+
+function fmtDateInput(d) { return d.toISOString().slice(0,10); }
+
+function popGanttStaff() {
+  const list = document.getElementById("staff-checklist");
+  const staffList = (typeof _getAllAssignees === 'function') ? _getAllAssignees() : (S.members || []);
+  if (!list || !staffList.length) return;
+  list.innerHTML = staffList.map(m => `
+    <label class="staff-cb-row" style="display:flex;align-items:center;gap:6px;padding:4px 6px;cursor:pointer">
+      <input type="checkbox" class="staff-cb" value="${m.email || m.code || m.name}" checked>
+      <span style="flex:1;font-size:12px">${m.name}</span>
+      <span style="font-size:10px;color:var(--t3)">${tRole(m.role)}</span>
+    </label>`).join('');
+  document.querySelectorAll('.staff-cb').forEach(cb => cb.addEventListener('change', syncStaffAllCheckbox));
+  updateStaffFilterLabel();
+}
+
+function togStaffDrop(e) {
+  e.stopPropagation();
+  const d = document.getElementById('staff-filter-drop');
+  if (!d) return;
+  d.style.display = (d.style.display === 'none' || !d.style.display) ? 'block' : 'none';
+}
+
+function staffSelectAll(cb) {
+  document.querySelectorAll('.staff-cb').forEach(c => c.checked = cb.checked);
+  updateStaffFilterLabel();
+}
+
+function syncStaffAllCheckbox() {
+  const all = [...document.querySelectorAll('.staff-cb')];
+  const cbAll = document.getElementById('staff-all');
+  if (cbAll) cbAll.checked = all.length > 0 && all.every(c => c.checked);
+  updateStaffFilterLabel();
+}
+
+function updateStaffFilterLabel() {
+  const all = [...document.querySelectorAll('.staff-cb')], checked = all.filter(c => c.checked);
+  const lbl = document.getElementById('staff-filter-label');
+  if (!lbl) return;
+  if (!all.length || checked.length === all.length) lbl.textContent = '👤 ' + t('an_all_members');
+  else if (checked.length === 0) lbl.textContent = '👤 ' + (S.lang === 'ja' ? '未選択' : (S.lang === 'en' ? 'No staff selected' : 'Chưa chọn nhân viên'));
+  else if (checked.length === 1) {
+    const val = checked[0].value;
+    const m = (typeof _findMember === 'function') ? _findMember(val) : (S.members || []).find(x => x.email === val || x.code === val || x.name === val);
+    lbl.textContent = '👤 ' + (m ? m.name : val);
+  }
+  else lbl.textContent = `👤 ${checked.length} ${t('nav_users').toLowerCase()}`;
+}
+
+function getSelectedStaff() {
+  const all = [...document.querySelectorAll('.staff-cb')];
+  if (!all.length) return null;
+  const checked = all.filter(c => c.checked).map(c => c.value);
+  return checked.length === all.length ? null : checked;
+}
+
+function applyStaffFilter() {
+  updateStaffFilterLabel();
+  const d = document.getElementById('staff-filter-drop');
+  if (d) d.style.display = 'none';
+  loadGantt();
+}
+
+function resetStaffFilter() {
+  document.querySelectorAll('.staff-cb').forEach(c => c.checked = true);
+  const cb = document.getElementById('staff-all');
+  if (cb) cb.checked = true;
+  updateStaffFilterLabel();
+}
+
+function parseLocalDate(val) {
+  if (!val) return null;
+  if (val instanceof Date) { const d = new Date(val); d.setHours(0,0,0,0); return d; }
+  const str = String(val).slice(0, 10);
+  const parts = str.split('-');
+  if (parts.length === 3) return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 0, 0, 0);
+  const d = new Date(val); d.setHours(0,0,0,0); return d;
+}
+
+function getFilteredGanttData() {
+  if (!S.projects || !S.tasks) {
+    return { ganttData: [], distinctPjs: new Set(), totalTasks: 0, distinctStaff: new Set(), fStart: null, fEnd: null };
+  }
+  
+  const fromVal = document.getElementById("g-from") ? document.getElementById("g-from").value : "";
+  const toVal = document.getElementById("g-to") ? document.getElementById("g-to").value : "";
+  const fStart = fromVal ? parseLocalDate(fromVal) : null;
+  const fEnd = toVal ? parseLocalDate(toVal) : null;
+  if (fEnd) fEnd.setHours(23, 59, 59, 999);
+
+  const selPj = document.getElementById("g-pj-sel");
+  const pjId = (selPj && selPj.value) ? selPj.value : (S.pjFilter || 'all');
+  const selectedStaff = getSelectedStaff();
+
+  const filteredTasks = S.tasks.filter(tk => {
+    // 1. Filter by Project
+    if (pjId && pjId !== 'all') {
+      const pjObj = (S.projects || []).find(p => p.id === pjId);
+      const pjName = pjObj ? pjObj.name : "";
+      const matchId = tk.projectId && (String(tk.projectId).trim().toLowerCase() === String(pjId).trim().toLowerCase());
+      const matchName = pjName && (
+        String(tk.projectName || "").trim().toLowerCase() === pjName.trim().toLowerCase() ||
+        String(tk.projectName || "").toLowerCase().includes(pjName.toLowerCase()) ||
+        pjName.toLowerCase().includes(String(tk.projectName || "").toLowerCase())
+      );
+      if (!matchId && !matchName) return false;
+    }
+
+    // 2. Filter by Staff
+    if (selectedStaff && selectedStaff.length > 0) {
+      if (!tk.assignee) return false;
+      const disp = (typeof _displayName === 'function' ? _displayName(tk.assignee) : String(tk.assignee)).toLowerCase();
+      const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+      const matches = selectedStaff.some(em => {
+        const m = (typeof _findMember === 'function') ? _findMember(em) : (S.members || []).find(x => x.email === em || x.code === em || x.name === em);
+        const mName = (m && m.name ? m.name.toLowerCase() : "");
+        const mCode = (m && m.code ? m.code.toLowerCase() : "");
+        const emLower = String(em).toLowerCase();
+        return parts.includes(emLower) || (mName && (disp.includes(mName) || parts.includes(mName))) || (mCode && parts.includes(mCode));
+      });
+      if (!matches) return false;
+    }
+
+    // 3. Filter by Date range (overlap check)
+    if (fStart || fEnd) {
+      const tStart = tk.startRaw ? parseLocalDate(tk.startRaw) : (tk.startDate ? parseLocalDate(tk.startDate) : null);
+      const tEnd = tk.deadlineRaw ? parseLocalDate(tk.deadlineRaw) : (tk.deadline ? parseLocalDate(tk.deadline) : null);
+      if (tStart && tEnd) {
+        if (fEnd && tStart > fEnd) return false;
+        if (fStart && tEnd < fStart) return false;
+      } else if (tEnd) {
+        if (fStart && tEnd < fStart) return false;
+        if (fEnd && tEnd > fEnd) return false;
+      } else if (tStart) {
+        if (fStart && tStart < fStart) return false;
+        if (fEnd && tStart > fEnd) return false;
+      }
+    }
+    return true;
+  });
+
+  const distinctPjs = new Set();
+  const distinctStaff = new Set();
+  filteredTasks.forEach(tk => {
+    if (tk.projectId) distinctPjs.add(tk.projectId);
+    if (tk.assignee) {
+      String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase()).forEach(p => distinctStaff.add(p));
+    }
+  });
+
+  let targetProjects = S.projects;
+  if (pjId && pjId !== 'all') {
+    targetProjects = S.projects.filter(p => p.id === pjId);
+  }
+
+  const ganttData = targetProjects.map(p => ({
+    project: p,
+    tasks: filteredTasks.filter(t => t.projectId === p.id)
+  })).filter(g => g.tasks.length > 0 || ((!selectedStaff || selectedStaff.length === 0) && (!fStart && !fEnd)));
+
+  return {
+    ganttData,
+    distinctPjs,
+    totalTasks: filteredTasks.length,
+    distinctStaff,
+    fStart,
+    fEnd
+  };
+}
+
+function buildGanttDataFromMemory(selectedStaff) {
+  const res = getFilteredGanttData();
+  return res.ganttData;
+}
+
+function loadGantt(forceServer) {
+  if (!_ganttInitialised) {
+    initGanttFilterBar();
+    _ganttInitialised = true;
+  } else {
+    popGanttPjOptions();
+    if (!document.querySelectorAll('.staff-cb').length && S.members && S.members.length) {
+      popGanttStaff();
+    }
+  }
+
+  const el = document.getElementById("gantt-inner");
+  if (!el) return;
+
+  const res = getFilteredGanttData();
+  const fromVal = document.getElementById("g-from") ? document.getElementById("g-from").value : "";
+  const toVal = document.getElementById("g-to") ? document.getElementById("g-to").value : "";
+  let parsedStart = parseLocalDate(fromVal);
+  let parsedEnd = parseLocalDate(toVal);
+
+  if (!parsedStart || !parsedEnd) {
+    let minD = null, maxD = null;
+    (S.tasks || []).forEach(tk => {
+      const s = tk.startRaw ? parseLocalDate(tk.startRaw) : (tk.startDate ? parseLocalDate(tk.startDate) : null);
+      const e = tk.deadlineRaw ? parseLocalDate(tk.deadlineRaw) : (tk.deadline ? parseLocalDate(tk.deadline) : null);
+      if (s && (!minD || s < minD)) minD = s;
+      if (e && (!maxD || e > maxD)) maxD = e;
+    });
+    const now = new Date();
+    if (!minD) minD = new Date(now.getFullYear(), now.getMonth(), 1);
+    if (!maxD) maxD = new Date(now.getFullYear(), now.getMonth() + 3, 0);
+    parsedStart = parsedStart || new Date(minD.getFullYear(), minD.getMonth(), minD.getDate() - 3);
+    parsedEnd = parsedEnd || new Date(maxD.getFullYear(), maxD.getMonth(), maxD.getDate() + 7);
+  } else if (parsedStart.getTime() === parsedEnd.getTime()) {
+    parsedStart = new Date(parsedStart.getFullYear(), parsedStart.getMonth(), parsedStart.getDate() - 2);
+    parsedEnd = new Date(parsedEnd.getFullYear(), parsedEnd.getMonth(), parsedEnd.getDate() + 4);
+  }
+
+  if (parsedStart > parsedEnd) {
+    const tmp = parsedStart;
+    parsedStart = parsedEnd;
+    parsedEnd = tmp;
+  }
+
+  GANTT.startDate = parsedStart;
+  GANTT.endDate = parsedEnd;
+  GANTT.data = res.ganttData;
+
+  updateGanttSummaryBadge(res.distinctPjs.size, res.totalTasks, res.distinctStaff.size);
+
+  if (!forceServer && S.projects && S.projects.length) {
+    renderGantt();
+    return;
+  }
+
+  el.innerHTML = '<div class="ldg"><div class="spn"></div>' + t('loading') + '</div>';
+  google.script.run
+    .withSuccessHandler(serverRes => {
+      if (serverRes && serverRes.success && serverRes.data) {
+        loadGantt();
+      } else {
+        renderGantt();
+      }
+    })
+    .withFailureHandler(err => {
+      renderGantt();
+    })
+    .getGanttData('all');
+}
+
+function renderGantt() {
+  const el = document.getElementById("gantt-inner");
+  if (!el) return;
+  if (!GANTT.data || GANTT.data.length === 0 || GANTT.data.every(g => !g.tasks || g.tasks.length === 0)) {
+    el.innerHTML = '<div class="empty" style="padding:40px;text-align:center;color:var(--t3);font-size:13px">' + t('dash_no_act') + '</div>';
+    return;
+  }
+  const sd = GANTT.startDate, ed = GANTT.endDate, ppd = GANTT.pixelsPerDay;
+  const totalDays = Math.max(1, Math.round((ed - sd) / 86400000) + 1);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const todayOffsetDays = Math.round((today - sd) / 86400000);
+  const todayCenterPx = (todayOffsetDays * ppd) + Math.floor(ppd / 2);
+  const dateHeaders = [];
+  for (let i = 0; i < totalDays; i++) {
+    const d = new Date(sd.getFullYear(), sd.getMonth(), sd.getDate() + i);
+    dateHeaders.push({ d, isToday: d.getTime() === today.getTime(), isWeekend: d.getDay() === 0 || d.getDay() === 6 });
+  }
+  const monthGroups = [];
+  let curKey = null, curCount = 0, curLabel = '';
+  const mNamesEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  dateHeaders.forEach(h => {
+    const mk = `${h.d.getFullYear()}-${h.d.getMonth()}`;
+    if (mk !== curKey) {
+      if (curKey !== null) monthGroups.push({ label: curLabel, count: curCount });
+      curKey = mk; curCount = 0;
+      if (S.lang === 'ja') {
+        curLabel = `${h.d.getFullYear()}年${h.d.getMonth() + 1}月`;
+      } else if (S.lang === 'en') {
+        curLabel = `${mNamesEn[h.d.getMonth()]} ${h.d.getFullYear()}`;
+      } else {
+        curLabel = `Tháng ${h.d.getMonth() + 1} / ${h.d.getFullYear()}`;
+      }
+    }
+    curCount++;
+  });
+  if (curCount > 0) monthGroups.push({ label: curLabel, count: curCount });
+  const monthRowHtml = monthGroups.map(mg => `<div class="gantt-month-cell" style="min-width:${mg.count * ppd}px">${mg.label}</div>`).join('');
+  const dowLabels = S.lang === 'ja'
+    ? ['日','月','火','水','木','金','土']
+    : (S.lang === 'en'
+      ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+      : ['CN','T2','T3','T4','T5','T6','T7']);
+  const dayRowHtml = dateHeaders.map(h => `<div class="gantt-day${h.isToday ? ' today' : ''} ${h.isWeekend ? 'weekend' : ''}" style="min-width:${ppd}px">${h.d.getDate()}<br><span style="font-size:8px">${dowLabels[h.d.getDay()]}</span></div>`).join('');
+  let rowsL = '', rowsR = '';
+  GANTT.data.forEach(g => {
+    if (!g.tasks || g.tasks.length === 0) return;
+    const pjId = "gpj-" + g.project.id;
+    rowsL += `<div class="gantt-pj-row" onclick="togGPj('${pjId}')"><span class="gantt-pj-ic open" id="${pjId}-ic">▶</span><span class="gantt-pj-nm">${g.project.name}</span><span class="gantt-pj-cnt">${g.tasks.length} ${t('gantt_task_unit')}</span></div>`;
+    
+    // Project timeline: Project Bar + Project Deadline Flag
+    let pjBarHtml = '', pjFlagHtml = '';
+    let pjBarX = 0;
+    if (g.project.startRaw) {
+      const ps = parseLocalDate(g.project.startRaw);
+      pjBarX = Math.max(0, Math.round((ps - sd) / 86400000)) * ppd;
+    }
+    if (g.project.endRaw) {
+      const pe = parseLocalDate(g.project.endRaw);
+      const pjEndDay = Math.round((pe - sd) / 86400000);
+      if (g.project.startRaw) {
+        const pjBarW = Math.max(ppd, (pjEndDay + 1) * ppd - pjBarX);
+        pjBarHtml = `<div class="gantt-pj-bar" style="left:${pjBarX}px;width:${pjBarW}px" title="${g.project.name} (${g.project.startDate || ''} - ${g.project.endDate || ''})"></div>`;
+      }
+      if (pjEndDay >= 0 && pjEndDay < totalDays) {
+        const pjFlagX = pjEndDay * ppd + 5;
+        const isPjOver = isProjectOverdue(g.project);
+        const isPjDone = g.project.status === "Hoàn thành";
+        const pjFlagCls = isPjDone ? "flag-done" : isPjOver ? "flag-overdue" : "flag-pj";
+        const pjFlagIcon = isPjDone ? "🏁" : "🚩";
+        const pjDateLabel = g.project.endDate ? g.project.endDate.substring(0, 5) : (g.project.endRaw ? g.project.endRaw.substring(5) : "");
+        pjFlagHtml = `<div class="gantt-deadline-flag gantt-pj-flag ${pjFlagCls}" style="left:${pjFlagX}px" title="${t('gantt_pj_deadline')}: ${g.project.endDate || g.project.endRaw} | ${g.project.name}">`
+          + `<span class="gantt-flag-icon">${pjFlagIcon}</span>`
+          + `<span class="gantt-flag-date">${t('gantt_pj_deadline')}: ${pjDateLabel}</span>`
+          + `</div>`;
+      }
+    }
+    rowsR += `<div class="gantt-pj-line" style="min-width:${totalDays * ppd}px">${pjBarHtml}${pjFlagHtml}</div>`;
+
+    const tkL = g.tasks.map(t => `<div class="gantt-tk-row" id="gtr-${t.id}" data-id="${t.id}" data-pj="${g.project.id}" draggable="true" ondragstart="gDragStart(event)" ondragover="gDragOver(event)" ondrop="gDrop(event)" ondragend="gDragEnd(event)"><span class="gantt-drag-ic">⠿</span><span class="gantt-tk-nm" title="${_taskDisplayName(t)}">${_taskDisplayName(t)}</span><span class="gantt-tk-as" title="${t.assignee || ''}">${_displayName(t.assignee)}</span></div>`).join('');
+    const tkR = g.tasks.map(t => {
+      let barX = 0, barW = ppd;
+      if (t.startRaw) { const ts = parseLocalDate(t.startRaw); barX = Math.max(0, Math.round((ts - sd) / 86400000)) * ppd; }
+      else if (t.startDate) { const ts = parseLocalDate(t.startDate); if (ts) barX = Math.max(0, Math.round((ts - sd) / 86400000)) * ppd; }
+      
+      if (t.deadlineRaw) { const te = parseLocalDate(t.deadlineRaw); barW = Math.max(ppd, Math.round((te - sd) / 86400000 + 1) * ppd - barX); }
+      else if (t.deadline) { const te = parseLocalDate(t.deadline); if (te) barW = Math.max(ppd, Math.round((te - sd) / 86400000 + 1) * ppd - barX); }
+
+      const barColor = t.status === "Hoàn thành" ? "#22c55e" : isTaskOverdue(t) ? "#ef4444" : t.status === "Tạm dừng" ? "#f59e0b" : "#4f6ef7";
+      
+      let flagHtml = '';
+      const deadlineVal = t.deadlineRaw || t.deadline;
+      if (deadlineVal) {
+        const te = parseLocalDate(deadlineVal);
+        if (te) {
+          const tEndDay = Math.round((te - sd) / 86400000);
+          if (tEndDay >= 0 && tEndDay < totalDays) {
+            const flagX = tEndDay * ppd + 5;
+            const isOver = isTaskOverdue(t);
+            const isDone = t.status === "Hoàn thành";
+            const flagCls = isDone ? "flag-done" : isOver ? "flag-overdue" : "flag-normal";
+            const flagIcon = isDone ? "🏁" : "🚩";
+            const deadText = t.deadline ? t.deadline.substring(0, 5) : (t.deadlineRaw ? t.deadlineRaw.substring(5) : "");
+            flagHtml = `<div class="gantt-deadline-flag ${flagCls}" style="left:${flagX}px" title="Deadline: ${t.deadline || t.deadlineRaw} | ${_taskDisplayName(t)} (${t.status})" onclick="openFullTaskEdit('${t.id}')">`
+              + `<span class="gantt-flag-icon">${flagIcon}</span>`
+              + `<span class="gantt-flag-date">${deadText}</span>`
+              + `</div>`;
+          }
+        }
+      }
+      return `<div class="gantt-tk-line" style="min-width:${totalDays * ppd}px"><div class="gantt-bar" style="left:${barX}px;width:${barW}px;background:${barColor};opacity:${0.7 + t.progress / 300}" title="${_taskDisplayName(t)} | ${t.status} | ${t.progress}%" onclick="openFullTaskEdit('${t.id}')">${t.progress > 0 ? t.progress + '%' : ''}</div>${flagHtml}</div>`;
+    }).join('');
+    rowsL += `<div class="gantt-pj-tasks open" id="${pjId}-tasks">${tkL}</div>`;
+    rowsR += `<div class="gantt-pj-tasks-r open" id="${pjId}-tasks-r">${tkR}</div>`;
+  });
+  if (todayOffsetDays >= 0 && todayOffsetDays < totalDays) {
+    const todayFormatted = S.lang === 'ja'
+      ? `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`
+      : `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+    rowsR = `<div style="position:absolute;left:${todayCenterPx}px;top:0;bottom:0;width:2px;background:#ef4444;z-index:9;pointer-events:none" title="${t('gantt_today')}: ${todayFormatted}">`
+      + `<span style="position:sticky;top:62px;display:inline-block;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.3);white-space:nowrap">${t('gantt_today')}</span>`
+      + `</div>` + rowsR;
+  }
+  el.innerHTML = `
+    <div class="gantt-left" id="gantt-left"><div class="gantt-header-left">${t('gantt_col_name')}</div>${rowsL}</div>
+    <div class="gantt-right" id="gantt-right" style="position:relative">
+      <div class="gantt-header-right"><div class="gantt-month-row">${monthRowHtml}</div><div class="gantt-day-row">${dayRowHtml}</div></div>
+      <div style="position:relative">${rowsR}</div>
+    </div>`;
+  applyGanttDisplayOpts();
+  const gL = document.getElementById("gantt-left"), gR = document.getElementById("gantt-right");
+  if (gR && gL) {
+    gR.addEventListener("scroll", () => { gL.scrollTop = gR.scrollTop; });
+    gL.addEventListener("wheel", (e) => { gR.scrollTop += e.deltaY; e.preventDefault(); }, { passive: false });
+  }
+}
+function togGPj(pjId) {
+  const tasks=document.getElementById(pjId+"-tasks"), tasksR=document.getElementById(pjId+"-tasks-r"), ic=document.getElementById(pjId+"-ic");
+  const open=tasks.classList.contains("open");
+  tasks.classList.toggle("open",!open); if(tasksR) tasksR.classList.toggle("open",!open); if(ic) ic.classList.toggle("open",!open);
+}
+function ganttSearch(q) {
+  const lq=q.toLowerCase();
+  document.querySelectorAll(".gantt-tk-row").forEach(row=>{
+    const show=!q||row.querySelector(".gantt-tk-nm").title.toLowerCase().includes(lq);
+    row.style.display=show?"flex":"none";
+    const id=row.dataset.id, barEl=document.querySelector(`.gantt-bar[onclick*="${id}"]`);
+    if (barEl) { const l=barEl.closest(".gantt-tk-line"); if(l) l.style.display=show?"block":"none"; }
+  });
+}
+let _gDragId=null;
+function gDragStart(e) { _gDragId=e.currentTarget.dataset.id; e.currentTarget.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; }
+function gDragOver(e) { e.preventDefault(); e.currentTarget.classList.add("drag-over"); }
+function gDrop(e) {
+  e.preventDefault(); const target=e.currentTarget; target.classList.remove("drag-over");
+  if (!_gDragId||_gDragId===target.dataset.id) return;
+  const container=target.closest(".gantt-pj-tasks"); if (!container) return;
+  const dragEl=document.getElementById("gtr-"+_gDragId), targetEl=document.getElementById("gtr-"+target.dataset.id);
+  if (dragEl&&targetEl) container.insertBefore(dragEl,targetEl);
+  google.script.run.withSuccessHandler(r=>{if(r.success)toast("Đã lưu thứ tự","success");}).saveTaskOrder([...container.querySelectorAll(".gantt-tk-row")].map(r=>r.dataset.id));
+}
+function gDragEnd(e) { e.currentTarget.classList.remove("dragging"); document.querySelectorAll(".gantt-tk-row").forEach(r=>r.classList.remove("drag-over")); _gDragId=null; }
+
+// ═══════════════════════════════════════
+//  PAGE: PROJECTS
+// ═══════════════════════════════════════
+function loadPgPj() { renderPgPj(S.projects); }
+function renderPgPj(data) {
+  const tb=document.getElementById("pp-tb");
+  if (!data || !data.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="empty-ic">📁</div>' + t('pj_list_title') + ': 0</div></td></tr>'; return; }
+  const sorted = data.slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
+  tb.innerHTML=sorted.map((p,i)=>{
+    const seqMatch = (p.name || "").match(/^(\d{4})[-_](\d{1,3})[-_](.*)$/);
+    const seqBadge = seqMatch ? `<span class="badge bg-bl" style="margin-right:6px;font-size:10px;font-weight:700">#${seqMatch[2].padStart(2, '0')}</span>` : "";
+    const isPjLead = (S.role === "PJ_Lead" || S.role === "Manager");
+    const myEmail = (S.user?.email || "").toLowerCase().trim();
+    const isMyLead = isPjLead && (p.manager || "").toLowerCase().trim() === myEmail;
+    const isOtherLead = isPjLead && !isMyLead;
+    const roleBadge = isMyLead
+      ? `<span class="badge bg-yw" style="margin-left:6px;font-size:10px">${t('pj_badge_mylead')}</span>`
+      : (isOtherLead ? `<span class="badge bg-gy" style="margin-left:6px;font-size:10px">${t('pj_badge_viewonly')}</span>` : '');
+
+    return `<tr>
+    <td>${i+1}</td>
+    <td>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">
+        ${seqBadge}
+        <b style="cursor:pointer;color:var(--p)" onclick="openPjDetail('${p.id}')">${p.name}</b>
+        ${roleBadge}
+      </div>
+      <small style="color:#64748b">${p.desc||""}</small>
+    </td>
+    <td><small>${_displayName(p.manager)}</small></td>
+    <td><span class="badge ${sBadge(p.status)}">${tStatus(p.status)}</span></td>
+    <td><div class="progc"><div class="pm"><div class="pmb" style="width:${p.progress}%"></div></div><small>${p.progress}%</small></div></td>
+    <td><small>${formatDisplayDate(p.endDate)||"—"}</small></td>
+    <td><div style="display:flex;gap:3px">
+      ${canEd(p)?`<button class="bic" onclick="editPj('${p.id}')" title="${t('btn_edit')}">✏</button>`:""}
+      <button class="bic dup" onclick="openDupPj('${p.id}')" title="${t('btn_duplicate')}">📋</button>
+      <button class="bic grn" onclick="expRpt('${p.id}')" title="${t('btn_export')}">📤</button>
+      ${S.role==="Admin"?`<button class="bic del" onclick="delPj('${p.id}')" title="${t('btn_delete')}">🗑</button>`:""}
+    </div></td>
+  </tr>`;
+  }).join("");
+}
+function filterPgPj() {
+  const q=document.getElementById("pp-s").value.toLowerCase(), st=document.getElementById("pp-st").value;
+  renderPgPj(S.projects.filter(p=>(!q||p.name.toLowerCase().includes(q)||(p.manager||"").toLowerCase().includes(q))&&(!st||p.status===st)));
+}
+
+// ═══════════════════════════════════════
+//  PAGE: TASKS
+// ═══════════════════════════════════════
+function loadPgTk() { renderTkStats(); renderPgTkGroups(S.tasks); }
+function renderTkStats() {
+  document.getElementById("tk-stats").innerHTML=[
+    {num:S.tasks.filter(t=>isTaskOverdue(t)).length,lbl:tStatus("Quá hạn"),col:"var(--d)"},
+    {num:S.tasks.filter(t=>t.status==="Chờ thực hiện"&&!isTaskOverdue(t)).length,lbl:tStatus("Chờ thực hiện"),col:"var(--t3)"},
+    {num:S.tasks.filter(t=>(t.status==="Đang thực hiện"||t.status==="Đang tiến hành")&&!isTaskOverdue(t)).length,lbl:tStatus("Đang thực hiện"),col:"var(--p)"},
+    {num:S.tasks.filter(t=>t.status==="Hoàn thành").length,lbl:tStatus("Hoàn thành"),col:"var(--g)"},
+    {num:S.tasks.filter(t=>t.status==="Tạm dừng").length,lbl:tStatus("Tạm dừng"),col:"var(--w)"},
+  ].map(s=>`<div class="tk-stat"><div class="tk-snum" style="color:${s.col}">${s.num}</div><div class="tk-slbl">${s.lbl}</div></div>`).join("");
+}
+function renderPgTkGroups(tasks) {
+  const el = document.getElementById("pt-groups");
+  if (!el) return;
+  try {
+    if (!tasks || !tasks.length) {
+      el.innerHTML = '<div class="empty"><div class="empty-ic">✅</div>' + t('dash_no_act') + '</div>';
+      return;
+    }
+
+    // Thu thập trạng thái thu nhỏ hiện tại từ DOM để luôn giữ nguyên trải nghiệm người dùng
+    document.querySelectorAll(".pjg-body").forEach(b => {
+      if (b.id) {
+        if (!b.classList.contains("open")) {
+          _collapsedPjGroups.add(b.id);
+        } else {
+          _collapsedPjGroups.delete(b.id);
+        }
+      }
+    });
+
+    const groups = {};
+    tasks.forEach(tk => {
+      // Tìm project chuẩn tương ứng trong S.projects bằng ID hoặc Tên
+      const pjObj = (S.projects || []).find(p => 
+        (tk.projectId && String(p.id).trim().toLowerCase() === String(tk.projectId).trim().toLowerCase()) || 
+        (tk.projectName && p.name && String(p.name).trim().toLowerCase() === String(tk.projectName).trim().toLowerCase())
+      );
+      const pid = pjObj ? pjObj.id : (tk.projectId || tk.projectName || 'other');
+      const pname = pjObj ? pjObj.name : (tk.projectName || (S.projects.find(p => p.id === pid)?.name) || t('dash_card_total_projects'));
+      if (!groups[pid]) groups[pid] = { name: pname, tasks: [] };
+      groups[pid].tasks.push(tk);
+    });
+
+    const unitLabel = (t('nav_tasks') || 'tasks').toLowerCase();
+    el.innerHTML = Object.entries(groups).map(([pjId, g]) => {
+      const pjObj = (S.projects || []).find(p => p.id === pjId);
+      const pjStatus = pjObj ? pjObj.status : '';
+      const groupId = `pg-${pjId}`;
+      const isCollapsed = _collapsedPjGroups.has(groupId);
+      const bodyClass = isCollapsed ? "pjg-body" : "pjg-body open";
+      const iconClass = isCollapsed ? "pjg-arr" : "pjg-arr open";
+
+      return `
+      <div class="pjg">
+        <div class="pjg-hd" onclick="togPjG('${groupId}')">
+          <span class="${iconClass}" id="${groupId}-ic">▶</span>
+          <span class="pjg-nm">${g.name || ""}</span>
+          ${pjStatus ? `<span class="badge ${sBadge(pjStatus)}">${tStatus(pjStatus)}</span>` : ""}
+          <span class="pjg-cnt">${g.tasks.length} ${unitLabel}</span>
+          ${canMgTk(pjId) ? `<button class="btn bp" style="font-size:10px;padding:4px 8px;margin-left:auto" onclick="event.stopPropagation();openTkMod(null,'${pjId}')">+ ${t('btn_add')}</button>` : ""}
+        </div>
+        <div class="${bodyClass}" id="${groupId}">
+          <div class="tblw"><table>
+            <thead><tr><th></th><th>${t('tk_col_name')}</th><th>${t('tk_col_assignee')}</th><th>${t('tk_col_status')}</th><th>${t('tk_col_priority')}</th><th>${t('tk_col_progress')}</th><th>Link KQ</th><th>${t('pj_col_start')}</th><th>${t('tk_col_deadline')}</th><th>${t('pj_col_actions')}</th></tr></thead>
+            <tbody>${g.tasks.map(tk => {
+              const isOver = isTaskOverdue(tk);
+              const lr = (tk.linkResults != null) ? String(tk.linkResults).trim() : "";
+              const firstLink = lr ? lr.split('\n')[0].trim() : "";
+              const linkCount = lr ? lr.split('\n').filter(Boolean).length : 0;
+              return `
+              <tr class="${isOver ? 'row-ov' : ''}">
+                <td><input type="checkbox" ${tk.status === "Hoàn thành" ? "checked" : ""} onchange="toggleTaskDone('${tk.id}', this.checked)"></td>
+                <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${tk.id}')"><b>${_taskDisplayName(tk)}</b>${isOver ? `<br><span style="font-size:9px;color:#ef4444">⚠ ${tStatus('Quá hạn')}</span>` : ""}</td>
+                <td>${_renderAssigneeCell(tk.assignee, tk.id)}</td>
+                <td><span class="badge ${sBadge(tk.status)}">${tStatus(tk.status)}</span></td>
+                <td><span class="badge ${pBadge(tk.priority)}">${tPriority(tk.priority)}</span></td>
+                <td><div class="progc"><div class="pm"><div class="pmb" style="width:${tk.progress || 0}%"></div></div><small>${tk.progress || 0}%</small></div></td>
+                <td>${firstLink ? `<a href="${firstLink}" target="_blank" style="font-size:10px;color:var(--p)">🔗 ${linkCount} link</a>` : '<small style="color:#94a3b8">—</small>'}</td>
+                <td><small>${formatDisplayDate(tk.startDate) || "—"}</small></td>
+                <td><small style="color:${isOver ? "#ef4444" : ""}">${formatDisplayDate(tk.deadline) || "—"}</small></td>
+                <td><div style="display:flex;gap:3px">
+                  <button class="bic" onclick="openFullTaskEdit('${tk.id}')" title="${t('btn_edit')}">✏</button>
+                  <button class="bic dup" onclick="doDupTk('${tk.id}')" title="${t('btn_duplicate')}">📋</button>
+                  ${canMgTk(tk) ? `<button class="bic del" onclick="delTk('${tk.id}')" title="${t('btn_delete')}">🗑</button>` : ""}
+                </div></td>
+              </tr>`;
+            }).join("")}
+            </tbody>
+          </table></div>
+        </div>
+      </div>`;
+    }).join("");
+  } catch(err) {
+    console.error("renderPgTkGroups error:", err);
+    el.innerHTML = `<div class="empty" style="color:var(--d)">Lỗi hiển thị: ${err.message || err}</div>`;
+  }
+}
+function filterPgTk() {
+  const q = (document.getElementById("pt-s")?.value || "").toLowerCase().trim();
+  const st = document.getElementById("pt-st")?.value || "";
+  const pr = document.getElementById("pt-pr")?.value || "";
+  const filtered = (S.tasks || []).filter(tk => {
+    const dispAs = _displayName(tk.assignee, tk.projectId).toLowerCase();
+    const nameMatch = !q || String(tk.name || "").toLowerCase().includes(q) || _taskDisplayName(tk).toLowerCase().includes(q) || String(tk.assignee || "").toLowerCase().includes(q) || dispAs.includes(q);
+    const statusMatch = !st || (st === 'Quá hạn' ? isTaskOverdue(tk) : tk.status === st);
+    const prioMatch = !pr || tk.priority === pr;
+    return nameMatch && statusMatch && prioMatch;
+  });
+  renderPgTkGroups(filtered);
+}
+function togPjG(id) {
+  const el = document.getElementById(id);
+  const ic = document.getElementById(id + "-ic");
+  if (!el) return;
+  const isNowOpen = el.classList.toggle("open");
+  if (ic) ic.classList.toggle("open", isNowOpen);
+  if (isNowOpen) {
+    _collapsedPjGroups.delete(id);
+  } else {
+    _collapsedPjGroups.add(id);
+  }
+  try {
+    localStorage.setItem("pm3_collapsed_groups", JSON.stringify(Array.from(_collapsedPjGroups)));
+  } catch(e) {}
+}
+function toggleAllPjGroups(expand) {
+  document.querySelectorAll(".pjg-body").forEach(b => {
+    b.classList.toggle("open", expand);
+    const ic = document.getElementById(b.id + "-ic");
+    if (ic) ic.classList.toggle("open", expand);
+    if (expand) _collapsedPjGroups.delete(b.id);
+    else _collapsedPjGroups.add(b.id);
+  });
+  try {
+    localStorage.setItem("pm3_collapsed_groups", JSON.stringify(Array.from(_collapsedPjGroups)));
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════
+//  TASK PANEL
+// ═══════════════════════════════════════
+function toggleTaskDone(taskId, isChecked) {
+  const t = S.tasks.find(x => x.id === taskId);
+  if (!t) return;
+  const newStatus = isChecked ? "Hoàn thành" : "Đang thực hiện";
+  const newProgress = isChecked ? 100 : (t.progress === 100 ? 50 : t.progress);
+  t.status = newStatus;
+  t.progress = newProgress;
+  t.isOverdue = isTaskOverdue(t);
+  _refreshUI();
+  google.script.run
+    .withSuccessHandler(r => {
+      if (r.success) toast(`Đã chuyển sang "${newStatus}"`, "success");
+      else { toast(r.error, "error"); loadApp(); }
+    })
+    .withFailureHandler(e => { toast(e.message || "Lỗi", "error"); loadApp(); })
+    .updateTask({ id: taskId, status: newStatus, progress: newProgress });
+}
+
+function toDateInputVal(val) {
+  if (!val) return "";
+  if (typeof val === 'string') {
+    const v = val.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+    const p = v.split('/');
+    if (p.length === 3 && p[2].length === 4) return `${p[2]}-${p[1].padStart(2, '0')}-${p[0].padStart(2, '0')}`;
+  }
+  try {
+    const d = (val instanceof Date) ? val : new Date(val);
+    if (!isNaN(d.getTime())) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+  } catch(e) {}
+  return "";
+}
+
+function openNewFullTask() {
+  const existingId = document.getElementById("mqtk-id")?.value;
+  if (existingId) {
+    closeModal("m-qtk");
+    openFullTaskEdit(existingId);
+    return;
+  }
+  closeModal("m-qtk");
+  document.getElementById("task-panel").classList.add("show");
+  document.getElementById("tp-id").value = "";
+  document.getElementById("tp-nm").value = document.getElementById("mqtk-nm")?.value || "";
+  document.getElementById("tp-ds").value = "";
+  document.getElementById("tp-st").value = document.getElementById("mqtk-st")?.value || "Chờ thực hiện";
+  document.getElementById("tp-pr").value = document.getElementById("mqtk-pr")?.value || "Trung bình";
+  document.getElementById("tp-nt").value = "";
+  document.getElementById("tp-pg").value = 0;
+  if (document.getElementById("tp-pg-num")) document.getElementById("tp-pg-num").value = 0;
+  document.getElementById("tp-pv").textContent = "0";
+  document.getElementById("tp-tg").value = "";
+  document.getElementById("tp-lr").value = "";
+  document.getElementById("tp-or").value = "";
+  document.getElementById("tp-sd").value = document.getElementById("mqtk-sd")?.value || "";
+  document.getElementById("tp-dl").value = document.getElementById("mqtk-dl")?.value || "";
+  const curPj = document.getElementById("mqtk-pj")?.value || (S.projects[0]?.id || "");
+  ldPjSel("tp-pj", curPj, false);
+  setAssignees('tp', _getAssigneeVal('qtk'));
+  _currTkReminders = [];
+  renderReminders();
+  previewLinks();
+
+  popTaskTaxonomySelects();
+  const mqtkCat = document.getElementById("mqtk-cat")?.value || "";
+  const mqtkPhase = document.getElementById("mqtk-phase")?.value || "";
+  const mqtkDisc = document.getElementById("mqtk-disc")?.value || "";
+  const tpCat = document.getElementById("tp-cat");
+  const tpPhase = document.getElementById("tp-phase");
+  const tpDisc = document.getElementById("tp-disc");
+  if (tpCat) tpCat.value = mqtkCat;
+  if (tpPhase) tpPhase.value = mqtkPhase;
+  if (tpDisc) tpDisc.value = mqtkDisc;
+  const parts = [mqtkCat, mqtkPhase, mqtkDisc].filter(Boolean);
+  const badge = document.getElementById("tp-tax-preview-badge");
+  if (badge) {
+    if (parts.length) {
+      badge.textContent = `[${parts.join('-')}]`;
+      badge.style.background = "#eef2ff";
+      badge.style.color = "var(--p)";
+      badge.style.borderColor = "#c7d2fe";
+    } else {
+      const noneTxt = (typeof t === 'function' ? t('tax_prefix_none') : null) || "[CHƯA GÁN MÃ]";
+      badge.textContent = noneTxt;
+      badge.style.background = "#fff7ed";
+      badge.style.color = "#ea580c";
+      badge.style.borderColor = "#fdba74";
+    }
+  }
+}
+
+function openFullTaskEdit(taskId) {
+  if (!taskId) { openNewFullTask(); return; }
+  document.getElementById("task-panel").classList.add("show");
+  document.getElementById("tp-id").value = taskId;
+  const existing = S.tasks.find(x => String(x.id || "").trim() === String(taskId).trim());
+  if (existing) fillTpForm(existing);
+  else google.script.run.withSuccessHandler(res => { if(res.success) fillTpForm(res.data); }).getTaskDetail(taskId);
+}
+
+function fillTpForm(task) {
+  if (!task) return;
+  document.getElementById("tp-id").value = task.id || "";
+  document.getElementById("tp-nm").value = _taskDisplayName(task);
+  document.getElementById("tp-ds").value = task.desc || "";
+  document.getElementById("tp-st").value = task.status || "Chờ thực hiện";
+  document.getElementById("tp-pr").value = task.priority || "Trung bình";
+
+  popTaskTaxonomySelects();
+  const catSel = document.getElementById("tp-cat");
+  const phaseSel = document.getElementById("tp-phase");
+  const discSel = document.getElementById("tp-disc");
+  const prevBadge = document.getElementById("tp-tax-preview-badge");
+  
+  if (catSel) catSel.value = "";
+  if (phaseSel) phaseSel.value = "";
+  if (discSel) discSel.value = "";
+  const noneTxt = (typeof t === 'function' ? t('tax_prefix_none') : null) || "[CHƯA GÁN MÃ]";
+  if (prevBadge) {
+    prevBadge.textContent = noneTxt;
+    prevBadge.style.background = "#fff7ed";
+    prevBadge.style.color = "#ea580c";
+    prevBadge.style.borderColor = "#fdba74";
+  }
+
+  // Parse existing prefix e.g. [MD-DD-MD04] or [M3-BD-AR] or [M3-AR]
+  const prefixMatch = (task.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
+  if (prefixMatch) {
+    const rawCodes = prefixMatch[1].toUpperCase().split('-');
+    if (rawCodes.length >= 3) {
+      if (catSel) catSel.value = rawCodes[0];
+      if (phaseSel) phaseSel.value = rawCodes[1];
+      if (discSel) discSel.value = rawCodes[2];
+    } else if (rawCodes.length === 2) {
+      if (catSel) catSel.value = rawCodes[0];
+      const isPhase = ((S.taxonomy && S.taxonomy.phases) || []).some(p => p.code === rawCodes[1]);
+      if (isPhase) {
+        if (phaseSel) phaseSel.value = rawCodes[1];
+      } else {
+        if (discSel) discSel.value = rawCodes[1];
+      }
+    } else if (rawCodes.length === 1) {
+      if (catSel) catSel.value = rawCodes[0];
+    }
+
+    const parts = [catSel ? catSel.value : '', phaseSel ? phaseSel.value : '', discSel ? discSel.value : ''].filter(Boolean);
+    if (prevBadge) {
+      prevBadge.textContent = parts.length ? `[${parts.join('-')}]` : `[${prefixMatch[1].toUpperCase()}]`;
+      prevBadge.style.background = "#eef2ff";
+      prevBadge.style.color = "var(--p)";
+      prevBadge.style.borderColor = "#c7d2fe";
+    }
+  }
+
+  document.getElementById("tp-nt").value = task.note || "";
+  const prog = Number(task.progress) || 0;
+  document.getElementById("tp-pg").value = prog;
+  if (document.getElementById("tp-pg-num")) document.getElementById("tp-pg-num").value = prog;
+  document.getElementById("tp-pv").textContent = prog;
+  document.getElementById("tp-tg").value = task.target || "";
+  document.getElementById("tp-lr").value = task.linkResults || "";
+  document.getElementById("tp-or").value = task.outputResult || "";
+
+  document.getElementById("tp-sd").value = toDateInputVal(task.startRaw || task.startDate);
+  document.getElementById("tp-dl").value = toDateInputVal(task.deadlineRaw || task.deadline);
+
+  ldPjSel("tp-pj", task.projectId, false);
+  setAssignees('tp', task.assignee || '', task.projectId);
+  _currTkReminders = task.reminders || [];
+  renderReminders();
+  previewLinks();
+}
+
+function closeTaskPanel() { document.getElementById("task-panel").classList.remove("show"); _currTkReminders=[]; }
+function saveFullTk() {
+  const id=document.getElementById("tp-id").value;
+  if (!id) { toast("Không có task ID","error"); return; }
+  const payload={
+    id, name:document.getElementById("tp-nm").value.trim(),
+    projectId:document.getElementById("tp-pj").value,
+    desc:document.getElementById("tp-ds").value,
+    assignee:_getAssigneeVal('tp'),
+    priority:document.getElementById("tp-pr").value,
+    status:document.getElementById("tp-st").value,
+    startDate:document.getElementById("tp-sd").value,
+    deadline:document.getElementById("tp-dl").value,
+    progress:parseInt(document.getElementById("tp-pg-num") ? document.getElementById("tp-pg-num").value : document.getElementById("tp-pg").value) || 0,
+    note:document.getElementById("tp-nt").value,
+    target:document.getElementById("tp-tg").value,
+    linkResults:document.getElementById("tp-lr").value,
+    outputResult:document.getElementById("tp-or").value,
+    reminders:_currTkReminders,
+  };
+  if (!payload.name) { toast("Tên không được để trống","error"); return; }
+  const idx=S.tasks.findIndex(t => String(t.id || "").trim() === String(id).trim());
+  const fmtD = d => { if(!d) return ""; const p=d.split("-"); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d; };
+  if (idx>=0) {
+    const existing=S.tasks[idx];
+    const targetPj = (S.projects || []).find(p => p.id === payload.projectId);
+    const updated=Object.assign({},existing,payload,{
+      projectName: targetPj ? targetPj.name : (existing.projectName || ""),
+      deadlineRaw:payload.deadline||"",
+      startRaw:payload.startDate||"",
+      deadline: payload.deadline ? fmtD(payload.deadline) : "",
+      startDate: payload.startDate ? fmtD(payload.startDate) : "",
+    });
+    updated.isOverdue=isTaskOverdue(updated);
+    S.tasks[idx]=updated;
+    _refreshUI();
+  }
+  toast("Đang lưu...","info");
+  closeTaskPanel();
+  google.script.run
+    .withSuccessHandler(r=>{
+      if (r && r.success) {
+        toast(r.message || "Cập nhật thành công", "success");
+        if (r.task) localUpdateTask(r.task);
+      } else {
+        toast((r && r.error) || "Lỗi lưu dữ liệu", "error");
+        loadApp();
+      }
+    })
+    .withFailureHandler(e=>{ toast(e.message||"Lỗi lưu","error"); loadApp(); })
+    [id ? "updateTask" : "addTask"](payload);
+}
+function previewLinks() {
+  const val=document.getElementById("tp-lr").value;
+  const lines=val.split('\n').filter(l=>l.trim().startsWith("http"));
+  document.getElementById("lr-preview").innerHTML=lines.map((l,i)=>`<a href="${l.trim()}" target="_blank" class="lr-link">🔗 Nguồn ${i+1}: ${l.trim().substring(0,50)}${l.length>50?"...":""}</a>`).join("");
+}
+function renderReminders() {
+  const el=document.getElementById("rm-list");
+  document.getElementById("rm-count").textContent="("+_currTkReminders.length+")";
+  if (!_currTkReminders.length) { el.innerHTML='<div style="text-align:center;padding:16px;color:#94a3b8;font-size:11px">Chưa có nhắc việc</div>'; return; }
+  el.innerHTML=_currTkReminders.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(r=>`
+    <div class="rm-item"><div class="rm-date">📅 ${r.date}</div><div class="rm-text">${r.text}</div>
+    <div class="rm-acts"><button class="bic del" style="width:20px;height:20px;font-size:10px" onclick="delReminder('${r.id}')">✕</button></div></div>`).join("");
+}
+function addReminder() {
+  const date=document.getElementById("rm-new-date").value, text=document.getElementById("rm-new-text").value.trim();
+  if (!date||!text) { toast("Cần nhập ngày và nội dung","error"); return; }
+  _currTkReminders.push({id:Date.now().toString(),date,text});
+  document.getElementById("rm-new-date").value=""; document.getElementById("rm-new-text").value="";
+  clDrop("tp-rm-add"); renderReminders(); toast("Đã thêm nhắc việc","success");
+}
+function delReminder(id) { _currTkReminders=_currTkReminders.filter(r=>r.id!==id); renderReminders(); }
+
+// ═══════════════════════════════════════
+//  PROJECT CRUD
+// ═══════════════════════════════════════
+let _isCustomProjectName = false;
+
+function popProjectYearSelect(selectedYear) {
+  const sel = document.getElementById("mpj-year");
+  if (!sel) return;
+  const currentYear = new Date().getFullYear();
+  const yearSet = new Set();
+  
+  for (let y = currentYear - 2; y <= currentYear + 4; y++) {
+    yearSet.add(y);
+  }
+  
+  (S.projects || []).forEach(p => {
+    const m = (p.name || "").match(/^(\d{4})[-_]/);
+    if (m) yearSet.add(parseInt(m[1], 10));
+  });
+
+  ((S.taxonomy && S.taxonomy.projectCodes) || []).forEach(c => {
+    if (c.extra1 && /^\d{4}$/.test(c.extra1.trim())) {
+      yearSet.add(parseInt(c.extra1.trim(), 10));
+    }
+  });
+
+  if (selectedYear && !isNaN(parseInt(selectedYear, 10))) {
+    yearSet.add(parseInt(selectedYear, 10));
+  }
+
+  const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
+  sel.innerHTML = sortedYears.map(y => `<option value="${y}">${y}</option>`).join('');
+  sel.value = selectedYear ? String(selectedYear) : String(currentYear);
+}
+
+function popProjectTaxonomySelect(selectedCode) {
+  const sel = document.getElementById("mpj-tax-sel");
+  if (!sel) return;
+  const cur = selectedCode !== undefined ? selectedCode : sel.value;
+  sel.innerHTML = `<option value="">-- ${t('pj_select_code_hint')} --</option>` +
+    ((S.taxonomy && S.taxonomy.projectCodes) || []).filter(c => c.status === 'Active').map(c => {
+      const stdName = (typeof formatStandardProjectCodeName === 'function') ? formatStandardProjectCodeName(c) : c.name;
+      return `<option value="${c.code}">[${c.code}] ${stdName}</option>`;
+    }).join('');
+  if (cur) sel.value = cur;
+}
+
+function applyProjectNameFromTaxonomy(showToast) {
+  const taxSel = document.getElementById("mpj-tax-sel");
+  const nameInp = document.getElementById("mpj-nm");
+  const descInp = document.getElementById("mpj-ds");
+  if (!nameInp) return;
+
+  const taxCode = taxSel?.value || "";
+  if (!taxCode) {
+    if (showToast) {
+      toast(t('pj_select_taxonomy_warn'), 'warning');
+    }
+    return;
+  }
+
+  const item = ((S.taxonomy && S.taxonomy.projectCodes) || []).find(c => c.code === taxCode);
+  if (item) {
+    const stdName = (typeof formatStandardProjectCodeName === 'function') 
+      ? formatStandardProjectCodeName(item) 
+      : (item.name || `${item.extra1 || '2026'}_${item.extra3 || '01'}_${item.code}_${item.desc || ''}`);
+    nameInp.value = stdName;
+    if (descInp) {
+      descInp.value = item.desc || item.name_jp || item.extra2 || "";
+    }
+    if (showToast) {
+      toast(t('pj_name_updated_toast'), 'success');
+    }
+  }
+}
+
+function onProjectTaxonomyControlChange() {
+  applyProjectNameFromTaxonomy(false);
+}
+
+function openPjMod() {
+  document.getElementById("mpj-ti").textContent = t("add_project");
+  document.getElementById("mpj-id").value = "";
+  ["mpj-nm", "mpj-ds", "mpj-sd", "mpj-ed"].forEach(x => document.getElementById(x).value = "");
+  document.getElementById("mpj-st").value = "Lên kế hoạch";
+  ldMgSel("mpj-mg", "");
+
+  popProjectTaxonomySelect("");
+  openModal("m-pj");
+}
+
+function editPj(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById("mpj-ti").textContent = t("btn_edit") + " " + t("nav_projects");
+  document.getElementById("mpj-id").value = id;
+  document.getElementById("mpj-nm").value = p.name;
+  document.getElementById("mpj-ds").value = p.desc || "";
+  document.getElementById("mpj-st").value = p.status;
+  document.getElementById("mpj-sd").value = p.startRaw || "";
+  document.getElementById("mpj-ed").value = p.endRaw || "";
+  ldMgSel("mpj-mg", p.manager);
+
+  let matchedCode = "";
+  const found = ((S.taxonomy && S.taxonomy.projectCodes) || []).find(it => 
+    (p.name || "") === it.name ||
+    (p.name || "").includes(it.code) ||
+    (p.id && String(p.id).toUpperCase() === String(it.code).toUpperCase()) ||
+    (it.desc && (p.name || "").includes(it.desc)) ||
+    (it.name_jp && (p.name || "").includes(it.name_jp)) ||
+    (it.name_vi && (p.name || "").includes(it.name_vi))
+  );
+  if (found) {
+    matchedCode = found.code;
+    const isStandard = /^(\d{4})[-_](\d{1,3})[-_]/.test(p.name || "");
+    if (!isStandard) {
+      const stdName = (typeof formatStandardProjectCodeName === 'function') ? formatStandardProjectCodeName(found) : '';
+      if (stdName) {
+        document.getElementById("mpj-nm").value = stdName;
+        if (!document.getElementById("mpj-ds").value) {
+          document.getElementById("mpj-ds").value = found.desc || found.name_jp || p.name;
+        }
+      }
+    }
+  }
+
+  popProjectTaxonomySelect(matchedCode);
+  openModal("m-pj");
+}
+function savePj() {
+  const id=document.getElementById("mpj-id").value;
+  const payload={
+    id:id||undefined,
+    name:document.getElementById("mpj-nm").value.trim(),
+    desc:document.getElementById("mpj-ds").value,
+    startDate:document.getElementById("mpj-sd").value,
+    endDate:document.getElementById("mpj-ed").value,
+    manager:document.getElementById("mpj-mg").value,
+    status:document.getElementById("mpj-st").value,
+  };
+  if (!payload.name) { toast("Tên không được để trống","error"); return; }
+  closeModal("m-pj"); toast("Đang lưu...","info");
+  google.script.run
+    .withSuccessHandler(r=>{
+      if (r.success) {
+        toast(r.message,"success");
+        if (id) { localUpdateProject(payload); }
+        else { if(r.project) localAddProject(r.project); else reloadAll(); }
+        popPjFilter();
+      } else { toast(r.error,"error"); }
+    })
+    .withFailureHandler(e=>{ toast(e.message||"Lỗi","error"); reloadAll(); })
+    [id?"updateProject":"addProject"](payload);
+}
+function delPj(id) {
+  const p = S.projects.find(x => x.id === id);
+  const name = p ? p.name : id;
+  if (!confirm(`${t("btn_delete")} "${name}"? ${t("msg_confirm_delete")}`)) return;
+  localDeleteProject(id); toast(t("msg_delete_success"),"success");
+  google.script.run.withSuccessHandler(r=>{ if(!r.success) { toast(r.error,"error"); loadApp(); } }).deleteProject(id);
+}
+function openDupPj(id) {
+  const p = S.projects.find(x => x.id === id);
+  const name = p ? p.name : id;
+  document.getElementById("dup-pj-id").value=id;
+  document.getElementById("dup-pj-nm").value=name+" (Copy)";
+  openModal("m-dup-pj");
+}
+function doDupPj() {
+  const id=document.getElementById("dup-pj-id").value, name=document.getElementById("dup-pj-nm").value.trim();
+  if (!name) { toast("Cần nhập tên dự án mới","error"); return; }
+  const btn=document.getElementById("dup-pj-btn"); btn.textContent="⏳ Đang tạo..."; btn.disabled=true;
+  google.script.run
+    .withSuccessHandler(r=>{ btn.textContent="✦ Tạo bản sao"; btn.disabled=false; if(r.success){toast(r.message,"success");closeModal("m-dup-pj");reloadAll();}else toast(r.error,"error"); })
+    .withFailureHandler(e=>{ btn.textContent="✦ Tạo bản sao"; btn.disabled=false; toast(e.message||"Lỗi","error"); })
+    .duplicateProject(id, name);
+}
+function expRpt(id) { toast("Đang xuất...","info"); google.script.run.withSuccessHandler(r=>r.success?toast(r.message,"success"):toast(r.error,"error")).exportProjectReport(id); }
+
+// ═══════════════════════════════════════
+//  TASK CRUD & BULK ADD
+// ═══════════════════════════════════════
+let _bulkDraftList = [];
+
+function switchQtkTab(tab) {
+  const dialog = document.getElementById("m-qtk-dialog");
+  const tabSingle = document.getElementById("tab-btn-single");
+  const tabBulk = document.getElementById("tab-btn-bulk");
+  const bodySingle = document.getElementById("qtk-body-single");
+  const bodyBulk = document.getElementById("qtk-body-bulk");
+  const title = document.getElementById("mqtk-ti");
+  const taskId = document.getElementById("mqtk-id") ? document.getElementById("mqtk-id").value : "";
+
+  if (tab === 'bulk' && !taskId) {
+    if (tabSingle) tabSingle.classList.remove("active");
+    if (tabBulk) tabBulk.classList.add("active");
+    if (bodySingle) bodySingle.style.display = "none";
+    if (bodyBulk) bodyBulk.style.display = "block";
+    if (dialog) dialog.style.maxWidth = "880px";
+    if (title) title.textContent = "Thêm Nhanh Hàng Loạt Nhiệm Vụ";
+    const singlePj = document.getElementById("mqtk-pj") ? document.getElementById("mqtk-pj").value : "";
+    if (singlePj && document.getElementById("mbulk-pj")) {
+      document.getElementById("mbulk-pj").value = singlePj;
+    }
+    populateBulkMembers();
+    renderBulkPreview();
+    setTimeout(() => {
+      const ta = document.getElementById("mbulk-text");
+      if (ta) ta.focus();
+    }, 100);
+  } else {
+    if (tabBulk) tabBulk.classList.remove("active");
+    if (tabSingle) tabSingle.classList.add("active");
+    if (bodyBulk) bodyBulk.style.display = "none";
+    if (bodySingle) bodySingle.style.display = "block";
+    if (dialog) dialog.style.maxWidth = "520px";
+    if (title) title.textContent = taskId ? "Sửa Nhiệm Vụ" : "Thêm Nhiệm Vụ";
+  }
+}
+
+function syncBulkProject() {
+  const bulkPj = document.getElementById("mbulk-pj") ? document.getElementById("mbulk-pj").value : "";
+  const singlePj = document.getElementById("mqtk-pj");
+  if (singlePj && bulkPj) {
+    singlePj.value = bulkPj;
+    refreshAsCombo('qtk');
+  }
+}
+
+function populateBulkMembers() {
+  const sel = document.getElementById("mbulk-as");
+  const dl = document.getElementById("bulk-as-datalist");
+  if (!sel) return;
+  const currVal = sel.value;
+  sel.innerHTML = '<option value="">-- Tự động / Chưa gán --</option>';
+  if (dl) dl.innerHTML = '';
+
+  const members = S.members || [];
+  members.forEach(m => {
+    const o = document.createElement("option");
+    o.value = m.name || m.email;
+    o.textContent = `${m.name} (${m.role})`;
+    if (currVal && (m.name === currVal || m.email === currVal)) o.selected = true;
+    sel.appendChild(o);
+
+    if (dl) {
+      const opt = document.createElement("option");
+      opt.value = m.name || m.email;
+      dl.appendChild(opt);
+    }
+  });
+}
+
+function parseBulkTaskInput(rawText) {
+  if (!rawText) return [];
+  const lines = rawText.split(/\r?\n/);
+  const defAssignee = (document.getElementById("mbulk-as") ? document.getElementById("mbulk-as").value : "").trim();
+  const defDeadline = (document.getElementById("mbulk-dl") ? document.getElementById("mbulk-dl").value : "").trim();
+  const defPriority = (document.getElementById("mbulk-pr") ? document.getElementById("mbulk-pr").value : "Trung bình").trim() || "Trung bình";
+  const defStartDate = (document.getElementById("mbulk-sd") ? document.getElementById("mbulk-sd").value : "").trim();
+
+  const results = [];
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i].trim();
+    if (!line) continue;
+
+    let parts = [];
+    if (line.includes("\t")) {
+      parts = line.split("\t").map(s => s.trim());
+    } else if (line.includes("|")) {
+      parts = line.split("|").map(s => s.trim());
+    } else {
+      parts = [line];
+    }
+
+    let name = parts[0] || "";
+    name = name.replace(/^(\d+[\.\)\-:]\s*|[-*•]\s*|\[\s*\]\s*)/i, "").trim();
+    if (!name) continue;
+
+    let assignee = defAssignee;
+    let startDate = defStartDate;
+    let deadline = defDeadline;
+    let priority = defPriority;
+
+    const dateParts = [];
+    const otherParts = [];
+    for (let pIdx = 1; pIdx < parts.length; pIdx++) {
+      const p = parts[pIdx];
+      if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(p) || /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(p)) {
+        dateParts.push(_normalizeDateBulk(p));
+      } else {
+        otherParts.push(p);
+      }
+    }
+
+    if (dateParts.length >= 2) {
+      startDate = dateParts[0];
+      deadline = dateParts[1];
+    } else if (dateParts.length === 1) {
+      deadline = dateParts[0];
+    }
+
+    if (otherParts.length >= 1 && otherParts[0]) {
+      const p = otherParts[0];
+      if (["Thấp", "Trung bình", "Cao", "Khẩn cấp"].includes(p)) {
+        priority = p;
+      } else {
+        assignee = p;
+      }
+    }
+    if (otherParts.length >= 2 && otherParts[1]) {
+      const p = otherParts[1];
+      if (["Thấp", "Trung bình", "Cao", "Khẩn cấp"].includes(p)) {
+        priority = p;
+      } else if (!assignee) {
+        assignee = p;
+      }
+    }
+
+    results.push({
+      id: "bulk_" + Date.now() + "_" + i,
+      name,
+      assignee,
+      startDate,
+      deadline,
+      priority
+    });
+  }
+  return results;
+}
+
+function _normalizeDateBulk(dStr) {
+  if (!dStr) return "";
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(dStr)) {
+    const p = dStr.split("-");
+    return `${p[0]}-${p[1].padStart(2,"0")}-${p[2].padStart(2,"0")}`;
+  }
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dStr)) {
+    const p = dStr.split("/");
+    return `${p[2]}-${p[1].padStart(2,"0")}-${p[0].padStart(2,"0")}`;
+  }
+  return dStr;
+}
+
+function handleBulkInput() {
+  const text = document.getElementById("mbulk-text") ? document.getElementById("mbulk-text").value : "";
+  _bulkDraftList = parseBulkTaskInput(text);
+  renderBulkPreview();
+}
+
+function applyBulkDefaults() {
+  const defAssignee = (document.getElementById("mbulk-as") ? document.getElementById("mbulk-as").value : "").trim();
+  const defDeadline = (document.getElementById("mbulk-dl") ? document.getElementById("mbulk-dl").value : "").trim();
+  const defPriority = (document.getElementById("mbulk-pr") ? document.getElementById("mbulk-pr").value : "Trung bình").trim() || "Trung bình";
+  const defStartDate = (document.getElementById("mbulk-sd") ? document.getElementById("mbulk-sd").value : "").trim();
+
+  const text = document.getElementById("mbulk-text") ? document.getElementById("mbulk-text").value : "";
+  if (text.trim()) {
+    _bulkDraftList = parseBulkTaskInput(text);
+  } else if (_bulkDraftList.length) {
+    _bulkDraftList.forEach(item => {
+      if (!item.assignee && defAssignee) item.assignee = defAssignee;
+      if (!item.startDate && defStartDate) item.startDate = defStartDate;
+      if (!item.deadline && defDeadline) item.deadline = defDeadline;
+      if (defPriority) item.priority = defPriority;
+    });
+  }
+  renderBulkPreview();
+}
+
+function renderBulkPreview() {
+  const tbody = document.getElementById("bulk-tbl-body");
+  const countBadge = document.getElementById("bulk-count-badge");
+  const saveBtn = document.getElementById("btn-save-bulk");
+  if (!tbody) return;
+
+  const count = _bulkDraftList.length;
+  if (countBadge) countBadge.textContent = `${count} nhiệm vụ`;
+  if (saveBtn) {
+    saveBtn.disabled = count === 0;
+    saveBtn.textContent = `🚀 Tạo ngay (${count} nhiệm vụ)`;
+  }
+
+  if (count === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--t3)">Chưa có dữ liệu. Hãy dán danh sách công việc vào ô trên hoặc bấm "+ Thêm dòng".</td></tr>`;
+    return;
+  }
+
+  const safe = (s) => String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  tbody.innerHTML = _bulkDraftList.map((item, idx) => `
+    <tr>
+      <td style="text-align:center;color:var(--t2);font-weight:600">${idx + 1}</td>
+      <td>
+        <input class="bulk-cell-inp bulk-name-inp" value="${safe(item.name)}" placeholder="Nhập tên nhiệm vụ..." oninput="updateBulkDraft(${idx}, 'name', this.value)">
+      </td>
+      <td>
+        <input class="bulk-cell-inp" list="bulk-as-datalist" value="${safe(item.assignee)}" placeholder="Chưa gán" oninput="updateBulkDraft(${idx}, 'assignee', this.value)">
+      </td>
+      <td>
+        <input type="date" class="bulk-cell-inp" value="${safe(item.startDate)}" oninput="updateBulkDraft(${idx}, 'startDate', this.value)">
+      </td>
+      <td>
+        <input type="date" class="bulk-cell-inp" value="${safe(item.deadline)}" oninput="updateBulkDraft(${idx}, 'deadline', this.value)">
+      </td>
+      <td>
+        <select class="bulk-cell-inp" onchange="updateBulkDraft(${idx}, 'priority', this.value)">
+          <option ${item.priority==='Thấp'?'selected':''}>Thấp</option>
+          <option ${item.priority==='Trung bình'?'selected':''}>Trung bình</option>
+          <option ${item.priority==='Cao'?'selected':''}>Cao</option>
+          <option ${item.priority==='Khẩn cấp'?'selected':''}>Khẩn cấp</option>
+        </select>
+      </td>
+      <td style="text-align:center">
+        <button type="button" class="bic del" style="width:22px;height:22px;font-size:11px" title="Xóa dòng" onclick="removeBulkDraft(${idx})">✕</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function updateBulkDraft(idx, field, val) {
+  if (_bulkDraftList[idx]) {
+    _bulkDraftList[idx][field] = val;
+    const validCount = _bulkDraftList.filter(t => t.name && t.name.trim()).length;
+    const saveBtn = document.getElementById("btn-save-bulk");
+    if (saveBtn) {
+      saveBtn.disabled = validCount === 0;
+      saveBtn.textContent = `🚀 Tạo ngay (${validCount} nhiệm vụ)`;
+    }
+  }
+}
+
+function removeBulkDraft(idx) {
+  _bulkDraftList.splice(idx, 1);
+  renderBulkPreview();
+}
+
+function addEmptyBulkRow() {
+  const defAssignee = (document.getElementById("mbulk-as") ? document.getElementById("mbulk-as").value : "").trim();
+  const defDeadline = (document.getElementById("mbulk-dl") ? document.getElementById("mbulk-dl").value : "").trim();
+  const defPriority = (document.getElementById("mbulk-pr") ? document.getElementById("mbulk-pr").value : "Trung bình").trim() || "Trung bình";
+  const defStartDate = (document.getElementById("mbulk-sd") ? document.getElementById("mbulk-sd").value : "").trim();
+
+  _bulkDraftList.push({
+    id: "bulk_" + Date.now() + "_" + Math.random(),
+    name: "",
+    assignee: defAssignee,
+    deadline: defDeadline,
+    priority: defPriority,
+    startDate: defStartDate
+  });
+  renderBulkPreview();
+  setTimeout(() => {
+    const inputs = document.querySelectorAll(".bulk-name-inp");
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }, 50);
+}
+
+function saveBulkTasks() {
+  const projectId = document.getElementById("mbulk-pj") ? document.getElementById("mbulk-pj").value : "";
+  if (!projectId) {
+    toast("Vui lòng chọn Dự án", "error");
+    return;
+  }
+
+  const validTasks = _bulkDraftList.filter(t => t.name && t.name.trim().length > 0);
+  if (validTasks.length === 0) {
+    toast("Cần ít nhất một nhiệm vụ có tên", "error");
+    return;
+  }
+
+  const btn = document.getElementById("btn-save-bulk");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = `⏳ Đang tạo ${validTasks.length} nhiệm vụ...`;
+  }
+  toast(`Đang lưu ${validTasks.length} nhiệm vụ...`, "info");
+
+  const payload = {
+    projectId: projectId,
+    tasks: validTasks
+  };
+
+  google.script.run
+    .withSuccessHandler(r => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = `🚀 Tạo ngay (${validTasks.length} nhiệm vụ)`;
+      }
+      if (r && r.success) {
+        toast(r.message || `Đã tạo ${validTasks.length} nhiệm vụ!`, "success");
+        closeModal("m-qtk");
+        if (r.tasks && r.tasks.length) {
+          localAddBulkTasks(r.tasks, projectId);
+        } else {
+          loadApp();
+        }
+      } else {
+        toast((r && r.error) || "Lỗi tạo nhiệm vụ hàng loạt", "error");
+      }
+    })
+    .withFailureHandler(e => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = `🚀 Tạo ngay (${validTasks.length} nhiệm vụ)`;
+      }
+      toast(e.message || "Lỗi lưu dữ liệu", "error");
+    })
+    .addBulkTasks(payload);
+}
+
+function openTkMod(taskId, defaultPjId, initialTab) {
+  document.getElementById("mqtk-ti").textContent = taskId ? (t("btn_edit") + " " + t("nav_tasks")) : t("add_task");
+  document.getElementById("mqtk-id").value = taskId || "";
+  ["mqtk-nm", "mqtk-sd", "mqtk-dl"].forEach(x => document.getElementById(x).value = "");
+  document.getElementById("mqtk-st").value = "Chờ thực hiện";
+  document.getElementById("mqtk-pr").value = "Trung bình";
+  document.getElementById("mqtk-pj").disabled = false;
+  ldPjSel("mqtk-pj", defaultPjId || "");
+  setAssignees('qtk', '');
+
+  popTaskTaxonomySelects();
+  const catSel = document.getElementById("mqtk-cat");
+  const phaseSel = document.getElementById("mqtk-phase");
+  const discSel = document.getElementById("mqtk-disc");
+  if (catSel) catSel.value = "";
+  if (phaseSel) phaseSel.value = "";
+  if (discSel) discSel.value = "";
+  const prevTxt = document.getElementById("qtk-tax-preview-txt");
+  if (prevTxt) prevTxt.textContent = "[Mã tự chèn vào tên task]";
+
+  const tabsWrap = document.getElementById("qtk-tabs-wrap");
+  if (taskId) {
+    if (tabsWrap) tabsWrap.style.display = "none";
+    switchQtkTab('single');
+    const t = S.tasks.find(x => String(x.id || "").trim() === String(taskId).trim());
+    if (t) {
+      document.getElementById("mqtk-nm").value = _taskDisplayName(t);
+      document.getElementById("mqtk-st").value = t.status || "Chờ thực hiện";
+      document.getElementById("mqtk-pr").value = t.priority || "Trung bình";
+      document.getElementById("mqtk-sd").value = toDateInputVal(t.startRaw || t.startDate);
+      document.getElementById("mqtk-dl").value = toDateInputVal(t.deadlineRaw || t.deadline);
+      ldPjSel("mqtk-pj", t.projectId || defaultPjId || "");
+      setAssignees('qtk', t.assignee || "", t.projectId || defaultPjId || "");
+
+      // Parse existing prefix e.g. [MD-DD-MD04] or [M3-BD-AR] or [M3-AR]
+      const prefixMatch = (t.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
+      if (prefixMatch) {
+        const rawCodes = prefixMatch[1].toUpperCase().split('-');
+        if (rawCodes.length >= 3) {
+          if (catSel) catSel.value = rawCodes[0];
+          if (phaseSel) phaseSel.value = rawCodes[1];
+          if (discSel) discSel.value = rawCodes[2];
+        } else if (rawCodes.length === 2) {
+          if (catSel) catSel.value = rawCodes[0];
+          const isPhase = ((S.taxonomy && S.taxonomy.phases) || []).some(p => p.code === rawCodes[1]);
+          if (isPhase) {
+            if (phaseSel) phaseSel.value = rawCodes[1];
+          } else {
+            if (discSel) discSel.value = rawCodes[1];
+          }
+        } else if (rawCodes.length === 1) {
+          if (catSel) catSel.value = rawCodes[0];
+        }
+        if (prevTxt) prevTxt.textContent = "Tiền tố: [" + prefixMatch[1].toUpperCase() + "]";
+      }
+    }
+  } else {
+    if (tabsWrap) tabsWrap.style.display = "flex";
+    _bulkDraftList = [];
+    if (document.getElementById("mbulk-text")) document.getElementById("mbulk-text").value = "";
+    ldPjSel("mbulk-pj", defaultPjId || "");
+    populateBulkMembers();
+    const todayStr = new Date().toISOString().split("T")[0];
+    if (document.getElementById("mbulk-sd")) document.getElementById("mbulk-sd").value = todayStr;
+    if (document.getElementById("mbulk-dl")) document.getElementById("mbulk-dl").value = "";
+    if (document.getElementById("mbulk-pr")) document.getElementById("mbulk-pr").value = "Trung bình";
+    renderBulkPreview();
+
+    if (initialTab === 'bulk') {
+      switchQtkTab('bulk');
+    } else {
+      switchQtkTab('single');
+    }
+  }
+  openModal("m-qtk");
+}
+function saveQTk() {
+  const id=document.getElementById("mqtk-id").value;
+  const payload={
+    id:id||undefined,
+    projectId:document.getElementById("mqtk-pj").value,
+    name:document.getElementById("mqtk-nm").value.trim(),
+    assignee:_getAssigneeVal('qtk'),
+    priority:document.getElementById("mqtk-pr").value,
+    status:document.getElementById("mqtk-st").value,
+    startDate:document.getElementById("mqtk-sd").value,
+    deadline:document.getElementById("mqtk-dl").value
+  };
+  if (!payload.name) { toast("Tên không được để trống","error"); return; }
+  if (!payload.projectId) { toast("Chọn dự án","error"); return; }
+  closeModal("m-qtk"); toast("Đang lưu...","info");
+  google.script.run
+    .withSuccessHandler(r=>{
+      if (r.success) {
+        toast(r.message,"success");
+        if (id) { if(r.task) localUpdateTask(r.task); }
+        else { if(r.task) localAddTask(r.task); }
+      } else { toast(r.error,"error"); reloadAll(); }
+    })
+    .withFailureHandler(e=>{ toast(e.message||"Lỗi","error"); reloadAll(); })
+    [id?"updateTask":"addTask"](payload);
+}
+function delTk(id) {
+  const tkItem = (S.tasks || []).find(x => x.id === id);
+  const name = tkItem ? tkItem.name : id;
+  const actionText = (typeof t === "function" ? t("btn_delete") : "") || "Xóa";
+  const confirmText = (typeof t === "function" ? t("msg_confirm_delete") : "") || "";
+  if (!confirm(`${actionText} "${name}"? ${confirmText}`.trim())) return;
+  localDeleteTask(id);
+  const successMsg = (typeof t === "function" ? t("msg_delete_success") : "") || "Đã xóa nhiệm vụ";
+  toast(successMsg, "success");
+  google.script.run
+    .withSuccessHandler(r => {
+      if (!r.success) {
+        toast(r.error || "Không thể xóa nhiệm vụ", "error");
+        loadApp();
+      }
+    })
+    .withFailureHandler(e => {
+      toast(e.message || "Lỗi máy chủ khi xóa", "error");
+      loadApp();
+    })
+    .deleteTask(id);
+}
+function delTkFromPanel() {
+  const id = document.getElementById("tp-id")?.value;
+  if (!id) return;
+  closeTaskPanel();
+  delTk(id);
+}
+function doDupTk(id) {
+  if (!confirm(t("msg_confirm_dup_pj") || "Tạo bản sao?")) return;
+  google.script.run.withSuccessHandler(r=>{ if(r.success){toast(r.message,"success");reloadAll();}else toast(r.error,"error"); }).duplicateTask(id);
+}
+
+// ═══════════════════════════════════════
+//  USERS
+// ═══════════════════════════════════════
+let _usersCache = [];
+
+function loadPgUsr(forceServer) {
+  // Hiển thị ngay từ bộ nhớ đệm (0ms) nếu đã có
+  if (_usersCache.length > 0 && !forceServer) {
+    renderPgUsr(_usersCache);
+  }
+  google.script.run
+    .withSuccessHandler(res => {
+      if (!res.success) return toast(res.error, "error");
+      _usersCache = res.data || [];
+      // Xóa cache rác localStorage nếu có để tránh phục hồi user đã xóa
+      try { localStorage.removeItem('pm3extra_members'); } catch(e) {}
+      renderPgUsr(_usersCache);
+    })
+    .withFailureHandler(e => toast(e.message || "Lỗi tải danh sách người dùng", "error"))
+    .getUsers();
+}
+
+function renderPgUsr(data) {
+  const rc = { Admin: "#4f6ef7", Manager: "#22c55e", Member: "#f59e0b", Viewer: "#94a3b8" };
+  const tbody = document.getElementById("pu-tb");
+  if (!tbody) return;
+  if (!data || data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:24px">${t('empty_no_users')}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map((u, i) => {
+    const isLocal = u.email && u.email.startsWith('member_');
+    const safeName = (u.name || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    return `<tr>
+    <td>${i + 1}</td>
+    <td style="font-size:10px;color:var(--t2);max-width:140px;overflow:hidden;text-overflow:ellipsis">
+      ${isLocal ? `<span class="badge bg-gy" title="Thành viên nội bộ: ${u.email}">🏷 ${u.email}</span>` : (u.email || '—')}
+    </td>
+    <td>
+      <span style="font-weight:700">${u.name}</span>
+      ${isLocal ? `<button class="bic" style="width:20px;height:20px;font-size:10px;margin-left:6px;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center" onclick="quickRenameLocalUsr('${u.id}','${u.email}','${safeName}')" title="${t('btn_edit')}">✏</button>` : ''}
+    </td>
+    <td><span class="badge" style="background:${rc[u.role] || '#94a3b8'}22;color:${rc[u.role] || '#94a3b8'}">${tRole(u.role)}</span></td>
+    <td><span class="badge ${u.status === "Active" ? "bg-gr" : "bg-gy"}" style="cursor:pointer" onclick="toggleUsrStatus('${u.id}','${u.email}')" title="Active / Inactive">${u.status} ⇄</span></td>
+    <td><small>${formatDisplayDate(u.created) || '—'}</small></td>
+    <td><div style="display:flex;gap:3px">
+      <button class="bic" onclick="editUsr('${u.id}','${u.email}')" title="${t('btn_edit')}">✏</button>
+      <button class="bic del" onclick="delUsr('${u.id}','${u.email}')" title="${t('btn_delete')}">🗑</button>
+    </div></td>
+  </tr>`;
+  }).join("");
+}
+
+function quickRenameLocalUsr(id, email, currentName) {
+  const newName = prompt('Nhập tên mới cho thành viên:', currentName);
+  if (!newName || !newName.trim() || newName.trim() === currentName) return;
+  const updatedName = newName.trim();
+
+  // 1. Cập nhật tức thì (0ms) trên toàn bộ hệ thống
+  const u = _usersCache.find(x => (id && x.id === id) || (email && x.email === email) || x.id === email);
+  const oldName = u ? u.name : currentName;
+  if (u) u.name = updatedName;
+
+  const memInS = S.members.find(x => (id && x.id === id) || (email && x.email === email) || x.id === email);
+  if (memInS) memInS.name = updatedName;
+
+  // Cập nhật S.projectMembers
+  Object.keys(S.projectMembers || {}).forEach(pjId => {
+    const list = S.projectMembers[pjId];
+    if (Array.isArray(list)) {
+      list.forEach(m => {
+        if ((id && m.id === id) || (email && m.email === email) || m.id === email) {
+          m.name = updatedName;
+        }
+      });
+      _saveProjectMembers(pjId, list);
+    }
+  });
+
+  renderPgUsr(_usersCache);
+  toast(`Đã đổi tên thành "${updatedName}"`, "success");
+
+  // 2. Gửi lệnh cập nhật lên Google Sheet trong nền
+  google.script.run
+    .withSuccessHandler(r => {
+      if (!r.success) {
+        toast(r.error || "Không thể cập nhật tên trên máy chủ", "error");
+        if (u) u.name = oldName;
+        if (memInS) memInS.name = oldName;
+        renderPgUsr(_usersCache);
+      }
+    })
+    .withFailureHandler(e => {
+      toast(e.message || "Lỗi cập nhật tên", "error");
+      if (u) u.name = oldName;
+      if (memInS) memInS.name = oldName;
+      renderPgUsr(_usersCache);
+    })
+    .updateUser({ id: id || email, email: email, name: updatedName });
+}
+
+function toggleUsrStatus(id, email) {
+  const u = _usersCache.find(x => (id && x.id === id) || (email && x.email === email) || x.id === email);
+  if (!u) return;
+  const oldStatus = u.status;
+  const newStatus = oldStatus === "Active" ? "Inactive" : "Active";
+
+  // 1. Cập nhật tức thì trên giao diện (Optimistic UI - 0ms)
+  u.status = newStatus;
+  const memInS = S.members.find(x => (id && x.id === id) || (email && x.email === email));
+  if (memInS) memInS.status = newStatus;
+  renderPgUsr(_usersCache);
+  toast(`Đã chuyển sang trạng thái "${newStatus}"`, "info");
+
+  // 2. Gửi lệnh cập nhật lên Google Sheet trong nền
+  google.script.run
+    .withSuccessHandler(r => {
+      if (r.success) {
+        toast(r.message || `Đã chuyển sang ${newStatus}`, "success");
+      } else {
+        // Rollback nếu có lỗi từ server
+        u.status = oldStatus;
+        if (memInS) memInS.status = oldStatus;
+        renderPgUsr(_usersCache);
+        toast(r.error || "Không thể cập nhật trạng thái", "error");
+      }
+    })
+    .withFailureHandler(e => {
+      u.status = oldStatus;
+      if (memInS) memInS.status = oldStatus;
+      renderPgUsr(_usersCache);
+      toast(e.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .toggleUserStatus(id, email);
+}
+
+function delUsr(id, email) {
+  const targetUser = _usersCache.find(x => (id && x.id === id) || (email && x.email === email) || x.id === email);
+  const displayName = targetUser ? (targetUser.name || targetUser.email) : (email || id);
+
+  if (!confirm(`${t("btn_delete")} "${displayName}"? ${t("msg_confirm_delete")}`)) return;
+
+  // 1. Sao lưu danh sách để rollback nếu server báo lỗi
+  const backupCache = [..._usersCache];
+  const backupMembers = [...S.members];
+
+  // 2. TỨC THÌ XÓA KHỎI GIAO DIỆN (0ms) - Phản ứng siêu nhanh
+  _usersCache = _usersCache.filter(x => (id ? x.id !== id : true) && (email ? x.email !== email : true) && x.id !== email);
+  S.members = S.members.filter(x => (id ? x.id !== id : true) && (email ? x.email !== email : true) && x.id !== email);
+
+  // Dọn dẹp cả localStorage nếu có vết tích cũ
+  try {
+    let extra = JSON.parse(localStorage.getItem('pm3extra_members') || '[]');
+    extra = extra.filter(m => (email ? m.email !== email : true) && (id ? m.id !== id : true));
+    localStorage.setItem('pm3extra_members', JSON.stringify(extra));
+  } catch(e) {}
+
+  // Render lại bảng ngay lập tức
+  renderPgUsr(_usersCache);
+  toast(`Đã xóa "${displayName}" khỏi hệ thống`, "success");
+
+  // 3. Gửi lệnh xóa vĩnh viễn trong Google Sheet trên máy chủ
+  google.script.run
+    .withSuccessHandler(r => {
+      if (!r.success) {
+        // Nếu máy chủ từ chối (ví dụ không thể xóa Admin đang đăng nhập), phục hồi lại giao diện
+        _usersCache = backupCache;
+        S.members = backupMembers;
+        renderPgUsr(_usersCache);
+        toast(r.error || "Không thể xóa trên Google Sheet", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      _usersCache = backupCache;
+      S.members = backupMembers;
+      renderPgUsr(_usersCache);
+      toast("Lỗi kết nối máy chủ: " + (err.message || err), "error");
+    })
+    .deleteUser(id, email);
+}
+
+function openUsrMod() {
+  document.getElementById("musr-ti").textContent = t("add_user");
+  document.getElementById("musr-id").value = "";
+  ["musr-em", "musr-nm", "musr-nt"].forEach(x => document.getElementById(x).value = "");
+  document.getElementById("musr-rl").value = "Member";
+  document.getElementById("musr-st").value = "Active";
+  document.getElementById("musr-em").disabled = false;
+  const emLbl = document.getElementById("musr-em-lbl");
+  if (emLbl) emLbl.innerHTML = 'Email Google <span class="req">*</span>';
+  document.getElementById("musr-mode-row").style.display = "flex";
+  setUsrMode('full');
+  openModal("m-usr");
+}
+
+function editUsr(id, email) {
+  const u = _usersCache.find(x => (id && x.id === id) || (email && x.email === email) || x.id === email);
+  if (u) {
+    _fillUsrModal(u);
+    return;
+  }
+  // Nếu chưa có trong cache thì tải từ server
+  google.script.run.withSuccessHandler(res => {
+    if (!res.success) return;
+    const found = res.data.find(x => (id && x.id === id) || (email && x.email === email));
+    if (found) _fillUsrModal(found);
+  }).getUsers();
+}
+
+function _fillUsrModal(u) {
+  const isLocal = u.email && u.email.startsWith('member_');
+  document.getElementById("musr-ti").textContent = isLocal ? (t("btn_edit") + " " + t("nav_users")) : (t("btn_edit") + " " + t("nav_users"));
+  document.getElementById("musr-id").value = u.id || u.email;
+  document.getElementById("musr-em").value = u.email;
+  document.getElementById("musr-em").disabled = true;
+  const emLbl = document.getElementById("musr-em-lbl");
+  if (emLbl) {
+    emLbl.innerHTML = isLocal ? 'Mã Định Danh Nội Bộ <small style="color:var(--t3);font-weight:normal">(Tự động)</small>' : 'Email Google <span class="req">*</span>';
+  }
+  document.getElementById("musr-nm").value = u.name;
+  document.getElementById("musr-rl").value = u.role || "Member";
+  document.getElementById("musr-st").value = u.status || "Active";
+  document.getElementById("musr-nt").value = u.note || "";
+  document.getElementById("musr-mode-row").style.display = "none";
+  setUsrMode('full');
+  openModal("m-usr");
+  setTimeout(() => {
+    const nmInput = document.getElementById("musr-nm");
+    if (nmInput) { nmInput.focus(); nmInput.select(); }
+  }, 100);
+}
+
+function saveUsr() {
+  const id = document.getElementById("musr-id").value;
+  const name = document.getElementById("musr-nm").value.trim();
+  const role = document.getElementById("musr-rl").value;
+  const status = document.getElementById("musr-st").value;
+  const note = document.getElementById("musr-nt").value;
+  if (!name) { toast("Nhập họ tên", "error"); return; }
+
+  // Chế độ tạo thành viên nội bộ chỉ cần tên
+  if (!id && _usrMode === 'name') {
+    const genId = 'member_' + Date.now().toString(36).toUpperCase();
+    const payload = { email: genId, name, role, status, note };
+    
+    // Cập nhật tức thì vào giao diện (0ms)
+    const tempUser = { id: genId, email: genId, name, role, status, created: "Vừa xong", note };
+    _usersCache.push(tempUser);
+    if (!S.members.find(m => m.email === genId)) S.members.push(tempUser);
+    renderPgUsr(_usersCache);
+    closeModal('m-usr');
+    toast(`Đang lưu "${name}" vào Google Sheet...`, 'info');
+
+    google.script.run
+      .withSuccessHandler(r => {
+        if (r.success) {
+          toast(`✅ Đã tạo "${name}" thành công`, 'success');
+          if (r.user) {
+            const idx = _usersCache.findIndex(u => u.email === genId);
+            if (idx >= 0) _usersCache[idx] = r.user;
+            const mIdx = S.members.findIndex(m => m.email === genId);
+            if (mIdx >= 0) S.members[mIdx] = r.user;
+            renderPgUsr(_usersCache);
+          }
+        } else {
+          toast(r.error, 'error');
+          _usersCache = _usersCache.filter(u => u.email !== genId);
+          S.members = S.members.filter(m => m.email !== genId);
+          renderPgUsr(_usersCache);
+        }
+      })
+      .withFailureHandler(e => {
+        toast(e.message || "Lỗi tạo người dùng", "error");
+        _usersCache = _usersCache.filter(u => u.email !== genId);
+        S.members = S.members.filter(m => m.email !== genId);
+        renderPgUsr(_usersCache);
+      })
+      .addUser(payload);
+    return;
+  }
+
+  const email = document.getElementById("musr-em").value.trim();
+  if (!id && !email) { toast("Nhập email Google", "error"); return; }
+  const payload = { id: id || undefined, email, name, role, status, note };
+
+  if (id) {
+    // Sửa thông tin
+    const idx = _usersCache.findIndex(u => (id && u.id === id) || (email && u.email === email) || u.id === email);
+    const oldUser = idx >= 0 ? { ..._usersCache[idx] } : null;
+    if (idx >= 0) {
+      Object.assign(_usersCache[idx], { name, role, status, note });
+      renderPgUsr(_usersCache);
+    }
+    const memInS = S.members.find(u => (id && u.id === id) || (email && u.email === email) || u.id === email);
+    if (memInS) {
+      memInS.name = name;
+      memInS.role = role;
+      memInS.status = status;
+    }
+    // Cập nhật tên trong project members nếu có
+    Object.keys(S.projectMembers || {}).forEach(pjId => {
+      const list = S.projectMembers[pjId];
+      if (Array.isArray(list)) {
+        list.forEach(m => {
+          if ((id && m.id === id) || (email && m.email === email) || m.id === email) {
+            m.name = name;
+            m.role = role;
+          }
+        });
+        _saveProjectMembers(pjId, list);
+      }
+    });
+
+    closeModal("m-usr");
+    toast(`Đã cập nhật "${name}"`, "success");
+
+    google.script.run
+      .withSuccessHandler(r => {
+        if (!r.success) {
+          toast(r.error || "Không thể cập nhật trên máy chủ", "error");
+          if (oldUser && idx >= 0) {
+            _usersCache[idx] = oldUser;
+            renderPgUsr(_usersCache);
+          }
+        }
+      })
+      .withFailureHandler(e => {
+        toast(e.message || "Lỗi cập nhật", "error");
+        if (oldUser && idx >= 0) {
+          _usersCache[idx] = oldUser;
+          renderPgUsr(_usersCache);
+        }
+      })
+      .updateUser(payload);
+  } else {
+    // Thêm người dùng mới có Email
+    closeModal("m-usr");
+    toast("Đang thêm người dùng...", "info");
+    google.script.run
+      .withSuccessHandler(r => {
+        if (r.success) {
+          toast(r.message || "Thêm người dùng thành công", "success");
+          loadPgUsr(true);
+        } else {
+          toast(r.error, "error");
+        }
+      })
+      .withFailureHandler(e => toast(e.message || "Lỗi", "error"))
+      .addUser(payload);
+  }
+}
+
+// ═══════════════════════════════════════
+//  LOG
+// ═══════════════════════════════════════
+function loadPgLog() {
+  google.script.run.withSuccessHandler(data=>{
+    const tb = document.getElementById("pl-tb");
+    if (!tb) return;
+    if (!data || !data.length) {
+      tb.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px">${t('dash_no_act')}</td></tr>`;
+      return;
+    }
+    tb.innerHTML=data.slice().reverse().slice(0,100).map(r=>`<tr>
+      <td><small>${formatDisplayDate(r[0])||""}</small></td>
+      <td><small>${r[1]||""}</small></td>
+      <td><small><span class="badge bg-bl">${tRole(r[2])}</span></small></td>
+      <td><code style="font-size:10px;background:#f1f5f9;padding:1px 5px;border-radius:3px">${r[3]||""}</code></td>
+      <td><small style="color:#64748b">${r[4]||""}</small></td>
+    </tr>`).join("");
+  }).withFailureHandler(e=>toast(e.message,"error")).getLogData();
+}
+
+// ═══════════════════════════════════════
+//  SELECT LOADERS
+// ═══════════════════════════════════════
+function ldPjSel(id, sel, disable) {
+  const el=document.getElementById(id); if (!el) return;
+  el.innerHTML='<option value="">-- Chọn dự án --</option>';
+  if (disable) el.disabled=true;
+  const sorted = (S.projects || []).slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
+  sorted.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; if(sel&&p.id===sel) o.selected=true; el.appendChild(o); });
+}
+function ldMgSel(id, sel) {
+  const el=document.getElementById(id); if (!el) return; el.innerHTML="";
+  S.members.filter(m=>["Admin","Manager"].includes(m.role)).forEach(m=>{ const o=document.createElement("option"); o.value=m.email; o.textContent=`${m.name}(${m.role})`; if(sel&&m.email===sel) o.selected=true; el.appendChild(o); });
+}
+function popPjFilter() {
+  const sel=document.getElementById("pj-filter-sel");
+  if (!sel) return;
+  const curVal = sel.value;
+  sel.innerHTML=`<option value="">${t("filter_by_project")}</option>`;
+  const sorted = (S.projects || []).slice().sort((a,b) => (a.name || "").localeCompare(b.name || "", undefined, { numeric: true, sensitivity: 'base' }));
+  sorted.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=p.name; if(p.id===curVal) o.selected=true; sel.appendChild(o); });
+    if (typeof popGanttPjOptions === "function") popGanttPjOptions();
+    if (typeof popAnalyticsPjOptions === "function") popAnalyticsPjOptions();
+}
+
+// ═══════════════════════════════════════
+//  RELOAD
+// ═══════════════════════════════════════
+function reloadAll() { toast(t("loading"), "info"); loadApp(); }
+
+// ═══════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════
+function sBadge(s){const m={"Hoàn thành":"bg-gr","Đang thực hiện":"bg-bl","Đang tiến hành":"bg-cy","Chờ thực hiện":"bg-gy","Chờ duyệt":"bg-pu","Tạm dừng":"bg-yw","Hủy":"bg-rd","Lên kế hoạch":"bg-gy","Quá hạn":"bg-rd"};return m[s]||"bg-gy";}
+function pBadge(p){return{Thấp:"bg-gr","Trung bình":"bg-bl",Cao:"bg-yw","Khẩn cấp":"bg-rd"}[p]||"bg-gy";}
+function canEd(pj) {
+  if (S.role === "Admin" || S.role === "Leader") return true;
+  if (S.role === "PJ_Lead" || S.role === "Manager") {
+    if (!pj) return true;
+    const pjObj = typeof pj === "object" ? pj : (S.projects || []).find(p => p.id === pj);
+    if (!pjObj) return false;
+    const myEmail = (S.user?.email || "").toLowerCase().trim();
+    return (pjObj.manager || "").toLowerCase().trim() === myEmail;
+  }
+  return false;
+}
+function canMgTk(tkOrPj) {
+  if (S.role === "Admin" || S.role === "Leader") return true;
+  if (S.role === "PJ_Lead" || S.role === "Manager") {
+    if (!tkOrPj) return true;
+    let pjId = "";
+    if (typeof tkOrPj === "string") {
+      const isTk = (S.tasks || []).find(t => t.id === tkOrPj);
+      pjId = isTk ? isTk.projectId : tkOrPj;
+    } else if (typeof tkOrPj === "object") {
+      pjId = tkOrPj.projectId || tkOrPj.id || "";
+    }
+    const pjObj = (S.projects || []).find(p => p.id === pjId);
+    if (!pjObj) return false;
+    const myEmail = (S.user?.email || "").toLowerCase().trim();
+    return (pjObj.manager || "").toLowerCase().trim() === myEmail;
+  }
+  return false;
+}
+function doLogout(){
+  if(confirm(t("logout") + "?")) {
+    google.script.run.withSuccessHandler(u => {
+      if (u) {
+        try { window.top.location.href = u; }
+        catch(e) { window.open(u, '_blank'); }
+      }
+    }).getLogoutUrl();
+  }
+}
+function gSearch(q){
+  const ap = document.querySelector(".page.active")?.id;
+  if (ap === "page-projects") {
+    const inp = document.getElementById("pp-s");
+    if (inp) { inp.value = q; filterPgPj(); }
+  } else if (ap === "page-tasks") {
+    const inp = document.getElementById("pt-s");
+    if (inp) { inp.value = q; filterPgTk(); }
+  } else if (ap === "page-gantt") {
+    const inp = document.getElementById("g-srch2");
+    if (inp) { inp.value = q; ganttSearch(q); }
+  } else {
+    const filtered = S.tasks.filter(t => !q || (t.name||"").toLowerCase().includes(q.toLowerCase()));
+    renderPtkGrid(filtered);
+  }
+}
+
+// ═══════════════════════════════════════
+//  ADVANCED ANALYTICS (BIỂU ĐỒ CHUYÊN SÂU)
+// ═══════════════════════════════════════
+let _anInitialised = false;
+let _anStaffInited = false;
+let _anCachedTableData = [];
+
+function loadAnalytics() {
+  if (!_anInitialised) {
+    initAnalyticsFilterBar();
+    _anInitialised = true;
+  } else {
+    popAnalyticsPjOptions();
+    if (!_anStaffInited && S.members && S.members.length) {
+      buildAnalyticsStaffList();
+    }
+  }
+  applyAnalyticsFilter();
+}
+
+function initAnalyticsFilterBar() {
+  popAnalyticsPjOptions();
+  buildAnalyticsStaffList();
+  setAnalyticsPreset('month', true);
+}
+
+function popAnalyticsPjOptions() {
+  const sel = document.getElementById("an-pj-sel");
+  if (!sel) return;
+  const curVal = sel.value || 'all';
+  sel.innerHTML = `<option value="all">${t('an_all_projects')}</option>`;
+  if (S.projects) {
+    S.projects.forEach(p => {
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = p.name;
+      if (p.id === curVal) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+function buildAnalyticsStaffList() {
+  const c = document.getElementById('an-staff-checklist');
+  const staffList = (typeof _getAllAssignees === 'function') ? _getAllAssignees() : (S.members || []);
+  if (!c || !staffList.length) return;
+  c.innerHTML = staffList.map(m => `
+    <label class="staff-cb-row">
+      <input type="checkbox" class="an-staff-cb" value="${m.email || m.code || m.name}" checked>
+      <span style="flex:1">${m.name || m.email || m.code}</span>
+      <span style="font-size:10px;color:var(--t3)">${tRole ? tRole(m.role) : (m.role || '')}</span>
+    </label>`).join('');
+  document.querySelectorAll('.an-staff-cb').forEach(cb => cb.addEventListener('change', syncAnStaffAllCheckbox));
+  _anStaffInited = true;
+  updateAnStaffFilterLabel();
+}
+
+function togAnStaffDrop(e) {
+  if (e) e.stopPropagation();
+  const d = document.getElementById('an-staff-drop');
+  if (!d) return;
+  d.style.display = (d.style.display === 'none' || !d.style.display) ? 'block' : 'none';
+}
+
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('an-staff-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    const d = document.getElementById('an-staff-drop');
+    if (d) d.style.display = 'none';
+  }
+});
+
+function anStaffSelectAll(cb) {
+  document.querySelectorAll('.an-staff-cb').forEach(c => c.checked = cb.checked);
+  updateAnStaffFilterLabel();
+}
+
+function syncAnStaffAllCheckbox() {
+  const all = [...document.querySelectorAll('.an-staff-cb')];
+  const allCb = document.getElementById('an-staff-all');
+  if (allCb) allCb.checked = all.every(c => c.checked);
+  updateAnStaffFilterLabel();
+}
+
+function updateAnStaffFilterLabel() {
+  const all = [...document.querySelectorAll('.an-staff-cb')];
+  const checked = all.filter(c => c.checked);
+  const lbl = document.getElementById('an-staff-label');
+  if (!lbl) return;
+  if (!all.length || checked.length === all.length) {
+    lbl.textContent = '👤 ' + t('an_all_members');
+  } else if (checked.length === 0) {
+    lbl.textContent = '👤 ' + (S.lang === 'ja' ? '未選択' : (S.lang === 'en' ? 'No staff selected' : 'Chưa chọn'));
+  } else if (checked.length === 1) {
+    const val = checked[0].value;
+    const m = (typeof _findMember === 'function') ? _findMember(val) : (S.members || []).find(x => x.email === val || x.code === val || x.name === val);
+    lbl.textContent = '👤 ' + (m ? m.name : val);
+  } else {
+    lbl.textContent = '👤 ' + t('an_comparing_members', { n: checked.length });
+  }
+}
+
+function getAnSelectedStaff() {
+  const all = [...document.querySelectorAll('.an-staff-cb')];
+  if (!all.length) return null;
+  const checked = all.filter(c => c.checked).map(c => c.value);
+  return checked.length === all.length ? null : checked;
+}
+
+function applyAnStaffFilter() {
+  updateAnStaffFilterLabel();
+  const d = document.getElementById('an-staff-drop');
+  if (d) d.style.display = 'none';
+  applyAnalyticsFilter();
+}
+
+function resetAnStaffFilter() {
+  document.querySelectorAll('.an-staff-cb').forEach(c => c.checked = true);
+  const allCb = document.getElementById('an-staff-all');
+  if (allCb) allCb.checked = true;
+  updateAnStaffFilterLabel();
+  applyAnalyticsFilter();
+}
+
+function setAnalyticsPreset(preset, skipApply) {
+  const now = new Date();
+  let fStr = '', tStr = '';
+
+  function fmtYMD(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  if (preset === 'today') {
+    fStr = tStr = fmtYMD(now);
+  } else if (preset === 'week') {
+    const dayOfWeek = now.getDay() || 7;
+    const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek + 1);
+    const sun = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 6);
+    fStr = fmtYMD(mon);
+    tStr = fmtYMD(sun);
+  } else if (preset === 'month') {
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    fStr = fmtYMD(firstDay);
+    tStr = fmtYMD(lastDay);
+  } else if (preset === 'quarter') {
+    const curQ = Math.floor(now.getMonth() / 3);
+    const qStart = new Date(now.getFullYear(), curQ * 3, 1);
+    const qEnd = new Date(now.getFullYear(), curQ * 3 + 3, 0);
+    fStr = fmtYMD(qStart);
+    tStr = fmtYMD(qEnd);
+  } else if (preset === 'year') {
+    fStr = `${now.getFullYear()}-01-01`;
+    tStr = `${now.getFullYear()}-12-31`;
+  } else if (preset === 'all') {
+    fStr = '';
+    tStr = '';
+  }
+
+  const inpF = document.getElementById('an-from');
+  const inpT = document.getElementById('an-to');
+  if (inpF) inpF.value = fStr;
+  if (inpT) inpT.value = tStr;
+
+  document.querySelectorAll('.an-preset-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-preset') === preset);
+  });
+
+  if (!skipApply) {
+    applyAnalyticsFilter();
+  }
+}
+
+function onAnalyticsDateManualChange() {
+  document.querySelectorAll('.an-preset-btn').forEach(btn => btn.classList.remove('active'));
+  applyAnalyticsFilter();
+}
+
+function resetAnalyticsFilters() {
+  const selPj = document.getElementById('an-pj-sel');
+  if (selPj) selPj.value = 'all';
+  resetAnStaffFilter();
+  setAnalyticsPreset('month');
+}
+
+function getFilteredAnalyticsTasks() {
+  if (!S.tasks) return [];
+  const inpF = document.getElementById('an-from');
+  const inpT = document.getElementById('an-to');
+  const selPj = document.getElementById('an-pj-sel');
+  
+  const fStart = inpF && inpF.value ? parseLocalDate(inpF.value) : null;
+  const fEnd = inpT && inpT.value ? parseLocalDate(inpT.value) : null;
+  if (fEnd) fEnd.setHours(23, 59, 59, 999);
+  
+  const pjId = selPj ? selPj.value : 'all';
+  const selectedStaff = getAnSelectedStaff();
+
+  return S.tasks.filter(tk => {
+    if (pjId && pjId !== 'all') {
+      const pjObj = (S.projects || []).find(p => p.id === pjId);
+      const pjName = pjObj ? pjObj.name : "";
+      const matchId = tk.projectId && (String(tk.projectId).trim().toLowerCase() === String(pjId).trim().toLowerCase());
+      const matchName = pjName && (
+        String(tk.projectName || "").trim().toLowerCase() === pjName.trim().toLowerCase() ||
+        String(tk.projectName || "").toLowerCase().includes(pjName.toLowerCase()) ||
+        pjName.toLowerCase().includes(String(tk.projectName || "").toLowerCase())
+      );
+      if (!matchId && !matchName) return false;
+    }
+
+    if (selectedStaff && selectedStaff.length > 0) {
+      if (!tk.assignee) return false;
+      const disp = _displayName(tk.assignee).toLowerCase();
+      const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+      const matches = selectedStaff.some(em => {
+        const m = (typeof _findMember === 'function') ? _findMember(em) : (S.members || []).find(x => x.email === em || x.code === em || x.name === em);
+        const mName = (m && m.name ? m.name.toLowerCase() : "");
+        const mCode = (m && m.code ? m.code.toLowerCase() : "");
+        const emLower = String(em).toLowerCase();
+        return parts.includes(emLower) || (mName && (disp.includes(mName) || parts.includes(mName))) || (mCode && parts.includes(mCode));
+      });
+      if (!matches) return false;
+    }
+
+    if (fStart || fEnd) {
+      const tStart = tk.startDate ? parseLocalDate(tk.startDate) : null;
+      const tEnd = tk.deadline ? parseLocalDate(tk.deadline) : null;
+      if (tStart && tEnd) {
+        if (fEnd && tStart > fEnd) return false;
+        if (fStart && tEnd < fStart) return false;
+      } else if (tEnd) {
+        if (fStart && tEnd < fStart) return false;
+        if (fEnd && tEnd > fEnd) return false;
+      } else if (tStart) {
+        if (fStart && tStart < fStart) return false;
+        if (fEnd && tStart > fEnd) return false;
+      }
+    }
+    return true;
+  });
+}
+
+function applyAnalyticsFilter() {
+  const filteredTasks = getFilteredAnalyticsTasks();
+  const selectedStaff = getAnSelectedStaff();
+  
+  let targetMembers = (typeof _getAllAssignees === 'function') ? _getAllAssignees() : [...(S.members || [])];
+  if (selectedStaff && selectedStaff.length > 0) {
+    targetMembers = targetMembers.filter(m => selectedStaff.includes(m.email) || selectedStaff.includes(m.code) || selectedStaff.includes(m.name));
+  }
+
+  const distinctMembers = new Set();
+  const distinctPjs = new Set();
+  let doneCount = 0;
+  let ontimeCount = 0;
+
+  filteredTasks.forEach(tk => {
+    if (tk.projectId) distinctPjs.add(tk.projectId);
+    if (tk.assignee) {
+      const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+      parts.forEach(p => distinctMembers.add(p));
+    }
+    if (tk.status === 'Hoàn thành') {
+      doneCount++;
+      if (tk.deadline) {
+        const deadD = parseLocalDate(tk.deadline);
+        if (deadD) ontimeCount++;
+      } else {
+        ontimeCount++;
+      }
+    }
+  });
+
+  const ontimeRate = doneCount > 0 ? Math.round((ontimeCount / doneCount) * 100) : 100;
+
+  const elMb = document.getElementById('an-val-members');
+  const elPj = document.getElementById('an-val-projects');
+  const elTk = document.getElementById('an-val-tasks');
+  const elOt = document.getElementById('an-val-ontime');
+  if (elMb) elMb.textContent = distinctMembers.size;
+  if (elPj) elPj.textContent = distinctPjs.size;
+  if (elTk) elTk.textContent = filteredTasks.length;
+  if (elOt) elOt.textContent = ontimeRate + '%';
+
+  const badge = document.getElementById('an-badge-summary');
+  if (badge) {
+    badge.textContent = `${distinctPjs.size} ${t('nav_projects')} · ${filteredTasks.length} ${t('nav_tasks')} · ${distinctMembers.size} ${t('nav_users')}`;
+  }
+
+  renderAnalyticsCharts(filteredTasks, targetMembers);
+  renderAnalyticsTable(filteredTasks, targetMembers);
+}
+
+function renderAnalyticsCharts(tasks, members) {
+  if (!S.analyticsCharts) S.analyticsCharts = {};
+
+  ['workload', 'radar', 'pjShare', 'trend'].forEach(k => {
+    if (S.analyticsCharts[k]) {
+      try { S.analyticsCharts[k].destroy(); } catch(e) {}
+      S.analyticsCharts[k] = null;
+    }
+  });
+
+  const memberStats = members.map(m => {
+    const mEmail = (m.email || '').toLowerCase();
+    const mName = (m.name || '').toLowerCase();
+    const mCode = (m.code || '').toLowerCase();
+    const mTasks = tasks.filter(tk => {
+      if (!tk.assignee) return false;
+      const disp = _displayName(tk.assignee).toLowerCase();
+      if (mName && disp.includes(mName)) return true;
+      const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+      return (mEmail && parts.includes(mEmail)) || (mCode && parts.includes(mCode)) || (mName && parts.includes(mName));
+    });
+
+    const done = mTasks.filter(tk => tk.status === 'Hoàn thành').length;
+    const inProg = mTasks.filter(tk => tk.status === 'Đang thực hiện' || tk.status === 'Đang tiến hành').length;
+    const pending = mTasks.filter(tk => tk.status === 'Chờ thực hiện' || tk.status === 'Lên kế hoạch' || tk.status === 'Chờ duyệt').length;
+    const overdue = mTasks.filter(tk => tk.status === 'Quá hạn').length;
+    const highPri = mTasks.filter(tk => tk.priority === 'Khẩn cấp' || tk.priority === 'Cao').length;
+    const avgProg = mTasks.length > 0 ? Math.round(mTasks.reduce((acc, cur) => acc + (Number(cur.progress) || 0), 0) / mTasks.length) : 0;
+    const pjs = new Set(mTasks.map(tk => tk.projectId).filter(Boolean));
+
+    return {
+      member: m,
+      total: mTasks.length,
+      done,
+      inProg,
+      pending,
+      overdue,
+      highPri,
+      avgProg,
+      pjs,
+      rate: mTasks.length > 0 ? Math.round((done / mTasks.length) * 100) : 0
+    };
+  });
+
+  const sortedByWorkload = [...memberStats].filter(x => x.total > 0).sort((a, b) => b.total - a.total);
+  const displayMembers = sortedByWorkload.length ? sortedByWorkload : memberStats.slice(0, 10);
+
+  // 1. Chart Workload
+  const cWorkloadEl = document.getElementById('an-c-workload');
+  if (cWorkloadEl) {
+    const labels = displayMembers.map(x => x.member.name || x.member.email);
+    S.analyticsCharts.workload = new Chart(cWorkloadEl, {
+      type: 'bar',
+      data: {
+        labels: labels.length ? labels : [t('an_no_data')],
+        datasets: [
+          { label: tStatus('Hoàn thành'), data: displayMembers.map(x => x.done), backgroundColor: '#22c55e', borderRadius: 3 },
+          { label: tStatus('Đang thực hiện'), data: displayMembers.map(x => x.inProg), backgroundColor: '#4f6ef7', borderRadius: 3 },
+          { label: tStatus('Chờ thực hiện'), data: displayMembers.map(x => x.pending), backgroundColor: '#f59e0b', borderRadius: 3 },
+          { label: tStatus('Quá hạn'), data: displayMembers.map(x => x.overdue), backgroundColor: '#ef4444', borderRadius: 3 }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { stacked: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, font: { size: 10 } } },
+          y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } }
+        },
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // 2. Chart Radar
+  const cRadarEl = document.getElementById('an-c-radar');
+  if (cRadarEl) {
+    const radarLabels = [
+      t('an_radar_workload'),
+      t('an_radar_completion'),
+      t('an_radar_ontime'),
+      t('an_radar_highpri'),
+      t('an_radar_velocity')
+    ];
+
+    const radarColors = [
+      { border: '#4f6ef7', bg: 'rgba(79,110,247,0.2)' },
+      { border: '#f97316', bg: 'rgba(249,115,22,0.2)' },
+      { border: '#8b5cf6', bg: 'rgba(139,92,246,0.2)' },
+      { border: '#22c55e', bg: 'rgba(34,197,94,0.2)' },
+      { border: '#06b6d4', bg: 'rgba(6,182,212,0.2)' }
+    ];
+
+    const topActive = displayMembers.slice(0, 5);
+    const maxTasks = Math.max(...topActive.map(x => x.total), 1);
+
+    const radarDatasets = topActive.map((item, idx) => {
+      const col = radarColors[idx % radarColors.length];
+      const normWorkload = Math.round((item.total / maxTasks) * 100);
+      const highPriRate = item.total > 0 ? Math.round((item.highPri / item.total) * 100) : 0;
+      const ontimeRate = item.done > 0 ? Math.max(0, Math.round(((item.done - item.overdue) / item.done) * 100)) : 100;
+
+      return {
+        label: item.member.name || item.member.email,
+        data: [normWorkload, item.rate, ontimeRate, highPriRate, item.avgProg],
+        borderColor: col.border,
+        backgroundColor: col.bg,
+        pointBackgroundColor: col.border,
+        borderWidth: 2,
+        pointRadius: 3
+      };
+    });
+
+    S.analyticsCharts.radar = new Chart(cRadarEl, {
+      type: 'radar',
+      data: {
+        labels: radarLabels,
+        datasets: radarDatasets.length ? radarDatasets : [{
+          label: t('an_all_members'),
+          data: [0, 0, 0, 0, 0],
+          borderColor: '#94a3b8',
+          backgroundColor: 'rgba(148,163,184,0.1)'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            suggestedMin: 0,
+            suggestedMax: 100,
+            ticks: { stepSize: 25, display: false },
+            pointLabels: { font: { size: 10, weight: '600' }, color: '#475569' },
+            grid: { color: '#e2e8f0' }
+          }
+        },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // 3. Chart PJ Share
+  const cPjShareEl = document.getElementById('an-c-pj-share');
+  if (cPjShareEl) {
+    const pjMap = {};
+    tasks.forEach(tk => {
+      const pObj = (S.projects || []).find(p => p.id === tk.projectId || (p.name && tk.projectName && (p.name === tk.projectName || p.name.includes(tk.projectName) || tk.projectName.includes(p.name))));
+      const pName = (pObj && pObj.name) || tk.projectName || tk.projectId || 'Dự án khác';
+      pjMap[pName] = (pjMap[pName] || 0) + 1;
+    });
+
+    const pjLabels = Object.keys(pjMap);
+    const pjCounts = Object.values(pjMap);
+    const pjPalette = ['#4f6ef7', '#22c55e', '#f59e0b', '#06b6d4', '#8b5cf6', '#ec4899', '#f97316', '#64748b'];
+
+    S.analyticsCharts.pjShare = new Chart(cPjShareEl, {
+      type: 'doughnut',
+      data: {
+        labels: pjLabels.length ? pjLabels : [t('an_no_data')],
+        datasets: [{
+          data: pjCounts.length ? pjCounts : [1],
+          backgroundColor: pjLabels.length ? pjLabels.map((_, i) => pjPalette[i % pjPalette.length]) : ['#e2e8f0'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // 4. Chart Trend / Workload per Project
+  const cTrendEl = document.getElementById('an-c-trend');
+  if (cTrendEl) {
+    const pjStats = {};
+    tasks.forEach(tk => {
+      const pObj = (S.projects || []).find(p => p.id === tk.projectId || (p.name && tk.projectName && (p.name === tk.projectName || p.name.includes(tk.projectName) || tk.projectName.includes(p.name))));
+      const pName = (pObj && pObj.name) || tk.projectName || tk.projectId;
+      if (!pName) return;
+      if (!pjStats[pName]) pjStats[pName] = {};
+      
+      let assignedMember = 'Chưa gán';
+      if (tk.assignee) {
+        const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+        const found = members.find(m => {
+          const em = (m.email || '').toLowerCase();
+          const nm = (m.name || '').toLowerCase();
+          const cd = (m.code || '').toLowerCase();
+          return (em && parts.includes(em)) || (cd && parts.includes(cd)) || (nm && parts.includes(nm));
+        });
+        if (found) assignedMember = found.name || found.email;
+        else if (typeof _displayName === 'function') assignedMember = _displayName(tk.assignee);
+      }
+      pjStats[pName][assignedMember] = (pjStats[pName][assignedMember] || 0) + 1;
+    });
+
+    const projectLabels = Object.keys(pjStats).slice(0, 6);
+    const memberPalette = ['#4f6ef7', '#22c55e', '#f97316', '#8b5cf6', '#06b6d4', '#e11d48', '#64748b'];
+
+    const datasets = members.slice(0, 7).map((m, idx) => {
+      const name = m.name || m.email;
+      return {
+        label: name,
+        data: projectLabels.map(p => pjStats[p]?.[name] || 0),
+        backgroundColor: memberPalette[idx % memberPalette.length],
+        borderRadius: 3
+      };
+    });
+
+    S.analyticsCharts.trend = new Chart(cTrendEl, {
+      type: 'bar',
+      data: {
+        labels: projectLabels.length ? projectLabels : [t('an_no_data')],
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 20 } },
+          y: { stacked: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, font: { size: 10 } } }
+        },
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } }
+        }
+      }
+    });
+  }
+}
+
+function renderAnalyticsTable(tasks, members) {
+  const tbody = document.getElementById('an-table-tbody');
+  const badgeEl = document.getElementById('an-tbl-count-badge');
+  if (!tbody) return;
+
+  _anCachedTableData = members.map(m => {
+    const mEmail = m.email.toLowerCase();
+    const mName = (m.name || '').toLowerCase();
+    const mTasks = tasks.filter(tk => {
+      if (!tk.assignee) return false;
+      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+      return parts.includes(mEmail) || (mName && parts.includes(mName));
+    });
+
+    const done = mTasks.filter(tk => tk.status === 'Hoàn thành').length;
+    const inProg = mTasks.filter(tk => tk.status === 'Đang thực hiện' || tk.status === 'Đang tiến hành').length;
+    const overdue = mTasks.filter(tk => tk.status === 'Quá hạn').length;
+    const rate = mTasks.length > 0 ? Math.round((done / mTasks.length) * 100) : 0;
+    
+    const pjNames = [...new Set(mTasks.map(tk => tk.projectName || (S.projects.find(p => p.id === tk.projectId)?.name)).filter(Boolean))];
+
+    let rankBadge = `<span class="an-badge an-badge-blue">${t('an_rank_steady')}</span>`;
+    if (mTasks.length >= 5 && rate >= 80 && overdue === 0) {
+      rankBadge = `<span class="an-badge an-badge-gold">${t('an_rank_excellent')}</span>`;
+    } else if (rate >= 60 || mTasks.length >= 8) {
+      rankBadge = `<span class="an-badge an-badge-green">${t('an_rank_good')}</span>`;
+    } else if (overdue >= 2 || (mTasks.length > 0 && rate < 30)) {
+      rankBadge = `<span class="an-badge an-badge-warn">${t('an_rank_support')}</span>`;
+    }
+
+    return {
+      member: m,
+      total: mTasks.length,
+      done,
+      inProg,
+      overdue,
+      rate,
+      pjNames,
+      rankBadge
+    };
+  }).sort((a, b) => b.total - a.total);
+
+  if (badgeEl) {
+    badgeEl.textContent = `${_anCachedTableData.length} ${t('nav_users').toLowerCase()}`;
+  }
+
+  filterAnalyticsTable('');
+}
+
+function filterAnalyticsTable(query) {
+  const tbody = document.getElementById('an-table-tbody');
+  if (!tbody) return;
+  const q = (query || '').toLowerCase().trim();
+
+  const filtered = _anCachedTableData.filter(item => {
+    if (!q) return true;
+    const name = (item.member.name || '').toLowerCase();
+    const email = (item.member.email || '').toLowerCase();
+    const pjs = item.pjNames.join(' ').toLowerCase();
+    return name.includes(q) || email.includes(q) || pjs.includes(q);
+  });
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--t2)">${t('empty_no_users')}</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(row => {
+    const pjTags = row.pjNames.length
+      ? row.pjNames.map(pn => `<span class="an-pj-tag" title="${pn}">${pn.length > 20 ? pn.slice(0, 18) + '...' : pn}</span>`).join('')
+      : `<span style="color:var(--t3);font-size:11px">-</span>`;
+    
+    const barColor = row.rate >= 80 ? 'var(--g)' : (row.rate >= 50 ? 'var(--p)' : 'var(--w)');
+
+    return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--p),#6366f1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">
+              ${(row.member.name || row.member.email).slice(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--tx)">${row.member.name || row.member.email}</div>
+              <div style="font-size:10px;color:var(--t3)">${row.member.email} · ${tRole(row.member.role)}</div>
+            </div>
+          </div>
+        </td>
+        <td><div style="max-width:280px;display:flex;flex-wrap:wrap;gap:2px">${pjTags}</div></td>
+        <td style="text-align:center;font-weight:700">${row.total}</td>
+        <td style="text-align:center;color:var(--g);font-weight:600">${row.done}</td>
+        <td style="text-align:center;color:var(--p);font-weight:600">${row.inProg}</td>
+        <td style="text-align:center;color:${row.overdue > 0 ? 'var(--d)' : 'var(--t3)'};font-weight:${row.overdue > 0 ? '700' : 'normal'}">${row.overdue}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11px;font-weight:700;min-width:32px">${row.rate}%</span>
+            <div class="an-rate-bar-wrap">
+              <div class="an-rate-bar" style="width:${row.rate}%;background:${barColor}"></div>
+            </div>
+          </div>
+        </td>
+        <td style="text-align:center">${row.rankBadge}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TAXONOMY & STANDARDIZATION LOGIC (DANH MỤC TIÊU CHUẨN)
+// ═══════════════════════════════════════════════════════════
+let _activeTaxSubTab = 'CATEGORY';
+let _taxFilteredData = [];
+let _batchLegacyTasksList = [];
+
+function loadPgTaxonomy(force) {
+  if (typeof _activeTaxSubTab !== 'undefined' && _activeTaxSubTab === 'MATRIX') {
+    if (typeof renderPermissionMatrixTable === 'function') renderPermissionMatrixTable();
+    return;
+  }
+  if (!force && S.taxonomy && (S.taxonomy.categories?.length || S.taxonomy.phases?.length || S.taxonomy.disciplines?.length || S.taxonomy.projectCodes?.length)) {
+    renderTaxonomyTable();
+    return;
+  }
+  
+  const tbody = document.getElementById('tax-tbody');
+  if (tbody) tbody.innerHTML = `<tr><td colspan="7"><div class="ldg"><div class="spn"></div></div></td></tr>`;
+  
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success && res.data) {
+        S.taxonomy = res.data;
+        renderTaxonomyTable();
+        popTaskTaxonomySelects();
+      } else {
+        toast((res && res.error) || "Lỗi tải danh mục tiêu chuẩn", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .getTaxonomyData();
+}
+
+function switchTaxSubTab(subTab) {
+  _activeTaxSubTab = subTab;
+  ['cat', 'phase', 'disc', 'pjcode', 'emp', 'matrix'].forEach(id => {
+    const el = document.getElementById('tax-subtab-' + id);
+    if (el) el.classList.remove('active');
+  });
+  
+  const map = { CATEGORY: 'cat', PHASE: 'phase', DISCIPLINE: 'disc', PROJECT_CODE: 'pjcode', EMPLOYEE: 'emp', MATRIX: 'matrix' };
+  const curBtn = document.getElementById('tax-subtab-' + (map[subTab] || 'cat'));
+  if (curBtn) curBtn.classList.add('active');
+
+  const standardContainer = document.getElementById('tax-standard-container');
+  const matrixContainer = document.getElementById('tax-matrix-container');
+
+  if (subTab === 'MATRIX') {
+    if (standardContainer) standardContainer.style.display = 'none';
+    if (matrixContainer) matrixContainer.style.display = 'block';
+    renderPermissionMatrixTable();
+  } else {
+    if (standardContainer) standardContainer.style.display = 'block';
+    if (matrixContainer) matrixContainer.style.display = 'none';
+    const srch = document.getElementById('tax-srch');
+    if (srch) srch.value = '';
+    renderTaxonomyTable();
+  }
+}
+
+function getActiveTaxonomyList() {
+  if (!S.taxonomy) S.taxonomy = { categories: [], phases: [], disciplines: [], projectCodes: [], employees: [] };
+  if (_activeTaxSubTab === 'CATEGORY') return S.taxonomy.categories || [];
+  if (_activeTaxSubTab === 'PHASE') return S.taxonomy.phases || [];
+  if (_activeTaxSubTab === 'DISCIPLINE') return S.taxonomy.disciplines || [];
+  if (_activeTaxSubTab === 'PROJECT_CODE') return S.taxonomy.projectCodes || [];
+  if (_activeTaxSubTab === 'EMPLOYEE') return S.taxonomy.employees || [];
+  return [];
+}
+
+function renderTaxonomyTable() {
+  const tbody = document.getElementById('tax-tbody');
+  const countBadge = document.getElementById('tax-count-badge');
+  if (!tbody) return;
+
+  const rawList = getActiveTaxonomyList();
+  const srchText = (document.getElementById('tax-srch')?.value || '').toLowerCase().trim();
+  const statusFilter = (document.getElementById('tax-st-filter')?.value || '').trim();
+
+  _taxFilteredData = rawList.filter(item => {
+    if (statusFilter && item.status !== statusFilter) return false;
+    if (!srchText) return true;
+    return (
+      (item.code || '').toLowerCase().includes(srchText) ||
+      (item.name || '').toLowerCase().includes(srchText) ||
+      (item.name_vi || '').toLowerCase().includes(srchText) ||
+      (item.name_en || '').toLowerCase().includes(srchText) ||
+      (item.name_jp || '').toLowerCase().includes(srchText) ||
+      (item.desc || '').toLowerCase().includes(srchText) ||
+      (item.extra1 || '').toLowerCase().includes(srchText) ||
+      (item.extra2 || '').toLowerCase().includes(srchText) ||
+      (item.extra3 || '').toLowerCase().includes(srchText)
+    );
+  });
+
+  if (countBadge) {
+    countBadge.textContent = `${_taxFilteredData.length} ${t('tax_col_name').toLowerCase()}`;
+  }
+
+  if (!_taxFilteredData.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:36px;color:var(--t2)">${t('empty_no_users')} (0 tiêu chuẩn)</td></tr>`;
+    return;
+  }
+
+  const isAdmin = S.user && S.user.role === 'Admin';
+
+  tbody.innerHTML = _taxFilteredData.map((item, idx) => {
+    const badgeColor = item.color || (item.extra1 && item.extra1.startsWith('#') ? item.extra1 : '#4f6ef7');
+    const statusBadge = item.status === 'Active'
+      ? `<span class="badge bg-gr">Active</span>`
+      : `<span class="badge bg-gy">Archived</span>`;
+
+    let extraDisplay = '-';
+    if (_activeTaxSubTab === 'CATEGORY' || _activeTaxSubTab === 'DISCIPLINE' || _activeTaxSubTab === 'PHASE') {
+      extraDisplay = `
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="tax-color-dot" style="background:${badgeColor}"></span>
+          <span style="font-size:11px;font-family:monospace">${badgeColor}</span>
+          ${item.sortOrder ? `<span class="badge bg-bl" style="font-size:10px" title="Thứ tự">#${item.sortOrder}</span>` : ''}
+        </div>
+      `;
+    } else if (_activeTaxSubTab === 'PROJECT_CODE') {
+      const yr = item.extra1 || '2026';
+      const seqMatch = (item.name || '').match(/^(\d{4})[-_](\d{1,3})[-_]/);
+      const seqVal = item.extra3 || (seqMatch ? seqMatch[2] : '01');
+      extraDisplay = `
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span class="badge bg-pu" title="Năm">${yr}</span>
+          <span class="badge bg-bl" title="STT">#${String(seqVal).padStart(2, '0')}</span>
+          ${item.extra2 ? `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>` : ''}
+        </div>
+      `;
+    } else if (_activeTaxSubTab === 'EMPLOYEE') {
+      const sheetBtn = item.extra2
+        ? `<a href="${item.extra2}" target="_blank" style="color:var(--p);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:3px">📊 Sheet ↗</a>`
+        : `<span style="color:var(--t3);font-size:11px">${t('ts_sheet_none')}</span>`;
+      const rawRole = String(item.extra3 || "").toLowerCase().trim();
+      let permBadge = `<span class="badge bg-gr" style="font-size:10px">${t('tax_perm_level4')}</span>`;
+      if (["admin", "cấp 1", "level1", "1"].includes(rawRole)) {
+        permBadge = `<span class="badge bg-re" style="font-size:10px">${t('tax_perm_level1')}</span>`;
+      } else if (["leader", "cấp 2", "level2", "2"].includes(rawRole)) {
+        permBadge = `<span class="badge bg-pu" style="font-size:10px">${t('tax_perm_level2')}</span>`;
+      } else if (["pj_lead", "pj lead", "cấp 3", "level3", "3", "manager"].includes(rawRole)) {
+        permBadge = `<span class="badge bg-bl" style="font-size:10px">${t('tax_perm_level3')}</span>`;
+      }
+      extraDisplay = `
+        <div style="font-size:11px;line-height:1.4">
+          <div>📧 <span style="color:var(--tx);font-weight:600">${item.extra1 || '-'}</span></div>
+          <div style="margin-top:2px;display:flex;align-items:center;gap:6px">${sheetBtn} ${permBadge}</div>
+        </div>
+      `;
+    } else if (item.extra2) {
+      extraDisplay = `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>`;
+    }
+
+    const nameJP = item.name_jp || item.extra2 || item.desc || '';
+
+    return `
+      <tr>
+        <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+        <td>
+          <span class="tax-code-badge" style="background:${badgeColor}15;color:${badgeColor};border:1px solid ${badgeColor}40">
+            ${item.code}
+          </span>
+        </td>
+        <td>
+          <div style="font-weight:700;color:var(--tx);font-size:13px">${tTaxonomy(item)}</div>
+        </td>
+        <td style="font-size:12px;color:var(--t2);max-width:300px;line-height:1.4">${_activeTaxSubTab === 'PROJECT_CODE' ? (item.desc || nameJP || '-') : (item.desc || '-')}</td>
+        <td>${extraDisplay}</td>
+        <td>${statusBadge}</td>
+        <td>
+          <div style="display:flex;gap:4px">
+            <button type="button" class="btn bs" style="padding:2px 7px;font-size:11px" onclick="openTaxonomyMod('${item.id}')">✏️ ${t('btn_edit')}</button>
+            ${isAdmin ? `<button type="button" class="btn bs" style="padding:2px 7px;font-size:11px;color:var(--d);border-color:#fee2e2" onclick="deleteTaxonomyItemClick('${item.id}','${item.code}')">🗑️</button>` : ''}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterTaxonomyTable() {
+  renderTaxonomyTable();
+}
+
+function formatTaxProjectSeq() {
+  const seqInp = document.getElementById('mtax-pjc-seq');
+  if (!seqInp) return;
+  const val = seqInp.value.trim();
+  if (val && !isNaN(val)) {
+    seqInp.value = String(parseInt(val, 10)).padStart(2, '0');
+  }
+  syncTaxProjectName();
+}
+
+function syncTaxProjectName() {
+  const yr = (document.getElementById('mtax-pjc-year')?.value || '').trim();
+  const seq = (document.getElementById('mtax-pjc-seq')?.value || '').trim();
+  const code = (document.getElementById('mtax-pjc-code')?.value || '').trim().toUpperCase();
+  const desc = (document.getElementById('mtax-pjc-desc')?.value || '').trim();
+  const nameInp = document.getElementById('mtax-pjc-name');
+  if (nameInp) {
+    const parts = [];
+    if (yr) parts.push(yr);
+    if (seq) parts.push(String(seq).padStart(2, '0'));
+    if (code) parts.push(code);
+    let cleanDesc = desc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+    if (code) cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+    if (cleanDesc) parts.push(cleanDesc);
+    nameInp.value = parts.join('_');
+  }
+  updateTaxPreview();
+}
+
+function syncTaxNameInputs() {
+  const vi = document.getElementById('mtax-name-vi')?.value || '';
+  const hiddenName = document.getElementById('mtax-name');
+  if (hiddenName) hiddenName.value = vi;
+}
+
+function openTaxonomyMod(id) {
+  const modalTi = document.getElementById('mtax-modal-ti');
+  const idInp = document.getElementById('mtax-id');
+  const typeSel = document.getElementById('mtax-type');
+  const codeInp = document.getElementById('mtax-code');
+  const orderInp = document.getElementById('mtax-order');
+  const nameViInp = document.getElementById('mtax-name-vi');
+  const nameEnInp = document.getElementById('mtax-name-en');
+  const nameJpInp = document.getElementById('mtax-name-jp');
+  const nameInp = document.getElementById('mtax-name');
+  const descInp = document.getElementById('mtax-desc');
+  const extra1Inp = document.getElementById('mtax-extra1');
+  const colorInp = document.getElementById('mtax-color-inp');
+  const extra2Inp = document.getElementById('mtax-extra2');
+  const extra3Sel = document.getElementById('mtax-extra3');
+  const statusSel = document.getElementById('mtax-status');
+
+  idInp.value = id || '';
+  
+  if (id) {
+    if (modalTi) modalTi.textContent = '✏️ ' + t('btn_edit') + ' ' + t('nav_taxonomy');
+    const all = [
+      ...(S.taxonomy.categories || []),
+      ...(S.taxonomy.phases || []),
+      ...(S.taxonomy.disciplines || []),
+      ...(S.taxonomy.projectCodes || []),
+      ...(S.taxonomy.employees || [])
+    ];
+    const item = all.find(x => x.id === id);
+    if (item) {
+      typeSel.value = item.type;
+      if (item.type === 'PROJECT_CODE') {
+        const pjcYear = document.getElementById('mtax-pjc-year');
+        const pjcSeq = document.getElementById('mtax-pjc-seq');
+        const pjcCode = document.getElementById('mtax-pjc-code');
+        const pjcDesc = document.getElementById('mtax-pjc-desc');
+        const pjcName = document.getElementById('mtax-pjc-name');
+        const pjcExtra2 = document.getElementById('mtax-pjc-extra2');
+
+        const seqMatch = (item.name || item.name_en || item.desc || '').match(/^(\d{4})[-_](\d{1,3})[-_]([A-Za-z0-9]+)[-_](.*)$/);
+        const yr = item.extra1 || (seqMatch ? seqMatch[1] : new Date().getFullYear().toString());
+        const seq = item.extra3 || (seqMatch ? seqMatch[2] : (item.sortOrder ? String(item.sortOrder) : '01'));
+        const code = item.code || (seqMatch ? seqMatch[3] : '');
+
+        let cleanDesc = item.desc || item.name_jp || item.name_vi || '';
+        cleanDesc = cleanDesc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+        if (code) cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+
+        if (pjcYear) pjcYear.value = yr;
+        if (pjcSeq) pjcSeq.value = String(seq).padStart(2, '0');
+        if (pjcCode) pjcCode.value = code;
+        if (pjcDesc) pjcDesc.value = cleanDesc;
+        if (pjcExtra2) pjcExtra2.value = item.extra2 || item.name_jp || '';
+        if (pjcName) pjcName.value = formatStandardProjectCodeName(item);
+      } else {
+        codeInp.value = item.code || '';
+        if (orderInp) orderInp.value = item.sortOrder || 1;
+        if (nameViInp) nameViInp.value = item.name_vi || item.name || '';
+        if (nameEnInp) nameEnInp.value = item.name_en || '';
+        if (nameJpInp) nameJpInp.value = item.name_jp || item.extra2 || '';
+        if (nameInp) nameInp.value = item.name_vi || item.name || '';
+        descInp.value = item.desc || '';
+        if (item.type === 'EMPLOYEE') {
+          let emailVal = item.extra1 || item.email || '';
+          if (emailVal.startsWith('#') || !emailVal.includes('@')) {
+            const uFound = (S.members || []).find(m => m.id === item.code || m.name === item.name);
+            emailVal = (uFound && uFound.email && uFound.email.includes('@')) ? uFound.email : '';
+          }
+          extra1Inp.value = emailVal;
+        } else {
+          extra1Inp.value = item.color || item.extra1 || '';
+        }
+        if (colorInp && (item.color || item.extra1) && (item.color || item.extra1).startsWith('#')) {
+          colorInp.value = item.color || item.extra1;
+        }
+        extra2Inp.value = item.name_jp || item.extra2 || '';
+        if (extra3Sel) {
+          const raw = String(item.extra3 || "").toLowerCase().trim();
+          if (["admin", "cấp 1", "level1", "1"].includes(raw)) {
+            extra3Sel.value = "Admin";
+          } else if (["leader", "cấp 2", "level2", "2"].includes(raw)) {
+            extra3Sel.value = "Leader";
+          } else if (["pj_lead", "pj lead", "cấp 3", "level3", "3", "manager"].includes(raw)) {
+            extra3Sel.value = "PJ_Lead";
+          } else {
+            extra3Sel.value = "Member";
+          }
+        }
+      }
+      statusSel.value = item.status || 'Active';
+    }
+  } else {
+    if (modalTi) modalTi.textContent = '📐 ' + t('tax_btn_add');
+    typeSel.value = _activeTaxSubTab;
+    codeInp.value = '';
+    if (orderInp) orderInp.value = '1';
+    if (nameViInp) nameViInp.value = '';
+    if (nameEnInp) nameEnInp.value = '';
+    if (nameJpInp) nameJpInp.value = '';
+    if (nameInp) nameInp.value = '';
+    descInp.value = '';
+    extra1Inp.value = _activeTaxSubTab === 'EMPLOYEE' ? '' : '#4f6ef7';
+    if (colorInp) colorInp.value = '#4f6ef7';
+    extra2Inp.value = '';
+    if (extra3Sel) extra3Sel.value = 'Member';
+    statusSel.value = 'Active';
+
+    if (_activeTaxSubTab === 'PROJECT_CODE') {
+      const curYear = new Date().getFullYear().toString();
+      const existingSeqs = ((S.taxonomy && S.taxonomy.projectCodes) || []).map(c => {
+        if (c.extra3 && /^\d+$/.test(c.extra3)) return parseInt(c.extra3, 10);
+        const m = (c.name || '').match(new RegExp(`^${curYear}[-_](\\d{1,3})[-_]`));
+        return m ? parseInt(m[1], 10) : 0;
+      }).filter(n => n > 0);
+      const nextSeq = String(existingSeqs.length ? (Math.max(...existingSeqs) + 1) : 1).padStart(2, '0');
+
+      const pjcYear = document.getElementById('mtax-pjc-year');
+      const pjcSeq = document.getElementById('mtax-pjc-seq');
+      const pjcCode = document.getElementById('mtax-pjc-code');
+      const pjcDesc = document.getElementById('mtax-pjc-desc');
+      const pjcName = document.getElementById('mtax-pjc-name');
+      const pjcExtra2 = document.getElementById('mtax-pjc-extra2');
+
+      if (pjcYear) pjcYear.value = curYear;
+      if (pjcSeq) pjcSeq.value = nextSeq;
+      if (pjcCode) pjcCode.value = '';
+      if (pjcDesc) pjcDesc.value = '';
+      if (pjcExtra2) pjcExtra2.value = '';
+      if (pjcName) pjcName.value = '';
+    }
+  }
+
+  onTaxModalTypeChange();
+  openModal('m-tax');
+}
+
+function onTaxModalTypeChange() {
+  const type = document.getElementById('mtax-type')?.value || 'CATEGORY';
+  const pjcSection = document.getElementById('mtax-pjc-section');
+  const stdSection = document.getElementById('mtax-std-section');
+
+  if (type === 'PROJECT_CODE') {
+    if (pjcSection) pjcSection.style.display = 'block';
+    if (stdSection) stdSection.style.display = 'none';
+    syncTaxProjectName();
+    return;
+  }
+
+  if (pjcSection) pjcSection.style.display = 'none';
+  if (stdSection) stdSection.style.display = 'block';
+
+  const codeLbl = document.getElementById('mtax-code-lbl');
+  const codeHint = document.getElementById('mtax-code-hint');
+  const codeInp = document.getElementById('mtax-code');
+  const orderWrap = document.getElementById('mtax-order-wrap');
+  const nameLbl = document.getElementById('mtax-name-lbl');
+  const nameViInp = document.getElementById('mtax-name-vi');
+  const multilangRow = document.getElementById('mtax-name-multilang-row');
+  const descLbl = document.getElementById('mtax-desc-lbl');
+  const descInp = document.getElementById('mtax-desc');
+  const extra1Lbl = document.getElementById('mtax-extra1-lbl');
+  const colorInp = document.getElementById('mtax-color-inp');
+  const extra1Inp = document.getElementById('mtax-extra1');
+  const pickerGroup = document.querySelector('.tax-color-picker-group');
+  const extra2Lbl = document.getElementById('mtax-extra2-lbl');
+  const extra2Inp = document.getElementById('mtax-extra2');
+  const sheetBtn = document.getElementById('btn-create-staff-sheet');
+  const extra3Wrap = document.getElementById('mtax-extra3-wrap');
+
+  if (type === 'EMPLOYEE') {
+    if (codeLbl) codeLbl.innerHTML = `<span>Mã nhân viên (Staff Code)</span> <span class="req">*</span>`;
+    if (codeHint) codeHint.textContent = "VD: NV01, NV02...";
+    if (codeInp) codeInp.placeholder = "VD: NV01";
+    if (orderWrap) orderWrap.style.display = 'none';
+    if (nameLbl) nameLbl.innerHTML = `<span>Họ và tên</span> <span class="req">*</span>`;
+    if (nameViInp) nameViInp.placeholder = "VD: Nguyễn Văn A";
+    if (multilangRow) multilangRow.style.display = 'none';
+    if (descLbl) descLbl.textContent = "Cấp bậc / Vị trí chuyên môn";
+    if (descInp) descInp.placeholder = "VD: Kỹ sư kết cấu, Kiến trúc sư...";
+    if (extra1Lbl) extra1Lbl.textContent = "Email Google đăng nhập *";
+    if (extra1Inp) extra1Inp.placeholder = "VD: nv01@v2d.com";
+    if (colorInp) colorInp.style.display = 'none';
+    if (pickerGroup) pickerGroup.style.display = 'none';
+    if (extra2Lbl) extra2Lbl.textContent = "Link Google Sheet cá nhân";
+    if (extra2Inp) extra2Inp.placeholder = "https://docs.google.com/spreadsheets/d/...";
+    if (sheetBtn) sheetBtn.style.display = 'block';
+    if (extra3Wrap) extra3Wrap.style.display = 'block';
+  } else {
+    if (codeLbl) codeLbl.innerHTML = `<span>${t('tax_col_code')}</span> <span class="req">*</span>`;
+    if (codeHint) codeHint.textContent = "2-5 ký tự in hoa";
+    if (codeInp) codeInp.placeholder = "VD: AR, STR, M3...";
+    if (orderWrap) orderWrap.style.display = 'block';
+    if (nameLbl) nameLbl.innerHTML = `<span>🇻🇳 Tên Tiếng Việt</span> <span class="req">*</span>`;
+    if (nameViInp) nameViInp.placeholder = "VD: Dựng hình kiến trúc...";
+    if (multilangRow) multilangRow.style.display = 'flex';
+    if (descLbl) descLbl.textContent = t('tax_col_fullname');
+    if (descInp) descInp.placeholder = "Mô tả phạm vi áp dụng, chi tiết nội dung đầu việc...";
+    if (extra1Lbl) extra1Lbl.textContent = 'Màu nhận diện (Hex)';
+    if (colorInp) colorInp.style.display = 'block';
+    if (pickerGroup) pickerGroup.style.display = 'flex';
+    if (extra2Lbl) extra2Lbl.textContent = t('tax_col_notes');
+    if (extra2Inp) extra2Inp.placeholder = "VD: 建築モデリング...";
+    if (sheetBtn) sheetBtn.style.display = 'none';
+    if (extra3Wrap) extra3Wrap.style.display = 'none';
+  }
+  updateTaxPreview();
+}
+
+function pickTaxColor(hex) {
+  if (!hex) return;
+  const colorInp = document.getElementById('mtax-color-inp');
+  const extra1Inp = document.getElementById('mtax-extra1');
+  if (colorInp && hex.startsWith('#')) colorInp.value = hex;
+  if (extra1Inp) extra1Inp.value = hex;
+
+  document.querySelectorAll('.tax-color-opt').forEach(el => {
+    el.classList.toggle('selected', el.style.background === hex || el.getAttribute('data-color') === hex);
+  });
+  updateTaxPreview();
+}
+
+function updateTaxPreview() {
+  const previewBox = document.getElementById('mtax-preview-badge');
+  if (!previewBox) return;
+
+  const type = document.getElementById('mtax-type')?.value;
+  let code, name, color;
+  if (type === 'PROJECT_CODE') {
+    code = (document.getElementById('mtax-pjc-code')?.value || 'CODE').toUpperCase();
+    name = document.getElementById('mtax-pjc-name')?.value || 'Tên hiển thị';
+    color = '#6366f1';
+  } else {
+    code = (document.getElementById('mtax-code')?.value || 'CODE').toUpperCase();
+    name = document.getElementById('mtax-name-vi')?.value || document.getElementById('mtax-name')?.value || 'Tên hiển thị';
+    const c = document.getElementById('mtax-extra1')?.value || '#4f6ef7';
+    color = (c && c.startsWith('#')) ? c : '#4f6ef7';
+  }
+
+  previewBox.innerHTML = `
+    <span class="tax-code-badge" style="background:${color}15;color:${color};border:1px solid ${color}40">${code}</span>
+    <span style="font-weight:600;font-size:12px;color:var(--tx)">${name}</span>
+  `;
+}
+
+function submitTaxonomyItem() {
+  const id = document.getElementById('mtax-id')?.value;
+  const type = document.getElementById('mtax-type')?.value;
+  const status = document.getElementById('mtax-status')?.value || 'Active';
+  let code, name, name_vi, name_en, name_jp, desc, extra1, extra2, extra3, sortOrder;
+
+  if (type === 'PROJECT_CODE') {
+    extra1 = (document.getElementById('mtax-pjc-year')?.value || '').trim();
+    extra3 = (document.getElementById('mtax-pjc-seq')?.value || '').trim();
+    code = (document.getElementById('mtax-pjc-code')?.value || '').trim().toUpperCase();
+    desc = (document.getElementById('mtax-pjc-desc')?.value || '').trim();
+    extra2 = (document.getElementById('mtax-pjc-extra2')?.value || '').trim();
+    sortOrder = parseInt(extra3, 10) || 1;
+
+    if (!extra1) { toast("Vui lòng nhập năm triển khai", "error"); return; }
+    if (!extra3) { toast("Vui lòng nhập số thứ tự (STT)", "error"); return; }
+    if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
+    if (!desc) { toast("Vui lòng nhập tên đầy đủ dự án", "error"); return; }
+
+    const seqPad = String(extra3).padStart(2, '0');
+    let cleanDesc = desc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+    if (code) cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+
+    const standardProjectName = `${extra1}_${seqPad}_${code}_${cleanDesc}`;
+    name = standardProjectName;
+    name_vi = standardProjectName; // Tên phân loại chuẩn: Năm_STT_Mã_Tên đầy đủ
+    name_en = standardProjectName;
+    name_jp = extra2 || cleanDesc;
+    desc = cleanDesc;
+  } else {
+    code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
+    name_vi = (document.getElementById('mtax-name-vi')?.value || document.getElementById('mtax-name')?.value || '').trim();
+    name_en = (document.getElementById('mtax-name-en')?.value || '').trim();
+    name_jp = (document.getElementById('mtax-name-jp')?.value || '').trim();
+    name = name_vi;
+    desc = (document.getElementById('mtax-desc')?.value || '').trim();
+    extra1 = (document.getElementById('mtax-extra1')?.value || '').trim();
+    extra2 = name_jp || (document.getElementById('mtax-extra2')?.value || '').trim();
+    extra3 = (document.getElementById('mtax-extra3')?.value || '').trim();
+    sortOrder = parseInt(document.getElementById('mtax-order')?.value || '1', 10) || 1;
+
+    if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
+    if (!name_vi) { toast("Vui lòng nhập tên phân loại", "error"); return; }
+  }
+
+  const payload = {
+    id,
+    type,
+    code,
+    name: name_vi || name,
+    name_vi: name_vi || name,
+    name_en: name_en,
+    name_jp: name_jp,
+    desc,
+    color: extra1,
+    extra1,
+    extra2,
+    extra3,
+    sortOrder,
+    status
+  };
+
+  toast("Đang lưu tiêu chuẩn...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        closeModal('m-tax');
+        toast(res.message || t('tax_item_saved'), "success");
+        if (type === 'EMPLOYEE') {
+          // Cập nhật ngay trong cache frontend (Optimistic UI)
+          const newCode = payload.code;
+          if (Array.isArray(S.members)) {
+            const m = S.members.find(x => (payload.extra1 && x.email === payload.extra1) || (payload.id && x.id === payload.id?.replace(/^EMP_/, '')) || x.id === newCode);
+            if (m) {
+              m.id = newCode;
+              m.code = newCode;
+              m.name = payload.name;
+            }
+          }
+          if (S.user && (S.user.email === payload.extra1 || S.user.staffCode === payload.id?.replace(/^EMP_/, ''))) {
+            S.user.staffCode = newCode;
+            S.user.id = newCode;
+            S.user.name = payload.name;
+          }
+        }
+        loadPgTaxonomy(true);
+      } else {
+        toast((res && res.error) || "Lỗi lưu tiêu chuẩn", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .saveTaxonomyItem(payload);
+}
+
+
+function createStaffSheetClick() {
+  const code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
+  const name = (document.getElementById('mtax-name')?.value || '').trim();
+  const email = (document.getElementById('mtax-extra1')?.value || '').trim();
+
+  if (!code || !name) {
+    toast("Vui lòng nhập Mã nhân viên và Họ tên trước khi tạo bảng tính", "error");
+    return;
+  }
+
+  const btn = document.getElementById('btn-create-staff-sheet');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "⏳ Đang tạo bảng tính...";
+  }
+
+  toast("Đang khởi tạo Google Sheet mới cho nhân sự...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = t('tax_create_sheet');
+      }
+      if (res && res.success && res.sheetUrl) {
+        const extra2Inp = document.getElementById('mtax-extra2');
+        if (extra2Inp) extra2Inp.value = res.sheetUrl;
+        toast(t('tax_create_sheet_success'), "success");
+      } else {
+        toast((res && res.error) || "Lỗi khi tạo Google Sheet", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = t('tax_create_sheet');
+      }
+      toast(err.message || "Lỗi hệ thống", "error");
+    })
+    .createNewStaffSpreadsheet(code, name, email);
+}
+
+function deleteTaxonomyItemClick(id, code) {
+  if (!confirm(`Bạn có chắc chắn muốn xóa tiêu chuẩn [${code}]?`)) return;
+
+  toast("Đang xóa tiêu chuẩn...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        toast(t('tax_item_deleted'), "success");
+        loadPgTaxonomy(true);
+      } else {
+        toast((res && res.error) || "Lỗi xóa tiêu chuẩn", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi xóa tiêu chuẩn", "error");
+    })
+    .deleteTaxonomyItem(id);
+}
+
+function restoreDefaultTaxonomy() {
+  if (!confirm("Khôi phục danh mục mẫu tiêu chuẩn từ hệ thống? Các tiêu chuẩn mặc định theo bảng quy định sẽ được thiết lập lại.")) return;
+
+  toast("Đang khôi phục danh mục mẫu...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success && res.data) {
+        S.taxonomy = res.data;
+        renderTaxonomyTable();
+        popTaskTaxonomySelects();
+        if (typeof renderTimesheetGrid === 'function') renderTimesheetGrid();
+        toast("Đã nạp danh mục mẫu chuẩn thành công!", "success");
+      } else {
+        toast((res && res.error) || "Lỗi khôi phục danh mục mẫu", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối", "error");
+    })
+    .loadDefaultTaxonomy();
+}
+
+function popTaskTaxonomySelects() {
+  const catOptions = `<option value="">-- ${t('tax_lbl_cat')} --</option>` +
+    ((S.taxonomy && S.taxonomy.categories) || []).filter(c => c.status === 'Active').map(c => `
+      <option value="${c.code}">${c.code} - ${tTaxonomy(c)}</option>
+    `).join('');
+
+  const phaseOptions = `<option value="">-- ${t('tax_lbl_phase')} --</option>` +
+    ((S.taxonomy && S.taxonomy.phases) || []).filter(p => p.status === 'Active').map(p => `
+      <option value="${p.code}">${p.code} - ${tTaxonomy(p)}</option>
+    `).join('');
+
+  const discOptions = `<option value="">-- ${t('tax_lbl_disc')} --</option>` +
+    ((S.taxonomy && S.taxonomy.disciplines) || []).filter(d => d.status === 'Active').map(d => `
+      <option value="${d.code}">${d.code} - ${tTaxonomy(d)}</option>
+    `).join('');
+
+  // 1. Quick Task Modal
+  const qCat = document.getElementById('mqtk-cat');
+  const qPhase = document.getElementById('mqtk-phase');
+  const qDisc = document.getElementById('mqtk-disc');
+  if (qCat) { const cur = qCat.value; qCat.innerHTML = catOptions; if (cur) qCat.value = cur; }
+  if (qPhase) { const cur = qPhase.value; qPhase.innerHTML = phaseOptions; if (cur) qPhase.value = cur; }
+  if (qDisc) { const cur = qDisc.value; qDisc.innerHTML = discOptions; if (cur) qDisc.value = cur; }
+
+  // 2. Full Task Edit Panel
+  const tpCat = document.getElementById('tp-cat');
+  const tpPhase = document.getElementById('tp-phase');
+  const tpDisc = document.getElementById('tp-disc');
+  if (tpCat) { const cur = tpCat.value; tpCat.innerHTML = catOptions; if (cur) tpCat.value = cur; }
+  if (tpPhase) { const cur = tpPhase.value; tpPhase.innerHTML = phaseOptions; if (cur) tpPhase.value = cur; }
+  if (tpDisc) { const cur = tpDisc.value; tpDisc.innerHTML = discOptions; if (cur) tpDisc.value = cur; }
+}
+
+function onTaskTaxonomyChange(mode) {
+  if (mode === 'tp') {
+    const cat = document.getElementById('tp-cat')?.value || '';
+    const phase = document.getElementById('tp-phase')?.value || '';
+    const disc = document.getElementById('tp-disc')?.value || '';
+    const parts = [cat, phase, disc].filter(Boolean);
+    const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+    const badge = document.getElementById('tp-tax-preview-badge');
+    if (badge) {
+      if (prefix) {
+        badge.textContent = prefix;
+        badge.style.background = '#eef2ff';
+        badge.style.color = 'var(--p)';
+        badge.style.borderColor = '#c7d2fe';
+      } else {
+        badge.textContent = (typeof t === 'function' ? t('tax_prefix_none') : null) || '[CHƯA GÁN MÃ]';
+        badge.style.background = '#fff7ed';
+        badge.style.color = '#ea580c';
+        badge.style.borderColor = '#fdba74';
+      }
+    }
+
+    const nmInp = document.getElementById('tp-nm');
+    if (!nmInp) return;
+
+    let discName = '';
+    if (disc) {
+      const curLang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      if (discTax && typeof tTaxonomy === 'function') {
+        discName = tTaxonomy(discTax, curLang);
+      }
+      if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        discName = std[curLang] || std['vi'] || '';
+      }
+    }
+
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Za-z0-9_\-]+\]\s*[-–—:]?\s*/i, '').trim();
+
+    if (disc) {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      const cands = [];
+      if (discTax) { cands.push(discTax.name_vi, discTax.name_en, discTax.name_jp, discTax.name); }
+      if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        cands.push(std.vi, std.en, std.ja);
+      }
+      cands.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成');
+      for (const c of cands) {
+        if (!c) continue;
+        const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+        const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\function onTaskTaxonomyChange(mode) {
+  if (mode === 'tp') {
+    const cat = document.getElementById('tp-cat')?.value || '';
+    const phase = document.getElementById('tp-phase')?.value || '';
+    const disc = document.getElementById('tp-disc')?.value || '';
+    const parts = [cat, phase, disc].filter(Boolean);
+    const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+    const badge = document.getElementById('tp-tax-preview-badge');
+    if (badge) {
+      if (prefix) {
+        badge.textContent = prefix;
+        badge.style.background = '#eef2ff';
+        badge.style.color = 'var(--p)';
+        badge.style.borderColor = '#c7d2fe';
+      } else {
+        badge.textContent = t('tax_prefix_none') || '[CHƯA GÁN MÃ]';
+        badge.style.background = '#fff7ed';
+        badge.style.color = '#ea580c';
+        badge.style.borderColor = '#fdba74';
+      }
+    }
+
+    const nmInp = document.getElementById('tp-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+    return;
+  }
+
+  // Default / Single mode for #m-qtk
+  const cat = document.getElementById('mqtk-cat')?.value || '';
+  const phase = document.getElementById('mqtk-phase')?.value || '';
+  const disc = document.getElementById('mqtk-disc')?.value || '';
+
+  const parts = [cat, phase, disc].filter(Boolean);
+  const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+  const prevTxt = document.getElementById('qtk-tax-preview-txt');
+  if (prevTxt) {
+    prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
+  }
+
+  if (mode === 'single') {
+    const nmInp = document.getElementById('mqtk-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+  }
+}') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+        if (rx1.test(curVal)) { curVal = curVal.replace(rx1, '').trim(); }
+        if (cleanCand && cleanCand !== c) {
+          const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\function onTaskTaxonomyChange(mode) {
+  if (mode === 'tp') {
+    const cat = document.getElementById('tp-cat')?.value || '';
+    const phase = document.getElementById('tp-phase')?.value || '';
+    const disc = document.getElementById('tp-disc')?.value || '';
+    const parts = [cat, phase, disc].filter(Boolean);
+    const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+    const badge = document.getElementById('tp-tax-preview-badge');
+    if (badge) {
+      if (prefix) {
+        badge.textContent = prefix;
+        badge.style.background = '#eef2ff';
+        badge.style.color = 'var(--p)';
+        badge.style.borderColor = '#c7d2fe';
+      } else {
+        badge.textContent = t('tax_prefix_none') || '[CHƯA GÁN MÃ]';
+        badge.style.background = '#fff7ed';
+        badge.style.color = '#ea580c';
+        badge.style.borderColor = '#fdba74';
+      }
+    }
+
+    const nmInp = document.getElementById('tp-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+    return;
+  }
+
+  // Default / Single mode for #m-qtk
+  const cat = document.getElementById('mqtk-cat')?.value || '';
+  const phase = document.getElementById('mqtk-phase')?.value || '';
+  const disc = document.getElementById('mqtk-disc')?.value || '';
+
+  const parts = [cat, phase, disc].filter(Boolean);
+  const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+  const prevTxt = document.getElementById('qtk-tax-preview-txt');
+  if (prevTxt) {
+    prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
+  }
+
+  if (mode === 'single') {
+    const nmInp = document.getElementById('mqtk-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+  }
+}') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+          if (rx2.test(curVal)) { curVal = curVal.replace(rx2, '').trim(); }
+        }
+      }
+      curVal = curVal.replace(/^[-–—:]\s*/, '').trim();
+    }
+
+    if (prefix) {
+      if (discName) {
+        nmInp.value = curVal ? `${prefix}-${discName} - ${curVal}` : `${prefix}-${discName}`;
+      } else {
+        nmInp.value = curVal ? `${prefix} ${curVal}` : prefix;
+      }
+    } else {
+      nmInp.value = curVal;
+    }
+    return;
+  }
+
+  // Default / Single mode for #m-qtk
+  const cat = document.getElementById('mqtk-cat')?.value || '';
+  const phase = document.getElementById('mqtk-phase')?.value || '';
+  const disc = document.getElementById('mqtk-disc')?.value || '';
+
+  const parts = [cat, phase, disc].filter(Boolean);
+  const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+  const prevTxt = document.getElementById('qtk-tax-preview-txt');
+  if (prevTxt) {
+    prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
+  }
+
+  if (mode === 'single') {
+    const nmInp = document.getElementById('mqtk-nm');
+    if (!nmInp) return;
+    let discName = '';
+    if (disc) {
+      const curLang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      if (discTax && typeof tTaxonomy === 'function') {
+        discName = tTaxonomy(discTax, curLang);
+      }
+      if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        discName = std[curLang] || std['vi'] || '';
+      }
+    }
+
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Za-z0-9_\-]+\]\s*[-–—:]?\s*/i, '').trim();
+
+    if (disc) {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      const cands = [];
+      if (discTax) { cands.push(discTax.name_vi, discTax.name_en, discTax.name_jp, discTax.name); }
+      if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        cands.push(std.vi, std.en, std.ja);
+      }
+      cands.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成');
+      for (const c of cands) {
+        if (!c) continue;
+        const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+        const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\function onTaskTaxonomyChange(mode) {
+  if (mode === 'tp') {
+    const cat = document.getElementById('tp-cat')?.value || '';
+    const phase = document.getElementById('tp-phase')?.value || '';
+    const disc = document.getElementById('tp-disc')?.value || '';
+    const parts = [cat, phase, disc].filter(Boolean);
+    const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+    const badge = document.getElementById('tp-tax-preview-badge');
+    if (badge) {
+      if (prefix) {
+        badge.textContent = prefix;
+        badge.style.background = '#eef2ff';
+        badge.style.color = 'var(--p)';
+        badge.style.borderColor = '#c7d2fe';
+      } else {
+        badge.textContent = t('tax_prefix_none') || '[CHƯA GÁN MÃ]';
+        badge.style.background = '#fff7ed';
+        badge.style.color = '#ea580c';
+        badge.style.borderColor = '#fdba74';
+      }
+    }
+
+    const nmInp = document.getElementById('tp-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+    return;
+  }
+
+  // Default / Single mode for #m-qtk
+  const cat = document.getElementById('mqtk-cat')?.value || '';
+  const phase = document.getElementById('mqtk-phase')?.value || '';
+  const disc = document.getElementById('mqtk-disc')?.value || '';
+
+  const parts = [cat, phase, disc].filter(Boolean);
+  const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+  const prevTxt = document.getElementById('qtk-tax-preview-txt');
+  if (prevTxt) {
+    prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
+  }
+
+  if (mode === 'single') {
+    const nmInp = document.getElementById('mqtk-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+  }
+}') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+        if (rx1.test(curVal)) { curVal = curVal.replace(rx1, '').trim(); }
+        if (cleanCand && cleanCand !== c) {
+          const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\function onTaskTaxonomyChange(mode) {
+  if (mode === 'tp') {
+    const cat = document.getElementById('tp-cat')?.value || '';
+    const phase = document.getElementById('tp-phase')?.value || '';
+    const disc = document.getElementById('tp-disc')?.value || '';
+    const parts = [cat, phase, disc].filter(Boolean);
+    const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+    const badge = document.getElementById('tp-tax-preview-badge');
+    if (badge) {
+      if (prefix) {
+        badge.textContent = prefix;
+        badge.style.background = '#eef2ff';
+        badge.style.color = 'var(--p)';
+        badge.style.borderColor = '#c7d2fe';
+      } else {
+        badge.textContent = t('tax_prefix_none') || '[CHƯA GÁN MÃ]';
+        badge.style.background = '#fff7ed';
+        badge.style.color = '#ea580c';
+        badge.style.borderColor = '#fdba74';
+      }
+    }
+
+    const nmInp = document.getElementById('tp-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+    return;
+  }
+
+  // Default / Single mode for #m-qtk
+  const cat = document.getElementById('mqtk-cat')?.value || '';
+  const phase = document.getElementById('mqtk-phase')?.value || '';
+  const disc = document.getElementById('mqtk-disc')?.value || '';
+
+  const parts = [cat, phase, disc].filter(Boolean);
+  const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+  const prevTxt = document.getElementById('qtk-tax-preview-txt');
+  if (prevTxt) {
+    prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
+  }
+
+  if (mode === 'single') {
+    const nmInp = document.getElementById('mqtk-nm');
+    if (!nmInp) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
+    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+  }
+}') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+          if (rx2.test(curVal)) { curVal = curVal.replace(rx2, '').trim(); }
+        }
+      }
+      curVal = curVal.replace(/^[-–—:]\s*/, '').trim();
+    }
+
+    if (prefix) {
+      if (discName) {
+        nmInp.value = curVal ? `${prefix}-${discName} - ${curVal}` : `${prefix}-${discName}`;
+      } else {
+        nmInp.value = curVal ? `${prefix} ${curVal}` : prefix;
+      }
+    } else {
+      nmInp.value = curVal;
+    }
+  }
+}
+
+// ── BATCH LEGACY TASK STANDARDIZATION TOOL ──
+function openBatchTaskMod() {
+  const pjSel = document.getElementById('mbatch-tax-pj');
+  if (pjSel) {
+    pjSel.innerHTML = `<option value="">-- Tất cả dự án --</option>` +
+      (S.projects || []).map(p => `<option value="${p.id}">${p.name || p.id}</option>`).join('');
+    if (S.pjFilter) pjSel.value = S.pjFilter;
+  }
+
+  openModal('m-batch-tax');
+  runAutoDetectLegacyTasks();
+}
+
+function runAutoDetectLegacyTasks() {
+  const pjId = document.getElementById('mbatch-tax-pj')?.value || '';
+  const tbody = document.getElementById('mbatch-tbody');
+  const countEl = document.getElementById('mbatch-scan-count');
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+
+  let tasks = S.tasks || [];
+  if (pjId) tasks = tasks.filter(t => t.projectId === pjId);
+
+  // Filter tasks that do not start with [CODE]
+  const unstandardized = tasks.filter(t => !t.name || !t.name.trim().match(/^\[[A-Z0-9_\-]+\]/i));
+
+  if (!unstandardized.length) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--g);font-weight:600">🎉 Tuyệt vời! Tất cả nhiệm vụ trong phạm vi đã được chuẩn hóa tiền tố.</td></tr>`;
+    if (countEl) countEl.textContent = '0';
+    if (submitBtn) submitBtn.disabled = true;
+    _batchLegacyTasksList = [];
+    return;
+  }
+
+  _batchLegacyTasksList = unstandardized.map(t => {
+    const nameLow = (t.name || '').toLowerCase();
+    
+    // Category detection
+    let cat = 'M3';
+    if (nameLow.includes('point cloud') || nameLow.includes('pointcloud') || nameLow.includes('laser') || nameLow.includes('scan')) cat = 'PC';
+    else if (nameLow.includes('báo cáo') || nameLow.includes('report') || nameLow.includes('nghiệm thu')) cat = 'RP';
+    else if (nameLow.includes('họp') || nameLow.includes('meeting') || nameLow.includes('trao đổi')) cat = 'MTG';
+    else if (nameLow.includes('tool') || nameLow.includes('script') || nameLow.includes('addon') || nameLow.includes('phát triển')) cat = 'DE';
+    else if (nameLow.includes('chung') || nameLow.includes('quản lý') || nameLow.includes('hồ sơ')) cat = 'GE';
+
+    // Phase detection
+    let phase = 'BD';
+    if (nameLow.includes('chi tiết') || nameLow.includes('detail') || nameLow.includes('thi công')) phase = 'DD';
+    else if (nameLow.includes('nghiệm thu') || nameLow.includes('kiểm tra') || nameLow.includes('inspect')) phase = 'IS';
+
+    // Discipline detection
+    let disc = 'AR';
+    if (nameLow.includes('kết cấu') || nameLow.includes('structure') || nameLow.includes('thép') || nameLow.includes('móng')) disc = 'STR';
+    else if (nameLow.includes('cơ điện') || nameLow.includes('mep') || nameLow.includes('thiết bị') || nameLow.includes('hvac') || nameLow.includes('ống') || nameLow.includes('plumb')) disc = 'MP';
+    else if (nameLow.includes('điện') || nameLow.includes('electric') || nameLow.includes('chiếu sáng')) disc = 'ELE';
+    else if (nameLow.includes('layer')) disc = 'PCL';
+    else if (nameLow.includes('xử lý')) disc = 'PCP';
+
+    const suggestedPrefix = `[${cat}-${phase}-${disc}]`;
+    const cleanOrigName = t.name.trim();
+    const suggestedNewName = `${suggestedPrefix} ${cleanOrigName}`;
+
+    return {
+      id: t.id,
+      origName: cleanOrigName,
+      suggestedPrefix,
+      suggestedNewName,
+      checked: true
+    };
+  });
+
+  if (countEl) countEl.textContent = _batchLegacyTasksList.length;
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${_batchLegacyTasksList.length} nhiệm vụ)`;
+  }
+
+  if (tbody) {
+    tbody.innerHTML = _batchLegacyTasksList.map((item, idx) => `
+      <tr>
+        <td style="text-align:center">
+          <input type="checkbox" id="mbatch-ck-${idx}" onchange="updateBatchItemCheck(${idx}, this.checked)" checked>
+        </td>
+        <td style="font-size:12px;color:var(--tx);max-width:200px">${item.origName}</td>
+        <td>
+          <span class="tax-code-badge" style="background:#eef2ff;color:#4f6ef7;border:1px solid #c7d2fe">
+            ${item.suggestedPrefix}
+          </span>
+        </td>
+        <td>
+          <input type="text" class="fc" id="mbatch-inp-${idx}" value="${item.suggestedNewName}" style="font-size:12px;height:30px" oninput="_batchLegacyTasksList[${idx}].suggestedNewName = this.value">
+        </td>
+      </tr>
+    `).join('');
+  }
+}
+
+function updateBatchItemCheck(idx, checked) {
+  if (_batchLegacyTasksList[idx]) {
+    _batchLegacyTasksList[idx].checked = checked;
+  }
+  const checkedCount = _batchLegacyTasksList.filter(x => x.checked).length;
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = checkedCount === 0;
+    submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${checkedCount} nhiệm vụ)`;
+  }
+}
+
+function toggleBatchAll(checked) {
+  _batchLegacyTasksList.forEach((item, idx) => {
+    item.checked = checked;
+    const el = document.getElementById('mbatch-ck-' + idx);
+    if (el) el.checked = checked;
+  });
+  const checkedCount = checked ? _batchLegacyTasksList.length : 0;
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = checkedCount === 0;
+    submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${checkedCount} nhiệm vụ)`;
+  }
+}
+
+function applyBatchTaskMigration() {
+  const selected = _batchLegacyTasksList.filter(x => x.checked);
+  if (!selected.length) {
+    toast("Chưa chọn nhiệm vụ nào để chuẩn hóa", "info");
+    return;
+  }
+
+  const updates = selected.map(x => ({
+    id: x.id,
+    newName: (x.suggestedNewName || '').trim()
+  })).filter(x => x.id && x.newName);
+
+  const submitBtn = document.getElementById('mbatch-submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "⏳ Đang cập nhật...";
+  }
+
+  toast("Đang chuẩn hóa tiền tố cho các nhiệm vụ...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        closeModal('m-batch-tax');
+        toast(t('tax_batch_success').replace('{n}', res.updatedCount || updates.length), "success");
+        // Optimistic update in local state
+        updates.forEach(u => {
+          const found = S.tasks.find(tk => tk.id === u.id);
+          if (found) found.name = u.newName;
+        });
+        _refreshUI();
+        const curPage = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
+        if (curPage === 'tasks') loadPgTk();
+      } else {
+        toast((res && res.error) || "Lỗi cập nhật nhiệm vụ", "error");
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi máy chủ", "error");
+      if (submitBtn) submitBtn.disabled = false;
+    })
+    .batchUpdateLegacyTasks(updates);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PERMISSION MATRIX (MA TRẬN PHÂN QUYỀN) CONTROLLER
+// ═══════════════════════════════════════════════════════════
+
+const DEFAULT_PERM_MATRIX = {
+  // 1. Dashboard
+  "dash_view":        { module: "dashboard", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "dash_filter_pj":   { module: "dashboard", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  // 2. Dự án (Projects)
+  "pj_view":          { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "pj_create":        { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "DENY",     member: "DENY" },
+  "pj_edit":          { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "pj_members":       { module: "projects",  admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "pj_delete":        { module: "projects",  admin: "FULL", leader: "DENY", pj_lead: "DENY",     member: "DENY" },
+  // 3. Nhiệm vụ (Tasks)
+  "tk_view":          { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
+  "tk_create":        { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_edit":          { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_update_prog":   { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "OWN" },
+  "tk_approve":       { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "tk_delete":        { module: "tasks",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 4. Sơ đồ Gantt
+  "gantt_view":       { module: "gantt",     admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "gantt_edit":       { module: "gantt",     admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 5. Báo cáo & Phân tích (Analytics)
+  "ana_view":         { module: "analytics", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "ana_export":       { module: "analytics", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 6. Quản lý thời gian (Timesheet)
+  "ts_entry":         { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "FULL",     member: "FULL" },
+  "ts_view_others":   { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  "ts_export":        { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
+  // 7. Danh mục tiêu chuẩn (Taxonomy)
+  "tax_view":         { module: "taxonomy",  admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "VIEW_ALL" },
+  "tax_edit":         { module: "taxonomy",  admin: "FULL", leader: "FULL", pj_lead: "DENY",     member: "DENY" },
+  "tax_matrix_edit":  { module: "taxonomy",  admin: "FULL", leader: "DENY", pj_lead: "DENY",     member: "DENY" },
+  // 8. Người dùng (Users)
+  "usr_view":         { module: "users",     admin: "FULL", leader: "VIEW_ALL", pj_lead: "VIEW_ALL", member: "DENY" },
+  "usr_manage":       { module: "users",     admin: "FULL", leader: "DENY", pj_lead: "DENY",     member: "DENY" },
+  // 9. Nhật ký hoạt động (Audit Log)
+  "log_view":         { module: "log",       admin: "FULL", leader: "VIEW_ALL", pj_lead: "DENY", member: "DENY" }
+};
+
+const MATRIX_ACTION_META = {
+  dash_view:      { module: "dashboard", vi: "Xem Dashboard tổng quan", en: "View general Dashboard", ja: "ダッシュボード全般閲覧" },
+  dash_filter_pj: { module: "dashboard", vi: "Lọc thống kê theo Dự án", en: "Filter statistics by Project", ja: "プロジェクト別統計絞り込み" },
+  pj_view:        { module: "projects",  vi: "Xem danh sách dự án", en: "View project list", ja: "プロジェクト一覧閲覧" },
+  pj_create:      { module: "projects",  vi: "Tạo dự án mới", en: "Create new project", ja: "新規プロジェクト作成" },
+  pj_edit:        { module: "projects",  vi: "Sửa thông tin dự án", en: "Edit project info", ja: "プロジェクト情報編集" },
+  pj_members:     { module: "projects",  vi: "Thêm/bớt thành viên dự án", en: "Manage project members", ja: "PJメンバーの追加・削除" },
+  pj_delete:      { module: "projects",  vi: "Xóa / Lưu trữ dự án", en: "Delete / Archive project", ja: "プロジェクト削除・アーカイブ" },
+  tk_view:        { module: "tasks",     vi: "Xem danh sách / Kanban task", en: "View task list / Kanban", ja: "タスク一覧・カンバン閲覧" },
+  tk_create:      { module: "tasks",     vi: "Tạo nhiệm vụ (Đơn/Hàng loạt)", en: "Create tasks (Single/Bulk)", ja: "タスク作成（個別・一括）" },
+  tk_edit:        { module: "tasks",     vi: "Sửa thông tin / Deadline / Gán người", en: "Edit details / Deadline / Assign", ja: "詳細編集・期日・担当割当" },
+  tk_update_prog: { module: "tasks",     vi: "Cập nhật % tiến độ & Link kết quả", en: "Update % progress & Result links", ja: "進捗率更新・成果物リンク" },
+  tk_approve:     { module: "tasks",     vi: "Duyệt hoàn thành nhiệm vụ", en: "Approve task completion", ja: "タスク完了承認" },
+  tk_delete:      { module: "tasks",     vi: "Xóa nhiệm vụ", en: "Delete task", ja: "タスク削除" },
+  gantt_view:     { module: "gantt",     vi: "Xem tiến độ trên Gantt", en: "View progress on Gantt chart", ja: "ガントチャート閲覧" },
+  gantt_edit:     { module: "gantt",     vi: "Kéo đổi ngày trên Gantt", en: "Drag & drop dates on Gantt", ja: "ガント上での日程変更" },
+  ana_view:       { module: "analytics", vi: "Xem báo cáo hiệu suất & KPI", en: "View performance & KPI reports", ja: "成果・KPI分析レポート閲覧" },
+  ana_export:     { module: "analytics", vi: "Xuất dữ liệu báo cáo", en: "Export report data", ja: "レポートデータ出力" },
+  ts_entry:       { module: "timesheet", vi: "Nhập giờ công cá nhân (30p slot)", en: "Log personal timesheet (30m slots)", ja: "個人工数入力（30分単位）" },
+  ts_view_others: { module: "timesheet", vi: "Xem Timesheet nhân sự khác", en: "View other members' timesheets", ja: "他メンバーの工数閲覧" },
+  ts_export:      { module: "timesheet", vi: "Xuất bảng chấm công", en: "Export timesheets", ja: "工数集計データ出力" },
+  tax_view:       { module: "taxonomy",  vi: "Xem danh mục tiêu chuẩn", en: "View standard taxonomy", ja: "基準マスタ閲覧" },
+  tax_edit:       { module: "taxonomy",  vi: "Thêm/Sửa Category, Phase, Discipline", en: "Add/Edit Category, Phase, Discipline", ja: "カテゴリ・フェーズ・専門工種編集" },
+  tax_matrix_edit:{ module: "taxonomy",  vi: "Cấu hình Ma trận phân quyền", en: "Configure Permission Matrix", ja: "権限マトリクス設定" },
+  usr_view:       { module: "users",     vi: "Xem danh bạ người dùng", en: "View user directory", ja: "ユーザー名簿閲覧" },
+  usr_manage:     { module: "users",     vi: "Thêm/Sửa/Khóa người dùng", en: "Add/Edit/Block users", ja: "ユーザー作成・編集・無効化" },
+  log_view:       { module: "log",       vi: "Xem nhật ký hệ thống (Audit Log)", en: "View system audit logs", ja: "システム監査ログ閲覧" }
+};
+
+const MATRIX_MODULE_NAMES = {
+  dashboard: { vi: "1. Tổng quan (Dashboard)", en: "1. Dashboard", ja: "1. ダッシュボード" },
+  projects:  { vi: "2. Quản lý Dự án (Projects)", en: "2. Projects", ja: "2. プロジェクト管理" },
+  tasks:     { vi: "3. Quản lý Nhiệm vụ (Tasks)", en: "3. Tasks", ja: "3. タスク管理" },
+  gantt:     { vi: "4. Sơ đồ Gantt (Gantt Chart)", en: "4. Gantt Chart", ja: "4. ガントチャート" },
+  analytics: { vi: "5. Báo cáo & Phân tích (Analytics)", en: "5. Analytics", ja: "5. 分析・レポート" },
+  timesheet: { vi: "6. Quản lý Thời gian (Timesheet)", en: "6. Timesheet", ja: "6. 工数・タイムシート" },
+  taxonomy:  { vi: "7. Danh mục tiêu chuẩn (Taxonomy)", en: "7. Standards & Taxonomy", ja: "7. 基準マスタ・規約" },
+  users:     { vi: "8. Quản trị Người dùng (Users)", en: "8. User Management", ja: "8. ユーザー管理" },
+  log:       { vi: "9. Nhật ký hoạt động (Audit Log)", en: "9. Audit Logs", ja: "9. 監査ログ" }
+};
+
+function _normalizePermVal(v) {
+  if (!v) return "DENY";
+  const s = String(v).toUpperCase().trim();
+  if (s === "FULL" || s.includes("TOÀN QUYỀN") || s.includes("TOAN QUYEN")) return "FULL";
+  if (s === "LEAD_SCOPE" || s.includes("LEAD") || s.includes("PHẠM VI") || s.includes("PHAM VI")) return "LEAD_SCOPE";
+  if (s === "VIEW_ALL" || s.includes("VIEW") || s.includes("XEM TOÀN CẢNH") || s.includes("XEM TOAN CANH") || s.includes("CHỈ XEM") || s.includes("CHI XEM")) return "VIEW_ALL";
+  if (s === "OWN" || s.includes("CÁ NHÂN") || s.includes("CA NHAN")) return "OWN";
+  if (s === "DENY" || s.includes("KHÔNG") || s.includes("KHONG") || s.includes("ẨN") || s.includes("AN")) return "DENY";
+  return s;
+}
+
+function _renderPermSelect(actionKey, role, currentVal, isAdmin) {
+  const normVal = _normalizePermVal(currentVal);
+  const options = [
+    { val: "FULL", text: t('perm_full') },
+    { val: "LEAD_SCOPE", text: t('perm_lead_scope') },
+    { val: "VIEW_ALL", text: t('perm_view_all') },
+    { val: "OWN", text: t('perm_own') },
+    { val: "DENY", text: t('perm_deny') }
+  ];
+  if (!isAdmin) {
+    const opt = options.find(o => o.val === normVal) || { text: normVal };
+    return `<div style="text-align:center"><span style="font-size:11px;font-weight:600">${opt.text}</span></div>`;
+  }
+  return `
+    <select class="matrix-sel" data-action="${actionKey}" data-role="${role}" data-val="${normVal}" onchange="this.dataset.val=this.value">
+      ${options.map(o => `<option value="${o.val}" ${o.val === normVal ? 'selected' : ''}>${o.text}</option>`).join('')}
+    </select>
+  `;
+}
+
+function renderPermissionMatrixTable() {
+  const tbody = document.getElementById('matrix-tbody');
+  const badgeEl = document.getElementById('matrix-status-badge');
+  if (!tbody) return;
+
+  const curMatrix = S.permissionMatrix || DEFAULT_PERM_MATRIX;
+  const isAdmin = S.user && S.user.role === 'Admin';
+
+  // Read currently selected values in DOM before re-rendering so we don't lose unsaved choices
+  document.querySelectorAll('#matrix-tbody select.matrix-sel').forEach(sel => {
+    const action = sel.dataset.action;
+    const role = sel.dataset.role;
+    if (action && role && curMatrix[action]) {
+      curMatrix[action][role] = sel.value;
+    }
+  });
+
+  // Check if custom or default
+  let isCustom = false;
+  try {
+    for (const k in DEFAULT_PERM_MATRIX) {
+      if (curMatrix[k]) {
+        if (_normalizePermVal(curMatrix[k].leader) !== DEFAULT_PERM_MATRIX[k].leader ||
+            _normalizePermVal(curMatrix[k].pj_lead) !== DEFAULT_PERM_MATRIX[k].pj_lead ||
+            _normalizePermVal(curMatrix[k].member) !== DEFAULT_PERM_MATRIX[k].member) {
+          isCustom = true;
+          break;
+        }
+      }
+    }
+  } catch(e) {}
+
+  if (badgeEl) {
+    badgeEl.textContent = isCustom ? t('matrix_badge_custom') : t('matrix_badge_default');
+    badgeEl.className = isCustom ? 'an-badge an-badge-warn' : 'an-badge an-badge-blue';
+  }
+
+  const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+
+  // Group by module
+  const moduleOrder = ["dashboard", "projects", "tasks", "gantt", "analytics", "timesheet", "taxonomy", "users", "log"];
+  let rowsHtml = '';
+  let rowIdx = 0;
+
+  moduleOrder.forEach(modKey => {
+    const modTitle = (MATRIX_MODULE_NAMES[modKey] && MATRIX_MODULE_NAMES[modKey][lang]) || MATRIX_MODULE_NAMES[modKey]?.en || MATRIX_MODULE_NAMES[modKey]?.vi || modKey;
+    rowsHtml += `
+      <tr class="matrix-module-hdr">
+        <td colspan="6">${modTitle}</td>
+      </tr>
+    `;
+
+    Object.keys(MATRIX_ACTION_META).forEach(actionKey => {
+      const meta = MATRIX_ACTION_META[actionKey];
+      if (meta.module !== modKey) return;
+      rowIdx++;
+
+      const actionTitle = (meta && meta[lang]) || (meta && meta.en) || (meta && meta.vi) || actionKey;
+      const rowData = curMatrix[actionKey] || DEFAULT_PERM_MATRIX[actionKey] || { admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" };
+
+      rowsHtml += `
+        <tr>
+          <td style="text-align:center;color:var(--t3);font-size:11px">${rowIdx}</td>
+          <td style="font-weight:600;color:var(--tx)">${actionTitle}</td>
+          <td style="text-align:center"><span class="badge bg-re" style="font-size:10px">${t('perm_full')}</span></td>
+          <td>${_renderPermSelect(actionKey, 'leader', rowData.leader || 'FULL', isAdmin)}</td>
+          <td>${_renderPermSelect(actionKey, 'pj_lead', rowData.pj_lead || 'VIEW_ALL', isAdmin)}</td>
+          <td>${_renderPermSelect(actionKey, 'member', rowData.member || 'DENY', isAdmin)}</td>
+        </tr>
+      `;
+    });
+  });
+
+  tbody.innerHTML = rowsHtml;
+}
+
+function savePermissionMatrixClick() {
+  const isAdmin = S.user && S.user.role === 'Admin';
+  if (!isAdmin) {
+    toast(t('matrix_admin_only_save'), "error");
+    return;
+  }
+
+  const matrix = JSON.parse(JSON.stringify(S.permissionMatrix || DEFAULT_PERM_MATRIX));
+  document.querySelectorAll('#matrix-tbody select.matrix-sel').forEach(sel => {
+    const action = sel.dataset.action;
+    const role = sel.dataset.role;
+    if (matrix[action]) {
+      matrix[action][role] = sel.value;
+    }
+  });
+
+  // Ensure Admin is always FULL
+  Object.keys(matrix).forEach(k => {
+    if (matrix[k]) matrix[k].admin = "FULL";
+  });
+
+  toast(t('matrix_saving'), "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        S.permissionMatrix = res.matrix;
+        toast(t('matrix_saved_success'), "success");
+        renderPermissionMatrixTable();
+      } else {
+        toast((res && res.error) || "Lỗi lưu ma trận phân quyền", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .savePermissionMatrix(matrix);
+}
+
+function resetPermissionMatrixClick() {
+  const isAdmin = S.user && S.user.role === 'Admin';
+  if (!isAdmin) {
+    toast(t('matrix_admin_only_reset'), "error");
+    return;
+  }
+
+  if (!confirm(t('matrix_reset_confirm'))) return;
+
+  toast(t('matrix_resetting'), "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        S.permissionMatrix = res.matrix;
+        toast(t('msg_save_success'), "success");
+        renderPermissionMatrixTable();
+      } else {
+        toast((res && res.error) || "Lỗi khôi phục ma trận", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      toast(err.message || "Lỗi kết nối máy chủ", "error");
+    })
+    .resetPermissionMatrix();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TIMESHEET (QUẢN LÝ THỜI GIAN) CONTROLLER
+// ═══════════════════════════════════════════════════════════
+
+const TS_SLOT_DEFINITIONS = [
+  // Morning OT (06:00 - 08:00)
+  { start: "06:00", end: "06:30", type: "ot_morning", isOT: true },
+  { start: "06:30", end: "07:00", type: "ot_morning", isOT: true },
+  { start: "07:00", end: "07:30", type: "ot_morning", isOT: true },
+  { start: "07:30", end: "08:00", type: "ot_morning", isOT: true },
+
+  // Official Morning (08:00 - 12:00)
+  { start: "08:00", end: "08:30", type: "official_morning", isOT: false },
+  { start: "08:30", end: "09:00", type: "official_morning", isOT: false },
+  { start: "09:00", end: "09:30", type: "official_morning", isOT: false },
+  { start: "09:30", end: "10:00", type: "official_morning", isOT: false },
+  { start: "10:00", end: "10:30", type: "official_morning", isOT: false },
+  { start: "10:30", end: "11:00", type: "official_morning", isOT: false },
+  { start: "11:00", end: "11:30", type: "official_morning", isOT: false },
+  { start: "11:30", end: "12:00", type: "official_morning", isOT: false },
+
+  // Lunch Break (12:00 - 13:00) - 2 locked slots
+  { start: "12:00", end: "12:30", type: "lunch", isLunch: true },
+  { start: "12:30", end: "13:00", type: "lunch", isLunch: true },
+
+  // Official Afternoon (13:00 - 17:00)
+  { start: "13:00", end: "13:30", type: "official_afternoon", isOT: false },
+  { start: "13:30", end: "14:00", type: "official_afternoon", isOT: false },
+  { start: "14:00", end: "14:30", type: "official_afternoon", isOT: false },
+  { start: "14:30", end: "15:00", type: "official_afternoon", isOT: false },
+  { start: "15:00", end: "15:30", type: "official_afternoon", isOT: false },
+  { start: "15:30", end: "16:00", type: "official_afternoon", isOT: false },
+  { start: "16:00", end: "16:30", type: "official_afternoon", isOT: false },
+  { start: "16:30", end: "17:00", type: "official_afternoon", isOT: false },
+
+  // Evening OT (17:00 - 22:00)
+  { start: "17:00", end: "17:30", type: "ot_evening", isOT: true },
+  { start: "17:30", end: "18:00", type: "ot_evening", isOT: true },
+  { start: "18:00", end: "18:30", type: "ot_evening", isOT: true },
+  { start: "18:30", end: "19:00", type: "ot_evening", isOT: true },
+  { start: "19:00", end: "19:30", type: "ot_evening", isOT: true },
+  { start: "19:30", end: "20:00", type: "ot_evening", isOT: true },
+  { start: "20:00", end: "20:30", type: "ot_evening", isOT: true },
+  { start: "20:30", end: "21:00", type: "ot_evening", isOT: true },
+  { start: "21:00", end: "21:30", type: "ot_evening", isOT: true },
+  { start: "21:30", end: "22:00", type: "ot_evening", isOT: true }
+];
+
+let _tsCurrentStaff = null;
+let _tsStaffList = [];
+let _tsSelectedDate = "";
+let _tsHasExistingData = false;
+let _tsExistingCount = 0;
+let _tsEditModeActive = false;
+let _tsServerLoadedSlots = [];
+let _tsShowMorningOt = false;
+let _tsShowEveningOt = false;
+let _tsCopiedRow = null;
+
+function _formatDateYMD(d) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function loadPgTimesheet() {
+  if (!_tsSelectedDate) {
+    _tsSelectedDate = _formatDateYMD(new Date());
+  }
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+
+  // Fetch staff list if not loaded yet
+  if (!_tsStaffList || !_tsStaffList.length) {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success) {
+          _tsStaffList = res.staffList || [];
+          _initTimesheetStaffDropdown(res.currentStaffCode, res.isLevel2);
+          loadTimesheetData();
+        } else {
+          toast((res && res.error) || "Lỗi tải danh sách nhân sự", "error");
+        }
+      })
+      .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+      .getStaffListForTimesheet();
+  } else {
+    loadTimesheetData();
+  }
+}
+
+function _initTimesheetStaffDropdown(defaultStaffCode, isLevel2) {
+  const sel = document.getElementById('ts-staff-sel');
+  if (!sel) return;
+
+  sel.innerHTML = _tsStaffList.map(st => `
+    <option value="${st.code}">${st.code} - ${st.name}</option>
+  `).join('');
+
+  if (defaultStaffCode) {
+    sel.value = defaultStaffCode;
+  }
+  if (isLevel2) {
+    sel.disabled = true;
+    sel.title = "Quyền Cấp 2: Chỉ được xem và nhập thời gian cho chính mình";
+  } else {
+    sel.disabled = false;
+  }
+
+  _updateStaffInfoDisplay(sel.value);
+}
+
+function _updateStaffInfoDisplay(staffCode) {
+  const st = _tsStaffList.find(x => x.code === staffCode) || {};
+  _tsCurrentStaff = st;
+
+  const rankBadge = document.getElementById('ts-staff-rank-badge');
+  if (rankBadge) {
+    rankBadge.textContent = st.rank || 'Nhân viên';
+  }
+
+  const linkBtn = document.getElementById('ts-sheet-link-btn');
+  const linkWrap = document.getElementById('ts-sheet-link-wrap');
+  if (linkBtn && linkWrap) {
+    if (st.sheetUrl) {
+      linkBtn.href = st.sheetUrl;
+      linkBtn.style.display = 'inline-flex';
+    } else {
+      linkBtn.href = '#';
+      linkBtn.style.display = 'none';
+    }
+  }
+}
+
+function onTimesheetStaffChange(staffCode) {
+  _updateStaffInfoDisplay(staffCode);
+  loadTimesheetData();
+}
+
+function onTimesheetDateChange(val) {
+  if (!val) return;
+  _tsSelectedDate = val;
+  loadTimesheetData();
+}
+
+function stepTimesheetDate(delta) {
+  const cur = _tsSelectedDate ? new Date(_tsSelectedDate) : new Date();
+  cur.setDate(cur.getDate() + delta);
+  _tsSelectedDate = _formatDateYMD(cur);
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+  loadTimesheetData();
+}
+
+function setTimesheetQuickDate(type) {
+  const d = new Date();
+  if (type === 'yesterday') {
+    d.setDate(d.getDate() - 1);
+  }
+  _tsSelectedDate = _formatDateYMD(d);
+  const dateInp = document.getElementById('ts-date-inp');
+  if (dateInp) dateInp.value = _tsSelectedDate;
+  loadTimesheetData();
+}
+
+function toggleMorningOt() {
+  _tsShowMorningOt = !_tsShowMorningOt;
+  const badge = document.getElementById('ts-m-ot-badge');
+  if (badge) badge.textContent = _tsShowMorningOt ? '(Hiện)' : '(Ẩn)';
+  renderTimesheetGrid();
+}
+
+function toggleEveningOt() {
+  _tsShowEveningOt = !_tsShowEveningOt;
+  const badge = document.getElementById('ts-e-ot-badge');
+  if (badge) badge.textContent = _tsShowEveningOt ? '(Hiện)' : '(Ẩn)';
+  renderTimesheetGrid();
+}
+
+function loadTimesheetData(forceRefresh) {
+  const staffSel = document.getElementById('ts-staff-sel');
+  const staffCode = staffSel ? staffSel.value : '';
+  if (!staffCode || !_tsSelectedDate) return;
+
+  const tbody = document.getElementById('ts-tbody');
+  if (tbody) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="ldg"><div class="spn"></div></div></td></tr>`;
+  }
+  const syncStatus = document.getElementById('ts-sync-status');
+  if (syncStatus) syncStatus.textContent = "⏳ Đang tải dữ liệu...";
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (syncStatus) syncStatus.textContent = "✅ Đã đồng bộ";
+      if (res && res.success) {
+        _tsHasExistingData = !!res.hasData;
+        _tsExistingCount = res.count || 0;
+        _tsServerLoadedSlots = res.records || [];
+        _tsEditModeActive = false;
+
+        // Auto-show OT if existing records contain OT slots
+        const hasMorningOt = _tsServerLoadedSlots.some(r => r.isOT && (r.startTime < "08:00"));
+        const hasEveningOt = _tsServerLoadedSlots.some(r => r.isOT && (r.startTime >= "17:00"));
+        if (hasMorningOt) _tsShowMorningOt = true;
+        if (hasEveningOt) _tsShowEveningOt = true;
+
+        const mBadge = document.getElementById('ts-m-ot-badge');
+        if (mBadge) mBadge.textContent = _tsShowMorningOt ? '(Hiện)' : '(Ẩn)';
+        const eBadge = document.getElementById('ts-e-ot-badge');
+        if (eBadge) eBadge.textContent = _tsShowEveningOt ? '(Hiện)' : '(Ẩn)';
+
+        _updateTimesheetToolbarState();
+        renderTimesheetGrid(_tsServerLoadedSlots);
+      } else {
+        toast((res && res.error) || "Lỗi tải bảng chấm công", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (syncStatus) syncStatus.textContent = "❌ Lỗi tải";
+      toast(err.message || "Lỗi máy chủ", "error");
+    })
+    .getTimesheetData(staffCode, _tsSelectedDate);
+}
+
+function _updateTimesheetToolbarState() {
+  const existingBanner = document.getElementById('ts-existing-banner');
+  const editBanner = document.getElementById('ts-edit-banner');
+  const btnSave = document.getElementById('ts-btn-save');
+  const btnEditMode = document.getElementById('ts-btn-edit-mode');
+  const btnCancelEdit = document.getElementById('ts-btn-cancel-edit');
+  const btnOverwrite = document.getElementById('ts-btn-overwrite');
+
+  if (_tsHasExistingData) {
+    if (_tsEditModeActive) {
+      if (existingBanner) existingBanner.style.display = 'none';
+      if (editBanner) editBanner.style.display = 'flex';
+      if (btnSave) btnSave.style.display = 'none';
+      if (btnEditMode) btnEditMode.style.display = 'none';
+      if (btnCancelEdit) btnCancelEdit.style.display = 'inline-flex';
+      if (btnOverwrite) btnOverwrite.style.display = 'inline-flex';
+    } else {
+      if (existingBanner) existingBanner.style.display = 'flex';
+      if (editBanner) editBanner.style.display = 'none';
+      if (btnSave) {
+        btnSave.style.display = 'inline-flex';
+        btnSave.disabled = true;
+        btnSave.style.opacity = '0.5';
+        btnSave.style.cursor = 'not-allowed';
+        btnSave.title = t('ts_existing_data_warning');
+      }
+      if (btnEditMode) btnEditMode.style.display = 'inline-flex';
+      if (btnCancelEdit) btnCancelEdit.style.display = 'none';
+      if (btnOverwrite) btnOverwrite.style.display = 'none';
+    }
+  } else {
+    if (existingBanner) existingBanner.style.display = 'none';
+    if (editBanner) editBanner.style.display = 'none';
+    if (btnSave) {
+      btnSave.style.display = 'inline-flex';
+      btnSave.disabled = false;
+      btnSave.style.opacity = '1';
+      btnSave.style.cursor = 'pointer';
+      btnSave.title = "";
+    }
+    if (btnEditMode) btnEditMode.style.display = 'none';
+    if (btnCancelEdit) btnCancelEdit.style.display = 'none';
+    if (btnOverwrite) btnOverwrite.style.display = 'none';
+  }
+}
+
+function enableTimesheetEditMode() {
+  _tsEditModeActive = true;
+  _updateTimesheetToolbarState();
+  renderTimesheetGrid();
+  toast(t('ts_edit_mode_active'), 'info');
+}
+
+function cancelTimesheetEditMode() {
+  _tsEditModeActive = false;
+  _updateTimesheetToolbarState();
+  renderTimesheetGrid(_tsServerLoadedSlots);
+}
+
+function renderTimesheetGrid(prefillData) {
+  const tbody = document.getElementById('ts-tbody');
+  if (!tbody) return;
+
+  const currentValues = {};
+  if (!prefillData) {
+    // Preserve current input values from DOM before re-rendering
+    TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+      const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+      const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+      const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+      const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+      const note = document.getElementById(`ts-note-${idx}`)?.value || '';
+      if (pj || cat || ph || disc || note) {
+        currentValues[`${slot.start}-${slot.end}`] = { pj, cat, ph, disc, note };
+      }
+    });
+  } else {
+    prefillData.forEach(r => {
+      currentValues[`${r.startTime}-${r.endTime}`] = {
+        pj: r.projectCode || '',
+        cat: r.categoryCode || '',
+        ph: r.phaseCode || '',
+        disc: r.disciplineCode || '',
+        note: r.note || ''
+      };
+    });
+  }
+
+  // Build taxonomy dropdown options with localized labels
+  const pjOptions = `<option value="">-</option>` + (S.taxonomy?.projectCodes || []).map(p => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(p) : (p.name_vi || p.name || '');
+    return `<option value="${p.code}" title="${lbl}">${p.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const catOptions = `<option value="">-</option>` + (S.taxonomy?.categories || []).map(c => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(c) : (c.name_vi || c.name || '');
+    return `<option value="${c.code}" title="${lbl}">${c.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const phOptions = `<option value="">-</option>` + (S.taxonomy?.phases || []).map(ph => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(ph) : (ph.name_vi || ph.name || '');
+    return `<option value="${ph.code}" title="${lbl}">${ph.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const discOptions = `<option value="">-</option>` + (S.taxonomy?.disciplines || []).map(d => {
+    const lbl = typeof tTaxonomy === 'function' ? tTaxonomy(d) : (d.name_vi || d.name || '');
+    return `<option value="${d.code}" title="${lbl}">${d.code}${lbl ? ' - ' + lbl : ''}</option>`;
+  }).join('');
+
+  const isReadOnly = _tsHasExistingData && !_tsEditModeActive;
+  const roClass = isReadOnly ? ' readonly' : '';
+  const roAttr = isReadOnly ? ' disabled' : '';
+
+  let html = '';
+  let rowSeq = 1;
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    // Overtime visibility toggles
+    if (slot.type === 'ot_morning' && !_tsShowMorningOt) return;
+    if (slot.type === 'ot_evening' && !_tsShowEveningOt) return;
+
+    // OT section divider banners
+    if (slot.type === 'ot_morning' && slot.start === '06:00') {
+      html += `<tr class="ts-ot-header-row"><td colspan="8" style="padding:6px 12px">🌅 ${t('ts_morning_ot')}</td></tr>`;
+    }
+    if (slot.type === 'ot_evening' && slot.start === '17:00') {
+      html += `<tr class="ts-ot-header-row"><td colspan="8" style="padding:6px 12px">🌙 ${t('ts_evening_ot')}</td></tr>`;
+    }
+
+    if (slot.isLunch) {
+      html += `
+        <tr class="ts-lunch-row">
+          <td style="text-align:center;font-size:11px;opacity:0.7">${rowSeq++}</td>
+          <td><span class="ts-time-badge" style="background:#fef08a;color:#854d0e">${slot.start} - ${slot.end}</span></td>
+          <td colspan="5" style="padding:6px 14px">☕ ${t('ts_lunch_break')}</td>
+          <td style="text-align:center"><span style="font-size:11px;opacity:0.7">🔒</span></td>
+        </tr>
+      `;
+      return;
+    }
+
+    const val = currentValues[`${slot.start}-${slot.end}`] || {};
+    const badgeClass = slot.isOT ? 'ts-time-badge ot' : 'ts-time-badge';
+
+    html += `
+      <tr id="ts-row-${idx}" data-slot-idx="${idx}">
+        <td style="text-align:center;font-size:11px;color:var(--t3)">${rowSeq++}</td>
+        <td>
+          <span class="${badgeClass}">${slot.start} - ${slot.end}</span>
+          ${slot.isOT ? '<span style="font-size:9px;color:#ea580c;font-weight:700;margin-left:2px">OT</span>' : ''}
+        </td>
+        <td>
+          <select id="ts-pj-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${pjOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-cat-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${catOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-ph-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${phOptions}
+          </select>
+        </td>
+        <td>
+          <select id="ts-disc-${idx}" class="ts-select${roClass}"${roAttr} onchange="onTimesheetInputChange(${idx})">
+            ${discOptions}
+          </select>
+        </td>
+        <td>
+          <input type="text" id="ts-note-${idx}" class="ts-input${roClass}"${roAttr} placeholder="Ghi chú công việc..." value="${(val.note || '').replace(/"/g, '&quot;')}" oninput="onTimesheetInputChange(${idx})">
+        </td>
+        <td style="text-align:center">
+          <div style="display:flex;align-items:center;justify-content:center;gap:4px">
+            <button type="button" class="btn bs" style="padding:2px 6px;font-size:11px" title="${t('ts_copy_down')}" onclick="copyRowDown(${idx})"${roAttr}>⬇️</button>
+            <button type="button" class="btn bs" style="padding:2px 6px;font-size:11px;color:var(--d);border-color:#fee2e2" title="Xóa dòng" onclick="clearSlotRow(${idx})"${roAttr}>✕</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+
+  // Restore selected dropdown values
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const val = currentValues[`${slot.start}-${slot.end}`];
+    if (val) {
+      const pjEl = document.getElementById(`ts-pj-${idx}`);
+      const catEl = document.getElementById(`ts-cat-${idx}`);
+      const phEl = document.getElementById(`ts-ph-${idx}`);
+      const discEl = document.getElementById(`ts-disc-${idx}`);
+      if (pjEl && val.pj) pjEl.value = val.pj;
+      if (catEl && val.cat) catEl.value = val.cat;
+      if (phEl && val.ph) phEl.value = val.ph;
+      if (discEl && val.disc) discEl.value = val.disc;
+    }
+  });
+
+  updateTimesheetStats();
+  _attachTimesheetClipboardListeners();
+}
+
+function onTimesheetInputChange(idx) {
+  updateTimesheetStats();
+}
+
+function updateTimesheetStats() {
+  let officialHours = 0;
+  let otHours = 0;
+  let filledSlots = 0;
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+    const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+    const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+    const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+    const note = document.getElementById(`ts-note-${idx}`)?.value || '';
+
+    if (pj || cat || ph || disc || note.trim()) {
+      filledSlots++;
+      if (slot.isOT) {
+        otHours += 0.5;
+      } else {
+        officialHours += 0.5;
+      }
+    }
+  });
+
+  const regEl = document.getElementById('ts-stat-reg');
+  const otEl = document.getElementById('ts-stat-ot');
+  const totalEl = document.getElementById('ts-stat-total');
+  const slotsEl = document.getElementById('ts-stat-slots');
+
+  if (regEl) regEl.textContent = `${officialHours.toFixed(1)}h / 8.0h`;
+  if (otEl) otEl.textContent = `${otHours.toFixed(1)}h`;
+  if (totalEl) totalEl.textContent = `${(officialHours + otHours).toFixed(1)}h`;
+  if (slotsEl) slotsEl.textContent = `${filledSlots}`;
+}
+
+function copyRowDown(idx) {
+  const source = _getSlotData(idx);
+  if (!source) return;
+
+  // Find next valid row (skipping lunch break)
+  let targetIdx = idx + 1;
+  while (targetIdx < TS_SLOT_DEFINITIONS.length && TS_SLOT_DEFINITIONS[targetIdx].isLunch) {
+    targetIdx++;
+  }
+
+  if (targetIdx < TS_SLOT_DEFINITIONS.length) {
+    _setSlotData(targetIdx, source);
+    _highlightRow(targetIdx);
+    updateTimesheetStats();
+  }
+}
+
+function clearSlotRow(idx) {
+  _setSlotData(idx, { pj: '', cat: '', ph: '', disc: '', note: '' });
+  updateTimesheetStats();
+}
+
+function clearTimesheetInputs() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  if (!confirm(t('ts_clear_all') + "?")) return;
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (!slot.isLunch) {
+      _setSlotData(idx, { pj: '', cat: '', ph: '', disc: '', note: '' });
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_clear_all'), 'info');
+}
+
+function _getSlotData(idx) {
+  return {
+    pj: document.getElementById(`ts-pj-${idx}`)?.value || '',
+    cat: document.getElementById(`ts-cat-${idx}`)?.value || '',
+    ph: document.getElementById(`ts-ph-${idx}`)?.value || '',
+    disc: document.getElementById(`ts-disc-${idx}`)?.value || '',
+    note: document.getElementById(`ts-note-${idx}`)?.value || ''
+  };
+}
+
+function _setSlotData(idx, data) {
+  const pj = document.getElementById(`ts-pj-${idx}`);
+  const cat = document.getElementById(`ts-cat-${idx}`);
+  const ph = document.getElementById(`ts-ph-${idx}`);
+  const disc = document.getElementById(`ts-disc-${idx}`);
+  const note = document.getElementById(`ts-note-${idx}`);
+
+  if (pj && data.pj !== undefined) pj.value = data.pj;
+  if (cat && data.cat !== undefined) cat.value = data.cat;
+  if (ph && data.ph !== undefined) ph.value = data.ph;
+  if (disc && data.disc !== undefined) disc.value = data.disc;
+  if (note && data.note !== undefined) note.value = data.note;
+}
+
+function _highlightRow(idx) {
+  const row = document.getElementById(`ts-row-${idx}`);
+  if (row) {
+    row.classList.add('ts-row-highlight');
+    setTimeout(() => row.classList.remove('ts-row-highlight'), 600);
+  }
+}
+
+function bulkFillMorning() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  // Source is 08:00 slot
+  const sourceIdx = TS_SLOT_DEFINITIONS.findIndex(s => s.start === "08:00");
+  if (sourceIdx < 0) return;
+  const sourceData = _getSlotData(sourceIdx);
+  if (!sourceData.pj && !sourceData.cat && !sourceData.disc) {
+    toast("Vui lòng nhập dữ liệu khung giờ 08:00 - 08:30 trước khi điền cả buổi sáng", "error");
+    return;
+  }
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.type === 'official_morning' && idx !== sourceIdx) {
+      _setSlotData(idx, sourceData);
+      _highlightRow(idx);
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_fill_morning'), 'success');
+}
+
+function bulkFillAfternoon() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  // Source is 13:00 slot
+  const sourceIdx = TS_SLOT_DEFINITIONS.findIndex(s => s.start === "13:00");
+  if (sourceIdx < 0) return;
+  const sourceData = _getSlotData(sourceIdx);
+  if (!sourceData.pj && !sourceData.cat && !sourceData.disc) {
+    toast("Vui lòng nhập dữ liệu khung giờ 13:00 - 13:30 trước khi điền cả buổi chiều", "error");
+    return;
+  }
+
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.type === 'official_afternoon' && idx !== sourceIdx) {
+      _setSlotData(idx, sourceData);
+      _highlightRow(idx);
+    }
+  });
+  updateTimesheetStats();
+  toast(t('ts_fill_afternoon'), 'success');
+}
+
+function copyFromYesterdayClick() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+
+  const staffCode = document.getElementById('ts-staff-sel')?.value || '';
+  if (!staffCode || !_tsSelectedDate) return;
+
+  toast("Đang nạp dữ liệu ngày hôm trước...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        if (!res.hasData || !res.records || !res.records.length) {
+          toast(`Không tìm thấy dữ liệu ngày hôm trước (${res.prevDate})`, "info");
+          return;
+        }
+
+        renderTimesheetGrid(res.records);
+        toast(`Đã sao chép ${res.records.length} khung giờ từ ngày ${res.prevDate}!`, "success");
+      } else {
+        toast((res && res.error) || "Lỗi sao chép từ hôm qua", "error");
+      }
+    })
+    .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+    .copyTimesheetFromYesterday(staffCode, _tsSelectedDate);
+}
+
+// ── Multi-level Clipboard Copy/Paste Engine (Excel & Hotkeys) ──
+function _attachTimesheetClipboardListeners() {
+  const table = document.getElementById('ts-table');
+  if (!table) return;
+
+  table.onpaste = function(e) {
+    const clipboardData = (e.clipboardData || window.clipboardData);
+    if (!clipboardData) return;
+    const text = clipboardData.getData('text');
+    if (!text) return;
+
+    // Check if pasted content is multi-column or multi-row from Excel/Sheets
+    const isTabbed = text.includes('\t');
+    const isMultiLine = text.includes('\n');
+
+    if (isTabbed || isMultiLine) {
+      e.preventDefault();
+      _handleExcelPaste(e.target, text);
+    }
+  };
+
+  table.onkeydown = function(e) {
+    // Hotkey Ctrl+C: Copy current row
+    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+      const activeRow = e.target.closest('tr[data-slot-idx]');
+      if (activeRow) {
+        const idx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+        _tsCopiedRow = _getSlotData(idx);
+        toast("Đã sao chép dòng vào bộ nhớ tạm", "info");
+      }
+    }
+    // Hotkey Ctrl+V: Paste copied row
+    else if ((e.ctrlKey || e.metaKey) && e.key === 'v' && _tsCopiedRow) {
+      const activeRow = e.target.closest('tr[data-slot-idx]');
+      if (activeRow) {
+        const idx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+        if (!TS_SLOT_DEFINITIONS[idx].isLunch) {
+          _setSlotData(idx, _tsCopiedRow);
+          _highlightRow(idx);
+          updateTimesheetStats();
+        }
+      }
+    }
+  };
+}
+
+function _handleExcelPaste(targetEl, rawText) {
+  const activeRow = targetEl.closest('tr[data-slot-idx]');
+  if (!activeRow) return;
+
+  let currentSlotIdx = parseInt(activeRow.getAttribute('data-slot-idx'), 10);
+  const rows = rawText.trim().split(/\r?\n/).map(r => r.split('\t'));
+
+  let pastedCount = 0;
+  for (let r = 0; r < rows.length; r++) {
+    // Skip to next non-lunch slot
+    while (currentSlotIdx < TS_SLOT_DEFINITIONS.length && TS_SLOT_DEFINITIONS[currentSlotIdx].isLunch) {
+      currentSlotIdx++;
+    }
+    if (currentSlotIdx >= TS_SLOT_DEFINITIONS.length) break;
+
+    const cols = rows[r];
+    // Expected Excel columns: [Project, Category, Phase, Discipline, Note]
+    const data = {
+      pj: (cols[0] || '').trim().toUpperCase(),
+      cat: (cols[1] || '').trim().toUpperCase(),
+      ph: (cols[2] || '').trim().toUpperCase(),
+      disc: (cols[3] || '').trim().toUpperCase(),
+      note: (cols[4] || '').trim()
+    };
+
+    _setSlotData(currentSlotIdx, data);
+    _highlightRow(currentSlotIdx);
+    pastedCount++;
+    currentSlotIdx++;
+  }
+
+  updateTimesheetStats();
+  toast(`Đã dán ${pastedCount} dòng từ bảng tính (đã tự động bỏ qua giờ nghỉ trưa)!`, 'success');
+}
+
+// ── Save & Safe Overwrite Protocol ──
+function saveTimesheetClick() {
+  if (_tsHasExistingData && !_tsEditModeActive) {
+    toast(t('ts_existing_data_warning'), 'error');
+    return;
+  }
+  submitTimesheetData(false);
+}
+
+function confirmOverwriteClick() {
+  const msgEl = document.getElementById('m-confirm-overwrite-msg');
+  if (msgEl) {
+    msgEl.textContent = t('ts_confirm_overwrite_msg', { date: _tsSelectedDate, count: _tsExistingCount });
+  }
+  openModal('m-confirm-overwrite');
+}
+
+function submitTimesheetData(isOverwrite) {
+  if (isOverwrite) {
+    closeModal('m-confirm-overwrite');
+  }
+
+  const staffCode = document.getElementById('ts-staff-sel')?.value || '';
+  if (!staffCode || !_tsSelectedDate) {
+    toast("Vui lòng chọn nhân viên và ngày làm việc", "error");
+    return;
+  }
+
+  const entries = [];
+  TS_SLOT_DEFINITIONS.forEach((slot, idx) => {
+    if (slot.isLunch) return;
+    const pj = document.getElementById(`ts-pj-${idx}`)?.value || '';
+    const cat = document.getElementById(`ts-cat-${idx}`)?.value || '';
+    const ph = document.getElementById(`ts-ph-${idx}`)?.value || '';
+    const disc = document.getElementById(`ts-disc-${idx}`)?.value || '';
+    const note = (document.getElementById(`ts-note-${idx}`)?.value || '').trim();
+
+    if (pj || cat || ph || disc || note) {
+      entries.push({
+        startTime: slot.start,
+        endTime: slot.end,
+        isOT: !!slot.isOT,
+        projectCode: pj,
+        categoryCode: cat,
+        phaseCode: ph,
+        disciplineCode: disc,
+        note: note
+      });
+    }
+  });
+
+  if (!entries.length) {
+    toast("Vui lòng nhập ít nhất một khung giờ làm việc", "error");
+    return;
+  }
+
+  const payload = {
+    staffCode: staffCode,
+    dateStr: _tsSelectedDate,
+    entries: entries,
+    isOverwrite: !!isOverwrite
+  };
+
+  const btnSave = document.getElementById('ts-btn-save');
+  const btnOverwrite = document.getElementById('ts-btn-overwrite');
+  if (btnSave) btnSave.textContent = t('ts_btn_saving');
+  if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_saving');
+
+  toast("Đang lưu thời gian làm việc vào Google Sheet cá nhân...", "info");
+  google.script.run
+    .withSuccessHandler(res => {
+      if (btnSave) btnSave.textContent = t('ts_btn_save');
+      if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_overwrite');
+
+      if (res && res.success) {
+        toast(`Đã lưu thành công ${res.savedCount || entries.length} khung giờ vào Sheet!`, "success");
+        loadTimesheetData(true);
+      } else if (res && res.requireOverwriteConfirm) {
+        // Safe check caught on server
+        _tsHasExistingData = true;
+        _tsExistingCount = res.existingCount || entries.length;
+        _updateTimesheetToolbarState();
+        confirmOverwriteClick();
+      } else {
+        toast((res && res.error) || "Lỗi khi lưu thời gian làm việc", "error");
+      }
+    })
+    .withFailureHandler(err => {
+      if (btnSave) btnSave.textContent = t('ts_btn_save');
+      if (btnOverwrite) btnOverwrite.textContent = t('ts_btn_overwrite');
+      toast(err.message || "Lỗi máy chủ", "error");
+    })
+    .saveTimesheetData(payload);
+}
+
+
+// ════════════════════════════════════════════════════════════
+//  TIMESHEET v4.7 SUB-TAB CONTROLLER & ADVANCED ANALYTICS
+// ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  TIMESHEET v4.7 SUB-TAB CONTROLLER & ADVANCED ANALYTICS
+// ════════════════════════════════════════════════════════════
+
+let _tsActiveSubTab = 'ENTRY';
+
+function switchTsSubTab(tabKey) {
+  _tsActiveSubTab = tabKey;
+  
+  ['ENTRY', 'PROJECT', 'STAFF', 'MATRIX'].forEach(k => {
+    const btn = document.getElementById('ts-subtab-btn-' + k.toLowerCase());
+    const pane = document.getElementById('ts-pane-' + k.toLowerCase());
+    if (btn) {
+      if (k === tabKey) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+    if (pane) {
+      pane.style.display = (k === tabKey) ? 'block' : 'none';
+    }
+  });
+
+  if (tabKey === 'PROJECT') {
+    initProjectActualTimeTab();
+  } else if (tabKey === 'STAFF') {
+    initStaffWorkBreakdownTab();
+  } else if (tabKey === 'MATRIX') {
+    initBatchMatrixTab();
+  }
+}
+
+// ── 1. SUB-TAB 2: PROJECT ACTUAL TIME REPORT ──
+
+
+function updateProjectScopeDropdownI18n() {
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  if (!scopeSel) return;
+  const curVal = scopeSel.value || 'all';
+  scopeSel.innerHTML = `
+    <option value="all">${t('ts_scope_all')}</option>
+    <option value="current">${t('ts_scope_current')}</option>
+    <option value="custom">${t('ts_scope_custom')}</option>
+  `;
+  scopeSel.value = curVal;
+}
+
+function initProjectActualTimeTab() {
+  const sel = document.getElementById('ts-rep-pj-sel');
+  if (!sel) return;
+
+  // Danh mục mã lỗi thời cần lọc sạch (ngăn chặn dự án bóng ma lọt vào dropdown)
+  const obsoleteCodes = new Set(["MRR01", "AMK01", "TSK01", "JUJ01", "DA010", "HAG01"]);
+
+  // 4 Dự án chuẩn chính thức của công ty
+  const officialProjects = [
+    { id: "MUR01", name: "2026_01_MUR01_室蘭市蘭東下水処理場" },
+    { id: "JJK01", name: "2026_02_JJK01_工房ヴィレッジ新築工事" },
+    { id: "AMA01", name: "2026_03_AMA01_天草市本渡浄化センター" },
+    { id: "TES01", name: "2026_04_TES01_弟子屈町弟子屈浄化センター" }
+  ];
+
+  let projectList = [];
+  const seenIds = new Set();
+
+  // Ưu tiên nạp 4 dự án chuẩn trước
+  officialProjects.forEach(dp => {
+    seenIds.add(dp.id);
+    projectList.push({ id: dp.id, name: dp.name });
+  });
+
+  // Nạp thêm các dự án hợp lệ khác từ S.projects nếu không nằm trong danh sách lỗi thời
+  if (S && S.projects && S.projects.length) {
+    S.projects.forEach(p => {
+      const pid = String(p.id || '').trim().toUpperCase();
+      if (pid && !seenIds.has(pid) && !obsoleteCodes.has(pid)) {
+        seenIds.add(pid);
+        projectList.push({
+          id: pid,
+          name: p.name || pid
+        });
+      }
+    });
+  }
+
+  // Nạp thêm từ Taxonomy nếu có
+  if (S && S.taxonomy && S.taxonomy.projectCodes && S.taxonomy.projectCodes.length) {
+    S.taxonomy.projectCodes.forEach(p => {
+      const pCode = String(p.code || p.id || '').trim().toUpperCase();
+      if (pCode && !seenIds.has(pCode) && !obsoleteCodes.has(pCode)) {
+        seenIds.add(pCode);
+        projectList.push({
+          id: pCode,
+          name: typeof tTaxonomy === 'function' ? tTaxonomy(p) : (p.name_vi || p.name || pCode)
+        });
+      }
+    });
+  }
+
+  updateProjectScopeDropdownI18n();
+  let opts = '<option value="">' + t('ts_opt_select_pj') + '</option>';
+  projectList.forEach(p => {
+    const label = (p.name && p.name.includes(p.id)) ? p.name : (p.id + ' - ' + (p.name || ''));
+    opts += '<option value="' + p.id + '">' + label + '</option>';
+  });
+  sel.innerHTML = opts;
+
+  if (projectList.length > 0 && !sel.value) {
+    sel.value = projectList[0].id;
+    loadProjectActualTimeReport();
+  }
+}
+
+function onProjectScopeChange(scope) {
+  const customDates = document.getElementById('ts-rep-custom-dates');
+  if (customDates) {
+    customDates.style.display = (scope === 'custom') ? 'flex' : 'none';
+  }
+  if (scope !== 'custom') {
+    loadProjectActualTimeReport();
+  }
+}
+
+function loadProjectActualTimeReport() {
+  const pjSel = document.getElementById('ts-rep-pj-sel');
+  const projectCode = pjSel ? pjSel.value : '';
+  if (!projectCode) return;
+
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  const scope = scopeSel ? scopeSel.value : 'all';
+  const fromDate = (document.getElementById('ts-rep-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-rep-to')?.value || '').trim();
+
+  const kpiContainer = document.getElementById('ts-rep-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+  const tbMembers = document.getElementById('ts-rep-tbody-members');
+  if (tbMembers) tbMembers.innerHTML = '<tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr>';
+  const tbDisc = document.getElementById('ts-rep-tbody-disciplines');
+  if (tbDisc) tbDisc.innerHTML = '<tr><td colspan="5"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        renderProjectActualTimeReport(res);
+      } else {
+        toast((res && res.error) || 'Lỗi tải báo cáo dự án', 'error');
+      }
+    })
+    .withFailureHandler(err => toast(err.message || 'Lỗi kết nối máy chủ', 'error'))
+    .getProjectActualTimeReport(projectCode, scope, fromDate, toDate);
+}
+
+function renderProjectActualTimeReport(data) {
+  // 1. KPI Cards
+  const kpiContainer = document.getElementById('ts-rep-kpi-container');
+  if (kpiContainer) {
+    const isLifetime = (data.scope === 'all');
+    kpiContainer.innerHTML = `
+      <div class="ts-kpi-card" style="border-left:4px solid var(--p)">
+        <div class="ts-kpi-lbl">${isLifetime ? t('ts_kpi_lifetime_hours') : t('ts_kpi_actual_hours')}</div>
+        <div class="ts-kpi-val" style="color:var(--p)">${Number(data.totalLifetimeHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${isLifetime ? t('ts_kpi_lifetime_sub') : t('ts_kpi_scope_sub')}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #10b981">
+        <div class="ts-kpi-lbl">${t('ts_kpi_current_year', { year: '2026' })}</div>
+        <div class="ts-kpi-val" style="color:#10b981">${Number(data.currentYearHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_standard_hours', { hours: data.officialHours || 0 })}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #f59e0b">
+        <div class="ts-kpi-lbl">${t('ts_kpi_ot')}</div>
+        <div class="ts-kpi-val" style="color:#f59e0b">${Number(data.otHours || 0).toLocaleString()}h</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_ot_rate', { rate: data.currentYearHours > 0 ? ((data.otHours / data.currentYearHours) * 100).toFixed(1) : 0 })}</div>
+      </div>
+      <div class="ts-kpi-card" style="border-left:4px solid #6366f1">
+        <div class="ts-kpi-lbl">${t('ts_kpi_engineers')}</div>
+        <div class="ts-kpi-val" style="color:#6366f1">${(data.members || []).length}</div>
+        <div class="ts-kpi-sub">${t('ts_kpi_engineers_sub')}</div>
+      </div>
+    `;
+  }
+
+  // 2. Budget Variance & Progress Alert
+  const budgetWrap = document.getElementById('ts-rep-budget-bar-wrap');
+  if (budgetWrap) {
+    if (data.budgetHours && data.budgetHours > 0) {
+      budgetWrap.style.display = 'block';
+      const pct = data.budgetUsagePercent || 0;
+      const isOver = data.isOverBudget;
+      const barColor = isOver ? '#ef4444' : (pct > 80 ? '#f59e0b' : '#10b981');
+      const badgeClass = isOver ? 'an-badge an-badge-warn' : 'an-badge an-badge-green';
+      const badgeText = isOver
+        ? '⚠️ ' + t('ts_budget_over', { variance: data.varianceHours, pct: (pct - 100).toFixed(1) })
+        : '✅ ' + t('ts_budget_used', { pct });
+
+      budgetWrap.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div>
+            <span style="font-weight:700;font-size:13px;color:var(--tx)">${t('ts_budget_control')}</span>
+            <span style="font-size:12px;color:var(--t2);margin-left:6px">${t('ts_budget_plan')} <b>${data.budgetHours}h</b> | ${t('ts_budget_actual')} <b>${data.totalLifetimeHours}h</b></span>
+          </div>
+          <div>
+            <span class="${badgeClass}" style="font-weight:700">${badgeText}</span>
+          </div>
+        </div>
+        <div style="height:10px;background:#e2e8f0;border-radius:5px;overflow:hidden">
+          <div style="height:100%;width:${Math.min(pct, 100)}%;background:${barColor};transition:.3s"></div>
+        </div>
+      `;
+    } else {
+      budgetWrap.style.display = 'none';
+    }
+  }
+
+  // 3. Historical Snapshot Wrap (for 3-5 Year Multi-Year Projects)
+  const histWrap = document.getElementById('ts-rep-historical-wrap');
+  if (histWrap) {
+    const histYears = Object.keys(data.historicalByYear || {});
+    if (histYears.length > 0) {
+      histWrap.style.display = 'block';
+      let histHtml = `
+        <div style="background:#f8fafc;border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 14px">
+          <div style="font-weight:700;font-size:12px;color:var(--tx);margin-bottom:8px">${t('ts_historical_title')}</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+      `;
+      histYears.forEach(yr => {
+        histHtml += `
+          <div style="background:#fff;border:1px solid var(--bdr);border-radius:6px;padding:6px 12px;font-size:12px">
+            <span style="font-weight:700;color:var(--tx)">${t('ts_historical_year', { year: yr })}</span>
+            <span style="font-weight:800;color:var(--p);margin-left:4px">${data.historicalByYear[yr]}h</span>
+            <span class="badge bg-bl" style="font-size:10px;margin-left:4px">${t('ts_historical_closed')}</span>
+          </div>
+        `;
+      });
+      histHtml += `
+            <div style="background:#fff;border:1px solid var(--bdr);border-radius:6px;padding:6px 12px;font-size:12px">
+              <span style="font-weight:700;color:var(--tx)">${t('ts_historical_year', { year: '2026' })}</span>
+              <span style="font-weight:800;color:#10b981;margin-left:4px">${data.currentYearHours}h</span>
+              <span class="badge bg-gr" style="font-size:10px;margin-left:4px">${t('ts_historical_running')}</span>
+            </div>
+          </div>
+        </div>
+      `;
+      histWrap.innerHTML = histHtml;
+    } else {
+      histWrap.style.display = 'none';
+    }
+  }
+
+  // 4. Staff Contribution Table
+  const tbMembers = document.getElementById('ts-rep-tbody-members');
+  const countMembers = document.getElementById('ts-rep-member-count');
+  if (countMembers) countMembers.textContent = t('ts_count_engineers', { count: (data.members || []).length });
+
+  if (tbMembers) {
+    if (!data.members || !data.members.length) {
+      tbMembers.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_empty_project_data')}</td></tr>`;
+    } else {
+      tbMembers.innerHTML = data.members.map((m, idx) => `
+        <tr>
+          <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+          <td style="font-weight:700;color:var(--tx)">${m.code}</td>
+          <td>${m.name}</td>
+          <td style="text-align:right;font-weight:700;color:var(--p)">${m.hours}h</td>
+          <td style="text-align:right">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+              <span style="font-size:11px;font-weight:600;min-width:36px">${m.percentage}%</span>
+              <div style="width:50px;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+                <div style="width:${Math.min(m.percentage, 100)}%;height:100%;background:var(--p)"></div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+  }
+
+  // 5. Discipline Breakdown Table (Hỗ trợ đa ngôn ngữ Nhật / Anh / Việt)
+  const tbDisc = document.getElementById('ts-rep-tbody-disciplines');
+  const countDisc = document.getElementById('ts-rep-disc-count');
+  if (countDisc) countDisc.textContent = t('ts_count_disciplines', { count: (data.disciplines || []).length });
+
+  if (tbDisc) {
+    if (!data.disciplines || !data.disciplines.length) {
+      tbDisc.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_empty_disc_data')}</td></tr>`;
+    } else {
+      tbDisc.innerHTML = data.disciplines.map((d, idx) => {
+        const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === d.code);
+        const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : (d.name || d.code);
+        return `
+          <tr>
+            <td style="text-align:center;font-size:11px;color:var(--t3)">${idx + 1}</td>
+            <td style="font-weight:700;color:var(--tx)"><span class="badge bg-bl">${d.code}</span></td>
+            <td>${discName}</td>
+            <td style="text-align:right;font-weight:700;color:#0f766e">${d.hours}h</td>
+            <td style="text-align:right">
+              <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px">
+                <span style="font-size:11px;font-weight:600;min-width:36px">${d.percentage}%</span>
+                <div style="width:50px;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden">
+                  <div style="width:${Math.min(d.percentage, 100)}%;height:100%;background:#0f766e"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
+}
+
+// ── 2. SUB-TAB 3: STAFF WORK BREAKDOWN ──
+
+function initStaffWorkBreakdownTab() {
+  const sel = document.getElementById('ts-stf-sel');
+  if (!sel) return;
+
+  if (_tsStaffList && _tsStaffList.length) {
+    sel.innerHTML = _tsStaffList.map(st => `
+      <option value="${st.code}">${st.code} - ${st.name}</option>
+    `).join('');
+    const curVal = document.getElementById('ts-staff-sel')?.value;
+    if (curVal && sel.querySelector(`option[value="${curVal}"]`)) {
+      sel.value = curVal;
+    }
+  } else {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success) {
+          _tsStaffList = res.staffList || [];
+          sel.innerHTML = _tsStaffList.map(st => `
+            <option value="${st.code}">${st.code} - ${st.name}</option>
+          `).join('');
+          const curVal = document.getElementById('ts-staff-sel')?.value;
+          if (curVal && sel.querySelector(`option[value="${curVal}"]`)) {
+            sel.value = curVal;
+          }
+          loadStaffWorkBreakdown();
+        }
+      })
+      .getStaffListForTimesheet();
+  }
+
+  const isLevel2 = (S && S.user && S.user.role === 'Member');
+  if (isLevel2) {
+    sel.disabled = true;
+  }
+
+  setStaffQuickRange('this_month');
+}
+
+function setStaffQuickRange(type) {
+  const now = new Date();
+  let fromD = null;
+  let toD = null;
+
+  if (type === 'this_month') {
+    fromD = new Date(now.getFullYear(), now.getMonth(), 1);
+    toD = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  } else if (type === 'last_month') {
+    fromD = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    toD = new Date(now.getFullYear(), now.getMonth(), 0);
+  } else if (type === 'all') {
+    fromD = null;
+    toD = null;
+  }
+
+  const fromInp = document.getElementById('ts-stf-from');
+  const toInp = document.getElementById('ts-stf-to');
+  if (fromInp) fromInp.value = fromD ? _formatDateYMD(fromD) : '';
+  if (toInp) toInp.value = toD ? _formatDateYMD(toD) : '';
+
+  loadStaffWorkBreakdown();
+}
+
+function loadStaffWorkBreakdown() {
+  const staffSel = document.getElementById('ts-stf-sel');
+  const staffCode = staffSel ? staffSel.value : '';
+  const fromDate = (document.getElementById('ts-stf-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-stf-to')?.value || '').trim();
+
+  if (!staffCode) {
+    toast("Vui lòng chọn nhân viên cần xem", "error");
+    return;
+  }
+
+  const kpiContainer = document.getElementById('ts-stf-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = '<div style="width:100%;text-align:center;padding:15px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+  const treeContainer = document.getElementById('ts-stf-tree-container');
+  if (treeContainer) {
+    treeContainer.innerHTML = '<div style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></div>';
+  }
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success) {
+        renderStaffWorkBreakdown(res);
+      } else {
+        toast((res && res.error) || "Lỗi tải bóc tách công việc", "error");
+      }
+    })
+    .withFailureHandler(err => toast(err.message || "Lỗi máy chủ", "error"))
+    .getStaffWorkBreakdownByRange(staffCode, fromDate, toDate);
+}
+
+function renderStaffWorkBreakdown(data) {
+  // 1. KPI Chips
+  const kpiContainer = document.getElementById('ts-stf-kpi-container');
+  if (kpiContainer) {
+    kpiContainer.innerHTML = `
+      <div class="ts-stat-chip" style="background:#eef2ff">
+        <span style="font-weight:600">${t('ts_stf_total_hours')}</span> <span class="ts-stat-num" style="color:var(--p);font-size:15px">${data.totalHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_official_hours')}</span> <span class="ts-stat-num">${data.officialHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_ot_hours')}</span> <span class="ts-stat-num" style="color:#ea580c">${data.otHours || 0}h</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_active_days')}</span> <span class="ts-stat-num">${t('ts_stf_days_unit', { count: data.activeDays || 0 })}</span>
+      </div>
+      <div class="ts-stat-chip">
+        <span style="font-weight:600">${t('ts_stf_pjs_count')}</span> <span class="ts-stat-num">${t('ts_stf_pjs_unit', { count: (data.projects || []).length })}</span>
+      </div>
+    `;
+  }
+
+  // 2. Hierarchical Tree Breakdown
+  const treeContainer = document.getElementById('ts-stf-tree-container');
+  if (!treeContainer) return;
+
+  if (!data.projects || !data.projects.length) {
+    treeContainer.innerHTML = `<div style="text-align:center;padding:30px;color:var(--t3)">${t('ts_stf_no_data')}</div>`;
+    return;
+  }
+
+  let treeHtml = `<div style="font-weight:700;font-size:13px;color:var(--tx);margin-bottom:12px">${t('ts_stf_tree_header', { staff: data.staffCode + ' - ' + data.staffName })}</div>`;
+
+  data.projects.forEach((p, pIdx) => {
+    treeHtml += `
+      <div style="margin-bottom:10px;border:1px solid var(--bdr);border-radius:6px;overflow:hidden">
+        <div class="ts-tree-pj-hdr" onclick="toggleTreeSection('ts-tree-pj-body-${pIdx}')">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:14px">📁</span>
+            <span style="font-weight:700;color:var(--tx);font-size:13px">${p.projectCode}</span>
+            <span class="badge bg-bl" style="font-size:10px">${p.percentage}%</span>
+          </div>
+          <div style="font-weight:800;color:var(--p);font-size:13px">${p.totalHours}h ▾</div>
+        </div>
+        <div id="ts-tree-pj-body-${pIdx}" style="padding:6px 0;background:#fff">
+    `;
+
+    (p.disciplines || []).forEach(d => {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === d.code);
+      const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : (d.name || d.code);
+      treeHtml += `
+        <div class="ts-tree-disc-row">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="badge bg-gr" style="font-size:10px">${d.code}</span>
+            <span style="font-weight:600;color:var(--tx)">${discName}</span>
+          </div>
+          <div style="font-weight:700;color:#0f766e">${d.hours}h (${d.percentage}%)</div>
+        </div>
+      `;
+
+      if (d.logs && d.logs.length) {
+        treeHtml += `<div class="ts-tree-notes">`;
+        d.logs.slice(0, 5).forEach(l => {
+          treeHtml += `<div>• <b>${l.date}</b> (${l.timeSlot}): ${l.note || t('ts_no_note')}</div>`;
+        });
+        treeHtml += `</div>`;
+      }
+    });
+
+    treeHtml += `
+        </div>
+      </div>
+    `;
+  });
+
+  treeContainer.innerHTML = treeHtml;
+}
+
+function toggleTreeSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+  }
+}
+
+// ── 3. SUB-TAB 4: BATCH COMPARISON MATRIX (PIVOT GRID) ──
+
+function initBatchMatrixTab() {
+  const mInp = document.getElementById('ts-mat-month');
+  if (mInp && !mInp.value) {
+    const now = new Date();
+    const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    mInp.value = ym;
+  }
+  loadBatchComparisonMatrix();
+}
+
+function stepMatrixMonth(delta) {
+  const mInp = document.getElementById('ts-mat-month');
+  if (!mInp || !mInp.value) return;
+
+  const parts = mInp.value.split('-');
+  let y = parseInt(parts[0], 10);
+  let m = parseInt(parts[1], 10) + delta;
+
+  if (m > 12) { m = 1; y++; }
+  else if (m < 1) { m = 12; y--; }
+
+  mInp.value = `${y}-${String(m).padStart(2, '0')}`;
+  loadBatchComparisonMatrix();
+}
+
+function loadBatchComparisonMatrix(isAllTime) {
+  let startDate = '';
+  let endDate = '';
+
+  const mInp = document.getElementById('ts-mat-month');
+  const statusEl = document.getElementById('ts-mat-status');
+
+  if (isAllTime) {
+    if (mInp) mInp.value = '';
+    if (statusEl) statusEl.textContent = t('ts_mat_status_loading');
+  } else {
+    const ym = mInp ? mInp.value : '';
+    if (!ym) {
+      startDate = '';
+      endDate = '';
+    } else {
+      const parts = ym.split('-');
+      const y = parseInt(parts[0], 10);
+      const m = parseInt(parts[1], 10);
+      startDate = `${ym}-01`;
+      const lastDay = new Date(y, m, 0).getDate();
+      endDate = `${ym}-${String(lastDay).padStart(2, '0')}`;
+    }
+    if (statusEl) statusEl.textContent = t('ts_mat_status_loading');
+  }
+
+  const hideZero = !!document.getElementById('ts-mat-hide-zero')?.checked;
+  const tbody = document.getElementById('ts-mat-tbody');
+  if (tbody) tbody.innerHTML = '<tr><td style="text-align:center;padding:30px"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (statusEl) statusEl.textContent = isAllTime ? t('ts_mat_status_all_done') : t('ts_mat_status_done');
+      if (res && res.success) {
+        renderBatchComparisonMatrix(res);
+      } else {
+        toast((res && res.error) || 'Lỗi tải ma trận đối chiếu', 'error');
+      }
+    })
+    .withFailureHandler(err => {
+      if (statusEl) statusEl.textContent = t('ts_mat_status_err');
+      toast(err.message || 'Lỗi máy chủ', 'error');
+    })
+    .getBatchStaffComparisonMatrix(startDate, endDate, hideZero);
+}
+
+function renderBatchComparisonMatrix(data) {
+  const thead = document.getElementById('ts-mat-thead');
+  const tbody = document.getElementById('ts-mat-tbody');
+  const tfoot = document.getElementById('ts-mat-tfoot');
+  if (!thead || !tbody || !tfoot) return;
+
+  const projects = data.projectColumns || [];
+  const rows = data.rows || [];
+  const colTotals = data.columnTotals || {};
+  const grandTotal = data.grandTotalHours || 0;
+
+  // 1. Build Thead
+  let thHtml = '<tr>';
+  thHtml += '<th class="sticky-col-idx">#</th>';
+  thHtml += `<th class="sticky-col-code">${t('ts_col_staff_code')}</th>`;
+  thHtml += `<th class="sticky-col-name">${t('ts_col_staff_name')}</th>`;
+  projects.forEach(p => {
+    thHtml += `<th style="text-align:right;min-width:75px">${p}</th>`;
+  });
+  thHtml += `<th style="text-align:right;min-width:90px;background:#eef2ff;color:var(--p)">${t('ts_mat_col_total')}</th>`;
+  thHtml += '</tr>';
+  thead.innerHTML = thHtml;
+
+  // 2. Build Tbody
+  if (!rows.length) {
+    const colSpan = Math.max(projects.length + 4, 5);
+    const msg = data.isAllTime
+      ? t('ts_stf_no_data')
+      : t('ts_empty_project_data');
+    tbody.innerHTML = `<tr><td colspan="${colSpan}" style="text-align:center;padding:35px 20px;color:var(--t2);font-size:13px">${msg}</td></tr>`;
+    tfoot.innerHTML = '';
+    return;
+  }
+
+  let tbHtml = '';
+  rows.forEach((s, idx) => {
+    tbHtml += '<tr>';
+    tbHtml += `<td class="sticky-col-idx">${idx + 1}</td>`;
+    tbHtml += `<td class="sticky-col-code">${s.staffCode}</td>`;
+    tbHtml += `<td class="sticky-col-name">${s.staffName}</td>`;
+
+    projects.forEach(p => {
+      const hrs = (s.projectHours && s.projectHours[p]) || 0;
+      if (hrs > 0) {
+        tbHtml += `<td class="ts-matrix-cell has-val" onclick="openTsDrilldownModal('${s.staffCode}', '${s.staffName.replace(/'/g, "\\'")}', '${p}')" title="${t('ts_mat_hint')}">${hrs.toFixed(1)}</td>`;
+      } else {
+        tbHtml += `<td class="ts-matrix-cell" style="color:#cbd5e1">-</td>`;
+      }
+    });
+
+    tbHtml += `<td class="ts-matrix-cell" style="font-weight:800;color:var(--p);background:#f8fafc">${s.totalHours.toFixed(1)}</td>`;
+    tbHtml += '</tr>';
+  });
+  tbody.innerHTML = tbHtml;
+
+  // 3. Build Tfoot (Summary Row)
+  let tfHtml = '<tr>';
+  tfHtml += '<td class="sticky-col-idx">∑</td>';
+  tfHtml += `<td class="sticky-col-code">${t('ts_mat_grand_total')}</td>`;
+  tfHtml += `<td class="sticky-col-name">${t('ts_mat_all_projects')}</td>`;
+  projects.forEach(p => {
+    const tot = colTotals[p] || 0;
+    tfHtml += `<td style="text-align:right;font-weight:800;color:#0f766e">${tot.toFixed(1)}</td>`;
+  });
+  tfHtml += `<td style="text-align:right;font-weight:900;color:var(--p);font-size:13px;background:#e0e7ff">${grandTotal.toFixed(1)}</td>`;
+  tfHtml += '</tr>';
+  tfoot.innerHTML = tfHtml;
+}
+
+// ── 4. DRILLDOWN DETAIL MODAL ON CELL CLICK ──
+
+function openTsDrilldownModal(staffCode, staffName, projectCode) {
+  const mTitle = document.getElementById('m-ts-drill-title');
+  const mSub = document.getElementById('m-ts-drill-sub');
+  const tb = document.getElementById('m-ts-drill-tbody');
+
+  if (mTitle) mTitle.textContent = t('ts_mat_drilldown_title', { staff: `${staffCode} (${staffName})`, project: projectCode });
+  if (mSub) mSub.textContent = t('ts_mat_drilldown_sub', { project: projectCode });
+  if (tb) tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:25px"><div class="ldg"><div class="spn"></div></div></td></tr>';
+
+  openModal('m-ts-drilldown');
+
+  const mInp = document.getElementById('ts-mat-month');
+  const ym = mInp ? mInp.value : '';
+  let startDate = '', endDate = '';
+  if (ym) {
+    const parts = ym.split('-');
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    startDate = `${ym}-01`;
+    const lastDay = new Date(y, m, 0).getDate();
+    endDate = `${ym}-${String(lastDay).padStart(2, '0')}`;
+  }
+
+  google.script.run
+    .withSuccessHandler(res => {
+      if (res && res.success && res.slots) {
+        if (!res.slots.length) {
+          tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">${t('ts_drill_no_records')}</td></tr>`;
+        } else {
+          tb.innerHTML = res.slots.map(s => {
+            const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(x => x.code === s.disciplineCode);
+            const discName = discTax ? (typeof tTaxonomy === 'function' ? tTaxonomy(discTax) : (discTax.name_vi || discTax.name || '')) : s.disciplineCode;
+            const typeLabel = s.isOT ? t('ts_drill_type_ot') : t('ts_drill_type_standard');
+            return `
+              <tr>
+                <td style="font-weight:600">${s.date}</td>
+                <td><span class="ts-time-badge">${s.timeSlot}</span></td>
+                <td style="text-align:right;font-weight:700;color:var(--p)">${s.durHours}h</td>
+                <td><span class="badge ${s.isOT ? 'bg-re' : 'bg-bl'}">${typeLabel}</span></td>
+                <td><span class="badge bg-gr" title="${discName}">${s.disciplineCode} - ${discName}</span></td>
+                <td style="font-size:11px;color:var(--tx)">${s.note || '-'}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } else {
+        tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">${(res && res.error) || 'Lỗi tải dữ liệu'}</td></tr>`;
+      }
+    })
+    .withFailureHandler(err => {
+      tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">${err.message || 'Lỗi máy chủ'}</td></tr>`;
+    })
+    .getTimesheetCellDrilldown(staffCode, projectCode, startDate, endDate);
+}
+
+function exportJapaneseProjectReportClick() {
+  const pjSel = document.getElementById('ts-rep-pj-sel');
+  const projectCode = pjSel ? pjSel.value : '';
+  if (!projectCode) {
+    if (typeof toast === 'function') toast(t('ts_err_select_project') || 'Vui lòng chọn dự án trước khi xuất file nghiệm thu.', 'warning');
+    return;
+  }
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  const scope = scopeSel ? scopeSel.value : 'all';
+  const fromDate = (document.getElementById('ts-rep-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-rep-to')?.value || '').trim();
+
+  if (typeof toast === 'function') toast(t('ts_exporting_jp') || 'Đang khởi tạo file nghiệm thu chuẩn Nhật...', 'info');
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success && res.url) {
+          if (typeof toast === 'function') toast(res.message || 'Xuất file thành công! Đang mở...', 'success');
+          window.open(res.url, '_blank');
+        } else {
+          if (typeof toast === 'function') toast((res && res.error) || 'Lỗi xuất file nghiệm thu', 'error');
+        }
+      })
+      .withFailureHandler(err => {
+        if (typeof toast === 'function') toast(err.message || 'Lỗi kết nối máy chủ', 'error');
+      })
+      .exportJapaneseProjectReport(projectCode, scope, fromDate, toDate);
+  }
+}
+
+window.updateProjectScopeDropdownI18n = updateProjectScopeDropdownI18n;
+window.switchTsSubTab = switchTsSubTab;
+window.initProjectActualTimeTab = initProjectActualTimeTab;
+window.onProjectScopeChange = onProjectScopeChange;
+window.loadProjectActualTimeReport = loadProjectActualTimeReport;
+window.exportJapaneseProjectReportClick = exportJapaneseProjectReportClick;
+window.initStaffWorkBreakdownTab = initStaffWorkBreakdownTab;
+window.setStaffQuickRange = setStaffQuickRange;
+window.loadStaffWorkBreakdown = loadStaffWorkBreakdown;
+window.toggleTreeSection = toggleTreeSection;
+window.initBatchMatrixTab = initBatchMatrixTab;
+window.stepMatrixMonth = stepMatrixMonth;
+window.loadBatchComparisonMatrix = loadBatchComparisonMatrix;
+window.openTsDrilldownModal = openTsDrilldownModal;
+
+// ═══════════════════════════════════════════════════════════
+//  APP EXPORT MANAGER (PDF & EXCEL MULTI-FORMAT REPORTING)
+// ═══════════════════════════════════════════════════════════
+const AppExportManager = {
+  activeScope: null,
+  config: {
+    scopes: { overview: true, analytics: true, gantt: true },
+    pkgMode: 'merged', // 'merged' | 'split'
+    format: 'pdf',     // 'pdf' | 'excel'
+    paperSize: 'A4',   // 'A4' | 'A3' | 'Letter'
+    orientation: 'landscape', // 'landscape' | 'portrait'
+    margin: 10,        // mm
+    excelGanttGrid: true
+  },
+
+  sanitizeFileName(name) {
+    if (!name) return 'Bao_Cao';
+    return String(name).replace(/[\\/:*?"<>|]+/g, '_').replace(/\s+/g, '_').trim();
+  },
+
+  getTodayYMD() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}${m}${day}`;
+  },
+
+  formatDateVN(d) {
+    if (!d) return '';
+    const day = String(d.getDate()).padStart(2, '0');
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    return `${day}/${m}/${d.getFullYear()}`;
+  },
+
+  parseDate(val) {
+    if (!val) return null;
+    if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
+    const s = String(val).trim();
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) {
+      const parts = s.split('T')[0].split('-');
+      return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    }
+    if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(s)) {
+      const parts = s.split('/');
+      return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+    }
+    const d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  },
+
+  openModal(targetScope) {
+    try {
+      this.activeScope = targetScope || 'all';
+
+      // Ensure analytics charts are rendered if not already initialized
+      if ((!S.analyticsCharts || !S.analyticsCharts.workload || !S.analyticsCharts.pjShare) && typeof applyAnalyticsFilter === 'function') {
+        try { applyAnalyticsFilter(); } catch(e) {}
+      }
+
+      // 1. Show modal
+      const modalEl = document.getElementById('m-export-report');
+      if (modalEl) {
+        modalEl.classList.add('show');
+      } else if (typeof openModal === 'function') {
+        openModal('m-export-report');
+      }
+
+      // 2. Configure checkboxes based on entry point
+      const cbOv = document.getElementById('exp-cb-overview');
+      const cbAn = document.getElementById('exp-cb-analytics');
+      const cbGt = document.getElementById('exp-cb-gantt');
+
+      if (targetScope === 'gantt') {
+        if (cbOv) cbOv.checked = false;
+        if (cbAn) cbAn.checked = false;
+        if (cbGt) cbGt.checked = true;
+      } else if (targetScope === 'analytics') {
+        if (cbOv) cbOv.checked = false;
+        if (cbAn) cbAn.checked = true;
+        if (cbGt) cbGt.checked = false;
+      } else {
+        if (cbOv) cbOv.checked = true;
+        if (cbAn) cbAn.checked = true;
+        if (cbGt) cbGt.checked = true;
+      }
+
+      // 3. Determine current project name for default file name
+      let pjName = 'Tat_Ca_Du_An';
+      const curPj = this.getCurrentProject();
+      if (curPj && curPj.name) {
+        pjName = curPj.name;
+      }
+      const safePj = this.sanitizeFileName(pjName);
+      const ymd = this.getTodayYMD();
+
+      // 4. Default filenames
+      const fnMerged = document.getElementById('exp-fn-merged');
+      const fnOv = document.getElementById('exp-fn-overview');
+      const fnAn = document.getElementById('exp-fn-analytics');
+      const fnGt = document.getElementById('exp-fn-gantt');
+
+      if (fnMerged) fnMerged.value = `${safePj}_Bao_Cao_Tong_Hop_${ymd}`;
+      if (fnOv) fnOv.value = `${safePj}_Bao_Cao_Tong_Quan_${ymd}`;
+      if (fnAn) fnAn.value = `${safePj}_Bao_Cao_Chuyen_Sau_${ymd}`;
+      if (fnGt) fnGt.value = `${safePj}_So_Do_Gantt_${ymd}`;
+
+      // 5. Update controls
+      const isMerged = document.getElementById('exp-pkg-merged')?.checked ?? true;
+      this.config.pkgMode = isMerged ? 'merged' : 'split';
+      const wrapMerged = document.getElementById('exp-wrap-name-merged');
+      const wrapSplit = document.getElementById('exp-wrap-name-split');
+      if (wrapMerged) wrapMerged.style.display = isMerged ? 'block' : 'none';
+      if (wrapSplit) wrapSplit.style.display = isMerged ? 'none' : 'block';
+
+      this.config.scopes.overview = cbOv ? cbOv.checked : true;
+      this.config.scopes.analytics = cbAn ? cbAn.checked : true;
+      this.config.scopes.gantt = cbGt ? cbGt.checked : true;
+
+      this.refreshPreview();
+    } catch(err) {
+      console.error('Error in AppExportManager.openModal:', err);
+      const modalEl = document.getElementById('m-export-report');
+      if (modalEl) modalEl.classList.add('show');
+    }
+  },
+
+  closeModal() {
+    const modalEl = document.getElementById('m-export-report');
+    if (modalEl) modalEl.classList.remove('show');
+    if (typeof closeModal === 'function') closeModal('m-export-report');
+  },
+
+  setFormat(fmt) {
+    this.config.format = fmt;
+    const tabPdf = document.getElementById('exp-tab-pdf');
+    const tabExcel = document.getElementById('exp-tab-excel');
+    const secPdf = document.getElementById('exp-pdf-settings');
+    const secExcel = document.getElementById('exp-excel-settings');
+    const actPdf = document.getElementById('exp-actions-pdf');
+    const actExcel = document.getElementById('exp-actions-excel');
+
+    if (fmt === 'pdf') {
+      if (tabPdf) tabPdf.classList.add('active');
+      if (tabExcel) tabExcel.classList.remove('active');
+      if (secPdf) secPdf.style.display = 'block';
+      if (secExcel) secExcel.style.display = 'none';
+      if (actPdf) actPdf.style.display = 'flex';
+      if (actExcel) actExcel.style.display = 'none';
+    } else {
+      if (tabPdf) tabPdf.classList.remove('active');
+      if (tabExcel) tabExcel.classList.add('active');
+      if (secPdf) secPdf.style.display = 'none';
+      if (secExcel) secExcel.style.display = 'block';
+      if (actPdf) actPdf.style.display = 'none';
+      if (actExcel) actExcel.style.display = 'block';
+    }
+  },
+
+  onConfigChange() {
+    const isMerged = document.getElementById('exp-pkg-merged')?.checked ?? true;
+    this.config.pkgMode = isMerged ? 'merged' : 'split';
+
+    const wrapMerged = document.getElementById('exp-wrap-name-merged');
+    const wrapSplit = document.getElementById('exp-wrap-name-split');
+    if (wrapMerged) wrapMerged.style.display = isMerged ? 'block' : 'none';
+    if (wrapSplit) wrapSplit.style.display = isMerged ? 'none' : 'block';
+
+    this.config.scopes.overview = document.getElementById('exp-cb-overview')?.checked ?? false;
+    this.config.scopes.analytics = document.getElementById('exp-cb-analytics')?.checked ?? false;
+    this.config.scopes.gantt = document.getElementById('exp-cb-gantt')?.checked ?? false;
+
+    this.refreshPreview();
+  },
+
+  onPaperSettingsChange() {
+    const size = document.getElementById('exp-paper-size')?.value || 'A4';
+    const orient = document.getElementById('exp-orientation')?.value || 'landscape';
+    const margin = Number(document.getElementById('exp-margin')?.value || '10');
+
+    this.config.paperSize = size;
+    this.config.orientation = orient;
+    this.config.margin = margin;
+
+    document.documentElement.style.setProperty('--export-paper-size', size);
+    document.documentElement.style.setProperty('--export-paper-orientation', orient);
+    document.documentElement.style.setProperty('--export-paper-margin', margin + 'mm');
+
+    this.refreshPreview();
+  },
+
+  getCurrentProject() {
+    const pId = S.pjFilter || document.getElementById('pj-filter-sel')?.value || '';
+    if (pId && Array.isArray(S.projects)) {
+      return S.projects.find(p => p.id === pId) || null;
+    }
+    return null;
+  },
+
+  getExportData() {
+    const curPj = this.getCurrentProject();
+    let tasks = Array.isArray(S.tasks) ? [...S.tasks] : [];
+    if (curPj) {
+      tasks = tasks.filter(t => t.projectId === curPj.id);
+    }
+    
+    // If on analytics page or analytics filters are applied, use them
+    let analyticsTasks = tasks;
+    if (typeof getFilteredAnalyticsTasks === 'function') {
+      try {
+        const at = getFilteredAnalyticsTasks();
+        if (at && at.length) analyticsTasks = at;
+      } catch(e) {}
+    }
+
+    const members = (typeof _getAllAssignees === 'function') ? _getAllAssignees() : [...(S.members || [])];
+
+    // Compute KPI
+    const total = tasks.length;
+    const done = tasks.filter(t => t.status === 'Hoàn thành').length;
+    const ip = tasks.filter(t => t.status === 'Đang thực hiện' || t.status === 'Đang tiến hành').length;
+    const overdue = tasks.filter(t => (typeof isTaskOverdue === 'function' ? isTaskOverdue(t) : false) || t.status === 'Quá hạn').length;
+    const ontimeCount = done;
+    const ontimeRate = done > 0 ? Math.round((ontimeCount / done) * 100) : 100;
+    const avgProgress = total > 0 ? Math.round(tasks.reduce((acc, cur) => acc + (Number(cur.progress) || 0), 0) / total) : 0;
+
+    // Chart images
+    const chartImages = {};
+    if (S.charts && S.charts.stat && typeof S.charts.stat.toBase64Image === 'function') {
+      try { chartImages.stat = S.charts.stat.toBase64Image('image/png', 2); } catch(e) {}
+    }
+    if (S.analyticsCharts) {
+      ['workload', 'radar', 'pjShare', 'trend'].forEach(k => {
+        if (S.analyticsCharts[k] && typeof S.analyticsCharts[k].toBase64Image === 'function') {
+          try { chartImages[k] = S.analyticsCharts[k].toBase64Image('image/png', 2); } catch(e) {}
+        }
+      });
+    }
+
+    // Auto-detect Gantt date boundaries from actual tasks
+    const now = new Date();
+    let minTaskDate = null;
+    let maxTaskDate = null;
+
+    tasks.forEach(t => {
+      const ts = this.parseDate(t.startRaw || t.startDate);
+      const te = this.parseDate(t.deadlineRaw || t.deadline);
+      if (ts && (!minTaskDate || ts < minTaskDate)) minTaskDate = ts;
+      if (te && (!maxTaskDate || te > maxTaskDate)) maxTaskDate = te;
+    });
+
+    if (curPj) {
+      const ps = this.parseDate(curPj.startRaw || curPj.startDate);
+      const pe = this.parseDate(curPj.endRaw || curPj.endDate);
+      if (ps && (!minTaskDate || ps < minTaskDate)) minTaskDate = ps;
+      if (pe && (!maxTaskDate || pe > maxTaskDate)) maxTaskDate = pe;
+    }
+
+    const userGFrom = (typeof document !== 'undefined') ? document.getElementById('g-from')?.value : null;
+    const userGTo = (typeof document !== 'undefined') ? document.getElementById('g-to')?.value : null;
+    const parsedUserGFrom = userGFrom ? this.parseDate(userGFrom) : null;
+    const parsedUserGTo = userGTo ? this.parseDate(userGTo) : null;
+
+    let gSd = parsedUserGFrom;
+    let gEd = parsedUserGTo;
+
+    if (!gSd) {
+      if (minTaskDate) {
+        gSd = new Date(minTaskDate.getFullYear(), minTaskDate.getMonth(), 1);
+      } else {
+        gSd = new Date(now.getFullYear(), now.getMonth(), 1);
+      }
+    }
+
+    if (!gEd) {
+      if (maxTaskDate) {
+        gEd = new Date(maxTaskDate.getFullYear(), maxTaskDate.getMonth() + 1, 0);
+      } else {
+        gEd = new Date(gSd.getTime() + 30 * 86400000);
+      }
+    }
+
+    if (!gSd || !(gSd instanceof Date) || isNaN(gSd.getTime())) gSd = now;
+    if (!gEd || !(gEd instanceof Date) || isNaN(gEd.getTime()) || gEd.getTime() <= gSd.getTime()) {
+      gEd = new Date(gSd.getTime() + 30 * 86400000);
+    }
+
+    const ganttData = {
+      startDate: gSd,
+      endDate: gEd,
+      pixelsPerDay: 28
+    };
+
+    return {
+      project: curPj,
+      projectName: curPj ? curPj.name : t('filter_all_projects'),
+      tasks,
+      analyticsTasks,
+      members,
+      kpi: { total, done, ip, overdue, ontimeRate, avgProgress },
+      chartImages,
+      ganttData,
+      generatedAt: this.formatDateVN(new Date()) + ' ' + new Date().toLocaleTimeString(),
+      generatedBy: (S.user && S.user.name) ? S.user.name : 'System Admin'
+    };
+  },
+
+  buildHeaderHtml(title, data) {
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #4f6ef7;padding-bottom:12px;margin-bottom:16px">
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#1e293b;text-transform:uppercase;letter-spacing:0.5px">${title}</div>
+          <div style="font-size:12px;color:#4f6ef7;font-weight:600;margin-top:2px">📁 ${t('export_report_project')}: ${data.projectName}</div>
+        </div>
+        <div style="text-align:right;font-size:11px;color:#64748b;line-height:1.4">
+          <div><strong>${t('export_report_generated_at')}:</strong> ${data.generatedAt}</div>
+          <div><strong>${t('export_report_generated_by')}:</strong> ${data.generatedBy}</div>
+        </div>
+      </div>
+    `;
+  },
+
+  buildOverviewHtml(data) {
+    const kpi = data.kpi;
+    const maxTasks = 100;
+    const displayTasks = data.tasks.slice(0, maxTasks);
+    const taskRows = displayTasks.map((t, idx) => {
+      const stColor = t.status === 'Hoàn thành' ? '#22c55e' : ((typeof isTaskOverdue === 'function' ? isTaskOverdue(t) : false) || t.status === 'Quá hạn') ? '#ef4444' : '#4f6ef7';
+      const priColor = t.priority === 'Khẩn cấp' ? '#ef4444' : t.priority === 'Cao' ? '#f97316' : '#64748b';
+      const pj = (S.projects || []).find(p => p.id === t.projectId) || null;
+      const pjName = pj ? pj.name : (t.projectName || '—');
+
+      return `
+        <tr style="border-bottom:1px solid #e2e8f0;font-size:11px">
+          <td style="padding:6px 4px;text-align:center;color:#64748b">${idx + 1}</td>
+          <td style="padding:6px 6px;font-weight:600">${t.code || '-'}</td>
+          <td style="padding:6px 6px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#4f6ef7;font-weight:600" title="${pjName}">${pjName}</td>
+          <td style="padding:6px 6px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${_taskDisplayName(t)}">${_taskDisplayName(t)}</td>
+          <td style="padding:6px 6px;width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_displayName(t.assignee)}</td>
+          <td style="padding:6px 6px;text-align:center;font-size:10px">${t.startDate || '-'}</td>
+          <td style="padding:6px 6px;text-align:center;font-weight:600;font-size:10px">${t.deadline || '-'}</td>
+          <td style="padding:6px 6px;text-align:center">
+            <div style="display:inline-block;width:35px;background:#e2e8f0;border-radius:4px;height:6px;vertical-align:middle;overflow:hidden">
+              <div style="width:${t.progress || 0}%;height:100%;background:#4f6ef7"></div>
+            </div>
+            <span style="font-size:10px;margin-left:3px">${t.progress || 0}%</span>
+          </td>
+          <td style="padding:6px 6px;text-align:center"><span style="color:${priColor};font-weight:600;font-size:10px">${t.priority || '-'}</span></td>
+          <td style="padding:6px 6px;text-align:center"><span style="background:${stColor}15;color:${stColor};padding:2px 6px;border-radius:10px;font-weight:600;font-size:10px">${t.status}</span></td>
+        </tr>
+      `;
+    }).join('');
+
+    return `
+      <div class="export-page" style="font-family:'Segoe UI',system-ui,sans-serif;color:#1e293b;padding:12px">
+        ${this.buildHeaderHtml(t('export_scope_overview'), data)}
+        
+        <!-- KPI Cards -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #4f6ef7;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_total_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#1e293b;margin-top:2px">${kpi.total}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #22c55e;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_done_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#22c55e;margin-top:2px">${kpi.done}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #06b6d4;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_inprogress_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#06b6d4;margin-top:2px">${kpi.ip}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #ef4444;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_overdue_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#ef4444;margin-top:2px">${kpi.overdue}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #8b5cf6;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_ontime_rate')}</div>
+            <div style="font-size:20px;font-weight:800;color:#8b5cf6;margin-top:2px">${kpi.ontimeRate}%</div>
+          </div>
+        </div>
+
+        <!-- Task List Table -->
+        <div style="margin-top:12px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#334155">📋 ${t('nav_tasks')} (${data.tasks.length})</div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0">
+            <thead style="background:#f1f5f9;border-bottom:2px solid #cbd5e1;font-size:11px">
+              <tr>
+                <th style="padding:6px 4px;width:30px">#</th>
+                <th style="padding:6px 6px;width:75px;text-align:left">Mã Task</th>
+                <th style="padding:6px 6px;width:140px;text-align:left">${t('filter_by_project') || 'Dự Án'}</th>
+                <th style="padding:6px 6px;text-align:left">Tên Nhiệm Vụ</th>
+                <th style="padding:6px 6px;text-align:left;width:110px">Người Phụ Trách</th>
+                <th style="padding:6px 4px;width:75px">Bắt Đầu</th>
+                <th style="padding:6px 4px;width:75px">Hạn Chót</th>
+                <th style="padding:6px 4px;width:65px">Tiến Độ</th>
+                <th style="padding:6px 4px;width:70px">Ưu Tiên</th>
+                <th style="padding:6px 6px;width:90px">Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${taskRows || '<tr><td colspan="10" style="text-align:center;padding:16px;color:#94a3b8">Không có nhiệm vụ nào</td></tr>'}
+            </tbody>
+          </table>
+          ${data.tasks.length > maxTasks ? `<div style="font-size:11px;color:#94a3b8;margin-top:4px;text-align:right">Hiển thị ${maxTasks} / ${data.tasks.length} nhiệm vụ. Xuất đầy đủ tại file Excel.</div>` : ''}
+        </div>
+      </div>
+    `;
+  },
+
+  buildAnalyticsHtml(data) {
+    const members = data.members || [];
+    const tasks = data.analyticsTasks || data.tasks || [];
+
+    const memberRows = members.slice(0, 25).map((m, idx) => {
+      const mTasks = tasks.filter(tk => {
+        if (!tk.assignee) return false;
+        const disp = _displayName(tk.assignee).toLowerCase();
+        return disp.includes((m.name || '').toLowerCase());
+      });
+      const done = mTasks.filter(t => t.status === 'Hoàn thành').length;
+      const ip = mTasks.filter(t => t.status === 'Đang thực hiện' || t.status === 'Đang tiến hành').length;
+      const over = mTasks.filter(t => t.status === 'Quá hạn').length;
+      const avgP = mTasks.length ? Math.round(mTasks.reduce((s, c) => s + (Number(c.progress) || 0), 0) / mTasks.length) : 0;
+      return `
+        <tr style="border-bottom:1px solid #e2e8f0;font-size:11px">
+          <td style="padding:6px;text-align:center">${idx + 1}</td>
+          <td style="padding:6px;font-weight:600">${m.code || '-'}</td>
+          <td style="padding:6px;font-weight:700">${m.name}</td>
+          <td style="padding:6px;text-align:center">${mTasks.length}</td>
+          <td style="padding:6px;text-align:center;color:#22c55e;font-weight:600">${done}</td>
+          <td style="padding:6px;text-align:center;color:#4f6ef7">${ip}</td>
+          <td style="padding:6px;text-align:center;color:#ef4444;font-weight:600">${over}</td>
+          <td style="padding:6px;text-align:center">${avgP}%</td>
+        </tr>
+      `;
+    }).join('');
+
+    const chartWorkload = data.chartImages.workload ? `<img src="${data.chartImages.workload}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_workload') || 'Biểu đồ khối lượng & tiến độ'}</div>`;
+    const chartRadar = data.chartImages.radar ? `<img src="${data.chartImages.radar}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_radar') || 'Đánh giá đa chiều năng lực'}</div>`;
+    const chartPjShare = data.chartImages.pjShare ? `<img src="${data.chartImages.pjShare}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_pj_share') || 'Tỷ trọng tham gia các dự án'}</div>`;
+    const chartTrend = data.chartImages.trend ? `<img src="${data.chartImages.trend}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_trend') || 'Phân bổ công việc qua từng dự án'}</div>`;
+
+    return `
+      <div class="export-page" style="font-family:'Segoe UI',system-ui,sans-serif;color:#1e293b;padding:12px">
+        ${this.buildHeaderHtml(t('export_scope_analytics'), data)}
+        
+        <!-- 4 Charts Grid (2x2) -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_workload') || '📊 Khối lượng & Tiến độ theo thành viên'}</div>
+            ${chartWorkload}
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_radar') || '🕸️ Đánh giá đa chiều năng lực đóng góp'}</div>
+            ${chartRadar}
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_pj_share') || '🍩 Tỷ trọng tham gia các dự án'}</div>
+            ${chartPjShare}
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_trend') || '📈 Phân bổ công việc qua từng dự án'}</div>
+            ${chartTrend}
+          </div>
+        </div>
+
+        <!-- Member Performance Table -->
+        <div style="margin-top:12px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#334155">👥 Thống kê hiệu suất theo nhân sự</div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0">
+            <thead style="background:#f1f5f9;border-bottom:2px solid #cbd5e1;font-size:11px">
+              <tr>
+                <th style="padding:6px;width:35px">#</th>
+                <th style="padding:6px;width:80px;text-align:left">Mã NV</th>
+                <th style="padding:6px;text-align:left">Họ và Tên</th>
+                <th style="padding:6px;width:75px">Tổng Việc</th>
+                <th style="padding:6px;width:75px">Đã Xong</th>
+                <th style="padding:6px;width:75px">Đang Làm</th>
+                <th style="padding:6px;width:75px">Quá Hạn</th>
+                <th style="padding:6px;width:85px">Tiến Độ TB</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${memberRows || '<tr><td colspan="8" style="text-align:center;padding:16px;color:#94a3b8">Không có dữ liệu nhân sự</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  buildGanttHtml(data) {
+    const gData = data.ganttData || {};
+    let sd = (gData.startDate instanceof Date && !isNaN(gData.startDate.getTime())) ? gData.startDate : new Date();
+    let ed = (gData.endDate instanceof Date && !isNaN(gData.endDate.getTime())) ? gData.endDate : new Date(Date.now() + 30 * 86400000);
+    if (ed.getTime() <= sd.getTime()) ed = new Date(sd.getTime() + 30 * 86400000);
+
+    const totalDays = Math.max(7, Math.round((ed.getTime() - sd.getTime()) / 86400000) + 1);
+    const maxDays = Math.min(totalDays, 120);
+
+    const dateHeaders = [];
+    for (let i = 0; i < maxDays; i++) {
+      const d = new Date(sd.getFullYear(), sd.getMonth(), sd.getDate() + i);
+      d.setHours(0,0,0,0);
+      dateHeaders.push(d);
+    }
+
+    // Group days by Month/Year for the top header row
+    const monthGroups = [];
+    let curKey = null, curCount = 0, curLabel = '';
+    const mNamesEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    dateHeaders.forEach(d => {
+      const mk = `${d.getFullYear()}-${d.getMonth()}`;
+      if (mk !== curKey) {
+        if (curKey !== null) monthGroups.push({ label: curLabel, count: curCount });
+        curKey = mk;
+        curCount = 0;
+        if (S.lang === 'ja') {
+          curLabel = `${d.getFullYear()}年${d.getMonth() + 1}月`;
+        } else if (S.lang === 'en') {
+          curLabel = `${mNamesEn[d.getMonth()]} ${d.getFullYear()}`;
+        } else {
+          curLabel = `Tháng ${d.getMonth() + 1} / ${d.getFullYear()}`;
+        }
+      }
+      curCount++;
+    });
+    if (curCount > 0) monthGroups.push({ label: curLabel, count: curCount });
+
+    // Localized Day of Week abbreviations
+    const dowLabels = S.lang === 'ja'
+      ? ['日','月','火','水','木','金','土']
+      : (S.lang === 'en'
+        ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+        : ['CN','T2','T3','T4','T5','T6','T7']);
+
+    // Row 1: Month/Year spans
+    const monthHeadersHtml = monthGroups.map(mg => `
+      <th colspan="${mg.count}" style="border:1px solid #cbd5e1;background:#f1f5f9;color:#1e293b;font-weight:700;font-size:10px;text-align:center;padding:4px 2px;letter-spacing:0.3px">
+        📅 ${mg.label}
+      </th>
+    `).join('');
+
+    // Row 2: Day number + Day of week
+    const dayHeadersHtml = dateHeaders.map(d => {
+      const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+      return `
+        <th style="border:1px solid #e2e8f0;background:${isWeekend ? '#fee2e2' : '#f8fafc'};color:${isWeekend ? '#dc2626' : '#1e293b'};padding:3px 1px;font-size:9px;text-align:center;min-width:22px;line-height:1.2">
+          <div style="font-weight:700">${d.getDate()}</div>
+          <div style="font-size:8px;font-weight:600;color:${isWeekend ? '#dc2626' : '#64748b'}">${dowLabels[d.getDay()]}</div>
+        </th>
+      `;
+    }).join('');
+
+    // Group tasks by project
+    const tasksByPj = {};
+    const allTasks = (data.tasks || []).slice(0, 100);
+    allTasks.forEach(t => {
+      const pId = t.projectId || 'other';
+      if (!tasksByPj[pId]) tasksByPj[pId] = [];
+      tasksByPj[pId].push(t);
+    });
+
+    const projectGroups = [];
+    (S.projects || []).forEach(p => {
+      if (tasksByPj[p.id] && tasksByPj[p.id].length > 0) {
+        projectGroups.push({ project: p, tasks: tasksByPj[p.id] });
+        delete tasksByPj[p.id];
+      }
+    });
+    Object.keys(tasksByPj).forEach(pId => {
+      if (tasksByPj[pId] && tasksByPj[pId].length > 0) {
+        projectGroups.push({
+          project: { id: pId, name: tasksByPj[pId][0].projectName || t('filter_all_projects') || 'Dự án khác' },
+          tasks: tasksByPj[pId]
+        });
+      }
+    });
+
+    if (projectGroups.length === 0 && data.project) {
+      projectGroups.push({ project: data.project, tasks: [] });
+    }
+
+    const totalCols = 5 + dateHeaders.length;
+
+    let tableBodyHtml = '';
+    projectGroups.forEach(g => {
+      const pjUnit = t('gantt_task_unit') || 'nhiệm vụ';
+      tableBodyHtml += `
+        <tr style="background:#eef2ff;border-top:2px solid #4f6ef7;border-bottom:1px solid #c7d2fe">
+          <td colspan="${totalCols}" style="padding:6px 10px;color:#1e40af;font-size:11px;font-weight:700">
+            📁 <strong>${g.project.name}</strong> 
+            <span style="font-weight:500;color:#6366f1;font-size:10px;margin-left:6px">(${g.tasks.length} ${pjUnit})</span>
+            ${g.project.startDate && g.project.endDate ? `<span style="font-size:9px;color:#64748b;font-weight:400;margin-left:10px">[${g.project.startDate} ~ ${g.project.endDate}]</span>` : ''}
+          </td>
+        </tr>
+      `;
+
+      g.tasks.forEach((t, idx) => {
+        const ts = this.parseDate(t.startRaw || t.startDate);
+        const te = this.parseDate(t.deadlineRaw || t.deadline);
+        if (ts) ts.setHours(0,0,0,0);
+        if (te) te.setHours(0,0,0,0);
+
+        const stColor = t.status === 'Hoàn thành' ? '#22c55e' : ((typeof isTaskOverdue === 'function' ? isTaskOverdue(t) : false) || t.status === 'Quá hạn') ? '#ef4444' : '#4f6ef7';
+
+        const dayCells = dateHeaders.map(cd => {
+          const isWeekend = cd.getDay() === 0 || cd.getDay() === 6;
+          const inRange = ts && te && cd.getTime() >= ts.getTime() && cd.getTime() <= te.getTime();
+          const isDead = te && cd.getTime() === te.getTime();
+
+          if (isDead) {
+            return `<td style="border:1px solid #e2e8f0;padding:0;background:${stColor};color:#fff;text-align:center;font-size:9px;line-height:1" title="Deadline: ${t.deadline || ''}">🏁</td>`;
+          }
+          if (inRange) {
+            return `<td style="border:1px solid #e2e8f0;padding:0;background:${stColor}" title="${_taskDisplayName(t)}"></td>`;
+          }
+          return `<td style="border:1px solid #f1f5f9;padding:0;background:${isWeekend ? '#fef2f2' : '#fff'}"></td>`;
+        }).join('');
+
+        tableBodyHtml += `
+          <tr style="height:22px;font-size:10px;border-bottom:1px solid #e2e8f0">
+            <td style="padding:2px 4px;border:1px solid #e2e8f0;text-align:center;width:24px;color:#64748b">${idx + 1}</td>
+            <td style="padding:3px 6px;border:1px solid #e2e8f0;font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${_taskDisplayName(t)}">
+              ${_taskDisplayName(t)}
+            </td>
+            <td style="padding:3px 6px;border:1px solid #e2e8f0;width:95px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_displayName(t.assignee)}</td>
+            <td style="padding:3px 4px;border:1px solid #e2e8f0;width:80px;text-align:center;font-size:9px;white-space:nowrap">${t.startDate || '-'} ~ ${t.deadline || '-'}</td>
+            <td style="padding:3px 4px;border:1px solid #e2e8f0;width:45px;text-align:center;font-size:9px;font-weight:600">${t.progress || 0}%</td>
+            ${dayCells}
+          </tr>
+        `;
+      });
+    });
+
+    if (!tableBodyHtml) {
+      tableBodyHtml = `<tr><td colspan="${totalCols}" style="text-align:center;padding:16px;color:#94a3b8">Không có dữ liệu tiến độ</td></tr>`;
+    }
+
+    return `
+      <div class="export-page" style="font-family:'Segoe UI',system-ui,sans-serif;color:#1e293b;padding:12px">
+        ${this.buildHeaderHtml(t('export_scope_gantt'), data)}
+        
+        <div style="overflow-x:auto;margin-top:10px">
+          <table style="width:100%;border-collapse:collapse;border:1px solid #cbd5e1">
+            <thead>
+              <!-- Row 1: Month / Year Spans -->
+              <tr style="background:#f8fafc">
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;text-align:center;width:24px">#</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;text-align:left;min-width:180px">Nhiệm Vụ</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;text-align:left;width:95px">Người Phụ Trách</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;width:80px">Thời Gian</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;width:45px">Tiến Độ</th>
+                ${monthHeadersHtml}
+              </tr>
+              <!-- Row 2: Day of Month + Day of Week -->
+              <tr style="background:#f8fafc">
+                ${dayHeadersHtml}
+              </tr>
+            </thead>
+            <tbody>
+              ${tableBodyHtml}
+            </tbody>
+          </table>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:8px;font-size:10px;color:#64748b">
+            <span><strong>Chú thích:</strong></span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#4f6ef7;vertical-align:middle;margin-right:3px"></span> Đang làm</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#22c55e;vertical-align:middle;margin-right:3px"></span> Hoàn thành</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#ef4444;vertical-align:middle;margin-right:3px"></span> Quá hạn</span>
+            <span>🏁 Mốc Deadline</span>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  refreshPreview() {
+    try {
+      const viewEl = document.getElementById('export-preview-viewport');
+      if (!viewEl) return;
+
+      const data = this.getExportData();
+      const scopes = this.config.scopes;
+      const paperCls = `${(this.config.paperSize || 'A4').toLowerCase()}-${(this.config.orientation || 'landscape').toLowerCase()}`;
+      const pad = `${this.config.margin || 10}mm`;
+
+      let html = '';
+      if (scopes.overview) {
+        html += `<div class="export-preview-paper ${paperCls}" style="padding:${pad}">${this.buildOverviewHtml(data)}</div>`;
+      }
+      if (scopes.analytics) {
+        html += `<div class="export-preview-paper ${paperCls}" style="padding:${pad}">${this.buildAnalyticsHtml(data)}</div>`;
+      }
+      if (scopes.gantt) {
+        html += `<div class="export-preview-paper ${paperCls}" style="padding:${pad}">${this.buildGanttHtml(data)}</div>`;
+      }
+
+      if (!html) {
+        html = `<div style="color:#fff;padding:40px;text-align:center">${t('export_no_selection_warn')}</div>`;
+      }
+
+      viewEl.innerHTML = html;
+    } catch(err) {
+      console.error('Error in refreshPreview:', err);
+      const viewEl = document.getElementById('export-preview-viewport');
+      if (viewEl) {
+        viewEl.innerHTML = `<div style="color:#ef4444;background:#fff;padding:20px;border-radius:8px;margin:20px;text-align:center;font-size:12px">⚠️ Không thể tải trước bản in: ${err.message || err}</div>`;
+      }
+    }
+  },
+
+  printNative() {
+    const scopes = this.config.scopes;
+    if (!scopes.overview && !scopes.analytics && !scopes.gantt) {
+      toast(t('export_no_selection_warn'), 'w');
+      return;
+    }
+
+    const printContainer = document.getElementById('print-export-container');
+    if (!printContainer) return;
+
+    // Inject dynamic print style
+    let styleEl = document.getElementById('export-print-style');
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'export-print-style';
+      document.head.appendChild(styleEl);
+    }
+    styleEl.innerHTML = `
+      @page {
+        size: ${this.config.paperSize} ${this.config.orientation};
+        margin: ${this.config.margin}mm;
+      }
+    `;
+
+    const data = this.getExportData();
+    let content = '';
+    if (scopes.overview) content += this.buildOverviewHtml(data);
+    if (scopes.analytics) content += this.buildAnalyticsHtml(data);
+    if (scopes.gantt) content += this.buildGanttHtml(data);
+
+    printContainer.innerHTML = content;
+    window.print();
+  },
+
+  async downloadPdf() {
+    const scopes = this.config.scopes;
+    if (!scopes.overview && !scopes.analytics && !scopes.gantt) {
+      toast(t('export_no_selection_warn'), 'w');
+      return;
+    }
+
+    if (typeof html2pdf === 'undefined') {
+      toast('Thư viện tạo PDF đang tải, vui lòng thử lại sau giây lát hoặc sử dụng nút In!', 'w');
+      return;
+    }
+
+    toast(t('export_processing'), 'i');
+
+    const data = this.getExportData();
+    const isMerged = this.config.pkgMode === 'merged';
+    const optBase = {
+      margin: this.config.margin,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: this.config.paperSize.toLowerCase(), orientation: this.config.orientation.toLowerCase() },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    if (isMerged) {
+      const el = document.createElement('div');
+      let content = '';
+      if (scopes.overview) content += `<div style="page-break-after:always">${this.buildOverviewHtml(data)}</div>`;
+      if (scopes.analytics) content += `<div style="page-break-after:always">${this.buildAnalyticsHtml(data)}</div>`;
+      if (scopes.gantt) content += `<div>${this.buildGanttHtml(data)}</div>`;
+      el.innerHTML = content;
+
+      const fn = document.getElementById('exp-fn-merged')?.value || 'Bao_Cao_Tong_Hop';
+      await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+    } else {
+      if (scopes.overview) {
+        const el = document.createElement('div');
+        el.innerHTML = this.buildOverviewHtml(data);
+        const fn = document.getElementById('exp-fn-overview')?.value || 'Bao_Cao_Tong_Quan';
+        await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+      }
+      if (scopes.analytics) {
+        const el = document.createElement('div');
+        el.innerHTML = this.buildAnalyticsHtml(data);
+        const fn = document.getElementById('exp-fn-analytics')?.value || 'Bao_Cao_Chuyen_Sau';
+        await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+      }
+      if (scopes.gantt) {
+        const el = document.createElement('div');
+        el.innerHTML = this.buildGanttHtml(data);
+        const fn = document.getElementById('exp-fn-gantt')?.value || 'So_Do_Gantt';
+        await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+      }
+    }
+
+    toast(t('export_success'), 's');
+  },
+
+  exportExcel() {
+    const scopes = this.config.scopes;
+    if (!scopes.overview && !scopes.analytics && !scopes.gantt) {
+      toast(t('export_no_selection_warn'), 'w');
+      return;
+    }
+
+    if (typeof XLSX === 'undefined') {
+      toast('Thư viện Excel đang tải, vui lòng thử lại sau giây lát!', 'w');
+      return;
+    }
+
+    toast(t('export_processing'), 'i');
+
+    const data = this.getExportData();
+    const isMerged = this.config.pkgMode === 'merged';
+
+    const saveWb = (wb, filename) => {
+      try {
+        XLSX.writeFile(wb, `${this.sanitizeFileName(filename)}.xlsx`);
+      } catch(e) {
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([wbout], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${this.sanitizeFileName(filename)}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+    };
+
+    const createOverviewSheet = () => {
+      const rows = [
+        [t('export_scope_overview').toUpperCase()],
+        [`${t('export_report_project')}: ${data.projectName} | ${t('export_report_generated_at')}: ${data.generatedAt} | ${t('export_report_generated_by')}: ${data.generatedBy}`],
+        [],
+        ['1. CHỈ SỐ TIẾN ĐỘ TỔNG HỢP (KPI SUMMARY)'],
+        ['Chỉ số', 'Số lượng', 'Tỷ lệ %', 'Ghi chú'],
+        [t('export_total_tasks'), data.kpi.total, '100%', 'Toàn bộ nhiệm vụ'],
+        [t('export_done_tasks'), data.kpi.done, `${data.kpi.total ? Math.round(data.kpi.done/data.kpi.total*100) : 0}%`, 'Đã nghiệm thu'],
+        [t('export_inprogress_tasks'), data.kpi.ip, `${data.kpi.total ? Math.round(data.kpi.ip/data.kpi.total*100) : 0}%`, 'Đang triển khai'],
+        [t('export_overdue_tasks'), data.kpi.overdue, `${data.kpi.total ? Math.round(data.kpi.overdue/data.kpi.total*100) : 0}%`, 'Quá hạn'],
+        [t('export_ontime_rate'), `${data.kpi.ontimeRate}%`, '-', 'Tỷ lệ đúng hạn'],
+        [],
+        ['2. DANH SÁCH CHI TIẾT NHIỆM VỤ'],
+        ['STT', 'Dự án', 'Mã task', 'Tên nhiệm vụ', 'Người phụ trách', 'Bắt đầu', 'Hạn chót', 'Tiến độ', 'Ưu tiên', 'Trạng thái']
+      ];
+      data.tasks.forEach((t, i) => {
+        const pj = (S.projects || []).find(p => p.id === t.projectId) || null;
+        const pjName = pj ? pj.name : (t.projectName || data.projectName);
+        rows.push([i + 1, pjName, t.code || '', _taskDisplayName(t), _displayName(t.assignee), t.startDate || '', t.deadline || '', `${t.progress || 0}%`, t.priority || '', t.status]);
+      });
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [{ wch: 6 }, { wch: 25 }, { wch: 14 }, { wch: 35 }, { wch: 22 }, { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 12 }, { wch: 16 }];
+      return ws;
+    };
+
+    const createAnalyticsSheet = () => {
+      const rows = [
+        [t('export_scope_analytics').toUpperCase()],
+        [`${t('export_report_project')}: ${data.projectName} | ${t('export_report_generated_at')}: ${data.generatedAt}`],
+        [],
+        ['1. THỐNG KÊ ĐÓNG GÓP TỪNG NHÂN SỰ'],
+        ['STT', 'Mã NV', 'Họ và tên', 'Email', 'Tổng việc', 'Hoàn thành', 'Đang làm', 'Quá hạn', 'Tiến độ TB']
+      ];
+      data.members.forEach((m, i) => {
+        const mTasks = data.analyticsTasks.filter(tk => {
+          if (!tk.assignee) return false;
+          return _displayName(tk.assignee).toLowerCase().includes((m.name || '').toLowerCase());
+        });
+        const done = mTasks.filter(t => t.status === 'Hoàn thành').length;
+        const ip = mTasks.filter(t => t.status === 'Đang thực hiện' || t.status === 'Đang tiến hành').length;
+        const over = mTasks.filter(t => t.status === 'Quá hạn').length;
+        const avg = mTasks.length ? Math.round(mTasks.reduce((s, c) => s + (Number(c.progress) || 0), 0) / mTasks.length) : 0;
+        rows.push([i + 1, m.code || '', m.name, m.email || '', mTasks.length, done, ip, over, `${avg}%`]);
+      });
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [{ wch: 6 }, { wch: 10 }, { wch: 22 }, { wch: 26 }, { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 12 }];
+      return ws;
+    };
+
+    const createGanttSheet = () => {
+      const startD = data.ganttData.startDate;
+      const endD = data.ganttData.endDate;
+      const totalDays = Math.max(7, Math.round((endD - startD) / 86400000) + 1);
+      const dateList = [];
+      for (let i = 0; i < totalDays; i++) {
+        dateList.push(new Date(startD.getFullYear(), startD.getMonth(), startD.getDate() + i));
+      }
+
+      const r1 = ['BÁO CÁO TIẾN ĐỘ GANTT VÀ LƯỚI THỜI GIAN THEO NGÀY', '', '', '', '', '', '', '', ''];
+      const r2 = ['STT', 'Dự án', 'Mã task', 'Tên nhiệm vụ', 'Người phụ trách', 'Bắt đầu', 'Hạn chót', 'Tiến độ', 'Trạng thái'];
+      const r3 = ['', '', '', '', '', '', '', '', ''];
+
+      dateList.forEach(d => {
+        r1.push(`${d.getMonth() + 1}/${d.getFullYear()}`);
+        r2.push(String(d.getDate()).padStart(2, '0'));
+        const dows = S.lang === 'ja' ? ['日','月','火','水','木','金','土'] : (S.lang === 'en' ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] : ['CN','T2','T3','T4','T5','T6','T7']);
+        r3.push(dows[d.getDay()]);
+      });
+
+      const rows = [r1, r2, r3];
+      data.tasks.forEach((t, i) => {
+        const pj = (S.projects || []).find(p => p.id === t.projectId) || null;
+        const pjName = pj ? pj.name : (t.projectName || data.projectName);
+        const row = [i + 1, pjName, t.code || '', _taskDisplayName(t), _displayName(t.assignee), t.startDate || '', t.deadline || '', `${t.progress || 0}%`, t.status];
+        const ts = this.parseDate(t.startRaw || t.startDate);
+        const te = this.parseDate(t.deadlineRaw || t.deadline);
+        if (ts) ts.setHours(0,0,0,0);
+        if (te) te.setHours(0,0,0,0);
+
+        dateList.forEach(curD => {
+          const cd = new Date(curD); cd.setHours(0,0,0,0);
+          const isDead = te && cd.getTime() === te.getTime();
+          const inR = ts && te && cd.getTime() >= ts.getTime() && cd.getTime() <= te.getTime();
+          if (isDead) row.push('[🏁]');
+          else if (inR) row.push(t.status === 'Hoàn thành' ? '■' : '▶');
+          else row.push('');
+        });
+        rows.push(row);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      const cols = [{ wch: 5 }, { wch: 25 }, { wch: 14 }, { wch: 32 }, { wch: 20 }, { wch: 11 }, { wch: 11 }, { wch: 9 }, { wch: 14 }];
+      dateList.forEach(() => cols.push({ wch: 5 }));
+      ws['!cols'] = cols;
+      return ws;
+    };
+
+    if (isMerged) {
+      const wb = XLSX.utils.book_new();
+      if (scopes.overview) XLSX.utils.book_append_sheet(wb, createOverviewSheet(), 'Tong_Quan');
+      if (scopes.analytics) XLSX.utils.book_append_sheet(wb, createAnalyticsSheet(), 'Phan_Tich_Chuyen_Sau');
+      if (scopes.gantt) XLSX.utils.book_append_sheet(wb, createGanttSheet(), 'Tien_Do_Gantt');
+
+      const fn = document.getElementById('exp-fn-merged')?.value || 'Bao_Cao_Tong_Hop';
+      saveWb(wb, fn);
+    } else {
+      if (scopes.overview) {
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, createOverviewSheet(), 'Tong_Quan');
+        const fn = document.getElementById('exp-fn-overview')?.value || 'Bao_Cao_Tong_Quan';
+        saveWb(wb, fn);
+      }
+      if (scopes.analytics) {
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, createAnalyticsSheet(), 'Phan_Tich_Chuyen_Sau');
+        const fn = document.getElementById('exp-fn-analytics')?.value || 'Bao_Cao_Chuyen_Sau';
+        saveWb(wb, fn);
+      }
+      if (scopes.gantt) {
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, createGanttSheet(), 'Tien_Do_Gantt');
+        const fn = document.getElementById('exp-fn-gantt')?.value || 'So_Do_Gantt';
+        saveWb(wb, fn);
+      }
+    }
+
+    toast(t('export_success'), 's');
+  }
+};
+
+window.AppExportManager = AppExportManager;
+
+function openExportReportModal(scope) {
+  try {
+    if (typeof AppExportManager !== 'undefined' && AppExportManager && typeof AppExportManager.openModal === 'function') {
+      AppExportManager.openModal(scope);
+    } else {
+      const modalEl = document.getElementById('m-export-report');
+      if (modalEl) modalEl.classList.add('show');
+    }
+  } catch(err) {
+    console.error('Error in openExportReportModal:', err);
+    const modalEl = document.getElementById('m-export-report');
+    if (modalEl) modalEl.classList.add('show');
+  }
+}
+window.openExportReportModal = openExportReportModal;
+
+

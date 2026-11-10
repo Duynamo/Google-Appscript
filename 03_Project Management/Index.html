@@ -6,6 +6,8 @@
 <title><?= appName ?></title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -548,6 +550,196 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .ts-tree-disc-row { padding:6px 12px 6px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px dashed var(--bdr); font-size:12px; }
 .ts-tree-notes { margin:4px 0 8px 48px; font-size:11px; color:var(--t2); }
 
+/* ═══════════════════════════════════════════════════════════
+   EXPORT & PRINT STYLES
+   ═══════════════════════════════════════════════════════════ */
+:root {
+  --export-paper-size: A4;
+  --export-paper-orientation: landscape;
+  --export-paper-margin: 10mm;
+}
+
+#m-export-report .modal {
+  max-width: 1240px;
+  width: 95vw;
+  height: 90vh;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.export-modal-body {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 16px;
+}
+.export-ctrl-col {
+  width: 360px;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.export-preview-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #525659;
+  border-radius: var(--r2);
+  overflow: hidden;
+  border: 1px solid var(--bdr);
+}
+.export-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #323639;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+.export-preview-viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.export-preview-paper {
+  background: #fff;
+  color: #1e293b;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+.export-preview-paper.a4-landscape { width: 842px; min-height: 595px; }
+.export-preview-paper.a4-portrait  { width: 595px; min-height: 842px; }
+.export-preview-paper.a3-landscape { width: 1191px; min-height: 842px; }
+.export-preview-paper.a3-portrait  { width: 842px; min-height: 1191px; }
+.export-preview-paper.letter-landscape { width: 792px; min-height: 612px; }
+.export-preview-paper.letter-portrait  { width: 612px; min-height: 792px; }
+
+.exp-sec {
+  background: #f8fafc;
+  border: 1px solid var(--bdr);
+  border-radius: var(--r2);
+  padding: 12px;
+}
+.exp-sec-title {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--tx);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.exp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.exp-row input[type="checkbox"], .exp-row input[type="radio"] {
+  cursor: pointer;
+  accent-color: var(--p);
+}
+.exp-label {
+  font-size: 11px;
+  color: var(--t2);
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+.exp-input, .exp-select {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: var(--r2);
+  border: 1px solid var(--bdr);
+  font-size: 12px;
+  background: #fff;
+}
+.exp-tab-wrap {
+  display: flex;
+  border-radius: var(--r2);
+  background: #e2e8f0;
+  padding: 3px;
+  gap: 3px;
+}
+.exp-tab-btn {
+  flex: 1;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--t2);
+  transition: all 0.15s ease;
+}
+.exp-tab-btn.active {
+  background: #fff;
+  color: var(--p);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.exp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+#print-export-container {
+  display: none;
+}
+@media print {
+  @page {
+    size: var(--export-paper-size, A4) var(--export-paper-orientation, landscape);
+    margin: var(--export-paper-margin, 10mm);
+  }
+  body * {
+    visibility: hidden;
+  }
+  #print-export-container, #print-export-container * {
+    visibility: visible;
+  }
+  #print-export-container {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+  .export-page {
+    page-break-after: always;
+    break-after: page;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8mm;
+  }
+  .export-page:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  .export-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -582,6 +774,9 @@ input[type=range]{width:100%;accent-color:var(--p)}
   <div id="topbar">
     <div class="tb-l"><div class="pgt" id="pgt" data-i18n="page_dashboard_t">Tổng Quan</div><div class="pgs" id="pgs" data-i18n="page_dashboard_s">Chào mừng trở lại</div></div>
     <div class="tb-r">
+      <button class="btn bs" id="btn-open-export" onclick="AppExportManager.openModal()" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:7px 14px;border-radius:var(--r2);background:#fff;border:1px solid var(--bdr);cursor:pointer;color:var(--tx);white-space:nowrap;font-size:12px;height:36px" title="In / Xuất Báo Cáo">
+        <span>🖨️</span><span data-i18n="btn_print_export">In Báo Cáo</span>
+      </button>
       <div class="pj-filter">
         🔽 <select id="pj-filter-sel" onchange="applyPjFilter()">
           <option value="">Lọc theo dự án...</option>
@@ -695,6 +890,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
         </div>
         <div class="psrch" style="min-width:160px"><span style="color:var(--t3)">🔍</span><input id="g-srch2" placeholder="Tìm task..." data-i18n-ph="search_placeholder" oninput="ganttSearch(this.value)"></div>
         <button class="btn bp" onclick="loadGantt()" data-i18n="btn_view">Xem</button>
+        <button class="btn bs" onclick="AppExportManager.openModal('gantt')" title="In sơ đồ Gantt" style="display:inline-flex;align-items:center;gap:4px"><span>🖨️</span><span data-i18n="btn_print_gantt">In Gantt</span></button>
       </div>
       <div class="gantt-wrap" style="height:calc(100vh - 200px)">
         <div class="gantt-inner" id="gantt-inner">
@@ -755,6 +951,7 @@ input[type=range]{width:100%;accent-color:var(--p)}
           
           <button class="btn bs" onclick="resetAnalyticsFilters()" title="Đặt lại bộ lọc" data-i18n-title="an_reset_tooltip" style="padding:6px 10px;font-size:12px">↺</button>
           <div class="an-filter-summary-badge" id="an-badge-summary">...</div>
+          <button class="btn bs" onclick="AppExportManager.openModal('analytics')" title="In báo cáo phân tích" style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;font-size:12px"><span>🖨️</span><span data-i18n="btn_print_analytics">In Báo Cáo</span></button>
         </div>
 
         <!-- ══ 4 KPI CARDS ══ -->
@@ -2060,6 +2257,154 @@ input[type=range]{width:100%;accent-color:var(--p)}
   </div>
 </div>
 
+<!-- ══ MODAL: PRINT & EXPORT REPORT ══ -->
+<div class="ov" id="m-export-report">
+  <div class="modal modal-xl">
+    <div class="mhd" style="padding:14px 20px;border-bottom:1px solid var(--bdr)">
+      <div>
+        <h3 id="export-modal-title" style="display:flex;align-items:center;gap:8px" data-i18n="export_report_title">🖨️ In & Xuất Báo Cáo</h3>
+        <div style="font-size:12px;color:var(--t2);margin-top:2px" data-i18n="export_report_sub">Tùy chọn xuất báo cáo PDF và Excel theo nhu cầu</div>
+      </div>
+      <button class="mcl" onclick="AppExportManager.closeModal()">✕</button>
+    </div>
+    
+    <div class="export-modal-body">
+      <!-- Cột trái: Cấu hình -->
+      <div class="export-ctrl-col">
+        <!-- 1. Phạm vi -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_scope_title">1. Chọn Nội Dung Báo Cáo</span></div>
+          <label class="exp-row">
+            <input type="checkbox" id="exp-cb-overview" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_scope_overview">Báo cáo Tổng quan (Dashboard)</span>
+          </label>
+          <label class="exp-row">
+            <input type="checkbox" id="exp-cb-analytics" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_scope_analytics">Biểu đồ phân tích chuyên sâu</span>
+          </label>
+          <label class="exp-row">
+            <input type="checkbox" id="exp-cb-gantt" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_scope_gantt">Sơ đồ tiến độ Gantt (Timeline)</span>
+          </label>
+        </div>
+
+        <!-- 2. Cấu trúc đóng gói -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_package_title">2. Cấu Trúc Đóng Gói</span></div>
+          <label class="exp-row">
+            <input type="radio" name="exp_pkg" id="exp-pkg-merged" value="merged" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_merge_single">Gộp tất cả vào 1 file duy nhất</span>
+          </label>
+          <label class="exp-row">
+            <input type="radio" name="exp_pkg" id="exp-pkg-split" value="split" onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_split_files">Tách thành từng file riêng biệt</span>
+          </label>
+        </div>
+
+        <!-- 3. Đặt tên file -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_filename_title">3. Đặt Tên File Xuất</span></div>
+          <div id="exp-wrap-name-merged">
+            <label class="exp-label" data-i18n="export_filename_merged">Tên file Báo cáo tổng hợp</label>
+            <input type="text" class="exp-input" id="exp-fn-merged" value="">
+          </div>
+          <div id="exp-wrap-name-split" style="display:none">
+            <div style="margin-bottom:6px">
+              <label class="exp-label" data-i18n="export_filename_overview">Tên file Tổng quan</label>
+              <input type="text" class="exp-input" id="exp-fn-overview" value="">
+            </div>
+            <div style="margin-bottom:6px">
+              <label class="exp-label" data-i18n="export_filename_analytics">Tên file Phân tích</label>
+              <input type="text" class="exp-input" id="exp-fn-analytics" value="">
+            </div>
+            <div>
+              <label class="exp-label" data-i18n="export_filename_gantt">Tên file Gantt</label>
+              <input type="text" class="exp-input" id="exp-fn-gantt" value="">
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Định dạng & Thông số -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_format_title">4. Định Dạng & Trang In</span></div>
+          <div class="exp-tab-wrap" style="margin-bottom:10px">
+            <button class="exp-tab-btn active" id="exp-tab-pdf" onclick="AppExportManager.setFormat('pdf')">📄 PDF / In</button>
+            <button class="exp-tab-btn" id="exp-tab-excel" onclick="AppExportManager.setFormat('excel')">📊 Excel (.xlsx)</button>
+          </div>
+
+          <!-- Controls for PDF -->
+          <div id="exp-pdf-settings">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+              <div>
+                <label class="exp-label" data-i18n="export_paper_size">Khổ giấy</label>
+                <select class="exp-select" id="exp-paper-size" onchange="AppExportManager.onPaperSettingsChange()">
+                  <option value="A4" selected>A4 (210×297mm)</option>
+                  <option value="A3">A3 (297×420mm)</option>
+                  <option value="Letter">Letter (8.5×11in)</option>
+                </select>
+              </div>
+              <div>
+                <label class="exp-label" data-i18n="export_orientation">Hướng in</label>
+                <select class="exp-select" id="exp-orientation" onchange="AppExportManager.onPaperSettingsChange()">
+                  <option value="landscape" selected data-i18n="export_orientation_landscape">Khổ ngang (Landscape)</option>
+                  <option value="portrait" data-i18n="export_orientation_portrait">Khổ dọc (Portrait)</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="exp-label" data-i18n="export_margin">Lề trang</label>
+              <select class="exp-select" id="exp-margin" onchange="AppExportManager.onPaperSettingsChange()">
+                <option value="10" selected data-i18n="export_margin_normal">Tiêu chuẩn (10mm)</option>
+                <option value="5" data-i18n="export_margin_narrow">Hẹp (5mm)</option>
+                <option value="0" data-i18n="export_margin_none">Không lề (0mm)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Controls for Excel -->
+          <div id="exp-excel-settings" style="display:none">
+            <label class="exp-row" style="margin-top:6px">
+              <input type="checkbox" id="exp-excel-gantt-grid" checked>
+              <span data-i18n="export_excel_gantt_grid">Kèm lưới Gantt mô phỏng ngày</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="exp-actions">
+          <div id="exp-actions-pdf" style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn bp" style="padding:10px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="AppExportManager.printNative()">
+              <span data-i18n="export_btn_native_print">🖨️ In / Lưu PDF (Vector 300 DPI)</span>
+            </button>
+            <button class="btn bs" style="padding:9px;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="AppExportManager.downloadPdf()">
+              <span data-i18n="export_btn_download_pdf">⬇️ Tải PDF Trực Tiếp</span>
+            </button>
+          </div>
+          <div id="exp-actions-excel" style="display:none">
+            <button class="btn bg2" style="width:100%;padding:10px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="AppExportManager.exportExcel()">
+              <span data-i18n="export_btn_download_excel">📊 Tải File Excel (.xlsx)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cột phải: Live Preview -->
+      <div class="export-preview-col">
+        <div class="export-preview-header">
+          <span data-i18n="export_live_preview">👁️ Xem Trước Bản In (Live Preview)</span>
+          <button class="btn bs" style="padding:3px 8px;font-size:11px" onclick="AppExportManager.refreshPreview()" data-i18n="export_preview_refresh">↺ Làm mới xem trước</button>
+        </div>
+        <div class="export-preview-viewport" id="export-preview-viewport">
+          <!-- Render preview pages here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden container for printing & PDF conversion -->
+<div id="print-export-container"></div>
+
 <!-- ══ MODAL CONFIRM OVERWRITE TIMESHEET ══ -->
 <div class="ov" id="m-confirm-overwrite">
   <div class="modal" style="max-width:440px">
@@ -2520,6 +2865,58 @@ const I18N = {
     matrix_resetting: "Đang khôi phục ma trận về mặc định...",
     matrix_admin_only_save: "Chỉ Admin mới có quyền lưu ma trận phân quyền",
     matrix_admin_only_reset: "Chỉ Admin mới có quyền khôi phục ma trận phân quyền",
+    btn_print_export: "In Báo Cáo",
+    btn_print_gantt: "In Gantt",
+    btn_print_analytics: "In Báo Cáo",
+    export_report_title: "🖨️ In & Xuất Báo Cáo",
+    export_report_sub: "Tùy chọn xuất báo cáo PDF và Excel theo nhu cầu",
+    export_scope_title: "1. Chọn Nội Dung Báo Cáo",
+    export_scope_overview: "Báo cáo Tổng quan (Dashboard)",
+    export_scope_analytics: "Biểu đồ phân tích chuyên sâu",
+    export_scope_gantt: "Sơ đồ tiến độ Gantt (Timeline)",
+    export_package_title: "2. Cấu Trúc Đóng Gói",
+    export_merge_single: "Gộp tất cả vào 1 file duy nhất",
+    export_split_files: "Tách thành từng file riêng biệt",
+    export_filename_title: "3. Đặt Tên File Xuất",
+    export_filename_overview: "Tên file Tổng quan",
+    export_filename_analytics: "Tên file Phân tích",
+    export_filename_gantt: "Tên file Gantt",
+    export_filename_merged: "Tên file Báo cáo tổng hợp",
+    export_format_title: "4. Định Dạng & Trang In",
+    export_format_pdf: "Xuất PDF / In ấn",
+    export_format_excel: "Xuất Excel (.xlsx)",
+    export_paper_size: "Khổ giấy",
+    export_orientation: "Hướng in",
+    export_orientation_landscape: "Khổ ngang (Landscape)",
+    export_orientation_portrait: "Khổ dọc (Portrait)",
+    export_margin: "Lề trang",
+    export_margin_normal: "Tiêu chuẩn (10mm)",
+    export_margin_narrow: "Hẹp (5mm)",
+    export_margin_none: "Không lề (0mm)",
+    export_excel_gantt_grid: "Kèm lưới Gantt mô phỏng ngày",
+    export_live_preview: "👁️ Xem trước bản in (Live Preview)",
+    export_btn_native_print: "🖨️ In / Lưu PDF (Vector 300 DPI)",
+    export_btn_download_pdf: "⬇️ Tải PDF Trực Tiếp",
+    export_btn_download_excel: "📊 Tải File Excel (.xlsx)",
+    export_no_selection_warn: "Vui lòng chọn ít nhất 1 nội dung báo cáo!",
+    export_processing: "Đang khởi tạo báo cáo...",
+    export_success: "Xuất báo cáo thành công!",
+    export_chart_generating: "Đang chuyển đổi biểu đồ...",
+    export_excel_sheet_overview: "Tổng quan",
+    export_excel_sheet_analytics: "Phân tích chuyên sâu",
+    export_excel_sheet_gantt: "Sơ đồ Gantt",
+    export_preview_refresh: "↺ Làm mới xem trước",
+    export_exporting: "Đang xử lý xuất...",
+    export_report_generated_at: "Thời gian xuất",
+    export_report_generated_by: "Người thực hiện",
+    export_report_project: "Dự án",
+    export_report_date_range: "Khung thời gian",
+    export_total_tasks: "Tổng nhiệm vụ",
+    export_done_tasks: "Hoàn thành",
+    export_inprogress_tasks: "Đang thực hiện",
+    export_overdue_tasks: "Quá hạn",
+    export_ontime_rate: "Tỷ lệ đúng hạn",
+    export_completion_rate: "Tiến độ bình quân",
   },
 
   en: {
@@ -2953,6 +3350,58 @@ const I18N = {
     matrix_resetting: "Resetting matrix to default...",
     matrix_admin_only_save: "Only Admin can save the permission matrix",
     matrix_admin_only_reset: "Only Admin can reset the permission matrix",
+    btn_print_export: "Print Report",
+    btn_print_gantt: "Print Gantt",
+    btn_print_analytics: "Print Report",
+    export_report_title: "🖨️ Print & Export Report",
+    export_report_sub: "Customizable PDF and Excel reporting options",
+    export_scope_title: "1. Select Report Content",
+    export_scope_overview: "Overview Report (Dashboard)",
+    export_scope_analytics: "Deep-dive Analytics Charts",
+    export_scope_gantt: "Gantt Timeline Schedule",
+    export_package_title: "2. Packaging Options",
+    export_merge_single: "Merge into single file",
+    export_split_files: "Split into separate files",
+    export_filename_title: "3. File Naming",
+    export_filename_overview: "Overview file name",
+    export_filename_analytics: "Analytics file name",
+    export_filename_gantt: "Gantt file name",
+    export_filename_merged: "Merged report file name",
+    export_format_title: "4. Format & Page Setup",
+    export_format_pdf: "Export PDF / Print",
+    export_format_excel: "Export Excel (.xlsx)",
+    export_paper_size: "Paper Size",
+    export_orientation: "Orientation",
+    export_orientation_landscape: "Landscape",
+    export_orientation_portrait: "Portrait",
+    export_margin: "Margin",
+    export_margin_normal: "Normal (10mm)",
+    export_margin_narrow: "Narrow (5mm)",
+    export_margin_none: "None (0mm)",
+    export_excel_gantt_grid: "Include simulated Gantt calendar grid",
+    export_live_preview: "👁️ Live Print Preview",
+    export_btn_native_print: "🖨️ Print / Save PDF (Vector 300 DPI)",
+    export_btn_download_pdf: "⬇️ Download PDF Directly",
+    export_btn_download_excel: "📊 Download Excel (.xlsx)",
+    export_no_selection_warn: "Please select at least one report section!",
+    export_processing: "Generating report...",
+    export_success: "Report exported successfully!",
+    export_chart_generating: "Rendering charts...",
+    export_excel_sheet_overview: "Overview",
+    export_excel_sheet_analytics: "Analytics",
+    export_excel_sheet_gantt: "Gantt Schedule",
+    export_preview_refresh: "↺ Refresh Preview",
+    export_exporting: "Exporting...",
+    export_report_generated_at: "Generated at",
+    export_report_generated_by: "Generated by",
+    export_report_project: "Project",
+    export_report_date_range: "Date Range",
+    export_total_tasks: "Total Tasks",
+    export_done_tasks: "Completed",
+    export_inprogress_tasks: "In Progress",
+    export_overdue_tasks: "Overdue",
+    export_ontime_rate: "On-time Rate",
+    export_completion_rate: "Average Progress",
   },
 
   ja: {
@@ -3386,6 +3835,58 @@ const I18N = {
     matrix_resetting: "マトリクスをデフォルトに初期化中...",
     matrix_admin_only_save: "システム管理者のみが権限マトリクスを保存できます",
     matrix_admin_only_reset: "システム管理者のみが権限マトリクスを初期化できます",
+    btn_print_export: "レポート印刷",
+    btn_print_gantt: "ガント印刷",
+    btn_print_analytics: "レポート印刷",
+    export_report_title: "🖨️ レポート印刷・出力",
+    export_report_sub: "PDFおよびExcelレポートの出力オプション",
+    export_scope_title: "1. レポート対象の選択",
+    export_scope_overview: "概要レポート (ダッシュボード)",
+    export_scope_analytics: "詳細分析グラフ",
+    export_scope_gantt: "ガントチャート工程表",
+    export_package_title: "2. ファイル構成",
+    export_merge_single: "1つのファイルに統合",
+    export_split_files: "項目ごとに別ファイルに分割",
+    export_filename_title: "3. ファイル名設定",
+    export_filename_overview: "概要ファイル名",
+    export_filename_analytics: "分析ファイル名",
+    export_filename_gantt: "ガントファイル名",
+    export_filename_merged: "統合レポートファイル名",
+    export_format_title: "4. 出力形式・ページ設定",
+    export_format_pdf: "PDF出力 / 印刷",
+    export_format_excel: "Excel出力 (.xlsx)",
+    export_paper_size: "用紙サイズ",
+    export_orientation: "印刷の向き",
+    export_orientation_landscape: "横向き (Landscape)",
+    export_orientation_portrait: "縦向き (Portrait)",
+    export_margin: "余白",
+    export_margin_normal: "標準 (10mm)",
+    export_margin_narrow: "狭い (5mm)",
+    export_margin_none: "なし (0mm)",
+    export_excel_gantt_grid: "日別ガントマトリクスを含める",
+    export_live_preview: "👁️ 印刷プレビュー (Live Preview)",
+    export_btn_native_print: "🖨️ 印刷 / PDF保存 (ベクター300 DPI)",
+    export_btn_download_pdf: "⬇️ PDF直接ダウンロード",
+    export_btn_download_excel: "📊 Excelダウンロード (.xlsx)",
+    export_no_selection_warn: "少なくとも1つのレポート対象を選択してください！",
+    export_processing: "レポート生成中...",
+    export_success: "レポートの出力が完了しました！",
+    export_chart_generating: "グラフ変換中...",
+    export_excel_sheet_overview: "概要",
+    export_excel_sheet_analytics: "詳細分析",
+    export_excel_sheet_gantt: "ガント工程表",
+    export_preview_refresh: "↺ プレビュー更新",
+    export_exporting: "出力処理中...",
+    export_report_generated_at: "出力日時",
+    export_report_generated_by: "作成者",
+    export_report_project: "対象プロジェクト",
+    export_report_date_range: "対象期間",
+    export_total_tasks: "総タスク数",
+    export_done_tasks: "完了タスク",
+    export_inprogress_tasks: "進行中",
+    export_overdue_tasks: "期限超過",
+    export_ontime_rate: "納期遵守率",
+    export_completion_rate: "平均進捗率",
   }
 };
 
@@ -4213,7 +4714,7 @@ function renderPtkGrid(tasks) {
   if (!high.length) { el.innerHTML='<div class="empty" style="padding:20px"><div class="empty-ic">🎉</div>' + t('dash_no_urgent') + '</div>'; return; }
   el.innerHTML=high.map(t=>`
     <div class="ptk ${isTaskOverdue(t)?'ov':''}" onclick="openFullTaskEdit('${t.id}')">
-      <div class="ptk-nm">${t.name}${isTaskOverdue(t)?`<span class="badge bg-rd" style="font-size:9px">${tStatus('Quá hạn').toUpperCase()}</span>`:""}</div>
+      <div class="ptk-nm">${_taskDisplayName(t)}${isTaskOverdue(t)?`<span class="badge bg-rd" style="font-size:9px">${tStatus('Quá hạn').toUpperCase()}</span>`:""}</div>
       <div class="ptk-ds">${t.desc||t.projectName}</div>
       <div class="ptk-rows">
         <div class="ptk-row">📁 <b>${t.projectName}</b></div>
@@ -4368,6 +4869,145 @@ function _displayName(val, projectId) {
   });
 
   return names.length ? names.join(', ') : '—';
+}
+
+
+// =========================================================================
+// 46 STANDARD DISCIPLINES DICTIONARY (VI / EN / JA) FOR DYNAMIC LOCALIZATION
+// =========================================================================
+const STANDARD_DISCIPLINE_NAMES = {
+  "PN01": { vi: "Tạo ảnh Panorama Memo", en: "Panorama Memo Creation", ja: "【パノラマメモ】作成" },
+  "PN10": { vi: "Kiểm tra Panorama Memo", en: "Panorama Memo Check", ja: "【パノラマメモ】チェック" },
+  "PN11": { vi: "Chỉnh sửa Panorama Memo", en: "Panorama Memo Revision", ja: "【パノラマメモ】修正" },
+  "PC01": { vi: "Xử lý dữ liệu Point Cloud", en: "Point Cloud Processing", ja: "【点群データ】処理" },
+  "PC02": { vi: "Phân lớp Point Cloud", en: "Point Cloud Layering", ja: "【点群データ】レイヤー分け" },
+  "PC10": { vi: "Kiểm tra Point Cloud", en: "Point Cloud Check", ja: "【点群データ】チェック" },
+  "PC11": { vi: "Sửa dữ liệu Point Cloud", en: "Point Cloud Revision", ja: "【点群データ】修正" },
+  "PC12": { vi: "Sửa phân lớp Point Cloud", en: "Point Cloud Layering Revision", ja: "【点群データ】レイヤー分け修正" },
+  "MD01": { vi: "Dựng hình Kết cấu", en: "Structure Modeling", ja: "【モデル】躯体作成" },
+  "MD02": { vi: "Dựng hình Máy móc / Thiết bị", en: "Equipment Modeling", ja: "【モデル】機械作成" },
+  "MD03": { vi: "Dựng hình Đường ống", en: "Piping Modeling", ja: "【モデル】配管作成" },
+  "MD04": { vi: "Hợp nhất mô hình tổng thể", en: "Model Federation", ja: "【モデル】合成" },
+  "MD05": { vi: "Dựng hình hạng mục khác", en: "Other Modeling", ja: "【モデル】作成（その他）" },
+  "MD10": { vi: "Kiểm tra mô hình BIM", en: "Model Quality Check", ja: "【モデル】チェック" },
+  "MD11": { vi: "Sửa mô hình Kết cấu", en: "Structure Revision", ja: "【モデル】躯体修正" },
+  "MD12": { vi: "Sửa mô hình Thiết bị", en: "Equipment Revision", ja: "【モデル】機械修正" },
+  "MD13": { vi: "Sửa mô hình Đường ống", en: "Piping Revision", ja: "【モデル】配管修正" },
+  "MD14": { vi: "Sửa hợp nhất mô hình", en: "Federation Revision", ja: "【モデル】合成修正" },
+  "MD15": { vi: "Sửa mô hình khác", en: "Other Model Revision", ja: "【モデル】修正（その他）" },
+  "MD16": { vi: "Nhập thuộc tính thông tin BIM", en: "BIM Data Input", ja: "【モデル】情報入力" },
+  "SD01": { vi: "Tổng hợp đóng tập bản vẽ", en: "Drawing Compilation", ja: "【施工図】図面取りまとめ" },
+  "SD02": { vi: "Chuẩn bị bản vẽ nền Underlay", en: "Background Drawing Prep", ja: "【施工図】下図準備" },
+  "SD03": { vi: "Triển khai bản vẽ mặt bằng & mặt cắt", en: "Plan & Section Drawing Creation", ja: "【施工図】平断面図作成" },
+  "SD04": { vi: "Bản vẽ sơ đồ không gian ống", en: "Piping Isometric Drawing", ja: "【施工図】配管スケルトン図作成" },
+  "SD05": { vi: "Triển khai bản vẽ móng bệ", en: "Foundation Drawing", ja: "【施工図】基礎図作成" },
+  "SD06": { vi: "Bản vẽ gia công kết cấu thép", en: "Steel Fabrication Drawing", ja: "【施工図】鋼製加工品図作成" },
+  "SD07": { vi: "Bản vẽ phối hợp đa bộ môn", en: "Combined Services Drawing", ja: "【施工図】複合工図作成" },
+  "SD08": { vi: "Bản vẽ thi công khác", en: "Other Shop Drawing", ja: "【施工図】その他" },
+  "MC01": { vi: "Check va chạm vs Bản vẽ thiết kế", en: "Clash Check vs Tender Drawing", ja: "【レポート・発注図】干渉・相違点チェック" },
+  "MC02": { vi: "Check va chạm vs Bản vẽ thi công", en: "Clash Check vs Shop Drawing", ja: "【レポート・施工図】干渉・相違点チェック" },
+  "MC03": { vi: "Đề xuất giải pháp xử lý va chạm", en: "Clash Resolution Proposal", ja: "【レポート】干渉・相違点の改善提案" },
+  "MC04": { vi: "Nghiên cứu biện pháp vận chuyển", en: "Equipment Route Study", ja: "【レポート】機器搬出入検討" },
+  "MC05": { vi: "Kiểm tra xác nhận kích thước", en: "Dimension Verification", ja: "【レポート】寸法確認" },
+  "MC06": { vi: "Báo cáo kỹ thuật khác", en: "Other Technical Report", ja: "【レポート】その他" },
+  "MC07": { vi: "Tạo video mô phỏng Walkthrough", en: "3D Walkthrough Animation", ja: "【レポート】ウォークスルー動画作成" },
+  "MT00": { vi: "Họp giao ban đầu/cuối ngày", en: "Daily Standup Meeting", ja: "【MTG】朝礼・終礼" },
+  "MT01": { vi: "Họp đối tác / Khách hàng", en: "External Meeting", ja: "【MTG】社外" },
+  "MT02": { vi: "Họp nội bộ nhóm dự án", en: "Internal Team Meeting", ja: "【MTG】社内" },
+  "MT03": { vi: "Họp giải đáp thắc mắc Q&A", en: "Q&A Clarification Meeting", ja: "【MTG】問い合わせ" },
+  "MT04": { vi: "Họp nghiệm thu đóng dự án", en: "Project Closeout Meeting", ja: "【MTG】クローズ" },
+  "PM01": { vi: "Lập kế hoạch & phân rã tiến độ", en: "Project Planning & Scheduling", ja: "【管理】計画策定" },
+  "PM02": { vi: "Giám sát & điều phối nguồn lực", en: "Monitoring & Coordination", ja: "【管理】進捗管理" },
+  "MJ01": { vi: "Tự học chuyên môn & nâng cao kỹ năng", en: "Self-Study & Professional Skills", ja: "【研修】自己研鑽" },
+  "MJ02": { vi: "Đào tạo thành viên mới / Chuyển giao", en: "Mentoring & Onboarding", ja: "【研修】教育・指導" },
+  "DE01": { vi: "Nghiên cứu & phát triển giải pháp mới", en: "R&D & Engineering Innovation", ja: "【開発】技術開発" },
+  "LN01": { vi: "Nghỉ phép theo chế độ", en: "Leave & Non-Project Time", ja: "【勤怠】休暇" }
+};
+
+// =========================================================================
+// HELPER: ĐỊNH DẠNG TÊN NHIỆM VỤ CHUẨN ĐA NGÔN NGỮ (VI / EN / JA)
+// Định dạng: [CAT-PHASE-DISC]-<Tên chi tiết đa ngôn ngữ> [- Ghi chú tùy chọn]
+// =========================================================================
+function _taskDisplayName(taskOrName, lang) {
+  if (!taskOrName) return '';
+  const rawName = (typeof taskOrName === 'object' && taskOrName !== null) ? (taskOrName.name || '') : String(taskOrName);
+  if (!rawName) return '';
+
+  const match = rawName.match(/^\s*\[([A-Za-z0-9_\-]+)\](.*)$/);
+  if (!match) return rawName;
+
+  const codeStr = match[1].toUpperCase();
+  const rawSuffix = match[2] || '';
+  const parts = codeStr.split('-');
+
+  let discCode = null;
+  if (parts.length >= 3) {
+    discCode = parts[2];
+  } else if (parts.length === 2) {
+    discCode = parts[1];
+  } else if (parts.length === 1) {
+    discCode = parts[0];
+  }
+
+  if (!discCode) return rawName;
+
+  const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
+
+  let discTax = null;
+  if (typeof S !== 'undefined' && S.taxonomy && Array.isArray(S.taxonomy.disciplines)) {
+    discTax = S.taxonomy.disciplines.find(d => String(d.code || '').toUpperCase() === discCode);
+  }
+
+  let discName = '';
+  if (discTax && typeof tTaxonomy === 'function') {
+    discName = tTaxonomy(discTax, curLang);
+  }
+  if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[discCode]) {
+    const std = STANDARD_DISCIPLINE_NAMES[discCode];
+    discName = std[curLang] || std['vi'] || '';
+  }
+
+  if (!discName) return rawName;
+
+  let remainder = rawSuffix.trim().replace(/^[-–—:]\s*/, '').trim();
+
+  const candidates = [];
+  if (discTax) {
+    if (discTax.name_vi) candidates.push(discTax.name_vi);
+    if (discTax.name_en) candidates.push(discTax.name_en);
+    if (discTax.name_jp) candidates.push(discTax.name_jp);
+    if (discTax.name) candidates.push(discTax.name);
+  }
+  if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[discCode]) {
+    const std = STANDARD_DISCIPLINE_NAMES[discCode];
+    if (std.vi) candidates.push(std.vi);
+    if (std.en) candidates.push(std.en);
+    if (std.ja) candidates.push(std.ja);
+  }
+  candidates.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成', '設備モデル作成');
+
+  for (const c of candidates) {
+    if (!c) continue;
+    const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+    const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+    if (rx1.test(remainder)) {
+      remainder = remainder.replace(rx1, '').trim();
+    }
+    if (cleanCand && cleanCand !== c) {
+      const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+      if (rx2.test(remainder)) {
+        remainder = remainder.replace(rx2, '').trim();
+      }
+    }
+  }
+
+  remainder = remainder.replace(/^[-–—:]\s*/, '').trim();
+
+  let formatted = `[${codeStr}]-${discName}`;
+  if (remainder) {
+    formatted += ` - ${remainder}`;
+  }
+  return formatted;
 }
 
 // Helper: Render badge người đảm nhận hiển thị ngoài bảng nhiệm vụ
@@ -5249,7 +5889,7 @@ function renderAtGrid(tasks) {
   const parts=[];
   for (let i=0;i<tasks.length;i++) {
     const t=tasks[i], ov=isTaskOverdue(t);
-    const nm=(t.name||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const nm=(_taskDisplayName(t)||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     const pj=(t.projectName||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     const pct=Number(t.progress)||0;
     parts.push(
@@ -5266,7 +5906,7 @@ function renderAtGrid(tasks) {
 }
 function filterAtGrid(q) {
   const lq=(q||"").toLowerCase();
-  renderAtGrid(_atTasks.filter(t=>!lq||(t.name||"").toLowerCase().includes(lq)||(t.projectName||"").toLowerCase().includes(lq)||(t.assignee||"").toLowerCase().includes(lq)||_displayName(t.assignee).toLowerCase().includes(lq)));
+  renderAtGrid(_atTasks.filter(t=>!lq||(t.name||"").toLowerCase().includes(lq)||_taskDisplayName(t).toLowerCase().includes(lq)||(t.projectName||"").toLowerCase().includes(lq)||(t.assignee||"").toLowerCase().includes(lq)||_displayName(t.assignee).toLowerCase().includes(lq)));
 }
 
 // ═══════════════════════════════════════
@@ -5504,7 +6144,7 @@ function renderGantt() {
     }
     rowsR+=`<div class="gantt-pj-line" style="min-width:${totalDays*ppd}px">${pjBarHtml}${pjFlagHtml}</div>`;
 
-    const tkL=g.tasks.map(t=>`<div class="gantt-tk-row" id="gtr-${t.id}" data-id="${t.id}" data-pj="${g.project.id}" draggable="true" ondragstart="gDragStart(event)" ondragover="gDragOver(event)" ondrop="gDrop(event)" ondragend="gDragEnd(event)"><span class="gantt-drag-ic">⠿</span><span class="gantt-tk-nm" title="${t.name}">${t.name}</span><span class="gantt-tk-as" title="${t.assignee||''}">${_displayName(t.assignee)}</span></div>`).join('');
+    const tkL=g.tasks.map(t=>`<div class="gantt-tk-row" id="gtr-${t.id}" data-id="${t.id}" data-pj="${g.project.id}" draggable="true" ondragstart="gDragStart(event)" ondragover="gDragOver(event)" ondrop="gDrop(event)" ondragend="gDragEnd(event)"><span class="gantt-drag-ic">⠿</span><span class="gantt-tk-nm" title="${_taskDisplayName(t)}">${_taskDisplayName(t)}</span><span class="gantt-tk-as" title="${t.assignee||''}">${_displayName(t.assignee)}</span></div>`).join('');
     const tkR=g.tasks.map(t=>{
       let barX=0,barW=ppd;
       if (t.startRaw) { const ts=parseLocalDate(t.startRaw); barX=Math.max(0,Math.round((ts-sd)/86400000))*ppd; }
@@ -5528,7 +6168,7 @@ function renderGantt() {
             +`</div>`;
         }
       }
-      return `<div class="gantt-tk-line" style="min-width:${totalDays*ppd}px"><div class="gantt-bar" style="left:${barX}px;width:${barW}px;background:${barColor};opacity:${0.7+t.progress/300}" title="${t.name} | ${t.status} | ${t.progress}%" onclick="openFullTaskEdit('${t.id}')">${t.progress>0?t.progress+'%':''}</div>${flagHtml}</div>`;
+      return `<div class="gantt-tk-line" style="min-width:${totalDays*ppd}px"><div class="gantt-bar" style="left:${barX}px;width:${barW}px;background:${barColor};opacity:${0.7+t.progress/300}" title="${_taskDisplayName(t)} | ${t.status} | ${t.progress}%" onclick="openFullTaskEdit('${t.id}')">${t.progress>0?t.progress+'%':''}</div>${flagHtml}</div>`;
     }).join('');
     rowsL+=`<div class="gantt-pj-tasks open" id="${pjId}-tasks">${tkL}</div>`;
     rowsR+=`<div class="gantt-pj-tasks-r open" id="${pjId}-tasks-r">${tkR}</div>`;
@@ -5700,7 +6340,7 @@ function renderPgTkGroups(tasks) {
               return `
               <tr class="${isOver ? 'row-ov' : ''}">
                 <td><input type="checkbox" ${tk.status === "Hoàn thành" ? "checked" : ""} onchange="toggleTaskDone('${tk.id}', this.checked)"></td>
-                <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${tk.id}')"><b>${tk.name || ""}</b>${isOver ? `<br><span style="font-size:9px;color:#ef4444">⚠ ${tStatus('Quá hạn')}</span>` : ""}</td>
+                <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${tk.id}')"><b>${_taskDisplayName(tk)}</b>${isOver ? `<br><span style="font-size:9px;color:#ef4444">⚠ ${tStatus('Quá hạn')}</span>` : ""}</td>
                 <td>${_renderAssigneeCell(tk.assignee, tk.id)}</td>
                 <td><span class="badge ${sBadge(tk.status)}">${tStatus(tk.status)}</span></td>
                 <td><span class="badge ${pBadge(tk.priority)}">${tPriority(tk.priority)}</span></td>
@@ -5731,7 +6371,7 @@ function filterPgTk() {
   const pr = document.getElementById("pt-pr")?.value || "";
   const filtered = (S.tasks || []).filter(tk => {
     const dispAs = _displayName(tk.assignee, tk.projectId).toLowerCase();
-    const nameMatch = !q || String(tk.name || "").toLowerCase().includes(q) || String(tk.assignee || "").toLowerCase().includes(q) || dispAs.includes(q);
+    const nameMatch = !q || String(tk.name || "").toLowerCase().includes(q) || _taskDisplayName(tk).toLowerCase().includes(q) || String(tk.assignee || "").toLowerCase().includes(q) || dispAs.includes(q);
     const statusMatch = !st || (st === 'Quá hạn' ? isTaskOverdue(tk) : tk.status === st);
     const prioMatch = !pr || tk.priority === pr;
     return nameMatch && statusMatch && prioMatch;
@@ -5877,7 +6517,7 @@ function openFullTaskEdit(taskId) {
 function fillTpForm(task) {
   if (!task) return;
   document.getElementById("tp-id").value = task.id || "";
-  document.getElementById("tp-nm").value = task.name || "";
+  document.getElementById("tp-nm").value = _taskDisplayName(task);
   document.getElementById("tp-ds").value = task.desc || "";
   document.getElementById("tp-st").value = task.status || "Chờ thực hiện";
   document.getElementById("tp-pr").value = task.priority || "Trung bình";
@@ -6558,7 +7198,7 @@ function openTkMod(taskId, defaultPjId, initialTab) {
     switchQtkTab('single');
     const t = S.tasks.find(x => String(x.id || "").trim() === String(taskId).trim());
     if (t) {
-      document.getElementById("mqtk-nm").value = t.name || "";
+      document.getElementById("mqtk-nm").value = _taskDisplayName(t);
       document.getElementById("mqtk-st").value = t.status || "Chờ thực hiện";
       document.getElementById("mqtk-pr").value = t.priority || "Trung bình";
       document.getElementById("mqtk-sd").value = toDateInputVal(t.startRaw || t.startDate);
@@ -8468,7 +9108,7 @@ function onTaskTaxonomyChange(mode) {
         badge.style.color = 'var(--p)';
         badge.style.borderColor = '#c7d2fe';
       } else {
-        badge.textContent = t('tax_prefix_none') || '[CHƯA GÁN MÃ]';
+        badge.textContent = (typeof t === 'function' ? t('tax_prefix_none') : null) || '[CHƯA GÁN MÃ]';
         badge.style.background = '#fff7ed';
         badge.style.color = '#ea580c';
         badge.style.borderColor = '#fdba74';
@@ -8477,9 +9117,54 @@ function onTaskTaxonomyChange(mode) {
 
     const nmInp = document.getElementById('tp-nm');
     if (!nmInp) return;
+
+    let discName = '';
+    if (disc) {
+      const curLang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      if (discTax && typeof tTaxonomy === 'function') {
+        discName = tTaxonomy(discTax, curLang);
+      }
+      if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        discName = std[curLang] || std['vi'] || '';
+      }
+    }
+
     let curVal = nmInp.value.trim();
-    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
-    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+    curVal = curVal.replace(/^\[[A-Za-z0-9_\-]+\]\s*[-–—:]?\s*/i, '').trim();
+
+    if (disc) {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      const cands = [];
+      if (discTax) { cands.push(discTax.name_vi, discTax.name_en, discTax.name_jp, discTax.name); }
+      if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        cands.push(std.vi, std.en, std.ja);
+      }
+      cands.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成');
+      for (const c of cands) {
+        if (!c) continue;
+        const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+        const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+        if (rx1.test(curVal)) { curVal = curVal.replace(rx1, '').trim(); }
+        if (cleanCand && cleanCand !== c) {
+          const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+          if (rx2.test(curVal)) { curVal = curVal.replace(rx2, '').trim(); }
+        }
+      }
+      curVal = curVal.replace(/^[-–—:]\s*/, '').trim();
+    }
+
+    if (prefix) {
+      if (discName) {
+        nmInp.value = curVal ? `${prefix}-${discName} - ${curVal}` : `${prefix}-${discName}`;
+      } else {
+        nmInp.value = curVal ? `${prefix} ${curVal}` : prefix;
+      }
+    } else {
+      nmInp.value = curVal;
+    }
     return;
   }
 
@@ -8499,9 +9184,53 @@ function onTaskTaxonomyChange(mode) {
   if (mode === 'single') {
     const nmInp = document.getElementById('mqtk-nm');
     if (!nmInp) return;
+    let discName = '';
+    if (disc) {
+      const curLang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      if (discTax && typeof tTaxonomy === 'function') {
+        discName = tTaxonomy(discTax, curLang);
+      }
+      if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        discName = std[curLang] || std['vi'] || '';
+      }
+    }
+
     let curVal = nmInp.value.trim();
-    curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
-    nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
+    curVal = curVal.replace(/^\[[A-Za-z0-9_\-]+\]\s*[-–—:]?\s*/i, '').trim();
+
+    if (disc) {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      const cands = [];
+      if (discTax) { cands.push(discTax.name_vi, discTax.name_en, discTax.name_jp, discTax.name); }
+      if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        cands.push(std.vi, std.en, std.ja);
+      }
+      cands.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成');
+      for (const c of cands) {
+        if (!c) continue;
+        const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+        const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+        if (rx1.test(curVal)) { curVal = curVal.replace(rx1, '').trim(); }
+        if (cleanCand && cleanCand !== c) {
+          const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+          if (rx2.test(curVal)) { curVal = curVal.replace(rx2, '').trim(); }
+        }
+      }
+      curVal = curVal.replace(/^[-–—:]\s*/, '').trim();
+    }
+
+    if (prefix) {
+      if (discName) {
+        nmInp.value = curVal ? `${prefix}-${discName} - ${curVal}` : `${prefix}-${discName}`;
+      } else {
+        nmInp.value = curVal ? `${prefix} ${curVal}` : prefix;
+      }
+    } else {
+      nmInp.value = curVal;
+    }
   }
 }
 
@@ -10412,6 +11141,36 @@ window.switchTsSubTab = switchTsSubTab;
 window.initProjectActualTimeTab = initProjectActualTimeTab;
 window.onProjectScopeChange = onProjectScopeChange;
 window.loadProjectActualTimeReport = loadProjectActualTimeReport;
+function exportJapaneseProjectReportClick() {
+  const pjSel = document.getElementById('ts-rep-pj-sel');
+  const projectCode = pjSel ? pjSel.value : '';
+  if (!projectCode) {
+    if (typeof toast === 'function') toast(t('ts_err_select_project') || 'Vui lòng chọn dự án trước khi xuất file nghiệm thu.', 'warning');
+    return;
+  }
+  const scopeSel = document.getElementById('ts-rep-scope-sel');
+  const scope = scopeSel ? scopeSel.value : 'all';
+  const fromDate = (document.getElementById('ts-rep-from')?.value || '').trim();
+  const toDate = (document.getElementById('ts-rep-to')?.value || '').trim();
+
+  if (typeof toast === 'function') toast(t('ts_exporting_jp') || 'Đang khởi tạo file nghiệm thu chuẩn Nhật...', 'info');
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res && res.success && res.url) {
+          if (typeof toast === 'function') toast(res.message || 'Xuất file thành công! Đang mở...', 'success');
+          window.open(res.url, '_blank');
+        } else {
+          if (typeof toast === 'function') toast((res && res.error) || 'Lỗi xuất file nghiệm thu', 'error');
+        }
+      })
+      .withFailureHandler(err => {
+        if (typeof toast === 'function') toast(err.message || 'Lỗi kết nối máy chủ', 'error');
+      })
+      .exportJapaneseProjectReport(projectCode, scope, fromDate, toDate);
+  }
+}
+
 window.exportJapaneseProjectReportClick = exportJapaneseProjectReportClick;
 window.initStaffWorkBreakdownTab = initStaffWorkBreakdownTab;
 window.setStaffQuickRange = setStaffQuickRange;
@@ -10421,6 +11180,977 @@ window.initBatchMatrixTab = initBatchMatrixTab;
 window.stepMatrixMonth = stepMatrixMonth;
 window.loadBatchComparisonMatrix = loadBatchComparisonMatrix;
 window.openTsDrilldownModal = openTsDrilldownModal;
+
+// ═══════════════════════════════════════════════════════════
+//  APP EXPORT MANAGER (PDF & EXCEL MULTI-FORMAT REPORTING)
+// ═══════════════════════════════════════════════════════════
+const AppExportManager = {
+  activeScope: null,
+  config: {
+    scopes: { overview: true, analytics: true, gantt: true },
+    pkgMode: 'merged', // 'merged' | 'split'
+    format: 'pdf',     // 'pdf' | 'excel'
+    paperSize: 'A4',   // 'A4' | 'A3' | 'Letter'
+    orientation: 'landscape', // 'landscape' | 'portrait'
+    margin: 10,        // mm
+    excelGanttGrid: true
+  },
+
+  sanitizeFileName(name) {
+    if (!name) return 'Bao_Cao';
+    return String(name).replace(/[\\/:*?"<>|]+/g, '_').replace(/\s+/g, '_').trim();
+  },
+
+  getTodayYMD() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}${m}${day}`;
+  },
+
+  formatDateVN(d) {
+    if (!d) return '';
+    const day = String(d.getDate()).padStart(2, '0');
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    return `${day}/${m}/${d.getFullYear()}`;
+  },
+
+  parseDate(val) {
+    if (!val) return null;
+    if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
+    const s = String(val).trim();
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) {
+      const parts = s.split('T')[0].split('-');
+      return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    }
+    if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(s)) {
+      const parts = s.split('/');
+      return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+    }
+    const d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  },
+
+  openModal(targetScope) {
+    try {
+      this.activeScope = targetScope || 'all';
+
+      // Ensure analytics charts are rendered if not already initialized
+      if ((!S.analyticsCharts || !S.analyticsCharts.workload || !S.analyticsCharts.pjShare) && typeof applyAnalyticsFilter === 'function') {
+        try { applyAnalyticsFilter(); } catch(e) {}
+      }
+
+      // 1. Show modal
+      const modalEl = document.getElementById('m-export-report');
+      if (modalEl) {
+        modalEl.classList.add('show');
+      } else if (typeof openModal === 'function') {
+        openModal('m-export-report');
+      }
+
+      // 2. Configure checkboxes based on entry point
+      const cbOv = document.getElementById('exp-cb-overview');
+      const cbAn = document.getElementById('exp-cb-analytics');
+      const cbGt = document.getElementById('exp-cb-gantt');
+
+      if (targetScope === 'gantt') {
+        if (cbOv) cbOv.checked = false;
+        if (cbAn) cbAn.checked = false;
+        if (cbGt) cbGt.checked = true;
+      } else if (targetScope === 'analytics') {
+        if (cbOv) cbOv.checked = false;
+        if (cbAn) cbAn.checked = true;
+        if (cbGt) cbGt.checked = false;
+      } else {
+        if (cbOv) cbOv.checked = true;
+        if (cbAn) cbAn.checked = true;
+        if (cbGt) cbGt.checked = true;
+      }
+
+      // 3. Determine current project name for default file name
+      let pjName = 'Tat_Ca_Du_An';
+      const curPj = this.getCurrentProject();
+      if (curPj && curPj.name) {
+        pjName = curPj.name;
+      }
+      const safePj = this.sanitizeFileName(pjName);
+      const ymd = this.getTodayYMD();
+
+      // 4. Default filenames
+      const fnMerged = document.getElementById('exp-fn-merged');
+      const fnOv = document.getElementById('exp-fn-overview');
+      const fnAn = document.getElementById('exp-fn-analytics');
+      const fnGt = document.getElementById('exp-fn-gantt');
+
+      if (fnMerged) fnMerged.value = `${safePj}_Bao_Cao_Tong_Hop_${ymd}`;
+      if (fnOv) fnOv.value = `${safePj}_Bao_Cao_Tong_Quan_${ymd}`;
+      if (fnAn) fnAn.value = `${safePj}_Bao_Cao_Chuyen_Sau_${ymd}`;
+      if (fnGt) fnGt.value = `${safePj}_So_Do_Gantt_${ymd}`;
+
+      // 5. Update controls
+      const isMerged = document.getElementById('exp-pkg-merged')?.checked ?? true;
+      this.config.pkgMode = isMerged ? 'merged' : 'split';
+      const wrapMerged = document.getElementById('exp-wrap-name-merged');
+      const wrapSplit = document.getElementById('exp-wrap-name-split');
+      if (wrapMerged) wrapMerged.style.display = isMerged ? 'block' : 'none';
+      if (wrapSplit) wrapSplit.style.display = isMerged ? 'none' : 'block';
+
+      this.config.scopes.overview = cbOv ? cbOv.checked : true;
+      this.config.scopes.analytics = cbAn ? cbAn.checked : true;
+      this.config.scopes.gantt = cbGt ? cbGt.checked : true;
+
+      this.refreshPreview();
+    } catch(err) {
+      console.error('Error in AppExportManager.openModal:', err);
+      const modalEl = document.getElementById('m-export-report');
+      if (modalEl) modalEl.classList.add('show');
+    }
+  },
+
+  closeModal() {
+    const modalEl = document.getElementById('m-export-report');
+    if (modalEl) modalEl.classList.remove('show');
+    if (typeof closeModal === 'function') closeModal('m-export-report');
+  },
+
+  setFormat(fmt) {
+    this.config.format = fmt;
+    const tabPdf = document.getElementById('exp-tab-pdf');
+    const tabExcel = document.getElementById('exp-tab-excel');
+    const secPdf = document.getElementById('exp-pdf-settings');
+    const secExcel = document.getElementById('exp-excel-settings');
+    const actPdf = document.getElementById('exp-actions-pdf');
+    const actExcel = document.getElementById('exp-actions-excel');
+
+    if (fmt === 'pdf') {
+      if (tabPdf) tabPdf.classList.add('active');
+      if (tabExcel) tabExcel.classList.remove('active');
+      if (secPdf) secPdf.style.display = 'block';
+      if (secExcel) secExcel.style.display = 'none';
+      if (actPdf) actPdf.style.display = 'flex';
+      if (actExcel) actExcel.style.display = 'none';
+    } else {
+      if (tabPdf) tabPdf.classList.remove('active');
+      if (tabExcel) tabExcel.classList.add('active');
+      if (secPdf) secPdf.style.display = 'none';
+      if (secExcel) secExcel.style.display = 'block';
+      if (actPdf) actPdf.style.display = 'none';
+      if (actExcel) actExcel.style.display = 'block';
+    }
+  },
+
+  onConfigChange() {
+    const isMerged = document.getElementById('exp-pkg-merged')?.checked ?? true;
+    this.config.pkgMode = isMerged ? 'merged' : 'split';
+
+    const wrapMerged = document.getElementById('exp-wrap-name-merged');
+    const wrapSplit = document.getElementById('exp-wrap-name-split');
+    if (wrapMerged) wrapMerged.style.display = isMerged ? 'block' : 'none';
+    if (wrapSplit) wrapSplit.style.display = isMerged ? 'none' : 'block';
+
+    this.config.scopes.overview = document.getElementById('exp-cb-overview')?.checked ?? false;
+    this.config.scopes.analytics = document.getElementById('exp-cb-analytics')?.checked ?? false;
+    this.config.scopes.gantt = document.getElementById('exp-cb-gantt')?.checked ?? false;
+
+    this.refreshPreview();
+  },
+
+  onPaperSettingsChange() {
+    const size = document.getElementById('exp-paper-size')?.value || 'A4';
+    const orient = document.getElementById('exp-orientation')?.value || 'landscape';
+    const margin = Number(document.getElementById('exp-margin')?.value || '10');
+
+    this.config.paperSize = size;
+    this.config.orientation = orient;
+    this.config.margin = margin;
+
+    document.documentElement.style.setProperty('--export-paper-size', size);
+    document.documentElement.style.setProperty('--export-paper-orientation', orient);
+    document.documentElement.style.setProperty('--export-paper-margin', margin + 'mm');
+
+    this.refreshPreview();
+  },
+
+  getCurrentProject() {
+    const pId = S.pjFilter || document.getElementById('pj-filter-sel')?.value || '';
+    if (pId && Array.isArray(S.projects)) {
+      return S.projects.find(p => p.id === pId) || null;
+    }
+    return null;
+  },
+
+  getExportData() {
+    const curPj = this.getCurrentProject();
+    let tasks = Array.isArray(S.tasks) ? [...S.tasks] : [];
+    if (curPj) {
+      tasks = tasks.filter(t => t.projectId === curPj.id);
+    }
+    
+    // If on analytics page or analytics filters are applied, use them
+    let analyticsTasks = tasks;
+    if (typeof getFilteredAnalyticsTasks === 'function') {
+      try {
+        const at = getFilteredAnalyticsTasks();
+        if (at && at.length) analyticsTasks = at;
+      } catch(e) {}
+    }
+
+    const members = (typeof _getAllAssignees === 'function') ? _getAllAssignees() : [...(S.members || [])];
+
+    // Compute KPI
+    const total = tasks.length;
+    const done = tasks.filter(t => t.status === 'Hoàn thành').length;
+    const ip = tasks.filter(t => t.status === 'Đang thực hiện' || t.status === 'Đang tiến hành').length;
+    const overdue = tasks.filter(t => (typeof isTaskOverdue === 'function' ? isTaskOverdue(t) : false) || t.status === 'Quá hạn').length;
+    const ontimeCount = done;
+    const ontimeRate = done > 0 ? Math.round((ontimeCount / done) * 100) : 100;
+    const avgProgress = total > 0 ? Math.round(tasks.reduce((acc, cur) => acc + (Number(cur.progress) || 0), 0) / total) : 0;
+
+    // Chart images
+    const chartImages = {};
+    if (S.charts && S.charts.stat && typeof S.charts.stat.toBase64Image === 'function') {
+      try { chartImages.stat = S.charts.stat.toBase64Image('image/png', 2); } catch(e) {}
+    }
+    if (S.analyticsCharts) {
+      ['workload', 'radar', 'pjShare', 'trend'].forEach(k => {
+        if (S.analyticsCharts[k] && typeof S.analyticsCharts[k].toBase64Image === 'function') {
+          try { chartImages[k] = S.analyticsCharts[k].toBase64Image('image/png', 2); } catch(e) {}
+        }
+      });
+    }
+
+    // Auto-detect Gantt date boundaries from actual tasks
+    const now = new Date();
+    let minTaskDate = null;
+    let maxTaskDate = null;
+
+    tasks.forEach(t => {
+      const ts = this.parseDate(t.startRaw || t.startDate);
+      const te = this.parseDate(t.deadlineRaw || t.deadline);
+      if (ts && (!minTaskDate || ts < minTaskDate)) minTaskDate = ts;
+      if (te && (!maxTaskDate || te > maxTaskDate)) maxTaskDate = te;
+    });
+
+    if (curPj) {
+      const ps = this.parseDate(curPj.startRaw || curPj.startDate);
+      const pe = this.parseDate(curPj.endRaw || curPj.endDate);
+      if (ps && (!minTaskDate || ps < minTaskDate)) minTaskDate = ps;
+      if (pe && (!maxTaskDate || pe > maxTaskDate)) maxTaskDate = pe;
+    }
+
+    const userGFrom = (typeof document !== 'undefined') ? document.getElementById('g-from')?.value : null;
+    const userGTo = (typeof document !== 'undefined') ? document.getElementById('g-to')?.value : null;
+    const parsedUserGFrom = userGFrom ? this.parseDate(userGFrom) : null;
+    const parsedUserGTo = userGTo ? this.parseDate(userGTo) : null;
+
+    let gSd = parsedUserGFrom;
+    let gEd = parsedUserGTo;
+
+    if (!gSd) {
+      if (minTaskDate) {
+        gSd = new Date(minTaskDate.getFullYear(), minTaskDate.getMonth(), 1);
+      } else {
+        gSd = new Date(now.getFullYear(), now.getMonth(), 1);
+      }
+    }
+
+    if (!gEd) {
+      if (maxTaskDate) {
+        gEd = new Date(maxTaskDate.getFullYear(), maxTaskDate.getMonth() + 1, 0);
+      } else {
+        gEd = new Date(gSd.getTime() + 30 * 86400000);
+      }
+    }
+
+    if (!gSd || !(gSd instanceof Date) || isNaN(gSd.getTime())) gSd = now;
+    if (!gEd || !(gEd instanceof Date) || isNaN(gEd.getTime()) || gEd.getTime() <= gSd.getTime()) {
+      gEd = new Date(gSd.getTime() + 30 * 86400000);
+    }
+
+    const ganttData = {
+      startDate: gSd,
+      endDate: gEd,
+      pixelsPerDay: 28
+    };
+
+    return {
+      project: curPj,
+      projectName: curPj ? curPj.name : t('filter_all_projects'),
+      tasks,
+      analyticsTasks,
+      members,
+      kpi: { total, done, ip, overdue, ontimeRate, avgProgress },
+      chartImages,
+      ganttData,
+      generatedAt: this.formatDateVN(new Date()) + ' ' + new Date().toLocaleTimeString(),
+      generatedBy: (S.user && S.user.name) ? S.user.name : 'System Admin'
+    };
+  },
+
+  buildHeaderHtml(title, data) {
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #4f6ef7;padding-bottom:12px;margin-bottom:16px">
+        <div>
+          <div style="font-size:18px;font-weight:800;color:#1e293b;text-transform:uppercase;letter-spacing:0.5px">${title}</div>
+          <div style="font-size:12px;color:#4f6ef7;font-weight:600;margin-top:2px">📁 ${t('export_report_project')}: ${data.projectName}</div>
+        </div>
+        <div style="text-align:right;font-size:11px;color:#64748b;line-height:1.4">
+          <div><strong>${t('export_report_generated_at')}:</strong> ${data.generatedAt}</div>
+          <div><strong>${t('export_report_generated_by')}:</strong> ${data.generatedBy}</div>
+        </div>
+      </div>
+    `;
+  },
+
+  buildOverviewHtml(data) {
+    const kpi = data.kpi;
+    const maxTasks = 100;
+    const displayTasks = data.tasks.slice(0, maxTasks);
+    const taskRows = displayTasks.map((t, idx) => {
+      const stColor = t.status === 'Hoàn thành' ? '#22c55e' : ((typeof isTaskOverdue === 'function' ? isTaskOverdue(t) : false) || t.status === 'Quá hạn') ? '#ef4444' : '#4f6ef7';
+      const priColor = t.priority === 'Khẩn cấp' ? '#ef4444' : t.priority === 'Cao' ? '#f97316' : '#64748b';
+      const pj = (S.projects || []).find(p => p.id === t.projectId) || null;
+      const pjName = pj ? pj.name : (t.projectName || '—');
+
+      return `
+        <tr style="border-bottom:1px solid #e2e8f0;font-size:11px">
+          <td style="padding:6px 4px;text-align:center;color:#64748b">${idx + 1}</td>
+          <td style="padding:6px 6px;font-weight:600">${t.code || '-'}</td>
+          <td style="padding:6px 6px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#4f6ef7;font-weight:600" title="${pjName}">${pjName}</td>
+          <td style="padding:6px 6px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${_taskDisplayName(t)}">${_taskDisplayName(t)}</td>
+          <td style="padding:6px 6px;width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_displayName(t.assignee)}</td>
+          <td style="padding:6px 6px;text-align:center;font-size:10px">${t.startDate || '-'}</td>
+          <td style="padding:6px 6px;text-align:center;font-weight:600;font-size:10px">${t.deadline || '-'}</td>
+          <td style="padding:6px 6px;text-align:center">
+            <div style="display:inline-block;width:35px;background:#e2e8f0;border-radius:4px;height:6px;vertical-align:middle;overflow:hidden">
+              <div style="width:${t.progress || 0}%;height:100%;background:#4f6ef7"></div>
+            </div>
+            <span style="font-size:10px;margin-left:3px">${t.progress || 0}%</span>
+          </td>
+          <td style="padding:6px 6px;text-align:center"><span style="color:${priColor};font-weight:600;font-size:10px">${t.priority || '-'}</span></td>
+          <td style="padding:6px 6px;text-align:center"><span style="background:${stColor}15;color:${stColor};padding:2px 6px;border-radius:10px;font-weight:600;font-size:10px">${t.status}</span></td>
+        </tr>
+      `;
+    }).join('');
+
+    return `
+      <div class="export-page" style="font-family:'Segoe UI',system-ui,sans-serif;color:#1e293b;padding:12px">
+        ${this.buildHeaderHtml(t('export_scope_overview'), data)}
+        
+        <!-- KPI Cards -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #4f6ef7;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_total_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#1e293b;margin-top:2px">${kpi.total}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #22c55e;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_done_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#22c55e;margin-top:2px">${kpi.done}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #06b6d4;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_inprogress_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#06b6d4;margin-top:2px">${kpi.ip}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #ef4444;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_overdue_tasks')}</div>
+            <div style="font-size:20px;font-weight:800;color:#ef4444;margin-top:2px">${kpi.overdue}</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid #8b5cf6;padding:10px;border-radius:8px">
+            <div style="font-size:11px;color:#64748b;font-weight:600">${t('export_ontime_rate')}</div>
+            <div style="font-size:20px;font-weight:800;color:#8b5cf6;margin-top:2px">${kpi.ontimeRate}%</div>
+          </div>
+        </div>
+
+        <!-- Task List Table -->
+        <div style="margin-top:12px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#334155">📋 ${t('nav_tasks')} (${data.tasks.length})</div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0">
+            <thead style="background:#f1f5f9;border-bottom:2px solid #cbd5e1;font-size:11px">
+              <tr>
+                <th style="padding:6px 4px;width:30px">#</th>
+                <th style="padding:6px 6px;width:75px;text-align:left">Mã Task</th>
+                <th style="padding:6px 6px;width:140px;text-align:left">${t('filter_by_project') || 'Dự Án'}</th>
+                <th style="padding:6px 6px;text-align:left">Tên Nhiệm Vụ</th>
+                <th style="padding:6px 6px;text-align:left;width:110px">Người Phụ Trách</th>
+                <th style="padding:6px 4px;width:75px">Bắt Đầu</th>
+                <th style="padding:6px 4px;width:75px">Hạn Chót</th>
+                <th style="padding:6px 4px;width:65px">Tiến Độ</th>
+                <th style="padding:6px 4px;width:70px">Ưu Tiên</th>
+                <th style="padding:6px 6px;width:90px">Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${taskRows || '<tr><td colspan="10" style="text-align:center;padding:16px;color:#94a3b8">Không có nhiệm vụ nào</td></tr>'}
+            </tbody>
+          </table>
+          ${data.tasks.length > maxTasks ? `<div style="font-size:11px;color:#94a3b8;margin-top:4px;text-align:right">Hiển thị ${maxTasks} / ${data.tasks.length} nhiệm vụ. Xuất đầy đủ tại file Excel.</div>` : ''}
+        </div>
+      </div>
+    `;
+  },
+
+  buildAnalyticsHtml(data) {
+    const members = data.members || [];
+    const tasks = data.analyticsTasks || data.tasks || [];
+
+    const memberRows = members.slice(0, 25).map((m, idx) => {
+      const mTasks = tasks.filter(tk => {
+        if (!tk.assignee) return false;
+        const disp = _displayName(tk.assignee).toLowerCase();
+        return disp.includes((m.name || '').toLowerCase());
+      });
+      const done = mTasks.filter(t => t.status === 'Hoàn thành').length;
+      const ip = mTasks.filter(t => t.status === 'Đang thực hiện' || t.status === 'Đang tiến hành').length;
+      const over = mTasks.filter(t => t.status === 'Quá hạn').length;
+      const avgP = mTasks.length ? Math.round(mTasks.reduce((s, c) => s + (Number(c.progress) || 0), 0) / mTasks.length) : 0;
+      return `
+        <tr style="border-bottom:1px solid #e2e8f0;font-size:11px">
+          <td style="padding:6px;text-align:center">${idx + 1}</td>
+          <td style="padding:6px;font-weight:600">${m.code || '-'}</td>
+          <td style="padding:6px;font-weight:700">${m.name}</td>
+          <td style="padding:6px;text-align:center">${mTasks.length}</td>
+          <td style="padding:6px;text-align:center;color:#22c55e;font-weight:600">${done}</td>
+          <td style="padding:6px;text-align:center;color:#4f6ef7">${ip}</td>
+          <td style="padding:6px;text-align:center;color:#ef4444;font-weight:600">${over}</td>
+          <td style="padding:6px;text-align:center">${avgP}%</td>
+        </tr>
+      `;
+    }).join('');
+
+    const chartWorkload = data.chartImages.workload ? `<img src="${data.chartImages.workload}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_workload') || 'Biểu đồ khối lượng & tiến độ'}</div>`;
+    const chartRadar = data.chartImages.radar ? `<img src="${data.chartImages.radar}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_radar') || 'Đánh giá đa chiều năng lực'}</div>`;
+    const chartPjShare = data.chartImages.pjShare ? `<img src="${data.chartImages.pjShare}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_pj_share') || 'Tỷ trọng tham gia các dự án'}</div>`;
+    const chartTrend = data.chartImages.trend ? `<img src="${data.chartImages.trend}" style="width:100%;height:180px;object-fit:contain;background:#fff;border-radius:6px">` : `<div style="height:180px;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#94a3b8;font-size:12px">${t('an_chart_trend') || 'Phân bổ công việc qua từng dự án'}</div>`;
+
+    return `
+      <div class="export-page" style="font-family:'Segoe UI',system-ui,sans-serif;color:#1e293b;padding:12px">
+        ${this.buildHeaderHtml(t('export_scope_analytics'), data)}
+        
+        <!-- 4 Charts Grid (2x2) -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_workload') || '📊 Khối lượng & Tiến độ theo thành viên'}</div>
+            ${chartWorkload}
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_radar') || '🕸️ Đánh giá đa chiều năng lực đóng góp'}</div>
+            ${chartRadar}
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_pj_share') || '🍩 Tỷ trọng tham gia các dự án'}</div>
+            ${chartPjShare}
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px">
+            <div style="font-size:12px;font-weight:700;color:#334155;margin-bottom:8px">${t('an_chart_trend') || '📈 Phân bổ công việc qua từng dự án'}</div>
+            ${chartTrend}
+          </div>
+        </div>
+
+        <!-- Member Performance Table -->
+        <div style="margin-top:12px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:#334155">👥 Thống kê hiệu suất theo nhân sự</div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0">
+            <thead style="background:#f1f5f9;border-bottom:2px solid #cbd5e1;font-size:11px">
+              <tr>
+                <th style="padding:6px;width:35px">#</th>
+                <th style="padding:6px;width:80px;text-align:left">Mã NV</th>
+                <th style="padding:6px;text-align:left">Họ và Tên</th>
+                <th style="padding:6px;width:75px">Tổng Việc</th>
+                <th style="padding:6px;width:75px">Đã Xong</th>
+                <th style="padding:6px;width:75px">Đang Làm</th>
+                <th style="padding:6px;width:75px">Quá Hạn</th>
+                <th style="padding:6px;width:85px">Tiến Độ TB</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${memberRows || '<tr><td colspan="8" style="text-align:center;padding:16px;color:#94a3b8">Không có dữ liệu nhân sự</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  buildGanttHtml(data) {
+    const gData = data.ganttData || {};
+    let sd = (gData.startDate instanceof Date && !isNaN(gData.startDate.getTime())) ? gData.startDate : new Date();
+    let ed = (gData.endDate instanceof Date && !isNaN(gData.endDate.getTime())) ? gData.endDate : new Date(Date.now() + 30 * 86400000);
+    if (ed.getTime() <= sd.getTime()) ed = new Date(sd.getTime() + 30 * 86400000);
+
+    const totalDays = Math.max(7, Math.round((ed.getTime() - sd.getTime()) / 86400000) + 1);
+    const maxDays = Math.min(totalDays, 120);
+
+    const dateHeaders = [];
+    for (let i = 0; i < maxDays; i++) {
+      const d = new Date(sd.getFullYear(), sd.getMonth(), sd.getDate() + i);
+      d.setHours(0,0,0,0);
+      dateHeaders.push(d);
+    }
+
+    // Group days by Month/Year for the top header row
+    const monthGroups = [];
+    let curKey = null, curCount = 0, curLabel = '';
+    const mNamesEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    dateHeaders.forEach(d => {
+      const mk = `${d.getFullYear()}-${d.getMonth()}`;
+      if (mk !== curKey) {
+        if (curKey !== null) monthGroups.push({ label: curLabel, count: curCount });
+        curKey = mk;
+        curCount = 0;
+        if (S.lang === 'ja') {
+          curLabel = `${d.getFullYear()}年${d.getMonth() + 1}月`;
+        } else if (S.lang === 'en') {
+          curLabel = `${mNamesEn[d.getMonth()]} ${d.getFullYear()}`;
+        } else {
+          curLabel = `Tháng ${d.getMonth() + 1} / ${d.getFullYear()}`;
+        }
+      }
+      curCount++;
+    });
+    if (curCount > 0) monthGroups.push({ label: curLabel, count: curCount });
+
+    // Localized Day of Week abbreviations
+    const dowLabels = S.lang === 'ja'
+      ? ['日','月','火','水','木','金','土']
+      : (S.lang === 'en'
+        ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+        : ['CN','T2','T3','T4','T5','T6','T7']);
+
+    // Row 1: Month/Year spans
+    const monthHeadersHtml = monthGroups.map(mg => `
+      <th colspan="${mg.count}" style="border:1px solid #cbd5e1;background:#f1f5f9;color:#1e293b;font-weight:700;font-size:10px;text-align:center;padding:4px 2px;letter-spacing:0.3px">
+        📅 ${mg.label}
+      </th>
+    `).join('');
+
+    // Row 2: Day number + Day of week
+    const dayHeadersHtml = dateHeaders.map(d => {
+      const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+      return `
+        <th style="border:1px solid #e2e8f0;background:${isWeekend ? '#fee2e2' : '#f8fafc'};color:${isWeekend ? '#dc2626' : '#1e293b'};padding:3px 1px;font-size:9px;text-align:center;min-width:22px;line-height:1.2">
+          <div style="font-weight:700">${d.getDate()}</div>
+          <div style="font-size:8px;font-weight:600;color:${isWeekend ? '#dc2626' : '#64748b'}">${dowLabels[d.getDay()]}</div>
+        </th>
+      `;
+    }).join('');
+
+    // Group tasks by project
+    const tasksByPj = {};
+    const allTasks = (data.tasks || []).slice(0, 100);
+    allTasks.forEach(t => {
+      const pId = t.projectId || 'other';
+      if (!tasksByPj[pId]) tasksByPj[pId] = [];
+      tasksByPj[pId].push(t);
+    });
+
+    const projectGroups = [];
+    (S.projects || []).forEach(p => {
+      if (tasksByPj[p.id] && tasksByPj[p.id].length > 0) {
+        projectGroups.push({ project: p, tasks: tasksByPj[p.id] });
+        delete tasksByPj[p.id];
+      }
+    });
+    Object.keys(tasksByPj).forEach(pId => {
+      if (tasksByPj[pId] && tasksByPj[pId].length > 0) {
+        projectGroups.push({
+          project: { id: pId, name: tasksByPj[pId][0].projectName || t('filter_all_projects') || 'Dự án khác' },
+          tasks: tasksByPj[pId]
+        });
+      }
+    });
+
+    if (projectGroups.length === 0 && data.project) {
+      projectGroups.push({ project: data.project, tasks: [] });
+    }
+
+    const totalCols = 5 + dateHeaders.length;
+
+    let tableBodyHtml = '';
+    projectGroups.forEach(g => {
+      const pjUnit = t('gantt_task_unit') || 'nhiệm vụ';
+      tableBodyHtml += `
+        <tr style="background:#eef2ff;border-top:2px solid #4f6ef7;border-bottom:1px solid #c7d2fe">
+          <td colspan="${totalCols}" style="padding:6px 10px;color:#1e40af;font-size:11px;font-weight:700">
+            📁 <strong>${g.project.name}</strong> 
+            <span style="font-weight:500;color:#6366f1;font-size:10px;margin-left:6px">(${g.tasks.length} ${pjUnit})</span>
+            ${g.project.startDate && g.project.endDate ? `<span style="font-size:9px;color:#64748b;font-weight:400;margin-left:10px">[${g.project.startDate} ~ ${g.project.endDate}]</span>` : ''}
+          </td>
+        </tr>
+      `;
+
+      g.tasks.forEach((t, idx) => {
+        const ts = this.parseDate(t.startRaw || t.startDate);
+        const te = this.parseDate(t.deadlineRaw || t.deadline);
+        if (ts) ts.setHours(0,0,0,0);
+        if (te) te.setHours(0,0,0,0);
+
+        const stColor = t.status === 'Hoàn thành' ? '#22c55e' : ((typeof isTaskOverdue === 'function' ? isTaskOverdue(t) : false) || t.status === 'Quá hạn') ? '#ef4444' : '#4f6ef7';
+
+        const dayCells = dateHeaders.map(cd => {
+          const isWeekend = cd.getDay() === 0 || cd.getDay() === 6;
+          const inRange = ts && te && cd.getTime() >= ts.getTime() && cd.getTime() <= te.getTime();
+          const isDead = te && cd.getTime() === te.getTime();
+
+          if (isDead) {
+            return `<td style="border:1px solid #e2e8f0;padding:0;background:${stColor};color:#fff;text-align:center;font-size:9px;line-height:1" title="Deadline: ${t.deadline || ''}">🏁</td>`;
+          }
+          if (inRange) {
+            return `<td style="border:1px solid #e2e8f0;padding:0;background:${stColor}" title="${_taskDisplayName(t)}"></td>`;
+          }
+          return `<td style="border:1px solid #f1f5f9;padding:0;background:${isWeekend ? '#fef2f2' : '#fff'}"></td>`;
+        }).join('');
+
+        tableBodyHtml += `
+          <tr style="height:22px;font-size:10px;border-bottom:1px solid #e2e8f0">
+            <td style="padding:2px 4px;border:1px solid #e2e8f0;text-align:center;width:24px;color:#64748b">${idx + 1}</td>
+            <td style="padding:3px 6px;border:1px solid #e2e8f0;font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${_taskDisplayName(t)}">
+              ${_taskDisplayName(t)}
+            </td>
+            <td style="padding:3px 6px;border:1px solid #e2e8f0;width:95px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_displayName(t.assignee)}</td>
+            <td style="padding:3px 4px;border:1px solid #e2e8f0;width:80px;text-align:center;font-size:9px;white-space:nowrap">${t.startDate || '-'} ~ ${t.deadline || '-'}</td>
+            <td style="padding:3px 4px;border:1px solid #e2e8f0;width:45px;text-align:center;font-size:9px;font-weight:600">${t.progress || 0}%</td>
+            ${dayCells}
+          </tr>
+        `;
+      });
+    });
+
+    if (!tableBodyHtml) {
+      tableBodyHtml = `<tr><td colspan="${totalCols}" style="text-align:center;padding:16px;color:#94a3b8">Không có dữ liệu tiến độ</td></tr>`;
+    }
+
+    return `
+      <div class="export-page" style="font-family:'Segoe UI',system-ui,sans-serif;color:#1e293b;padding:12px">
+        ${this.buildHeaderHtml(t('export_scope_gantt'), data)}
+        
+        <div style="overflow-x:auto;margin-top:10px">
+          <table style="width:100%;border-collapse:collapse;border:1px solid #cbd5e1">
+            <thead>
+              <!-- Row 1: Month / Year Spans -->
+              <tr style="background:#f8fafc">
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;text-align:center;width:24px">#</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;text-align:left;min-width:180px">Nhiệm Vụ</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;text-align:left;width:95px">Người Phụ Trách</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;width:80px">Thời Gian</th>
+                <th rowspan="2" style="padding:6px;border:1px solid #cbd5e1;width:45px">Tiến Độ</th>
+                ${monthHeadersHtml}
+              </tr>
+              <!-- Row 2: Day of Month + Day of Week -->
+              <tr style="background:#f8fafc">
+                ${dayHeadersHtml}
+              </tr>
+            </thead>
+            <tbody>
+              ${tableBodyHtml}
+            </tbody>
+          </table>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:8px;font-size:10px;color:#64748b">
+            <span><strong>Chú thích:</strong></span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#4f6ef7;vertical-align:middle;margin-right:3px"></span> Đang làm</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#22c55e;vertical-align:middle;margin-right:3px"></span> Hoàn thành</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#ef4444;vertical-align:middle;margin-right:3px"></span> Quá hạn</span>
+            <span>🏁 Mốc Deadline</span>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  refreshPreview() {
+    try {
+      const viewEl = document.getElementById('export-preview-viewport');
+      if (!viewEl) return;
+
+      const data = this.getExportData();
+      const scopes = this.config.scopes;
+      const paperCls = `${(this.config.paperSize || 'A4').toLowerCase()}-${(this.config.orientation || 'landscape').toLowerCase()}`;
+      const pad = `${this.config.margin || 10}mm`;
+
+      let html = '';
+      if (scopes.overview) {
+        html += `<div class="export-preview-paper ${paperCls}" style="padding:${pad}">${this.buildOverviewHtml(data)}</div>`;
+      }
+      if (scopes.analytics) {
+        html += `<div class="export-preview-paper ${paperCls}" style="padding:${pad}">${this.buildAnalyticsHtml(data)}</div>`;
+      }
+      if (scopes.gantt) {
+        html += `<div class="export-preview-paper ${paperCls}" style="padding:${pad}">${this.buildGanttHtml(data)}</div>`;
+      }
+
+      if (!html) {
+        html = `<div style="color:#fff;padding:40px;text-align:center">${t('export_no_selection_warn')}</div>`;
+      }
+
+      viewEl.innerHTML = html;
+    } catch(err) {
+      console.error('Error in refreshPreview:', err);
+      const viewEl = document.getElementById('export-preview-viewport');
+      if (viewEl) {
+        viewEl.innerHTML = `<div style="color:#ef4444;background:#fff;padding:20px;border-radius:8px;margin:20px;text-align:center;font-size:12px">⚠️ Không thể tải trước bản in: ${err.message || err}</div>`;
+      }
+    }
+  },
+
+  printNative() {
+    const scopes = this.config.scopes;
+    if (!scopes.overview && !scopes.analytics && !scopes.gantt) {
+      toast(t('export_no_selection_warn'), 'w');
+      return;
+    }
+
+    const printContainer = document.getElementById('print-export-container');
+    if (!printContainer) return;
+
+    // Inject dynamic print style
+    let styleEl = document.getElementById('export-print-style');
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'export-print-style';
+      document.head.appendChild(styleEl);
+    }
+    styleEl.innerHTML = `
+      @page {
+        size: ${this.config.paperSize} ${this.config.orientation};
+        margin: ${this.config.margin}mm;
+      }
+    `;
+
+    const data = this.getExportData();
+    let content = '';
+    if (scopes.overview) content += this.buildOverviewHtml(data);
+    if (scopes.analytics) content += this.buildAnalyticsHtml(data);
+    if (scopes.gantt) content += this.buildGanttHtml(data);
+
+    printContainer.innerHTML = content;
+    window.print();
+  },
+
+  async downloadPdf() {
+    const scopes = this.config.scopes;
+    if (!scopes.overview && !scopes.analytics && !scopes.gantt) {
+      toast(t('export_no_selection_warn'), 'w');
+      return;
+    }
+
+    if (typeof html2pdf === 'undefined') {
+      toast('Thư viện tạo PDF đang tải, vui lòng thử lại sau giây lát hoặc sử dụng nút In!', 'w');
+      return;
+    }
+
+    toast(t('export_processing'), 'i');
+
+    const data = this.getExportData();
+    const isMerged = this.config.pkgMode === 'merged';
+    const optBase = {
+      margin: this.config.margin,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: this.config.paperSize.toLowerCase(), orientation: this.config.orientation.toLowerCase() },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    if (isMerged) {
+      const el = document.createElement('div');
+      let content = '';
+      if (scopes.overview) content += `<div style="page-break-after:always">${this.buildOverviewHtml(data)}</div>`;
+      if (scopes.analytics) content += `<div style="page-break-after:always">${this.buildAnalyticsHtml(data)}</div>`;
+      if (scopes.gantt) content += `<div>${this.buildGanttHtml(data)}</div>`;
+      el.innerHTML = content;
+
+      const fn = document.getElementById('exp-fn-merged')?.value || 'Bao_Cao_Tong_Hop';
+      await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+    } else {
+      if (scopes.overview) {
+        const el = document.createElement('div');
+        el.innerHTML = this.buildOverviewHtml(data);
+        const fn = document.getElementById('exp-fn-overview')?.value || 'Bao_Cao_Tong_Quan';
+        await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+      }
+      if (scopes.analytics) {
+        const el = document.createElement('div');
+        el.innerHTML = this.buildAnalyticsHtml(data);
+        const fn = document.getElementById('exp-fn-analytics')?.value || 'Bao_Cao_Chuyen_Sau';
+        await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+      }
+      if (scopes.gantt) {
+        const el = document.createElement('div');
+        el.innerHTML = this.buildGanttHtml(data);
+        const fn = document.getElementById('exp-fn-gantt')?.value || 'So_Do_Gantt';
+        await html2pdf().set({ ...optBase, filename: `${this.sanitizeFileName(fn)}.pdf` }).from(el).save();
+      }
+    }
+
+    toast(t('export_success'), 's');
+  },
+
+  exportExcel() {
+    const scopes = this.config.scopes;
+    if (!scopes.overview && !scopes.analytics && !scopes.gantt) {
+      toast(t('export_no_selection_warn'), 'w');
+      return;
+    }
+
+    if (typeof XLSX === 'undefined') {
+      toast('Thư viện Excel đang tải, vui lòng thử lại sau giây lát!', 'w');
+      return;
+    }
+
+    toast(t('export_processing'), 'i');
+
+    const data = this.getExportData();
+    const isMerged = this.config.pkgMode === 'merged';
+
+    const saveWb = (wb, filename) => {
+      try {
+        XLSX.writeFile(wb, `${this.sanitizeFileName(filename)}.xlsx`);
+      } catch(e) {
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([wbout], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${this.sanitizeFileName(filename)}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+    };
+
+    const createOverviewSheet = () => {
+      const rows = [
+        [t('export_scope_overview').toUpperCase()],
+        [`${t('export_report_project')}: ${data.projectName} | ${t('export_report_generated_at')}: ${data.generatedAt} | ${t('export_report_generated_by')}: ${data.generatedBy}`],
+        [],
+        ['1. CHỈ SỐ TIẾN ĐỘ TỔNG HỢP (KPI SUMMARY)'],
+        ['Chỉ số', 'Số lượng', 'Tỷ lệ %', 'Ghi chú'],
+        [t('export_total_tasks'), data.kpi.total, '100%', 'Toàn bộ nhiệm vụ'],
+        [t('export_done_tasks'), data.kpi.done, `${data.kpi.total ? Math.round(data.kpi.done/data.kpi.total*100) : 0}%`, 'Đã nghiệm thu'],
+        [t('export_inprogress_tasks'), data.kpi.ip, `${data.kpi.total ? Math.round(data.kpi.ip/data.kpi.total*100) : 0}%`, 'Đang triển khai'],
+        [t('export_overdue_tasks'), data.kpi.overdue, `${data.kpi.total ? Math.round(data.kpi.overdue/data.kpi.total*100) : 0}%`, 'Quá hạn'],
+        [t('export_ontime_rate'), `${data.kpi.ontimeRate}%`, '-', 'Tỷ lệ đúng hạn'],
+        [],
+        ['2. DANH SÁCH CHI TIẾT NHIỆM VỤ'],
+        ['STT', 'Dự án', 'Mã task', 'Tên nhiệm vụ', 'Người phụ trách', 'Bắt đầu', 'Hạn chót', 'Tiến độ', 'Ưu tiên', 'Trạng thái']
+      ];
+      data.tasks.forEach((t, i) => {
+        const pj = (S.projects || []).find(p => p.id === t.projectId) || null;
+        const pjName = pj ? pj.name : (t.projectName || data.projectName);
+        rows.push([i + 1, pjName, t.code || '', _taskDisplayName(t), _displayName(t.assignee), t.startDate || '', t.deadline || '', `${t.progress || 0}%`, t.priority || '', t.status]);
+      });
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [{ wch: 6 }, { wch: 25 }, { wch: 14 }, { wch: 35 }, { wch: 22 }, { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 12 }, { wch: 16 }];
+      return ws;
+    };
+
+    const createAnalyticsSheet = () => {
+      const rows = [
+        [t('export_scope_analytics').toUpperCase()],
+        [`${t('export_report_project')}: ${data.projectName} | ${t('export_report_generated_at')}: ${data.generatedAt}`],
+        [],
+        ['1. THỐNG KÊ ĐÓNG GÓP TỪNG NHÂN SỰ'],
+        ['STT', 'Mã NV', 'Họ và tên', 'Email', 'Tổng việc', 'Hoàn thành', 'Đang làm', 'Quá hạn', 'Tiến độ TB']
+      ];
+      data.members.forEach((m, i) => {
+        const mTasks = data.analyticsTasks.filter(tk => {
+          if (!tk.assignee) return false;
+          return _displayName(tk.assignee).toLowerCase().includes((m.name || '').toLowerCase());
+        });
+        const done = mTasks.filter(t => t.status === 'Hoàn thành').length;
+        const ip = mTasks.filter(t => t.status === 'Đang thực hiện' || t.status === 'Đang tiến hành').length;
+        const over = mTasks.filter(t => t.status === 'Quá hạn').length;
+        const avg = mTasks.length ? Math.round(mTasks.reduce((s, c) => s + (Number(c.progress) || 0), 0) / mTasks.length) : 0;
+        rows.push([i + 1, m.code || '', m.name, m.email || '', mTasks.length, done, ip, over, `${avg}%`]);
+      });
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [{ wch: 6 }, { wch: 10 }, { wch: 22 }, { wch: 26 }, { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 12 }];
+      return ws;
+    };
+
+    const createGanttSheet = () => {
+      const startD = data.ganttData.startDate;
+      const endD = data.ganttData.endDate;
+      const totalDays = Math.max(7, Math.round((endD - startD) / 86400000) + 1);
+      const dateList = [];
+      for (let i = 0; i < totalDays; i++) {
+        dateList.push(new Date(startD.getFullYear(), startD.getMonth(), startD.getDate() + i));
+      }
+
+      const r1 = ['BÁO CÁO TIẾN ĐỘ GANTT VÀ LƯỚI THỜI GIAN THEO NGÀY', '', '', '', '', '', '', '', ''];
+      const r2 = ['STT', 'Dự án', 'Mã task', 'Tên nhiệm vụ', 'Người phụ trách', 'Bắt đầu', 'Hạn chót', 'Tiến độ', 'Trạng thái'];
+      const r3 = ['', '', '', '', '', '', '', '', ''];
+
+      dateList.forEach(d => {
+        r1.push(`${d.getMonth() + 1}/${d.getFullYear()}`);
+        r2.push(String(d.getDate()).padStart(2, '0'));
+        const dows = S.lang === 'ja' ? ['日','月','火','水','木','金','土'] : (S.lang === 'en' ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] : ['CN','T2','T3','T4','T5','T6','T7']);
+        r3.push(dows[d.getDay()]);
+      });
+
+      const rows = [r1, r2, r3];
+      data.tasks.forEach((t, i) => {
+        const pj = (S.projects || []).find(p => p.id === t.projectId) || null;
+        const pjName = pj ? pj.name : (t.projectName || data.projectName);
+        const row = [i + 1, pjName, t.code || '', _taskDisplayName(t), _displayName(t.assignee), t.startDate || '', t.deadline || '', `${t.progress || 0}%`, t.status];
+        const ts = this.parseDate(t.startRaw || t.startDate);
+        const te = this.parseDate(t.deadlineRaw || t.deadline);
+        if (ts) ts.setHours(0,0,0,0);
+        if (te) te.setHours(0,0,0,0);
+
+        dateList.forEach(curD => {
+          const cd = new Date(curD); cd.setHours(0,0,0,0);
+          const isDead = te && cd.getTime() === te.getTime();
+          const inR = ts && te && cd.getTime() >= ts.getTime() && cd.getTime() <= te.getTime();
+          if (isDead) row.push('[🏁]');
+          else if (inR) row.push(t.status === 'Hoàn thành' ? '■' : '▶');
+          else row.push('');
+        });
+        rows.push(row);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      const cols = [{ wch: 5 }, { wch: 25 }, { wch: 14 }, { wch: 32 }, { wch: 20 }, { wch: 11 }, { wch: 11 }, { wch: 9 }, { wch: 14 }];
+      dateList.forEach(() => cols.push({ wch: 5 }));
+      ws['!cols'] = cols;
+      return ws;
+    };
+
+    if (isMerged) {
+      const wb = XLSX.utils.book_new();
+      if (scopes.overview) XLSX.utils.book_append_sheet(wb, createOverviewSheet(), 'Tong_Quan');
+      if (scopes.analytics) XLSX.utils.book_append_sheet(wb, createAnalyticsSheet(), 'Phan_Tich_Chuyen_Sau');
+      if (scopes.gantt) XLSX.utils.book_append_sheet(wb, createGanttSheet(), 'Tien_Do_Gantt');
+
+      const fn = document.getElementById('exp-fn-merged')?.value || 'Bao_Cao_Tong_Hop';
+      saveWb(wb, fn);
+    } else {
+      if (scopes.overview) {
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, createOverviewSheet(), 'Tong_Quan');
+        const fn = document.getElementById('exp-fn-overview')?.value || 'Bao_Cao_Tong_Quan';
+        saveWb(wb, fn);
+      }
+      if (scopes.analytics) {
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, createAnalyticsSheet(), 'Phan_Tich_Chuyen_Sau');
+        const fn = document.getElementById('exp-fn-analytics')?.value || 'Bao_Cao_Chuyen_Sau';
+        saveWb(wb, fn);
+      }
+      if (scopes.gantt) {
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, createGanttSheet(), 'Tien_Do_Gantt');
+        const fn = document.getElementById('exp-fn-gantt')?.value || 'So_Do_Gantt';
+        saveWb(wb, fn);
+      }
+    }
+
+    toast(t('export_success'), 's');
+  }
+};
+
+window.AppExportManager = AppExportManager;
+
 
 </script>
 

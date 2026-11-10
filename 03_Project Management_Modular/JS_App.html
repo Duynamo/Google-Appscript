@@ -491,6 +491,145 @@
     return v;
   }
 
+  
+// =========================================================================
+// 46 STANDARD DISCIPLINES DICTIONARY (VI / EN / JA) FOR DYNAMIC LOCALIZATION
+// =========================================================================
+const STANDARD_DISCIPLINE_NAMES = {
+  "PN01": { vi: "Tạo ảnh Panorama Memo", en: "Panorama Memo Creation", ja: "【パノラマメモ】作成" },
+  "PN10": { vi: "Kiểm tra Panorama Memo", en: "Panorama Memo Check", ja: "【パノラマメモ】チェック" },
+  "PN11": { vi: "Chỉnh sửa Panorama Memo", en: "Panorama Memo Revision", ja: "【パノラマメモ】修正" },
+  "PC01": { vi: "Xử lý dữ liệu Point Cloud", en: "Point Cloud Processing", ja: "【点群データ】処理" },
+  "PC02": { vi: "Phân lớp Point Cloud", en: "Point Cloud Layering", ja: "【点群データ】レイヤー分け" },
+  "PC10": { vi: "Kiểm tra Point Cloud", en: "Point Cloud Check", ja: "【点群データ】チェック" },
+  "PC11": { vi: "Sửa dữ liệu Point Cloud", en: "Point Cloud Revision", ja: "【点群データ】修正" },
+  "PC12": { vi: "Sửa phân lớp Point Cloud", en: "Point Cloud Layering Revision", ja: "【点群データ】レイヤー分け修正" },
+  "MD01": { vi: "Dựng hình Kết cấu", en: "Structure Modeling", ja: "【モデル】躯体作成" },
+  "MD02": { vi: "Dựng hình Máy móc / Thiết bị", en: "Equipment Modeling", ja: "【モデル】機械作成" },
+  "MD03": { vi: "Dựng hình Đường ống", en: "Piping Modeling", ja: "【モデル】配管作成" },
+  "MD04": { vi: "Hợp nhất mô hình tổng thể", en: "Model Federation", ja: "【モデル】合成" },
+  "MD05": { vi: "Dựng hình hạng mục khác", en: "Other Modeling", ja: "【モデル】作成（その他）" },
+  "MD10": { vi: "Kiểm tra mô hình BIM", en: "Model Quality Check", ja: "【モデル】チェック" },
+  "MD11": { vi: "Sửa mô hình Kết cấu", en: "Structure Revision", ja: "【モデル】躯体修正" },
+  "MD12": { vi: "Sửa mô hình Thiết bị", en: "Equipment Revision", ja: "【モデル】機械修正" },
+  "MD13": { vi: "Sửa mô hình Đường ống", en: "Piping Revision", ja: "【モデル】配管修正" },
+  "MD14": { vi: "Sửa hợp nhất mô hình", en: "Federation Revision", ja: "【モデル】合成修正" },
+  "MD15": { vi: "Sửa mô hình khác", en: "Other Model Revision", ja: "【モデル】修正（その他）" },
+  "MD16": { vi: "Nhập thuộc tính thông tin BIM", en: "BIM Data Input", ja: "【モデル】情報入力" },
+  "SD01": { vi: "Tổng hợp đóng tập bản vẽ", en: "Drawing Compilation", ja: "【施工図】図面取りまとめ" },
+  "SD02": { vi: "Chuẩn bị bản vẽ nền Underlay", en: "Background Drawing Prep", ja: "【施工図】下図準備" },
+  "SD03": { vi: "Triển khai bản vẽ mặt bằng & mặt cắt", en: "Plan & Section Drawing Creation", ja: "【施工図】平断面図作成" },
+  "SD04": { vi: "Bản vẽ sơ đồ không gian ống", en: "Piping Isometric Drawing", ja: "【施工図】配管スケルトン図作成" },
+  "SD05": { vi: "Triển khai bản vẽ móng bệ", en: "Foundation Drawing", ja: "【施工図】基礎図作成" },
+  "SD06": { vi: "Bản vẽ gia công kết cấu thép", en: "Steel Fabrication Drawing", ja: "【施工図】鋼製加工品図作成" },
+  "SD07": { vi: "Bản vẽ phối hợp đa bộ môn", en: "Combined Services Drawing", ja: "【施工図】複合工図作成" },
+  "SD08": { vi: "Bản vẽ thi công khác", en: "Other Shop Drawing", ja: "【施工図】その他" },
+  "MC01": { vi: "Check va chạm vs Bản vẽ thiết kế", en: "Clash Check vs Tender Drawing", ja: "【レポート・発注図】干渉・相違点チェック" },
+  "MC02": { vi: "Check va chạm vs Bản vẽ thi công", en: "Clash Check vs Shop Drawing", ja: "【レポート・施工図】干渉・相違点チェック" },
+  "MC03": { vi: "Đề xuất giải pháp xử lý va chạm", en: "Clash Resolution Proposal", ja: "【レポート】干渉・相違点の改善提案" },
+  "MC04": { vi: "Nghiên cứu biện pháp vận chuyển", en: "Equipment Route Study", ja: "【レポート】機器搬出入検討" },
+  "MC05": { vi: "Kiểm tra xác nhận kích thước", en: "Dimension Verification", ja: "【レポート】寸法確認" },
+  "MC06": { vi: "Báo cáo kỹ thuật khác", en: "Other Technical Report", ja: "【レポート】その他" },
+  "MC07": { vi: "Tạo video mô phỏng Walkthrough", en: "3D Walkthrough Animation", ja: "【レポート】ウォークスルー動画作成" },
+  "MT00": { vi: "Họp giao ban đầu/cuối ngày", en: "Daily Standup Meeting", ja: "【MTG】朝礼・終礼" },
+  "MT01": { vi: "Họp đối tác / Khách hàng", en: "External Meeting", ja: "【MTG】社外" },
+  "MT02": { vi: "Họp nội bộ nhóm dự án", en: "Internal Team Meeting", ja: "【MTG】社内" },
+  "MT03": { vi: "Họp giải đáp thắc mắc Q&A", en: "Q&A Clarification Meeting", ja: "【MTG】問い合わせ" },
+  "MT04": { vi: "Họp nghiệm thu đóng dự án", en: "Project Closeout Meeting", ja: "【MTG】クローズ" },
+  "PM01": { vi: "Lập kế hoạch & phân rã tiến độ", en: "Project Planning & Scheduling", ja: "【管理】計画策定" },
+  "PM02": { vi: "Giám sát & điều phối nguồn lực", en: "Monitoring & Coordination", ja: "【管理】進捗管理" },
+  "MJ01": { vi: "Tự học chuyên môn & nâng cao kỹ năng", en: "Self-Study & Professional Skills", ja: "【研修】自己研鑽" },
+  "MJ02": { vi: "Đào tạo thành viên mới / Chuyển giao", en: "Mentoring & Onboarding", ja: "【研修】教育・指導" },
+  "DE01": { vi: "Nghiên cứu & phát triển giải pháp mới", en: "R&D & Engineering Innovation", ja: "【開発】技術開発" },
+  "LN01": { vi: "Nghỉ phép theo chế độ", en: "Leave & Non-Project Time", ja: "【勤怠】休暇" }
+};
+
+// =========================================================================
+// HELPER: ĐỊNH DẠNG TÊN NHIỆM VỤ CHUẨN ĐA NGÔN NGỮ (VI / EN / JA)
+// Định dạng: [CAT-PHASE-DISC]-<Tên chi tiết đa ngôn ngữ> [- Ghi chú tùy chọn]
+// =========================================================================
+function _taskDisplayName(taskOrName, lang) {
+  if (!taskOrName) return '';
+  const rawName = (typeof taskOrName === 'object' && taskOrName !== null) ? (taskOrName.name || '') : String(taskOrName);
+  if (!rawName) return '';
+
+  const match = rawName.match(/^\s*\[([A-Za-z0-9_\-]+)\](.*)$/);
+  if (!match) return rawName;
+
+  const codeStr = match[1].toUpperCase();
+  const rawSuffix = match[2] || '';
+  const parts = codeStr.split('-');
+
+  let discCode = null;
+  if (parts.length >= 3) {
+    discCode = parts[2];
+  } else if (parts.length === 2) {
+    discCode = parts[1];
+  } else if (parts.length === 1) {
+    discCode = parts[0];
+  }
+
+  if (!discCode) return rawName;
+
+  const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
+
+  let discTax = null;
+  if (typeof S !== 'undefined' && S.taxonomy && Array.isArray(S.taxonomy.disciplines)) {
+    discTax = S.taxonomy.disciplines.find(d => String(d.code || '').toUpperCase() === discCode);
+  }
+
+  let discName = '';
+  if (discTax && typeof tTaxonomy === 'function') {
+    discName = tTaxonomy(discTax, curLang);
+  }
+  if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[discCode]) {
+    const std = STANDARD_DISCIPLINE_NAMES[discCode];
+    discName = std[curLang] || std['vi'] || '';
+  }
+
+  if (!discName) return rawName;
+
+  let remainder = rawSuffix.trim().replace(/^[-–—:]\s*/, '').trim();
+
+  const candidates = [];
+  if (discTax) {
+    if (discTax.name_vi) candidates.push(discTax.name_vi);
+    if (discTax.name_en) candidates.push(discTax.name_en);
+    if (discTax.name_jp) candidates.push(discTax.name_jp);
+    if (discTax.name) candidates.push(discTax.name);
+  }
+  if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[discCode]) {
+    const std = STANDARD_DISCIPLINE_NAMES[discCode];
+    if (std.vi) candidates.push(std.vi);
+    if (std.en) candidates.push(std.en);
+    if (std.ja) candidates.push(std.ja);
+  }
+  candidates.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成', '設備モデル作成');
+
+  for (const c of candidates) {
+    if (!c) continue;
+    const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+    const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+    if (rx1.test(remainder)) {
+      remainder = remainder.replace(rx1, '').trim();
+    }
+    if (cleanCand && cleanCand !== c) {
+      const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+      if (rx2.test(remainder)) {
+        remainder = remainder.replace(rx2, '').trim();
+      }
+    }
+  }
+
+  remainder = remainder.replace(/^[-–—:]\s*/, '').trim();
+
+  let formatted = `[${codeStr}]-${discName}`;
+  if (remainder) {
+    formatted += ` - ${remainder}`;
+  }
+  return formatted;
+}
+
   // ═══════════════════════════════════════
   //  CHARTS
   // ═══════════════════════════════════════
@@ -1352,7 +1491,7 @@
           return `
               <tr class="${isOver ? 'row-ov' : ''}">
                 <td><input type="checkbox" ${tk.status === "Hoàn thành" ? "checked" : ""} onchange="toggleTaskDone('${tk.id}', this.checked)"></td>
-                <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${tk.id}')"><b>${tk.name || ""}</b>${isOver ? `<br><span style="font-size:9px;color:#ef4444">⚠ ${tStatus('Quá hạn')}</span>` : ""}</td>
+                <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${tk.id}')"><b>${_taskDisplayName(tk)}</b>${isOver ? `<br><span style="font-size:9px;color:#ef4444">⚠ ${tStatus('Quá hạn')}</span>` : ""}</td>
                 <td><small>${_displayName(tk.assignee)}</small></td>
                 <td><span class="badge ${sBadge(tk.status)}">${tStatus(tk.status)}</span></td>
                 <td><span class="badge ${pBadge(tk.priority)}">${tPriority(tk.priority)}</span></td>
@@ -1502,7 +1641,7 @@
   function fillTpForm(task) {
     if (!task) return;
     document.getElementById("tp-id").value = task.id || "";
-    document.getElementById("tp-nm").value = task.name || "";
+    document.getElementById("tp-nm").value = _taskDisplayName(task);
     document.getElementById("tp-ds").value = task.desc || "";
     document.getElementById("tp-st").value = task.status || "Chờ thực hiện";
     document.getElementById("tp-pr").value = task.priority || "Trung bình";
@@ -4044,477 +4183,147 @@
   }
 
   function onTaskTaxonomyChange(mode) {
-    if (mode === 'tp') {
-      const cat = document.getElementById('tp-cat')?.value || '';
-      const phase = document.getElementById('tp-phase')?.value || '';
-      const disc = document.getElementById('tp-disc')?.value || '';
-      const parts = [cat, phase, disc].filter(Boolean);
-      const prefix = parts.length ? `[${parts.join('-')}]` : '';
-
-      const badge = document.getElementById('tp-tax-preview-badge');
-      if (badge) {
-        if (prefix) {
-          badge.textContent = prefix;
-          badge.style.background = '#eef2ff';
-          badge.style.color = 'var(--p)';
-          badge.style.borderColor = '#c7d2fe';
-        } else {
-          badge.textContent = t('tax_prefix_none') || '[CHƯA GÁN MÃ]';
-          badge.style.background = '#fff7ed';
-          badge.style.color = '#ea580c';
-          badge.style.borderColor = '#fdba74';
-        }
-      }
-
-      const nmInp = document.getElementById('tp-nm');
-      if (!nmInp) return;
-      let curVal = nmInp.value.trim();
-      curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
-      nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
-      return;
-    }
-
-    // Default / Single mode for #m-qtk
-    const cat = document.getElementById('mqtk-cat')?.value || '';
-    const phase = document.getElementById('mqtk-phase')?.value || '';
-    const disc = document.getElementById('mqtk-disc')?.value || '';
-
+  if (mode === 'tp') {
+    const cat = document.getElementById('tp-cat')?.value || '';
+    const phase = document.getElementById('tp-phase')?.value || '';
+    const disc = document.getElementById('tp-disc')?.value || '';
     const parts = [cat, phase, disc].filter(Boolean);
     const prefix = parts.length ? `[${parts.join('-')}]` : '';
 
-    const prevTxt = document.getElementById('qtk-tax-preview-txt');
-    if (prevTxt) {
-      prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
-    }
-
-    if (mode === 'single') {
-      const nmInp = document.getElementById('mqtk-nm');
-      if (!nmInp) return;
-      let curVal = nmInp.value.trim();
-      curVal = curVal.replace(/^\[[A-Z0-9_\-]+\]\s*/i, '');
-      nmInp.value = prefix ? `${prefix} ${curVal}` : curVal;
-    }
-  }
-
-  // ── BATCH LEGACY TASK STANDARDIZATION TOOL ──
-  function openBatchTaskMod() {
-    const pjSel = document.getElementById('mbatch-tax-pj');
-    if (pjSel) {
-      pjSel.innerHTML = `<option value="">-- Tất cả dự án --</option>` +
-        (S.projects || []).map(p => `<option value="${p.id}">${p.name || p.id}</option>`).join('');
-      if (S.pjFilter) pjSel.value = S.pjFilter;
-    }
-
-    openModal('m-batch-tax');
-    runAutoDetectLegacyTasks();
-  }
-
-  function runAutoDetectLegacyTasks() {
-    const pjId = document.getElementById('mbatch-tax-pj')?.value || '';
-    const tbody = document.getElementById('mbatch-tbody');
-    const countEl = document.getElementById('mbatch-scan-count');
-    const submitBtn = document.getElementById('mbatch-submit-btn');
-
-    let tasks = S.tasks || [];
-    if (pjId) tasks = tasks.filter(t => t.projectId === pjId);
-
-    // Filter tasks that do not start with [CODE]
-    const unstandardized = tasks.filter(t => !t.name || !t.name.trim().match(/^\[[A-Z0-9_\-]+\]/i));
-
-    if (!unstandardized.length) {
-      if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--g);font-weight:600">🎉 Tuyệt vời! Tất cả nhiệm vụ trong phạm vi đã được chuẩn hóa tiền tố.</td></tr>`;
-      if (countEl) countEl.textContent = '0';
-      if (submitBtn) submitBtn.disabled = true;
-      _batchLegacyTasksList = [];
-      return;
-    }
-
-    _batchLegacyTasksList = unstandardized.map(t => {
-      const nameLow = (t.name || '').toLowerCase();
-
-      // Category detection
-      let cat = 'M3';
-      if (nameLow.includes('point cloud') || nameLow.includes('pointcloud') || nameLow.includes('laser') || nameLow.includes('scan')) cat = 'PC';
-      else if (nameLow.includes('báo cáo') || nameLow.includes('report') || nameLow.includes('nghiệm thu')) cat = 'RP';
-      else if (nameLow.includes('họp') || nameLow.includes('meeting') || nameLow.includes('trao đổi')) cat = 'MTG';
-      else if (nameLow.includes('tool') || nameLow.includes('script') || nameLow.includes('addon') || nameLow.includes('phát triển')) cat = 'DE';
-      else if (nameLow.includes('chung') || nameLow.includes('quản lý') || nameLow.includes('hồ sơ')) cat = 'GE';
-
-      // Phase detection
-      let phase = 'BD';
-      if (nameLow.includes('chi tiết') || nameLow.includes('detail') || nameLow.includes('thi công')) phase = 'DD';
-      else if (nameLow.includes('nghiệm thu') || nameLow.includes('kiểm tra') || nameLow.includes('inspect')) phase = 'IS';
-
-      // Discipline detection
-      let disc = 'AR';
-      if (nameLow.includes('kết cấu') || nameLow.includes('structure') || nameLow.includes('thép') || nameLow.includes('móng')) disc = 'STR';
-      else if (nameLow.includes('cơ điện') || nameLow.includes('mep') || nameLow.includes('thiết bị') || nameLow.includes('hvac') || nameLow.includes('ống') || nameLow.includes('plumb')) disc = 'MP';
-      else if (nameLow.includes('điện') || nameLow.includes('electric') || nameLow.includes('chiếu sáng')) disc = 'ELE';
-      else if (nameLow.includes('layer')) disc = 'PCL';
-      else if (nameLow.includes('xử lý')) disc = 'PCP';
-
-      const suggestedPrefix = `[${cat}-${phase}-${disc}]`;
-      const cleanOrigName = t.name.trim();
-      const suggestedNewName = `${suggestedPrefix} ${cleanOrigName}`;
-
-      return {
-        id: t.id,
-        origName: cleanOrigName,
-        suggestedPrefix,
-        suggestedNewName,
-        checked: true
-      };
-    });
-
-    if (countEl) countEl.textContent = _batchLegacyTasksList.length;
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${_batchLegacyTasksList.length} nhiệm vụ)`;
-    }
-
-    if (tbody) {
-      tbody.innerHTML = _batchLegacyTasksList.map((item, idx) => `
-      <tr>
-        <td style="text-align:center">
-          <input type="checkbox" id="mbatch-ck-${idx}" onchange="updateBatchItemCheck(${idx}, this.checked)" checked>
-        </td>
-        <td style="font-size:12px;color:var(--tx);max-width:200px">${item.origName}</td>
-        <td>
-          <span class="tax-code-badge" style="background:#eef2ff;color:#4f6ef7;border:1px solid #c7d2fe">
-            ${item.suggestedPrefix}
-          </span>
-        </td>
-        <td>
-          <input type="text" class="fc" id="mbatch-inp-${idx}" value="${item.suggestedNewName}" style="font-size:12px;height:30px" oninput="_batchLegacyTasksList[${idx}].suggestedNewName = this.value">
-        </td>
-      </tr>
-    `).join('');
-    }
-  }
-
-  function updateBatchItemCheck(idx, checked) {
-    if (_batchLegacyTasksList[idx]) {
-      _batchLegacyTasksList[idx].checked = checked;
-    }
-    const checkedCount = _batchLegacyTasksList.filter(x => x.checked).length;
-    const submitBtn = document.getElementById('mbatch-submit-btn');
-    if (submitBtn) {
-      submitBtn.disabled = checkedCount === 0;
-      submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${checkedCount} nhiệm vụ)`;
-    }
-  }
-
-  function toggleBatchAll(checked) {
-    _batchLegacyTasksList.forEach((item, idx) => {
-      item.checked = checked;
-      const el = document.getElementById('mbatch-ck-' + idx);
-      if (el) el.checked = checked;
-    });
-    const checkedCount = checked ? _batchLegacyTasksList.length : 0;
-    const submitBtn = document.getElementById('mbatch-submit-btn');
-    if (submitBtn) {
-      submitBtn.disabled = checkedCount === 0;
-      submitBtn.textContent = `⚡ Áp dụng chuẩn hóa (${checkedCount} nhiệm vụ)`;
-    }
-  }
-
-  function applyBatchTaskMigration() {
-    const selected = _batchLegacyTasksList.filter(x => x.checked);
-    if (!selected.length) {
-      toast("Chưa chọn nhiệm vụ nào để chuẩn hóa", "info");
-      return;
-    }
-
-    const updates = selected.map(x => ({
-      id: x.id,
-      newName: (x.suggestedNewName || '').trim()
-    })).filter(x => x.id && x.newName);
-
-    const submitBtn = document.getElementById('mbatch-submit-btn');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = "⏳ Đang cập nhật...";
-    }
-
-    toast("Đang chuẩn hóa tiền tố cho các nhiệm vụ...", "info");
-    google.script.run
-      .withSuccessHandler(res => {
-        if (res && res.success) {
-          closeModal('m-batch-tax');
-          toast(t('tax_batch_success').replace('{n}', res.updatedCount || updates.length), "success");
-          // Optimistic update in local state
-          updates.forEach(u => {
-            const found = S.tasks.find(tk => tk.id === u.id);
-            if (found) found.name = u.newName;
-          });
-          _refreshUI();
-          const curPage = document.querySelector(".page.active")?.id?.replace("page-", "") || "dashboard";
-          if (curPage === 'tasks') loadPgTk();
-        } else {
-          toast((res && res.error) || "Lỗi cập nhật nhiệm vụ", "error");
-          if (submitBtn) submitBtn.disabled = false;
-        }
-      })
-      .withFailureHandler(err => {
-        toast(err.message || "Lỗi máy chủ", "error");
-        if (submitBtn) submitBtn.disabled = false;
-      })
-      .batchUpdateLegacyTasks(updates);
-  }
-
-  // ═══════════════════════════════════════════════════════════
-  //  PERMISSION MATRIX (MA TRẬN PHÂN QUYỀN) CONTROLLER
-  // ═══════════════════════════════════════════════════════════
-
-  const DEFAULT_PERM_MATRIX = {
-    // 1. Dashboard
-    "dash_view": { module: "dashboard", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
-    "dash_filter_pj": { module: "dashboard", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
-    // 2. Dự án (Projects)
-    "pj_view": { module: "projects", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
-    "pj_create": { module: "projects", admin: "FULL", leader: "FULL", pj_lead: "DENY", member: "DENY" },
-    "pj_edit": { module: "projects", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    "pj_members": { module: "projects", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    "pj_delete": { module: "projects", admin: "FULL", leader: "DENY", pj_lead: "DENY", member: "DENY" },
-    // 3. Nhiệm vụ (Tasks)
-    "tk_view": { module: "tasks", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "OWN" },
-    "tk_create": { module: "tasks", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    "tk_edit": { module: "tasks", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    "tk_update_prog": { module: "tasks", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "OWN" },
-    "tk_approve": { module: "tasks", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    "tk_delete": { module: "tasks", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    // 4. Sơ đồ Gantt
-    "gantt_view": { module: "gantt", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
-    "gantt_edit": { module: "gantt", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    // 5. Báo cáo & Phân tích (Analytics)
-    "ana_view": { module: "analytics", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" },
-    "ana_export": { module: "analytics", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    // 6. Quản lý thời gian (Timesheet)
-    "ts_entry": { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "FULL", member: "FULL" },
-    "ts_view_others": { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    "ts_export": { module: "timesheet", admin: "FULL", leader: "FULL", pj_lead: "LEAD_SCOPE", member: "DENY" },
-    // 7. Danh mục tiêu chuẩn (Taxonomy)
-    "tax_view": { module: "taxonomy", admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "VIEW_ALL" },
-    "tax_edit": { module: "taxonomy", admin: "FULL", leader: "FULL", pj_lead: "DENY", member: "DENY" },
-    "tax_matrix_edit": { module: "taxonomy", admin: "FULL", leader: "DENY", pj_lead: "DENY", member: "DENY" },
-    // 8. Người dùng (Users)
-    "usr_view": { module: "users", admin: "FULL", leader: "VIEW_ALL", pj_lead: "VIEW_ALL", member: "DENY" },
-    "usr_manage": { module: "users", admin: "FULL", leader: "DENY", pj_lead: "DENY", member: "DENY" },
-    // 9. Nhật ký hoạt động (Audit Log)
-    "log_view": { module: "log", admin: "FULL", leader: "VIEW_ALL", pj_lead: "DENY", member: "DENY" }
-  };
-
-  const MATRIX_ACTION_META = {
-    dash_view: { module: "dashboard", vi: "Xem Dashboard tổng quan", en: "View general Dashboard", ja: "ダッシュボード全般閲覧" },
-    dash_filter_pj: { module: "dashboard", vi: "Lọc thống kê theo Dự án", en: "Filter statistics by Project", ja: "プロジェクト別統計絞り込み" },
-    pj_view: { module: "projects", vi: "Xem danh sách dự án", en: "View project list", ja: "プロジェクト一覧閲覧" },
-    pj_create: { module: "projects", vi: "Tạo dự án mới", en: "Create new project", ja: "新規プロジェクト作成" },
-    pj_edit: { module: "projects", vi: "Sửa thông tin dự án", en: "Edit project info", ja: "プロジェクト情報編集" },
-    pj_members: { module: "projects", vi: "Thêm/bớt thành viên dự án", en: "Manage project members", ja: "PJメンバーの追加・削除" },
-    pj_delete: { module: "projects", vi: "Xóa / Lưu trữ dự án", en: "Delete / Archive project", ja: "プロジェクト削除・アーカイブ" },
-    tk_view: { module: "tasks", vi: "Xem danh sách / Kanban task", en: "View task list / Kanban", ja: "タスク一覧・カンバン閲覧" },
-    tk_create: { module: "tasks", vi: "Tạo nhiệm vụ (Đơn/Hàng loạt)", en: "Create tasks (Single/Bulk)", ja: "タスク作成（個別・一括）" },
-    tk_edit: { module: "tasks", vi: "Sửa thông tin / Deadline / Gán người", en: "Edit details / Deadline / Assign", ja: "詳細編集・期日・担当割当" },
-    tk_update_prog: { module: "tasks", vi: "Cập nhật % tiến độ & Link kết quả", en: "Update % progress & Result links", ja: "進捗率更新・成果物リンク" },
-    tk_approve: { module: "tasks", vi: "Duyệt hoàn thành nhiệm vụ", en: "Approve task completion", ja: "タスク完了承認" },
-    tk_delete: { module: "tasks", vi: "Xóa nhiệm vụ", en: "Delete task", ja: "タスク削除" },
-    gantt_view: { module: "gantt", vi: "Xem tiến độ trên Gantt", en: "View progress on Gantt chart", ja: "ガントチャート閲覧" },
-    gantt_edit: { module: "gantt", vi: "Kéo đổi ngày trên Gantt", en: "Drag & drop dates on Gantt", ja: "ガント上での日程変更" },
-    ana_view: { module: "analytics", vi: "Xem báo cáo hiệu suất & KPI", en: "View performance & KPI reports", ja: "成果・KPI分析レポート閲覧" },
-    ana_export: { module: "analytics", vi: "Xuất dữ liệu báo cáo", en: "Export report data", ja: "レポートデータ出力" },
-    ts_entry: { module: "timesheet", vi: "Nhập giờ công cá nhân (30p slot)", en: "Log personal timesheet (30m slots)", ja: "個人工数入力（30分単位）" },
-    ts_view_others: { module: "timesheet", vi: "Xem Timesheet nhân sự khác", en: "View other members' timesheets", ja: "他メンバーの工数閲覧" },
-    ts_export: { module: "timesheet", vi: "Xuất bảng chấm công", en: "Export timesheets", ja: "工数集計データ出力" },
-    tax_view: { module: "taxonomy", vi: "Xem danh mục tiêu chuẩn", en: "View standard taxonomy", ja: "基準マスタ閲覧" },
-    tax_edit: { module: "taxonomy", vi: "Thêm/Sửa Category, Phase, Discipline", en: "Add/Edit Category, Phase, Discipline", ja: "カテゴリ・フェーズ・専門工種編集" },
-    tax_matrix_edit: { module: "taxonomy", vi: "Cấu hình Ma trận phân quyền", en: "Configure Permission Matrix", ja: "権限マトリクス設定" },
-    usr_view: { module: "users", vi: "Xem danh bạ người dùng", en: "View user directory", ja: "ユーザー名簿閲覧" },
-    usr_manage: { module: "users", vi: "Thêm/Sửa/Khóa người dùng", en: "Add/Edit/Block users", ja: "ユーザー作成・編集・無効化" },
-    log_view: { module: "log", vi: "Xem nhật ký hệ thống (Audit Log)", en: "View system audit logs", ja: "システム監査ログ閲覧" }
-  };
-
-  const MATRIX_MODULE_NAMES = {
-    dashboard: { vi: "1. Tổng quan (Dashboard)", en: "1. Dashboard", ja: "1. ダッシュボード" },
-    projects: { vi: "2. Quản lý Dự án (Projects)", en: "2. Projects", ja: "2. プロジェクト管理" },
-    tasks: { vi: "3. Quản lý Nhiệm vụ (Tasks)", en: "3. Tasks", ja: "3. タスク管理" },
-    gantt: { vi: "4. Sơ đồ Gantt (Gantt Chart)", en: "4. Gantt Chart", ja: "4. ガントチャート" },
-    analytics: { vi: "5. Báo cáo & Phân tích (Analytics)", en: "5. Analytics", ja: "5. 分析・レポート" },
-    timesheet: { vi: "6. Quản lý Thời gian (Timesheet)", en: "6. Timesheet", ja: "6. 工数・タイムシート" },
-    taxonomy: { vi: "7. Danh mục tiêu chuẩn (Taxonomy)", en: "7. Standards & Taxonomy", ja: "7. 基準マスタ・規約" },
-    users: { vi: "8. Quản trị Người dùng (Users)", en: "8. User Management", ja: "8. ユーザー管理" },
-    log: { vi: "9. Nhật ký hoạt động (Audit Log)", en: "9. Audit Logs", ja: "9. 監査ログ" }
-  };
-
-  function _normalizePermVal(v) {
-    if (!v) return "DENY";
-    const s = String(v).toUpperCase().trim();
-    if (s === "FULL" || s.includes("TOÀN QUYỀN") || s.includes("TOAN QUYEN")) return "FULL";
-    if (s === "LEAD_SCOPE" || s.includes("LEAD") || s.includes("PHẠM VI") || s.includes("PHAM VI")) return "LEAD_SCOPE";
-    if (s === "VIEW_ALL" || s.includes("VIEW") || s.includes("XEM TOÀN CẢNH") || s.includes("XEM TOAN CANH") || s.includes("CHỈ XEM") || s.includes("CHI XEM")) return "VIEW_ALL";
-    if (s === "OWN" || s.includes("CÁ NHÂN") || s.includes("CA NHAN")) return "OWN";
-    if (s === "DENY" || s.includes("KHÔNG") || s.includes("KHONG") || s.includes("ẨN") || s.includes("AN")) return "DENY";
-    return s;
-  }
-
-  function _renderPermSelect(actionKey, role, currentVal, isAdmin) {
-    const normVal = _normalizePermVal(currentVal);
-    const options = [
-      { val: "FULL", text: t('perm_full') },
-      { val: "LEAD_SCOPE", text: t('perm_lead_scope') },
-      { val: "VIEW_ALL", text: t('perm_view_all') },
-      { val: "OWN", text: t('perm_own') },
-      { val: "DENY", text: t('perm_deny') }
-    ];
-    if (!isAdmin) {
-      const opt = options.find(o => o.val === normVal) || { text: normVal };
-      return `<div style="text-align:center"><span style="font-size:11px;font-weight:600">${opt.text}</span></div>`;
-    }
-    return `
-    <select class="matrix-sel" data-action="${actionKey}" data-role="${role}" data-val="${normVal}" onchange="this.dataset.val=this.value">
-      ${options.map(o => `<option value="${o.val}" ${o.val === normVal ? 'selected' : ''}>${o.text}</option>`).join('')}
-    </select>
-  `;
-  }
-
-  function renderPermissionMatrixTable() {
-    const tbody = document.getElementById('matrix-tbody');
-    const badgeEl = document.getElementById('matrix-status-badge');
-    if (!tbody) return;
-
-    const curMatrix = S.permissionMatrix || DEFAULT_PERM_MATRIX;
-    const isAdmin = S.user && S.user.role === 'Admin';
-
-    // Read currently selected values in DOM before re-rendering so we don't lose unsaved choices
-    document.querySelectorAll('#matrix-tbody select.matrix-sel').forEach(sel => {
-      const action = sel.dataset.action;
-      const role = sel.dataset.role;
-      if (action && role && curMatrix[action]) {
-        curMatrix[action][role] = sel.value;
+    const badge = document.getElementById('tp-tax-preview-badge');
+    if (badge) {
+      if (prefix) {
+        badge.textContent = prefix;
+        badge.style.background = '#eef2ff';
+        badge.style.color = 'var(--p)';
+        badge.style.borderColor = '#c7d2fe';
+      } else {
+        badge.textContent = (typeof t === 'function' ? t('tax_prefix_none') : null) || '[CHƯA GÁN MÃ]';
+        badge.style.background = '#fff7ed';
+        badge.style.color = '#ea580c';
+        badge.style.borderColor = '#fdba74';
       }
-    });
+    }
 
-    // Check if custom or default
-    let isCustom = false;
-    try {
-      for (const k in DEFAULT_PERM_MATRIX) {
-        if (curMatrix[k]) {
-          if (_normalizePermVal(curMatrix[k].leader) !== DEFAULT_PERM_MATRIX[k].leader ||
-            _normalizePermVal(curMatrix[k].pj_lead) !== DEFAULT_PERM_MATRIX[k].pj_lead ||
-            _normalizePermVal(curMatrix[k].member) !== DEFAULT_PERM_MATRIX[k].member) {
-            isCustom = true;
-            break;
-          }
+    const nmInp = document.getElementById('tp-nm');
+    if (!nmInp) return;
+
+    let discName = '';
+    if (disc) {
+      const curLang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      if (discTax && typeof tTaxonomy === 'function') {
+        discName = tTaxonomy(discTax, curLang);
+      }
+      if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        discName = std[curLang] || std['vi'] || '';
+      }
+    }
+
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Za-z0-9_\-]+\]\s*[-–—:]?\s*/i, '').trim();
+
+    if (disc) {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      const cands = [];
+      if (discTax) { cands.push(discTax.name_vi, discTax.name_en, discTax.name_jp, discTax.name); }
+      if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        cands.push(std.vi, std.en, std.ja);
+      }
+      cands.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成');
+      for (const c of cands) {
+        if (!c) continue;
+        const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+        const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+        if (rx1.test(curVal)) { curVal = curVal.replace(rx1, '').trim(); }
+        if (cleanCand && cleanCand !== c) {
+          const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+          if (rx2.test(curVal)) { curVal = curVal.replace(rx2, '').trim(); }
         }
       }
-    } catch (e) { }
-
-    if (badgeEl) {
-      badgeEl.textContent = isCustom ? t('matrix_badge_custom') : t('matrix_badge_default');
-      badgeEl.className = isCustom ? 'an-badge an-badge-warn' : 'an-badge an-badge-blue';
+      curVal = curVal.replace(/^[-–—:]\s*/, '').trim();
     }
 
-    const lang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
-
-    // Group by module
-    const moduleOrder = ["dashboard", "projects", "tasks", "gantt", "analytics", "timesheet", "taxonomy", "users", "log"];
-    let rowsHtml = '';
-    let rowIdx = 0;
-
-    moduleOrder.forEach(modKey => {
-      const modTitle = (MATRIX_MODULE_NAMES[modKey] && MATRIX_MODULE_NAMES[modKey][lang]) || MATRIX_MODULE_NAMES[modKey]?.en || MATRIX_MODULE_NAMES[modKey]?.vi || modKey;
-      rowsHtml += `
-      <tr class="matrix-module-hdr">
-        <td colspan="6">${modTitle}</td>
-      </tr>
-    `;
-
-      Object.keys(MATRIX_ACTION_META).forEach(actionKey => {
-        const meta = MATRIX_ACTION_META[actionKey];
-        if (meta.module !== modKey) return;
-        rowIdx++;
-
-        const actionTitle = (meta && meta[lang]) || (meta && meta.en) || (meta && meta.vi) || actionKey;
-        const rowData = curMatrix[actionKey] || DEFAULT_PERM_MATRIX[actionKey] || { admin: "FULL", leader: "FULL", pj_lead: "VIEW_ALL", member: "DENY" };
-
-        rowsHtml += `
-        <tr>
-          <td style="text-align:center;color:var(--t3);font-size:11px">${rowIdx}</td>
-          <td style="font-weight:600;color:var(--tx)">${actionTitle}</td>
-          <td style="text-align:center"><span class="badge bg-re" style="font-size:10px">${t('perm_full')}</span></td>
-          <td>${_renderPermSelect(actionKey, 'leader', rowData.leader || 'FULL', isAdmin)}</td>
-          <td>${_renderPermSelect(actionKey, 'pj_lead', rowData.pj_lead || 'VIEW_ALL', isAdmin)}</td>
-          <td>${_renderPermSelect(actionKey, 'member', rowData.member || 'DENY', isAdmin)}</td>
-        </tr>
-      `;
-      });
-    });
-
-    tbody.innerHTML = rowsHtml;
-  }
-
-  function savePermissionMatrixClick() {
-    const isAdmin = S.user && S.user.role === 'Admin';
-    if (!isAdmin) {
-      toast(t('matrix_admin_only_save'), "error");
-      return;
-    }
-
-    const matrix = JSON.parse(JSON.stringify(S.permissionMatrix || DEFAULT_PERM_MATRIX));
-    document.querySelectorAll('#matrix-tbody select.matrix-sel').forEach(sel => {
-      const action = sel.dataset.action;
-      const role = sel.dataset.role;
-      if (matrix[action]) {
-        matrix[action][role] = sel.value;
+    if (prefix) {
+      if (discName) {
+        nmInp.value = curVal ? `${prefix}-${discName} - ${curVal}` : `${prefix}-${discName}`;
+      } else {
+        nmInp.value = curVal ? `${prefix} ${curVal}` : prefix;
       }
-    });
-
-    // Ensure Admin is always FULL
-    Object.keys(matrix).forEach(k => {
-      if (matrix[k]) matrix[k].admin = "FULL";
-    });
-
-    toast(t('matrix_saving'), "info");
-    google.script.run
-      .withSuccessHandler(res => {
-        if (res && res.success) {
-          S.permissionMatrix = res.matrix;
-          toast(t('matrix_saved_success'), "success");
-          renderPermissionMatrixTable();
-        } else {
-          toast((res && res.error) || "Lỗi lưu ma trận phân quyền", "error");
-        }
-      })
-      .withFailureHandler(err => {
-        toast(err.message || "Lỗi kết nối máy chủ", "error");
-      })
-      .savePermissionMatrix(matrix);
+    } else {
+      nmInp.value = curVal;
+    }
+    return;
   }
 
-  function resetPermissionMatrixClick() {
-    const isAdmin = S.user && S.user.role === 'Admin';
-    if (!isAdmin) {
-      toast(t('matrix_admin_only_reset'), "error");
-      return;
+  // Default / Single mode for #m-qtk
+  const cat = document.getElementById('mqtk-cat')?.value || '';
+  const phase = document.getElementById('mqtk-phase')?.value || '';
+  const disc = document.getElementById('mqtk-disc')?.value || '';
+
+  const parts = [cat, phase, disc].filter(Boolean);
+  const prefix = parts.length ? `[${parts.join('-')}]` : '';
+
+  const prevTxt = document.getElementById('qtk-tax-preview-txt');
+  if (prevTxt) {
+    prevTxt.textContent = prefix ? `Tiền tố: ${prefix}` : '[Mã tự chèn vào tên task]';
+  }
+
+  if (mode === 'single') {
+    const nmInp = document.getElementById('mqtk-nm');
+    if (!nmInp) return;
+    let discName = '';
+    if (disc) {
+      const curLang = (typeof S !== 'undefined' && S.lang) ? S.lang : 'vi';
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      if (discTax && typeof tTaxonomy === 'function') {
+        discName = tTaxonomy(discTax, curLang);
+      }
+      if (!discName && typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        discName = std[curLang] || std['vi'] || '';
+      }
     }
 
-    if (!confirm(t('matrix_reset_confirm'))) return;
+    let curVal = nmInp.value.trim();
+    curVal = curVal.replace(/^\[[A-Za-z0-9_\-]+\]\s*[-–—:]?\s*/i, '').trim();
 
-    toast(t('matrix_resetting'), "info");
-    google.script.run
-      .withSuccessHandler(res => {
-        if (res && res.success) {
-          S.permissionMatrix = res.matrix;
-          toast(t('msg_save_success'), "success");
-          renderPermissionMatrixTable();
-        } else {
-          toast((res && res.error) || "Lỗi khôi phục ma trận", "error");
+    if (disc) {
+      const discTax = ((S.taxonomy && S.taxonomy.disciplines) || []).find(d => String(d.code || '').toUpperCase() === String(disc).toUpperCase());
+      const cands = [];
+      if (discTax) { cands.push(discTax.name_vi, discTax.name_en, discTax.name_jp, discTax.name); }
+      if (typeof STANDARD_DISCIPLINE_NAMES !== 'undefined' && STANDARD_DISCIPLINE_NAMES[disc]) {
+        const std = STANDARD_DISCIPLINE_NAMES[disc];
+        cands.push(std.vi, std.en, std.ja);
+      }
+      cands.push('Dựng hình kết cấu', 'Dựng hình Kết cấu', 'Dựng hình Kết cấu / Thân', '躯体モデル作成', '配管モデル作成');
+      for (const c of cands) {
+        if (!c) continue;
+        const cleanCand = c.replace(/^[【\[][^】\]]+[】\]]\s*/, '');
+        const rx1 = new RegExp('^' + c.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+        if (rx1.test(curVal)) { curVal = curVal.replace(rx1, '').trim(); }
+        if (cleanCand && cleanCand !== c) {
+          const rx2 = new RegExp('^' + cleanCand.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '(\\s*[-–—:]\\s*|\\s+)?', 'i');
+          if (rx2.test(curVal)) { curVal = curVal.replace(rx2, '').trim(); }
         }
-      })
-      .withFailureHandler(err => {
-        toast(err.message || "Lỗi kết nối máy chủ", "error");
-      })
-      .resetPermissionMatrix();
-  }
+      }
+      curVal = curVal.replace(/^[-–—:]\s*/, '').trim();
+    }
 
+    if (prefix) {
+      if (discName) {
+        nmInp.value = curVal ? `${prefix}-${discName} - ${curVal}` : `${prefix}-${discName}`;
+      } else {
+        nmInp.value = curVal ? `${prefix} ${curVal}` : prefix;
+      }
+    } else {
+      nmInp.value = curVal;
+    }
+  }
+};
+
+window.AppExportManager = AppExportManager;
 
 </script>

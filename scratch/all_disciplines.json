@@ -1,0 +1,232 @@
+{
+  "PN01": {
+    "vi": "Tạo ảnh Panorama Memo",
+    "en": "Panorama Memo Creation",
+    "ja": "【パノラマメモ】作成"
+  },
+  "PN10": {
+    "vi": "Kiểm tra Panorama Memo",
+    "en": "Panorama Memo Check",
+    "ja": "【パノラマメモ】チェック"
+  },
+  "PN11": {
+    "vi": "Chỉnh sửa Panorama Memo",
+    "en": "Panorama Memo Revision",
+    "ja": "【パノラマメモ】修正"
+  },
+  "PC01": {
+    "vi": "Xử lý dữ liệu Point Cloud",
+    "en": "Point Cloud Processing",
+    "ja": "【点群データ】処理"
+  },
+  "PC02": {
+    "vi": "Phân lớp Point Cloud",
+    "en": "Point Cloud Layering",
+    "ja": "【点群データ】レイヤー分け"
+  },
+  "PC10": {
+    "vi": "Kiểm tra Point Cloud",
+    "en": "Point Cloud Check",
+    "ja": "【点群データ】チェック"
+  },
+  "PC11": {
+    "vi": "Sửa dữ liệu Point Cloud",
+    "en": "Point Cloud Revision",
+    "ja": "【点群データ】修正"
+  },
+  "PC12": {
+    "vi": "Sửa phân lớp Point Cloud",
+    "en": "Point Cloud Layering Revision",
+    "ja": "【点群データ】レイヤー分け修正"
+  },
+  "MD01": {
+    "vi": "Dựng hình Kết cấu / Thân",
+    "en": "Structure Modeling",
+    "ja": "【モデル】躯体作成"
+  },
+  "MD02": {
+    "vi": "Dựng hình Máy móc / Thiết bị",
+    "en": "Equipment Modeling",
+    "ja": "【モデル】機械作成"
+  },
+  "MD03": {
+    "vi": "Dựng hình Đường ống",
+    "en": "Piping Modeling",
+    "ja": "【モデル】配管作成"
+  },
+  "MD04": {
+    "vi": "Hợp nhất mô hình tổng thể",
+    "en": "Model Federation",
+    "ja": "【モデル】合成"
+  },
+  "MD05": {
+    "vi": "Dựng hình hạng mục khác",
+    "en": "Other Modeling",
+    "ja": "【モデル】作成（その他）"
+  },
+  "MD10": {
+    "vi": "Kiểm tra mô hình BIM",
+    "en": "Model Quality Check",
+    "ja": "【モデル】チェック"
+  },
+  "MD11": {
+    "vi": "Sửa mô hình Kết cấu",
+    "en": "Structure Revision",
+    "ja": "【モデル】躯体修正"
+  },
+  "MD12": {
+    "vi": "Sửa mô hình Thiết bị",
+    "en": "Equipment Revision",
+    "ja": "【モデル】機械修正"
+  },
+  "MD13": {
+    "vi": "Sửa mô hình Đường ống",
+    "en": "Piping Revision",
+    "ja": "【モデル】配管修正"
+  },
+  "MD14": {
+    "vi": "Sửa hợp nhất mô hình",
+    "en": "Federation Revision",
+    "ja": "【モデル】合成修正"
+  },
+  "MD15": {
+    "vi": "Sửa mô hình khác",
+    "en": "Other Model Revision",
+    "ja": "【モデル】修正（その他）"
+  },
+  "MD16": {
+    "vi": "Nhập thuộc tính thông tin BIM",
+    "en": "BIM Data Input",
+    "ja": "【モデル】情報入力"
+  },
+  "SD01": {
+    "vi": "Tổng hợp đóng tập bản vẽ",
+    "en": "Drawing Compilation",
+    "ja": "【施工図】図面取りまとめ"
+  },
+  "SD02": {
+    "vi": "Chuẩn bị bản vẽ nền Underlay",
+    "en": "Background Drawing Prep",
+    "ja": "【施工図】下図準備"
+  },
+  "SD03": {
+    "vi": "Triển khai bản vẽ mặt bằng & mặt cắt",
+    "en": "Plan & Section Drawing Creation",
+    "ja": "【施工図】平断面図作成"
+  },
+  "SD04": {
+    "vi": "Bản vẽ sơ đồ không gian ống",
+    "en": "Piping Isometric Drawing",
+    "ja": "【施工図】配管スケルトン図作成"
+  },
+  "SD05": {
+    "vi": "Triển khai bản vẽ móng bệ",
+    "en": "Foundation Drawing",
+    "ja": "【施工図】基礎図作成"
+  },
+  "SD06": {
+    "vi": "Bản vẽ gia công kết cấu thép",
+    "en": "Steel Fabrication Drawing",
+    "ja": "【施工図】鋼製加工品図作成"
+  },
+  "SD07": {
+    "vi": "Bản vẽ phối hợp đa bộ môn",
+    "en": "Combined Services Drawing",
+    "ja": "【施工図】複合工図作成"
+  },
+  "SD08": {
+    "vi": "Bản vẽ thi công khác",
+    "en": "Other Shop Drawing",
+    "ja": "【施工図】その他"
+  },
+  "MC01": {
+    "vi": "Check va chạm vs Bản vẽ thiết kế",
+    "en": "Clash Check vs Tender Drawing",
+    "ja": "【レポート・発注図】干渉・相違点チェック"
+  },
+  "MC02": {
+    "vi": "Check va chạm vs Bản vẽ thi công",
+    "en": "Clash Check vs Shop Drawing",
+    "ja": "【レポート・施工図】干渉・相違点チェック"
+  },
+  "MC03": {
+    "vi": "Đề xuất giải pháp xử lý va chạm",
+    "en": "Clash Resolution Proposal",
+    "ja": "【レポート】干渉・相違点の改善提案"
+  },
+  "MC04": {
+    "vi": "Nghiên cứu biện pháp vận chuyển",
+    "en": "Equipment Route Study",
+    "ja": "【レポート】機器搬出入検討"
+  },
+  "MC05": {
+    "vi": "Kiểm tra xác nhận kích thước",
+    "en": "Dimension Verification",
+    "ja": "【レポート】寸法確認"
+  },
+  "MC06": {
+    "vi": "Báo cáo kỹ thuật khác",
+    "en": "Other Technical Report",
+    "ja": "【レポート】その他"
+  },
+  "MC07": {
+    "vi": "Tạo video mô phỏng Walkthrough",
+    "en": "3D Walkthrough Animation",
+    "ja": "【レポート】ウォークスルー動画作成"
+  },
+  "MT00": {
+    "vi": "Họp giao ban đầu/cuối ngày",
+    "en": "Daily Standup Meeting",
+    "ja": "【MTG】朝礼・終礼"
+  },
+  "MT01": {
+    "vi": "Họp đối tác / Khách hàng",
+    "en": "External Meeting",
+    "ja": "【MTG】社外"
+  },
+  "MT02": {
+    "vi": "Họp nội bộ team",
+    "en": "Internal Meeting",
+    "ja": "【MTG】社内"
+  },
+  "MT03": {
+    "vi": "Họp điều phối quản trị dự án",
+    "en": "Management Meeting",
+    "ja": "【MTG】業務管理"
+  },
+  "MT04": {
+    "vi": "Cuộc họp khác",
+    "en": "Other Meeting",
+    "ja": "【MTG】その他"
+  },
+  "PM01": {
+    "vi": "Nghiên cứu tài liệu hồ sơ dự án",
+    "en": "Project Document Review",
+    "ja": "プロジェクト資料確認"
+  },
+  "PM02": {
+    "vi": "Quản lý tiến độ & Điều phối",
+    "en": "Project Administration",
+    "ja": "プロジェクト管理関連"
+  },
+  "MJ01": {
+    "vi": "Lập báo cáo công việc (Ngày/Tuần)",
+    "en": "Work Progress Report",
+    "ja": "業務報告"
+  },
+  "MJ02": {
+    "vi": "Cải tiến quy trình làm việc",
+    "en": "Workflow Improvement",
+    "ja": "業務改善"
+  },
+  "DE01": {
+    "vi": "Phát triển Tool / Script / API",
+    "en": "Automation & Tool Dev",
+    "ja": "開発関連"
+  },
+  "LN01": {
+    "vi": "Đào tạo & Nâng cao kỹ năng",
+    "en": "Training & Skill Learning",
+    "ja": "勉強・スキルアップ"
+  }
+}

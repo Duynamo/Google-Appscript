@@ -35,6 +35,7 @@
         </div>
         <div class="psrch" style="min-width:160px"><span style="color:var(--t3)">🔍</span><input id="g-srch2" placeholder="Tìm task..." data-i18n-ph="search_placeholder" oninput="ganttSearch(this.value)"></div>
         <button class="btn bp" onclick="loadGantt()" data-i18n="btn_view">Xem</button>
+        <button class="btn bs" onclick="AppExportManager.openModal('gantt')" title="In sơ đồ Gantt" style="display:inline-flex;align-items:center;gap:4px"><span>🖨️</span><span data-i18n="btn_print_gantt">In Gantt</span></button>
       </div>
       <div class="gantt-wrap" style="height:calc(100vh - 200px)">
         <div class="gantt-inner" id="gantt-inner">
@@ -276,7 +277,7 @@ function renderGantt() {
     }
     rowsR+=`<div class="gantt-pj-line" style="min-width:${totalDays*ppd}px">${pjBarHtml}${pjFlagHtml}</div>`;
 
-    const tkL=g.tasks.map(t=>`<div class="gantt-tk-row" id="gtr-${t.id}" data-id="${t.id}" data-pj="${g.project.id}" draggable="true" ondragstart="gDragStart(event)" ondragover="gDragOver(event)" ondrop="gDrop(event)" ondragend="gDragEnd(event)"><span class="gantt-drag-ic">⠿</span><span class="gantt-tk-nm" title="${t.name}">${t.name}</span><span class="gantt-tk-as" title="${t.assignee||''}">${_displayName(t.assignee)}</span></div>`).join('');
+    const tkL=g.tasks.map(t=>`<div class="gantt-tk-row" id="gtr-${t.id}" data-id="${t.id}" data-pj="${g.project.id}" draggable="true" ondragstart="gDragStart(event)" ondragover="gDragOver(event)" ondrop="gDrop(event)" ondragend="gDragEnd(event)"><span class="gantt-drag-ic">⠿</span><span class="gantt-tk-nm" title="${_taskDisplayName(t)}">${_taskDisplayName(t)}</span><span class="gantt-tk-as" title="${t.assignee||''}">${_displayName(t.assignee)}</span></div>`).join('');
     const tkR=g.tasks.map(t=>{
       let barX=0,barW=ppd;
       if (t.startRaw) { const ts=parseLocalDate(t.startRaw); barX=Math.max(0,Math.round((ts-sd)/86400000))*ppd; }
@@ -300,7 +301,7 @@ function renderGantt() {
             +`</div>`;
         }
       }
-      return `<div class="gantt-tk-line" style="min-width:${totalDays*ppd}px"><div class="gantt-bar" style="left:${barX}px;width:${barW}px;background:${barColor};opacity:${0.7+t.progress/300}" title="${t.name} | ${t.status} | ${t.progress}%" onclick="openFullTaskEdit('${t.id}')">${t.progress>0?t.progress+'%':''}</div>${flagHtml}</div>`;
+      return `<div class="gantt-tk-line" style="min-width:${totalDays*ppd}px"><div class="gantt-bar" style="left:${barX}px;width:${barW}px;background:${barColor};opacity:${0.7+t.progress/300}" title="${_taskDisplayName(t)} | ${t.status} | ${t.progress}%" onclick="openFullTaskEdit('${t.id}')">${t.progress>0?t.progress+'%':''}</div>${flagHtml}</div>`;
     }).join('');
     rowsL+=`<div class="gantt-pj-tasks open" id="${pjId}-tasks">${tkL}</div>`;
     rowsR+=`<div class="gantt-pj-tasks-r open" id="${pjId}-tasks-r">${tkR}</div>`;

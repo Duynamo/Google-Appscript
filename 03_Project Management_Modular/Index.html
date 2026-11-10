@@ -5,6 +5,10 @@
   <base target="_top">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title><?= appName ?></title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- CSS STYLESHEETS -->
   <?!= include('App_Styles'); ?>
 </head>
@@ -40,6 +44,9 @@
     <div id="topbar">
     <div class="tb-l"><div class="pgt" id="pgt" data-i18n="page_dashboard_t">Tổng Quan</div><div class="pgs" id="pgs" data-i18n="page_dashboard_s">Chào mừng trở lại</div></div>
     <div class="tb-r">
+      <button class="btn bs" id="btn-open-export" onclick="openExportReportModal()" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:7px 14px;border-radius:var(--r2);background:#fff;border:1px solid var(--bdr);cursor:pointer;color:var(--tx);white-space:nowrap;font-size:12px;height:36px" title="In / Xuất Báo Cáo">
+        <span>🖨️</span><span data-i18n="btn_print_export">In Báo Cáo</span>
+      </button>
       <div class="pj-filter">
         🔽 <select id="pj-filter-sel" onchange="applyPjFilter()">
           <option value="">Lọc theo dự án...</option>
@@ -171,6 +178,8 @@
           
           <button class="btn bs" onclick="resetAnalyticsFilters()" title="Đặt lại bộ lọc" data-i18n-title="an_reset_tooltip" style="padding:6px 10px;font-size:12px">↺</button>
           <div class="an-filter-summary-badge" id="an-badge-summary">...</div>
+          <button class="btn bs" onclick="AppExportManager.openModal('analytics')" title="In báo cáo phân tích" style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;font-size:12px"><span>🖨️</span><span data-i18n="btn_print_analytics">In Báo Cáo</span></button>
+          <button class="btn bs" onclick="openExportReportModal('analytics')" title="In báo cáo phân tích" style="display:inline-flex;align-items:center;gap:4px;padding:6px 12px;font-size:12px"><span>🖨️</span><span data-i18n="btn_print_analytics">In Báo Cáo</span></button>
         </div>
 
         <!-- ══ 4 KPI CARDS ══ -->
@@ -304,6 +313,157 @@
 
 <!-- ══ GLOBAL SHARED MODALS ══ -->
 <!-- ══ MODAL: PROJECT DETAIL ══ -->
+<!-- ══ MODAL: PRINT & EXPORT REPORT ══ -->
+<div class="ov" id="m-export-report" onclick="if(event.target===this)closeModal('m-export-report')">
+  <div class="modal modal-xl">
+    <div class="mhd" style="padding:14px 20px;border-bottom:1px solid var(--bdr)">
+      <div>
+        <h3 id="export-modal-title" style="display:flex;align-items:center;gap:8px" data-i18n="export_report_title">🖨️ In & Xuất Báo Cáo</h3>
+        <div style="font-size:12px;color:var(--t2);margin-top:2px" data-i18n="export_report_sub">Tùy chọn xuất báo cáo PDF và Excel theo nhu cầu</div>
+      </div>
+      <button class="mcl" onclick="closeModal('m-export-report')">✕</button>
+    </div>
+    
+    <div class="export-modal-body">
+      <!-- Cột trái: Cấu hình -->
+      <div class="export-ctrl-col">
+        <!-- 1. Phạm vi -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_scope_title">1. Chọn Nội Dung Báo Cáo</span></div>
+          <label class="exp-row">
+            <input type="checkbox" id="exp-cb-overview" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_scope_overview">Báo cáo Tổng quan (Dashboard)</span>
+          </label>
+          <label class="exp-row">
+            <input type="checkbox" id="exp-cb-analytics" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_scope_analytics">Biểu đồ phân tích chuyên sâu</span>
+          </label>
+          <label class="exp-row">
+            <input type="checkbox" id="exp-cb-gantt" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_scope_gantt">Sơ đồ tiến độ Gantt (Timeline)</span>
+          </label>
+        </div>
+
+        <!-- 2. Cấu trúc đóng gói -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_package_title">2. Cấu Trúc Đóng Gói</span></div>
+          <label class="exp-row">
+            <input type="radio" name="exp_pkg" id="exp-pkg-merged" value="merged" checked onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_merge_single">Gộp tất cả vào 1 file duy nhất</span>
+          </label>
+          <label class="exp-row">
+            <input type="radio" name="exp_pkg" id="exp-pkg-split" value="split" onchange="AppExportManager.onConfigChange()">
+            <span data-i18n="export_split_files">Tách thành từng file riêng biệt</span>
+          </label>
+        </div>
+
+        <!-- 3. Đặt tên file -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_filename_title">3. Đặt Tên File Xuất</span></div>
+          <div id="exp-wrap-name-merged">
+            <label class="exp-label" data-i18n="export_filename_merged">Tên file Báo cáo tổng hợp</label>
+            <input type="text" class="exp-input" id="exp-fn-merged" value="">
+          </div>
+          <div id="exp-wrap-name-split" style="display:none">
+            <div style="margin-bottom:6px">
+              <label class="exp-label" data-i18n="export_filename_overview">Tên file Tổng quan</label>
+              <input type="text" class="exp-input" id="exp-fn-overview" value="">
+            </div>
+            <div style="margin-bottom:6px">
+              <label class="exp-label" data-i18n="export_filename_analytics">Tên file Phân tích</label>
+              <input type="text" class="exp-input" id="exp-fn-analytics" value="">
+            </div>
+            <div>
+              <label class="exp-label" data-i18n="export_filename_gantt">Tên file Gantt</label>
+              <input type="text" class="exp-input" id="exp-fn-gantt" value="">
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Định dạng & Thông số -->
+        <div class="exp-sec">
+          <div class="exp-sec-title"><span data-i18n="export_format_title">4. Định Dạng & Trang In</span></div>
+          <div class="exp-tab-wrap" style="margin-bottom:10px">
+            <button class="exp-tab-btn active" id="exp-tab-pdf" onclick="AppExportManager.setFormat('pdf')">📄 PDF / In</button>
+            <button class="exp-tab-btn" id="exp-tab-excel" onclick="AppExportManager.setFormat('excel')">📊 Excel (.xlsx)</button>
+          </div>
+
+          <!-- Controls for PDF -->
+          <div id="exp-pdf-settings">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+              <div>
+                <label class="exp-label" data-i18n="export_paper_size">Khổ giấy</label>
+                <select class="exp-select" id="exp-paper-size" onchange="AppExportManager.onPaperSettingsChange()">
+                  <option value="A4" selected>A4 (210×297mm)</option>
+                  <option value="A3">A3 (297×420mm)</option>
+                  <option value="Letter">Letter (8.5×11in)</option>
+                </select>
+              </div>
+              <div>
+                <label class="exp-label" data-i18n="export_orientation">Hướng in</label>
+                <select class="exp-select" id="exp-orientation" onchange="AppExportManager.onPaperSettingsChange()">
+                  <option value="landscape" selected data-i18n="export_orientation_landscape">Khổ ngang (Landscape)</option>
+                  <option value="portrait" data-i18n="export_orientation_portrait">Khổ dọc (Portrait)</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="exp-label" data-i18n="export_margin">Lề trang</label>
+              <select class="exp-select" id="exp-margin" onchange="AppExportManager.onPaperSettingsChange()">
+                <option value="10" selected data-i18n="export_margin_normal">Tiêu chuẩn (10mm)</option>
+                <option value="5" data-i18n="export_margin_narrow">Hẹp (5mm)</option>
+                <option value="0" data-i18n="export_margin_none">Không lề (0mm)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Controls for Excel -->
+          <div id="exp-excel-settings" style="display:none">
+            <label class="exp-row" style="margin-top:6px">
+              <input type="checkbox" id="exp-excel-gantt-grid" checked>
+              <span data-i18n="export_excel_gantt_grid">Kèm lưới Gantt mô phỏng ngày</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="exp-actions">
+          <div id="exp-actions-pdf" style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn bp" style="padding:10px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="AppExportManager.printNative()">
+              <span data-i18n="export_btn_native_print">🖨️ In / Lưu PDF (Vector 300 DPI)</span>
+            </button>
+            <button class="btn bs" style="padding:9px;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="AppExportManager.downloadPdf()">
+              <span data-i18n="export_btn_download_pdf">⬇️ Tải PDF Trực Tiếp</span>
+            </button>
+          </div>
+          <div id="exp-actions-excel" style="display:none">
+            <button class="btn bg2" style="width:100%;padding:10px;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="AppExportManager.exportExcel()">
+              <span data-i18n="export_btn_download_excel">📊 Tải File Excel (.xlsx)</span>
+            </button>
+          </div>
+          <button type="button" class="btn bs" style="margin-top:10px;width:100%;padding:9px;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="closeModal('m-export-report')">
+            <span data-i18n="btn_close">Đóng</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cột phải: Live Preview -->
+      <div class="export-preview-col">
+        <div class="export-preview-header">
+          <span data-i18n="export_live_preview">👁️ Xem Trước Bản In (Live Preview)</span>
+          <button class="btn bs" style="padding:3px 8px;font-size:11px" onclick="AppExportManager.refreshPreview()" data-i18n="export_preview_refresh">↺ Làm mới xem trước</button>
+        </div>
+        <div class="export-preview-viewport" id="export-preview-viewport">
+          <!-- Render preview pages here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden container for printing & PDF conversion -->
+<div id="print-export-container"></div>
+
 <div class="ov" id="m-pd">
   <div class="modal modal-xl">
     <div class="mhd" style="padding:14px 18px 0">
