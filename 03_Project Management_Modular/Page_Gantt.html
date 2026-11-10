@@ -3,9 +3,17 @@
       <div class="gantt-toolbar">
         <span style="font-size:13px;font-weight:700" data-i18n="nav_gantt">📅 Sơ đồ Gantt</span>
         <label style="font-size:11px;color:var(--t2)" data-i18n="gantt_from">Từ:</label>
-        <input type="date" class="fc" id="g-from" style="width:130px;padding:5px 8px;font-size:11px">
+        <input type="date" class="fc" id="g-from" onchange="onGanttDateManualChange()" style="width:130px;padding:5px 8px;font-size:11px">
         <label style="font-size:11px;color:var(--t2)" data-i18n="gantt_to">Đến:</label>
-        <input type="date" class="fc" id="g-to" style="width:130px;padding:5px 8px;font-size:11px">
+        <input type="date" class="fc" id="g-to" onchange="onGanttDateManualChange()" style="width:130px;padding:5px 8px;font-size:11px">
+        <div class="gantt-presets">
+          <button type="button" class="gantt-preset-btn active" data-preset="all" onclick="setGanttPreset('all')" data-i18n="dash_preset_all">Tất cả</button>
+          <button type="button" class="gantt-preset-btn" data-preset="today" onclick="setGanttPreset('today')" data-i18n="dash_preset_today">Hôm nay</button>
+          <button type="button" class="gantt-preset-btn" data-preset="week" onclick="setGanttPreset('week')" data-i18n="dash_preset_week">Tuần này</button>
+          <button type="button" class="gantt-preset-btn" data-preset="month" onclick="setGanttPreset('month')" data-i18n="dash_preset_month">Tháng này</button>
+          <button type="button" class="gantt-preset-btn" data-preset="quarter" onclick="setGanttPreset('quarter')" data-i18n="dash_preset_quarter">Quý này</button>
+          <button type="button" class="gantt-preset-btn" data-preset="year" onclick="setGanttPreset('year')" data-i18n="dash_preset_year">Năm nay</button>
+        </div>
         <div style="position:relative" id="staff-filter-wrap">
           <div class="staff-filter-btn" id="staff-filter-btn" onclick="togStaffDrop(event)">
             <span id="staff-filter-label" data-i18n="gantt_all_staff">👤 Tất cả nhân viên</span>
@@ -46,12 +54,104 @@
 
 <script>
 
+function getGanttDateBounds() {
+  let minDate = null;
+  let maxDate = null;
+
+  function updateBounds(val) {
+    if (!val) return;
+    const d = parseLocalDate(val);
+    if (!d || isNaN(d.getTime())) return;
+    if (!minDate || d < minDate) minDate = new Date(d);
+    if (!maxDate || d > maxDate) maxDate = new Date(d);
+  }
+
+  if (S.tasks && S.tasks.length) {
+    S.tasks.forEach(t => {
+      updateBounds(t.startRaw || t.startDate);
+      updateBounds(t.deadlineRaw || t.deadline);
+    });
+  }
+  if (S.projects && S.projects.length) {
+    S.projects.forEach(p => {
+      updateBounds(p.startRaw || p.startDate);
+      updateBounds(p.endRaw || p.endDate);
+    });
+  }
+
+  const today = new Date();
+  if (!minDate) {
+    minDate = new Date(today.getFullYear(), today.getMonth(), 1);
+  } else {
+    minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+  }
+  if (!maxDate) {
+    maxDate = new Date(today.getFullYear(), today.getMonth() + 3, 0);
+  } else {
+    maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, 0);
+  }
+  if (maxDate <= minDate) {
+    maxDate = new Date(minDate.getFullYear(), minDate.getMonth() + 1, 0);
+  }
+  return { minDate, maxDate };
+}
+
+function setGanttPreset(preset, skipLoad) {
+  const now = new Date();
+  let fStr = '', tStr = '';
+
+  if (preset === 'today') {
+    fStr = tStr = fmtDateInput(now);
+  } else if (preset === 'week') {
+    const dayOfWeek = now.getDay() || 7;
+    const mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek + 1);
+    const sun = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 6);
+    fStr = fmtDateInput(mon);
+    tStr = fmtDateInput(sun);
+  } else if (preset === 'month') {
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    fStr = fmtDateInput(firstDay);
+    tStr = fmtDateInput(lastDay);
+  } else if (preset === 'quarter') {
+    const curQ = Math.floor(now.getMonth() / 3);
+    const qStart = new Date(now.getFullYear(), curQ * 3, 1);
+    const qEnd = new Date(now.getFullYear(), curQ * 3 + 3, 0);
+    fStr = fmtDateInput(qStart);
+    tStr = fmtDateInput(qEnd);
+  } else if (preset === 'year') {
+    const yStart = new Date(now.getFullYear(), 0, 1);
+    const yEnd = new Date(now.getFullYear(), 11, 31);
+    fStr = fmtDateInput(yStart);
+    tStr = fmtDateInput(yEnd);
+  } else {
+    preset = 'all';
+    const bounds = getGanttDateBounds();
+    fStr = fmtDateInput(bounds.minDate);
+    tStr = fmtDateInput(bounds.maxDate);
+  }
+
+  const inpF = document.getElementById('g-from');
+  const inpT = document.getElementById('g-to');
+  if (inpF) inpF.value = fStr;
+  if (inpT) inpT.value = tStr;
+
+  document.querySelectorAll('.gantt-preset-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-preset') === preset);
+  });
+
+  if (!skipLoad) {
+    loadGantt();
+  }
+}
+
+function onGanttDateManualChange() {
+  document.querySelectorAll('.gantt-preset-btn').forEach(btn => btn.classList.remove('active'));
+  loadGantt();
+}
+
 function initGanttDates() {
-  const today=new Date();
-  const start=new Date(today); start.setDate(1);
-  const end=new Date(today); end.setMonth(end.getMonth()+3);
-  document.getElementById("g-from").value=fmtDateInput(start);
-  document.getElementById("g-to").value=fmtDateInput(end);
+  setGanttPreset('all', true);
   try {
     const sf = localStorage.getItem('gantt_show_flags');
     const sd = localStorage.getItem('gantt_show_dates');
@@ -83,7 +183,14 @@ function isProjectOverdue(p) {
   const tod = new Date(); tod.setHours(0, 0, 0, 0);
   return dl < tod;
 }
-function fmtDateInput(d) { return d.toISOString().slice(0,10); }
+function fmtDateInput(d) {
+  if (!d) return '';
+  if (typeof d === 'string') return d.slice(0, 10);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
 function popGanttStaff() {
   const list=document.getElementById("staff-checklist");
   if (!list||!S.members.length) return;
@@ -122,20 +229,76 @@ function parseLocalDate(val) {
   if (parts.length === 3) return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 0, 0, 0);
   const d = new Date(val); d.setHours(0,0,0,0); return d;
 }
-function buildGanttDataFromMemory(selectedStaff) {
+
+function isTaskInGanttRange(t, sd, ed) {
+  if (!sd && !ed) return true;
+  const tStart = (t.startRaw || t.startDate) ? parseLocalDate(t.startRaw || t.startDate) : null;
+  const tEnd = (t.deadlineRaw || t.deadline) ? parseLocalDate(t.deadlineRaw || t.deadline) : null;
+  if (tStart && tEnd) {
+    if (ed && tStart > ed) return false;
+    if (sd && tEnd < sd) return false;
+    return true;
+  }
+  if (tEnd) {
+    if (sd && tEnd < sd) return false;
+    if (ed && tEnd > ed) return false;
+    return true;
+  }
+  if (tStart) {
+    if (sd && tStart < sd) return false;
+    if (ed && tStart > ed) return false;
+    return true;
+  }
+  return false;
+}
+
+function isProjectInGanttRange(p, sd, ed) {
+  if (!p) return false;
+  const pStart = (p.startRaw || p.startDate) ? parseLocalDate(p.startRaw || p.startDate) : null;
+  const pEnd = (p.endRaw || p.endDate) ? parseLocalDate(p.endRaw || p.endDate) : null;
+  if (pStart && pEnd) {
+    if (ed && pStart > ed) return false;
+    if (sd && pEnd < sd) return false;
+    return true;
+  }
+  if (pEnd) {
+    if (sd && pEnd < sd) return false;
+    if (ed && pEnd > ed) return false;
+    return true;
+  }
+  if (pStart) {
+    if (sd && pStart < sd) return false;
+    if (ed && pStart > ed) return false;
+    return true;
+  }
+  return false;
+}
+
+function buildGanttDataFromMemory(selectedStaff, filterStart, filterEnd, isAll) {
   if (!S.projects || !S.tasks) return [];
   let tasks = [...S.tasks];
   if (selectedStaff && selectedStaff.length > 0) {
     tasks = tasks.filter(t => {
       if (!t.assignee) return false;
-      const parts = String(t.assignee).split(',').map(s => s.trim());
+      const parts = String(t.assignee).split(/[,;\n]+/).map(s => s.trim());
       return parts.some(p => selectedStaff.includes(p));
     });
+  }
+  if (!isAll && (filterStart || filterEnd)) {
+    tasks = tasks.filter(t => isTaskInGanttRange(t, filterStart, filterEnd));
   }
   return S.projects.map(p => ({
     project: p,
     tasks: tasks.filter(t => t.projectId === p.id)
-  })).filter(g => g.tasks.length > 0 || !selectedStaff || selectedStaff.length === 0);
+  })).filter(g => {
+    if (g.tasks.length > 0) return true;
+    if (isAll && (!selectedStaff || selectedStaff.length === 0)) return true;
+    if (!isAll && (filterStart || filterEnd)) {
+      if (selectedStaff && selectedStaff.length > 0) return false;
+      return isProjectInGanttRange(g.project, filterStart, filterEnd);
+    }
+    return !selectedStaff || selectedStaff.length === 0;
+  });
 }
 
 function loadGantt(forceServer) {
@@ -143,15 +306,28 @@ function loadGantt(forceServer) {
   const el = document.getElementById("gantt-inner");
   if (!el) return;
 
-  const fromVal = document.getElementById("g-from") ? document.getElementById("g-from").value : "";
-  const toVal = document.getElementById("g-to") ? document.getElementById("g-to").value : "";
+  const activePresetBtn = document.querySelector('.gantt-preset-btn.active');
+  const activePreset = activePresetBtn ? activePresetBtn.getAttribute('data-preset') : null;
+  const isAll = (activePreset === 'all');
+
+  let fromVal = document.getElementById("g-from") ? document.getElementById("g-from").value : "";
+  let toVal = document.getElementById("g-to") ? document.getElementById("g-to").value : "";
+
+  if (isAll && S.projects && S.projects.length) {
+    const bounds = getGanttDateBounds();
+    fromVal = fmtDateInput(bounds.minDate);
+    toVal = fmtDateInput(bounds.maxDate);
+    if (document.getElementById("g-from")) document.getElementById("g-from").value = fromVal;
+    if (document.getElementById("g-to")) document.getElementById("g-to").value = toVal;
+  }
+
   const parsedStart = parseLocalDate(fromVal);
   const parsedEnd = parseLocalDate(toVal);
 
   // 1. Tải tức thì 0ms từ bộ nhớ S nếu đã có dữ liệu
   if (!forceServer && S.projects && S.projects.length && S.tasks && S.tasks.length) {
     try {
-      GANTT.data = buildGanttDataFromMemory(selectedStaff);
+      GANTT.data = buildGanttDataFromMemory(selectedStaff, parsedStart, parsedEnd, isAll);
       GANTT.startDate = parsedStart || new Date();
       GANTT.endDate = parsedEnd || new Date();
       renderGantt();
@@ -167,7 +343,7 @@ function loadGantt(forceServer) {
     .withSuccessHandler(res => {
       if (!res || !res.success) {
         if (S.projects && S.projects.length) {
-          GANTT.data = buildGanttDataFromMemory(selectedStaff);
+          GANTT.data = buildGanttDataFromMemory(selectedStaff, parsedStart, parsedEnd, isAll);
           GANTT.startDate = parsedStart || new Date();
           GANTT.endDate = parsedEnd || new Date();
           renderGantt();
@@ -182,10 +358,16 @@ function loadGantt(forceServer) {
           project: g.project,
           tasks: (g.tasks || []).filter(t => {
             if (!t.assignee) return false;
-            const parts = String(t.assignee).split(',').map(s => s.trim());
+            const parts = String(t.assignee).split(/[,;\n]+/).map(s => s.trim());
             return parts.some(p => selectedStaff.includes(p));
           })
         })).filter(g => g.tasks.length > 0);
+      }
+      if (!isAll && (parsedStart || parsedEnd)) {
+        data = data.map(g => ({
+          project: g.project,
+          tasks: (g.tasks || []).filter(t => isTaskInGanttRange(t, parsedStart, parsedEnd))
+        })).filter(g => g.tasks.length > 0 || isProjectInGanttRange(g.project, parsedStart, parsedEnd));
       }
       GANTT.data = data;
       GANTT.startDate = parsedStart || new Date();
@@ -194,7 +376,7 @@ function loadGantt(forceServer) {
     })
     .withFailureHandler(e => {
       if (S.projects && S.projects.length) {
-        GANTT.data = buildGanttDataFromMemory(selectedStaff);
+        GANTT.data = buildGanttDataFromMemory(selectedStaff, parsedStart, parsedEnd, isAll);
         GANTT.startDate = parsedStart || new Date();
         GANTT.endDate = parsedEnd || new Date();
         renderGantt();
@@ -207,8 +389,15 @@ function loadGantt(forceServer) {
 }
 function renderGantt() {
   const el=document.getElementById("gantt-inner");
-  const sd=GANTT.startDate,ed=GANTT.endDate,ppd=GANTT.pixelsPerDay;
-  const totalDays=Math.round((ed-sd)/86400000)+1;
+  if (!el) return;
+  const sd=GANTT.startDate,ed=GANTT.endDate;
+  if (!sd || !ed || isNaN(sd.getTime()) || isNaN(ed.getTime())) {
+    el.innerHTML = `<div class="empty">${t('dash_no_act')}</div>`;
+    return;
+  }
+  const totalDays = Math.max(1, Math.round((ed - sd) / 86400000) + 1);
+  const ppd = totalDays === 1 ? 120 : (totalDays <= 7 ? Math.max(48, Math.floor(600 / totalDays)) : (GANTT.pixelsPerDay || 28));
+
   const today=new Date(); today.setHours(0,0,0,0);
   const todayOffsetDays=Math.round((today-sd)/86400000);
   const todayCenterPx=(todayOffsetDays*ppd)+Math.floor(ppd/2);
@@ -236,13 +425,13 @@ function renderGantt() {
     curCount++;
   });
   if (curCount>0) monthGroups.push({label:curLabel,count:curCount});
-  const monthRowHtml=monthGroups.map(mg=>`<div class="gantt-month-cell" style="min-width:${mg.count*ppd}px">${mg.label}</div>`).join('');
+  const monthRowHtml=monthGroups.map(mg=>`<div class="gantt-month-cell" style="min-width:${mg.count*ppd}px;width:${mg.count*ppd}px">${mg.label}</div>`).join('');
   const dowLabels=S.lang==='ja'
     ?['日','月','火','水','木','金','土']
     : (S.lang==='en'
       ?['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
       :['CN','T2','T3','T4','T5','T6','T7']);
-  const dayRowHtml=dateHeaders.map(h=>`<div class="gantt-day${h.isToday?' today':''} ${h.isWeekend?'weekend':''}" style="min-width:${ppd}px">${h.d.getDate()}<br><span style="font-size:8px">${dowLabels[h.d.getDay()]}</span></div>`).join('');
+  const dayRowHtml=dateHeaders.map(h=>`<div class="gantt-day${h.isToday?' today':''} ${h.isWeekend?'weekend':''}" style="min-width:${ppd}px;width:${ppd}px">${h.d.getDate()}<br><span style="font-size:8px">${dowLabels[h.d.getDay()]}</span></div>`).join('');
   let rowsL='',rowsR='';
   GANTT.data.forEach(g=>{
     const pjId="gpj-"+g.project.id;
@@ -257,7 +446,7 @@ function renderGantt() {
     }
     if (g.project.endRaw) {
       const pe=parseLocalDate(g.project.endRaw);
-      const pjEndDay=Math.round((pe-sd)/86400000);
+      const pjEndDay=Math.min(totalDays - 1, Math.round((pe-sd)/86400000));
       if (g.project.startRaw) {
         const pjBarW=Math.max(ppd,(pjEndDay+1)*ppd-pjBarX);
         pjBarHtml=`<div class="gantt-pj-bar" style="left:${pjBarX}px;width:${pjBarW}px" title="${g.project.name} (${g.project.startDate||''} - ${g.project.endDate||''})"></div>`;
@@ -281,7 +470,16 @@ function renderGantt() {
     const tkR=g.tasks.map(t=>{
       let barX=0,barW=ppd;
       if (t.startRaw) { const ts=parseLocalDate(t.startRaw); barX=Math.max(0,Math.round((ts-sd)/86400000))*ppd; }
-      if (t.deadlineRaw) { const te=parseLocalDate(t.deadlineRaw); barW=Math.max(ppd,Math.round((te-sd)/86400000+1)*ppd-barX); }
+      if (t.deadlineRaw) {
+        const te=parseLocalDate(t.deadlineRaw);
+        const endDay=Math.min(totalDays - 1, Math.round((te-sd)/86400000));
+        if (!t.startRaw) {
+          barX=Math.max(0, endDay * ppd);
+          barW=ppd;
+        } else {
+          barW=Math.max(ppd, (endDay + 1) * ppd - barX);
+        }
+      }
       const barColor=t.status==="Hoàn thành"?"#22c55e":isTaskOverdue(t)?"#ef4444":t.status==="Tạm dừng"?"#f59e0b":"#4f6ef7";
       
       let flagHtml='';

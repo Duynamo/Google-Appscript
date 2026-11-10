@@ -250,6 +250,10 @@ input[type=range]{width:100%;accent-color:var(--p)}
 /* ── GANTT ── */
 #page-gantt{position:relative}
 .gantt-toolbar{background:var(--card);border-radius:var(--r);padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:var(--sh)}
+.gantt-presets{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.gantt-preset-btn{background:var(--bg);border:1px solid var(--bdr);border-radius:20px;padding:3px 9px;font-size:11px;cursor:pointer;color:var(--t2);font-weight:600;transition:.15s;white-space:nowrap}
+.gantt-preset-btn:hover{background:var(--bdr);color:var(--tx)}
+.gantt-preset-btn.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 2px 6px rgba(79,110,247,.25)}
 .gantt-wrap{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column;min-width:0;max-width:100%}
 .gantt-inner{display:flex;overflow:hidden;flex:1;min-width:0;position:relative}
 .gantt-left{width:380px;min-width:380px;max-width:380px;flex-shrink:0;border-right:2px solid var(--bdr);overflow-y:hidden;overflow-x:hidden;background:var(--card);position:sticky;left:0;z-index:20;box-shadow:4px 0 12px -2px rgba(0,0,0,0.08)}
