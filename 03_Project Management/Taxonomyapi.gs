@@ -317,8 +317,28 @@ function getTaxonomyDataInternal() {
     if (code) {
       const rx = new RegExp('^' + code + '[_\\-\\s:]+', 'i');
       if (nameJP) nameJP = nameJP.replace(rx, '').trim();
-      if (nameVI) nameVI = nameVI.replace(rx, '').trim();
-      if (nameEN) nameEN = nameEN.replace(rx, '').trim();
+      if (nameVI && type !== "PROJECT_CODE") nameVI = nameVI.replace(rx, '').trim();
+      if (nameEN && type !== "PROJECT_CODE") nameEN = nameEN.replace(rx, '').trim();
+    }
+
+    if (type === "PROJECT_CODE") {
+      extra1 = extra1 || "2026";
+      extra2 = nameJP || desc;
+      extra3 = String(sortOrder).padStart(2, "0");
+
+      // Chuẩn hóa tên phân loại của PROJECT_CODE luôn theo chuẩn Năm_STT_Mã_Tên đầy đủ
+      const seqMatch = (nameVI || nameEN || desc || "").match(/^(\d{4})[-_](\d{1,3})[-_]([A-Za-z0-9]+)[-_](.*)$/);
+      const yr = (seqMatch ? seqMatch[1] : (extra1 || "2026"));
+      const seqVal = (seqMatch ? seqMatch[2] : (extra3 || String(sortOrder))).padStart(2, "0");
+      const pCode = code || (seqMatch ? seqMatch[3] : "");
+      let cleanDesc = desc || nameJP || nameVI || "";
+      cleanDesc = cleanDesc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, "").trim();
+      if (pCode) cleanDesc = cleanDesc.replace(new RegExp('^' + pCode + '[-_\\s]+', 'i'), '').trim();
+
+      const standardProjectName = `${yr}_${seqVal}_${pCode}_${cleanDesc}`;
+      nameVI = standardProjectName;
+      nameEN = standardProjectName;
+      desc = cleanDesc;
     }
 
     const item = {
@@ -449,6 +469,23 @@ function saveTaxonomyItem(payload) {
     const color = String(payload.color || payload.color_hex || payload.extra1 || "#4f6ef7").trim();
     const sortOrder = Number(payload.sortOrder || payload.order || 1);
     const extra3 = String(payload.extra3 || "").trim();
+
+    let finalNameVI = nameVI;
+    let finalNameEN = nameEN;
+    let finalDesc = desc;
+
+    if (type === "PROJECT_CODE") {
+      const yr = String(payload.extra1 || "2026").trim();
+      const seq = String(payload.extra3 || sortOrder || 1).padStart(2, "0");
+      let cleanDesc = desc || nameJP || nameVI || "";
+      cleanDesc = cleanDesc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, "").trim();
+      if (code) cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+
+      const standardProjectName = `${yr}_${seq}_${code}_${cleanDesc}`;
+      finalNameVI = standardProjectName;
+      finalNameEN = standardProjectName;
+      finalDesc = cleanDesc;
+    }
 
     // NẾU LÀ EMPLOYEE: Quản lý nhân sự tập trung, đồng bộ toàn diện và Cascade Update
     if (type === "EMPLOYEE") {
@@ -603,28 +640,28 @@ function saveTaxonomyItem(payload) {
         if (String(data[i][0]) === String(payload.id)) {
           if (isNew) {
             sh.getRange(i + 1, 2, 1, 10).setValues([[
-              type, code, nameVI, nameEN, nameJP, desc, color, sortOrder, status, now
+              type, code, finalNameVI, finalNameEN, nameJP, finalDesc, color, sortOrder, status, now
             ]]);
           } else {
             sh.getRange(i + 1, 2, 1, 7).setValues([[
-              type, code, nameVI, desc, color, nameJP, status
+              type, code, finalNameVI, finalDesc, color, nameJP, status
             ]]);
             sh.getRange(i + 1, 10).setValue(extra3);
           }
           SpreadsheetApp.flush();
           invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
-          writeLog("UPDATE_TAXONOMY", `Cập nhật ${type} [${code}]: ${nameVI}`);
+          writeLog("UPDATE_TAXONOMY", `Cập nhật ${type} [${code}]: ${finalNameVI}`);
           return {
             success: true,
             item: {
               id: payload.id,
               type: type,
               code: code,
-              name: nameVI,
-              name_vi: nameVI,
-              name_en: nameEN,
+              name: finalNameVI,
+              name_vi: finalNameVI,
+              name_en: finalNameEN,
               name_jp: nameJP,
-              desc: desc,
+              desc: finalDesc,
               color: color,
               extra1: color,
               extra2: nameJP,
@@ -641,28 +678,28 @@ function saveTaxonomyItem(payload) {
     const newId = (type.slice(0, 3) + "_" + generateId()).toUpperCase();
     if (isNew) {
       sh.appendRow([
-        newId, type, code, nameVI, nameEN, nameJP, desc, color, sortOrder, status, now
+        newId, type, code, finalNameVI, finalNameEN, nameJP, finalDesc, color, sortOrder, status, now
       ]);
     } else {
       sh.appendRow([
-        newId, type, code, nameVI, desc, color, nameJP, status, now, extra3
+        newId, type, code, finalNameVI, finalDesc, color, nameJP, status, now, extra3
       ]);
     }
 
     SpreadsheetApp.flush();
     invalidateCache([CONFIG.SHEET_TAXONOMY || "TAXONOMY"]);
-    writeLog("ADD_TAXONOMY", `Thêm mới ${type} [${code}]: ${nameVI}`);
+    writeLog("ADD_TAXONOMY", `Thêm mới ${type} [${code}]: ${finalNameVI}`);
     return {
       success: true,
       item: {
         id: newId,
         type: type,
         code: code,
-        name: nameVI,
-        name_vi: nameVI,
-        name_en: nameEN,
+        name: finalNameVI,
+        name_vi: finalNameVI,
+        name_en: finalNameEN,
         name_jp: nameJP,
-        desc: desc,
+        desc: finalDesc,
         color: color,
         extra1: color,
         extra2: nameJP,

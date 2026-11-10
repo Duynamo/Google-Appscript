@@ -106,18 +106,41 @@ function updateProject(payload) {
   const sh=ss.getSheetByName(CONFIG.SHEET_PROJECTS);
   const rows=sh.getDataRange().getValues();
   for (let i=1;i<rows.length;i++) {
-    if (rows[i][0]===payload.id) {
+    if (String(rows[i][0] || "").trim().toLowerCase() === String(payload.id).trim().toLowerCase()) {
       if (user.role==="Manager"&&rows[i][3]!==user.email) return { success:false, error:"Không phải manager" };
+      const oldName = String(rows[i][1] || "");
       if (payload.name    !==undefined) sh.getRange(i+1,2).setValue(payload.name);
       if (payload.desc    !==undefined) sh.getRange(i+1,3).setValue(payload.desc);
       if (payload.manager !==undefined) sh.getRange(i+1,4).setValue(payload.manager);
       if (payload.startDate) sh.getRange(i+1,5).setValue(new Date(payload.startDate));
       if (payload.endDate)   sh.getRange(i+1,6).setValue(new Date(payload.endDate));
       if (payload.status  !==undefined) sh.getRange(i+1,7).setValue(payload.status);
+
+      // Cập nhật lan truyền tên dự án sang sheet TASKS (Cột 3: Project_Name - index 2)
+      if (payload.name && payload.name !== oldName) {
+        const shTasks = ss.getSheetByName(CONFIG.SHEET_TASKS || "TASKS");
+        if (shTasks && shTasks.getLastRow() >= 2) {
+          const tkRows = shTasks.getDataRange().getValues();
+          let tkChanged = false;
+          const targetId = String(payload.id).trim().toLowerCase();
+          for (let k = 1; k < tkRows.length; k++) {
+            const rowPjId = String(tkRows[k][1] || "").trim().toLowerCase();
+            const rowPjName = String(tkRows[k][2] || "").trim();
+            if (rowPjId === targetId || (oldName && rowPjName === oldName)) {
+              tkRows[k][2] = payload.name;
+              tkChanged = true;
+            }
+          }
+          if (tkChanged) {
+            shTasks.getRange(1, 1, tkRows.length, tkRows[0].length).setValues(tkRows);
+          }
+        }
+      }
+
       SpreadsheetApp.flush();
       updateProjectProgress(payload.id);
-      invalidateCache([CONFIG.SHEET_PROJECTS]);
-      writeLog("UPDATE_PROJECT",`Cập nhật DA: ${payload.id}`);
+      invalidateCache([CONFIG.SHEET_PROJECTS, CONFIG.SHEET_TASKS || "TASKS"]);
+      writeLog("UPDATE_PROJECT",`Cập nhật DA: ${payload.id} (Tên mới: ${payload.name || oldName})`);
       return { success:true, message:"Cập nhật thành công" };
     }
   }

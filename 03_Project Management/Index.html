@@ -342,23 +342,36 @@ input[type=range]{width:100%;accent-color:var(--p)}
 .as-combo-box{display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-height:36px;padding:3px 6px;border:1.5px solid var(--bdr);border-radius:7px;background:#fff;cursor:text;transition:.15s}
 .as-combo-box:focus-within{border-color:var(--p);box-shadow:0 0 0 3px rgba(79,110,247,.12)}
 .as-chips{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px}
-.as-chip{display:inline-flex;align-items:center;gap:4px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;padding:2px 6px 2px 4px;border-radius:12px;font-size:11px;font-weight:500;user-select:none;max-width:100%}
+.as-chip{display:inline-flex;align-items:center;gap:4px;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;padding:2px 7px 2px 5px;border-radius:12px;font-size:11px;font-weight:600;user-select:none;max-width:100%}
 .as-chip-av{width:16px;height:16px;border-radius:50%;background:var(--p);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700}
-.as-chip-name{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.as-chip-name{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .as-chip-del{cursor:pointer;color:#6366f1;font-size:12px;font-weight:700;line-height:1;margin-left:2px;border-radius:50%;width:13px;height:13px;display:inline-flex;align-items:center;justify-content:center}
 .as-chip-del:hover{background:#c7d2fe;color:#1e1b4b}
-.as-combo-box .as-combo-inp{border:none!important;box-shadow:none!important;outline:none!important;padding:3px 4px!important;flex:1;min-width:80px;font-size:12px;background:transparent;width:auto}
-.as-combo-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--p);border-top:none;border-radius:0 0 7px 7px;z-index:400;max-height:220px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.12);display:none}
+.as-combo-box .as-combo-inp{border:none!important;box-shadow:none!important;outline:none!important;padding:3px 4px!important;flex:1;min-width:100px;font-size:12px;background:transparent;width:auto}
+.as-combo-arrow{cursor:pointer;color:var(--t3);padding:2px 4px;font-size:11px;user-select:none;transition:.15s;margin-left:auto}
+.as-combo-arrow:hover{color:var(--p)}
+.as-combo-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--p);border-top:none;border-radius:0 0 7px 7px;z-index:400;max-height:240px;overflow-y:auto;box-shadow:0 6px 18px rgba(0,0,0,.12);display:none}
 .as-combo-list.show{display:block}
 .as-opt{padding:7px 10px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.1s}
 .as-opt:hover{background:#f0f4ff;color:var(--p)}
 .as-opt.selected{background:#f0f7ff;font-weight:600;color:var(--p)}
-.as-opt-check{margin-left:auto;color:var(--p);font-size:11px;font-weight:bold;background:#e0e7ff;padding:1px 6px;border-radius:10px}
+.as-opt-check{margin-left:auto;color:var(--p);font-size:10px;font-weight:bold;background:#e0e7ff;padding:1px 6px;border-radius:10px}
 .as-opt-sep{border-top:1px solid var(--bdr)}
 .as-opt-new{color:var(--g);font-weight:600}
 .as-opt-new:hover{background:#f0fff4}
 .as-opt-clear{color:#ef4444;font-size:11px;font-weight:600;border-bottom:1px solid var(--bdr);padding:6px 10px}
 .as-opt-clear:hover{background:#fef2f2}
+
+/* ══ TASK ASSIGNEE CELL IN TABLE ══ */
+.tk-as-cell{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:500;cursor:pointer;transition:.15s;max-width:180px}
+.tk-as-cell.assigned{background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}
+.tk-as-cell.assigned:hover{background:#e0e7ff;border-color:#818cf8;box-shadow:0 1px 4px rgba(79,110,247,.15)}
+.tk-as-cell.empty{background:#f8fafc;color:#94a3b8;border:1px dashed #cbd5e1}
+.tk-as-cell.empty:hover{background:#eff6ff;color:var(--p);border-color:var(--p)}
+.tk-as-ic{font-size:10px;opacity:.7}
+.tk-as-av{width:18px;height:18px;border-radius:50%;background:var(--p);color:#fff;font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.tk-as-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk-as-more{font-size:9px;background:#c7d2fe;color:#1e1b4b;padding:1px 4px;border-radius:8px;font-weight:700;flex-shrink:0}
 
 /* ══ NEW: USER MODE TABS ══ */
 .usr-mode-tabs{display:flex;border:1px solid var(--bdr);border-radius:7px;overflow:hidden;margin-bottom:12px}
@@ -1478,12 +1491,13 @@ input[type=range]{width:100%;accent-color:var(--p)}
       <div class="fg"><label class="fl">Dự Án <span class="req">*</span></label><select class="fc" id="mqtk-pj" onchange="refreshAsCombo('qtk')"></select></div>
       <div class="frow">
         <div class="fg">
-          <label class="fl">Người Thực Hiện</label>
+          <label class="fl">👤 Người Thực Hiện / Phụ Trách</label>
           <div class="as-combo" id="qtk-as-combo">
             <div class="as-combo-box" onclick="focusAsInp('qtk')">
               <div class="as-chips" id="qtk-as-chips"></div>
               <input class="as-combo-inp" id="mqtk-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
                 oninput="showAsCombo('qtk')" onfocus="showAsCombo('qtk')" onkeydown="handleAsKeydown(event, 'qtk')">
+              <span class="as-combo-arrow" onclick="togAsComboDropdown('qtk', event)" title="Mở danh sách nhân sự">▾</span>
             </div>
             <div class="as-combo-list" id="qtk-as-list"></div>
           </div>
@@ -1751,12 +1765,13 @@ input[type=range]{width:100%;accent-color:var(--p)}
         <div class="fg"><label class="fl">Mô tả</label><textarea class="fc" id="tp-ds" placeholder="Mô tả..."></textarea></div>
         <div class="frow">
           <div class="fg">
-            <label class="fl">Người thực hiện</label>
+            <label class="fl">👤 Người thực hiện / Phụ trách</label>
             <div class="as-combo" id="tp-as-combo">
               <div class="as-combo-box" onclick="focusAsInp('tp')">
                 <div class="as-chips" id="tp-as-chips"></div>
                 <input class="as-combo-inp" id="tp-as" placeholder="Chọn hoặc nhập tên..." autocomplete="off"
                   oninput="showAsCombo('tp')" onfocus="showAsCombo('tp')" onkeydown="handleAsKeydown(event, 'tp')">
+                <span class="as-combo-arrow" onclick="togAsComboDropdown('tp', event)" title="Mở danh sách nhân sự">▾</span>
               </div>
               <div class="as-combo-list" id="tp-as-list"></div>
             </div>
@@ -3439,8 +3454,29 @@ function tRole(role) {
   return item[lang] || item['vi'] || role;
 }
 
+// Chuẩn hóa tên mã dự án theo cú pháp: [Năm]_[STT]_[Mã viết tắt]_[Tên đầy đủ]
+function formatStandardProjectCodeName(item) {
+  if (!item) return '';
+  const seqMatch = (item.name || item.name_en || item.desc || '').match(/^(\d{4})[-_](\d{1,3})[-_]([A-Za-z0-9]+)[-_](.*)$/);
+  const yr = item.extra1 || (seqMatch ? seqMatch[1] : '2026');
+  const seq = item.extra3 || (seqMatch ? seqMatch[2] : (item.sortOrder ? String(item.sortOrder) : '01'));
+  const seqPad = String(seq).padStart(2, '0');
+  const code = (item.code || (seqMatch ? seqMatch[3] : '')).toUpperCase().trim();
+  
+  let cleanDesc = item.desc || item.name_jp || item.name_vi || item.name || '';
+  cleanDesc = cleanDesc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+  if (code) {
+    cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+  }
+
+  return `${yr}_${seqPad}_${code}_${cleanDesc}`;
+}
+
 function tTaxonomy(item, lang) {
   if (!item) return "";
+  if (item.type === 'PROJECT_CODE') {
+    return formatStandardProjectCodeName(item);
+  }
   const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
   let text = "";
   if (curLang === 'ja') text = item.name_jp || item.name_en || item.name_vi || item.name || item.code || "";
@@ -3784,8 +3820,22 @@ function localDeleteTask(taskId) {
 function localAddProject(newProject) { S.projects.push(newProject); _refreshUIProjects(); }
 function localUpdateProject(payload) {
   const idx=S.projects.findIndex(p=>p.id===payload.id);
-  if (idx>=0) Object.assign(S.projects[idx], payload);
+  if (idx>=0) {
+    const oldName = S.projects[idx].name;
+    Object.assign(S.projects[idx], payload);
+    if (payload.name && payload.name !== oldName) {
+      (S.tasks || []).forEach(t => {
+        if (t.projectId === payload.id || t.projectName === oldName) {
+          t.projectName = payload.name;
+        }
+      });
+    }
+  }
   _refreshUIProjects();
+  if (typeof popAnalyticsPjOptions === "function") popAnalyticsPjOptions();
+  if (typeof applyAnalyticsFilter === "function" && document.getElementById("page-analytics")?.classList.contains("active")) {
+    applyAnalyticsFilter();
+  }
 }
 function localDeleteProject(id) {
   S.projects = S.projects.filter(p=>p.id!==id);
@@ -4175,28 +4225,178 @@ function renderPtkGrid(tasks) {
     </div>`).join("");
 }
 
-// Helper: get display name from email or raw name (supports comma-separated multiple assignees)
-function _displayName(val) {
+// ═══════════════════════════════════════
+//  ASSIGNEE RESOLVER & DISPLAY HELPERS
+// ═══════════════════════════════════════
+// Helper: Lấy danh sách toàn bộ nhân sự (Gộp USERS + TAXONOMY EMPLOYEES + PROJECT MEMBERS)
+function _getAllAssignees(projectId) {
+  const map = new Map();
+  // 1. S.members (từ USERS sheet)
+  (S.members || []).forEach(m => {
+    const key = (m.email || m.code || m.id || m.name || '').toLowerCase().trim();
+    if (key) {
+      map.set(key, {
+        id: m.id || m.code || '',
+        code: m.code || m.id || '',
+        email: m.email || '',
+        name: m.name || m.email || '',
+        role: m.role || 'Member',
+        rank: m.rank || '',
+        isProjectMember: false
+      });
+    }
+  });
+
+  // 2. S.taxonomy.employees (từ TAXONOMY sheet)
+  const taxEmps = (S.taxonomy && S.taxonomy.employees) || [];
+  taxEmps.forEach(emp => {
+    const empCode = emp.code || emp.id || '';
+    const empEmail = emp.extra1 || '';
+    const empName = emp.name || '';
+    const key = (empEmail || empCode || empName || '').toLowerCase().trim();
+    if (key) {
+      const existing = map.get(key) || (empCode ? map.get(empCode.toLowerCase()) : null) || (empName ? map.get(empName.toLowerCase()) : null);
+      if (existing) {
+        if (!existing.code && empCode) existing.code = empCode;
+        if (!existing.email && empEmail) existing.email = empEmail;
+        if (!existing.name && empName) existing.name = empName;
+        if (!existing.rank && emp.desc) existing.rank = emp.desc;
+      } else {
+        map.set(key, {
+          id: empCode,
+          code: empCode,
+          email: empEmail,
+          name: empName,
+          role: emp.extra3 || 'Member',
+          rank: emp.desc || '',
+          isProjectMember: false
+        });
+      }
+    }
+  });
+
+  // 3. Project members (Thành viên theo từng dự án)
+  const pmems = (projectId && S.projectMembers && S.projectMembers[projectId]) || [];
+  pmems.forEach(pm => {
+    const key = (pm.email || pm.code || pm.id || pm.name || '').toLowerCase().trim();
+    if (key) {
+      const existing = map.get(key) || (pm.email ? map.get(pm.email.toLowerCase()) : null) || (pm.name ? map.get(pm.name.toLowerCase()) : null);
+      if (existing) {
+        existing.isProjectMember = true;
+      } else {
+        map.set(key, {
+          id: pm.id || pm.code || '',
+          code: pm.code || pm.id || '',
+          email: pm.email || '',
+          name: pm.name || pm.email || '',
+          role: pm.role || 'Member',
+          rank: pm.rank || '',
+          isProjectMember: true
+        });
+      }
+    }
+  });
+
+  return Array.from(map.values());
+}
+
+// Helper: Tra cứu thông tin nhân sự theo email, họ tên, mã nhân sự
+function _findMember(query, projectId) {
+  if (!query) return null;
+  const q = String(query).trim().toLowerCase();
+  if (!q || q === '—') return null;
+
+  const all = _getAllAssignees(projectId);
+  // Khớp chính xác email, mã nhân viên, ID hoặc họ tên
+  let found = all.find(m => 
+    (m.email && m.email.toLowerCase() === q) ||
+    (m.name && m.name.toLowerCase() === q) ||
+    (m.code && m.code.toLowerCase() === q) ||
+    (m.id && m.id.toLowerCase() === q)
+  );
+  if (found) return found;
+
+  // Khớp email không kèm tên miền
+  if (q.includes('@')) {
+    const pfx = q.split('@')[0];
+    found = all.find(m => 
+      (m.email && m.email.toLowerCase().split('@')[0] === pfx) ||
+      (m.name && m.name.toLowerCase() === pfx)
+    );
+    if (found) return found;
+  }
+
+  // Khớp chứa họ tên (partial match)
+  found = all.find(m => m.name && (m.name.toLowerCase() === q || m.name.toLowerCase().includes(q) || q.includes(m.name.toLowerCase())));
+  return found || null;
+}
+
+// Helper: Chuyển 1 giá trị (email/mã NV/tên) sang Tên Hiển Thị chuẩn
+function _displayNameSingle(v, projectId) {
+  if (!v) return '';
+  const s = String(v).trim();
+  if (!s || s === '—') return '';
+  const m = _findMember(s, projectId);
+  if (m && m.name) return m.name;
+  if (s.includes('@')) {
+    return s.split('@')[0].replace(/^(member_|user_)/i, '');
+  }
+  return s;
+}
+
+// Helper: Lấy chuỗi Tên Người Đảm Nhận (hỗ trợ nhiều người, chống trùng lặp, tương thích dữ liệu cũ)
+function _displayName(val, projectId) {
   if (!val) return '—';
   const str = String(val).trim();
-  if (!str) return '—';
-  if (str.includes(',')) {
-    return str.split(',')
-      .map(s => _displayNameSingle(s.trim()))
-      .filter(Boolean)
-      .join(', ');
-  }
-  return _displayNameSingle(str);
+  if (!str || str === '—') return '—';
+
+  const parts = str.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+  if (!parts.length) return '—';
+
+  const names = [];
+  const seen = new Set();
+
+  parts.forEach(p => {
+    const name = _displayNameSingle(p, projectId);
+    if (name && name !== '—') {
+      const lower = name.toLowerCase();
+      if (!seen.has(lower)) {
+        seen.add(lower);
+        names.push(name);
+      }
+    }
+  });
+
+  return names.length ? names.join(', ') : '—';
 }
-function _displayNameSingle(v) {
-  if (!v) return '';
-  const m = (S.members || []).find(x => 
-    (x.email && x.email.toLowerCase() === v.toLowerCase()) || 
-    (x.name && x.name.toLowerCase() === v.toLowerCase())
-  );
-  if (m) return m.name;
-  if (v.includes('@')) return v.split('@')[0];
-  return v;
+
+// Helper: Render badge người đảm nhận hiển thị ngoài bảng nhiệm vụ
+function _renderAssigneeCell(assignee, taskId) {
+  const disp = _displayName(assignee);
+  const safeId = String(taskId || '').replace(/'/g, "\\'");
+  if (!disp || disp === '—') {
+    return `<span class="tk-as-cell empty" onclick="event.stopPropagation();openFullTaskEdit('${safeId}')" title="Chưa có người đảm nhận - Bấm để phân công">` +
+      `<span class="tk-as-ic">👤</span>` +
+      `<span class="tk-as-txt">— Chưa gán</span>` +
+    `</span>`;
+  }
+  const names = disp.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+  if (names.length <= 1) {
+    const name = names[0] || disp;
+    const initial = (name || '?').slice(0, 2).toUpperCase();
+    return `<span class="tk-as-cell assigned" onclick="event.stopPropagation();openFullTaskEdit('${safeId}')" title="Người phụ trách: ${name}">` +
+      `<span class="tk-as-av">${initial}</span>` +
+      `<span class="tk-as-name">${name}</span>` +
+    `</span>`;
+  }
+  const first = names[0];
+  const initial = (first || '?').slice(0, 2).toUpperCase();
+  const restCount = names.length - 1;
+  return `<span class="tk-as-cell assigned multi" onclick="event.stopPropagation();openFullTaskEdit('${safeId}')" title="Người phụ trách: ${disp}">` +
+    `<span class="tk-as-av">${initial}</span>` +
+    `<span class="tk-as-name">${first}</span>` +
+    `<span class="tk-as-more">+${restCount}</span>` +
+  `</span>`;
 }
 
 // ═══════════════════════════════════════
@@ -4371,13 +4571,22 @@ function renderChartPriority(tasks) {
 }
 function renderChartStaff(tasks) {
   const ms={};
-  S.members.filter(m=>m.role==="Member"||m.role==="Manager").forEach(m=>{
-    const mt=tasks.filter(t=>{
+  const allStaff = _getAllAssignees();
+  allStaff.forEach(m => {
+    const mt = (tasks || S.tasks).filter(t => {
       if (!t.assignee) return false;
-      const parts = String(t.assignee).split(',').map(s=>s.trim().toLowerCase());
-      return parts.includes(m.email.toLowerCase()) || (m.name && parts.includes(m.name.toLowerCase()));
+      const disp = _displayName(t.assignee).toLowerCase();
+      const mNameLower = (m.name || '').toLowerCase();
+      const mEmailLower = (m.email || '').toLowerCase();
+      const mCodeLower = (m.code || '').toLowerCase();
+      if (mNameLower && disp.includes(mNameLower)) return true;
+      const parts = String(t.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+      return (mEmailLower && parts.includes(mEmailLower)) || (mCodeLower && parts.includes(mCodeLower)) || (mNameLower && parts.includes(mNameLower));
     });
-    if (mt.length>0) { const done=mt.filter(t=>t.status==="Hoàn thành").length; ms[m.name]={total:mt.length,rate:Math.round(done/mt.length*100)}; }
+    if (mt.length > 0) {
+      const done = mt.filter(t => t.status === "Hoàn thành").length;
+      ms[m.name] = { total: mt.length, rate: Math.round(done / mt.length * 100) };
+    }
   });
   const labels=Object.keys(ms).slice(0,8);
   if (!labels.length) return;
@@ -4460,11 +4669,15 @@ function syncTpProgress(val, source) {
   if (pv) pv.textContent = num;
 }
 
-function _getAllAssignees(projectId) {
-  const all = [...(S.members || [])];
-  const pmems = (projectId && S.projectMembers && S.projectMembers[projectId]) || [];
-  pmems.forEach(pm => { if (!all.find(m => m.email === pm.email)) all.push(pm); });
-  return all;
+function togAsComboDropdown(prefix, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const l = document.getElementById(prefix + '-as-list');
+  if (l && l.classList.contains('show')) {
+    hideAsCombo(prefix);
+  } else {
+    focusAsInp(prefix);
+    showAsCombo(prefix);
+  }
 }
 
 function focusAsInp(prefix) {
@@ -4478,40 +4691,54 @@ function renderAsChips(prefix) {
   if (!chipsEl) return;
   const list = _selectedAssignees[prefix] || [];
   chipsEl.innerHTML = list.map((item, idx) => {
-    const name = item.name || item.email;
+    const name = item.name || item.email || item.code || '?';
     const initial = (name || '?').slice(0, 2).toUpperCase();
-    return `<span class="as-chip" title="${name}">` +
+    return `<span class="as-chip" title="${name}${item.role ? ' (' + item.role + ')' : ''}">` +
       `<span class="as-chip-av">${initial}</span>` +
       `<span class="as-chip-name">${name}</span>` +
-      `<span class="as-chip-del" onclick="removeAssignee('${prefix}', ${idx}, event)" title="Xóa">✕</span>` +
+      `<span class="as-chip-del" onclick="removeAssignee('${prefix}', ${idx}, event)" title="Xóa người này">✕</span>` +
       `</span>`;
   }).join('');
   if (inp) {
-    inp.placeholder = list.length ? '+ Thêm...' : 'Chọn hoặc nhập tên...';
+    inp.placeholder = list.length ? '+ Thêm người khác...' : 'Chọn hoặc nhập tên người thực hiện...';
   }
 }
 
-function setAssignees(prefix, rawVal) {
+function setAssignees(prefix, rawVal, projectId) {
   _selectedAssignees[prefix] = [];
   if (rawVal) {
-    const items = Array.isArray(rawVal) ? rawVal : String(rawVal).split(',').map(s => s.trim()).filter(Boolean);
-    const allMembers = S.members || [];
+    const pjId = projectId || (prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value);
+    const items = Array.isArray(rawVal) ? rawVal : String(rawVal).split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+    const seen = new Set();
+
     items.forEach(item => {
       const trimmed = String(item).trim();
-      if (!trimmed) return;
-      const m = allMembers.find(x => 
-        (x.email && x.email.toLowerCase() === trimmed.toLowerCase()) || 
-        (x.name && x.name.toLowerCase() === trimmed.toLowerCase())
-      );
+      if (!trimmed || trimmed === '—') return;
+      const m = _findMember(trimmed, pjId);
       if (m) {
-        if (!_selectedAssignees[prefix].some(a => a.email === m.email)) {
-          _selectedAssignees[prefix].push({ email: m.email, name: m.name });
+        const canonicalKey = (m.code || m.email || m.name).toLowerCase();
+        if (!seen.has(canonicalKey)) {
+          seen.add(canonicalKey);
+          _selectedAssignees[prefix].push({
+            id: m.code || m.id || '',
+            code: m.code || '',
+            email: m.email || '',
+            name: m.name,
+            role: m.role || '',
+            rank: m.rank || ''
+          });
         }
       } else {
-        if (!_selectedAssignees[prefix].some(a => (a.email === trimmed || a.name === trimmed))) {
+        const canonicalKey = trimmed.toLowerCase();
+        if (!seen.has(canonicalKey)) {
+          seen.add(canonicalKey);
           _selectedAssignees[prefix].push({
-            email: trimmed,
-            name: trimmed.includes('@') ? trimmed.split('@')[0] : trimmed
+            id: '',
+            code: '',
+            email: trimmed.includes('@') ? trimmed : '',
+            name: trimmed.includes('@') ? trimmed.split('@')[0].replace(/^(member_|user_)/i, '') : trimmed,
+            role: 'Bên ngoài',
+            rank: ''
           });
         }
       }
@@ -4531,31 +4758,58 @@ function showAsCombo(prefix) {
     ? document.getElementById('mqtk-pj')?.value
     : document.getElementById('tp-pj')?.value;
   const members = _getAllAssignees(pjId);
-  const filtered = q ? members.filter(m => (m.name || '').toLowerCase().includes(q) || (m.email || '').toLowerCase().includes(q)) : members;
+  const filtered = q ? members.filter(m => 
+    (m.name || '').toLowerCase().includes(q) || 
+    (m.email || '').toLowerCase().includes(q) ||
+    (m.code || '').toLowerCase().includes(q) ||
+    (m.role || '').toLowerCase().includes(q)
+  ) : members;
   
   let html = '';
   const selList = _selectedAssignees[prefix] || [];
   if (selList.length > 0) {
-    html += `<div class="as-opt as-opt-clear" onmousedown="clearAllAs('${prefix}', event)"><span style="color:#ef4444;font-size:11px">✕ Bỏ chọn tất cả (${selList.length} người)</span></div>`;
+    html += `<div class="as-opt as-opt-clear" onmousedown="clearAllAs('${prefix}', event)"><span style="color:#ef4444;font-size:11px">✕ Bỏ chọn tất cả (${selList.length} người đang chọn)</span></div>`;
   }
-  if (filtered.length) {
-    html += filtered.map(m => {
-      const isSel = selList.some(a => (a.email && a.email.toLowerCase() === (m.email || '').toLowerCase()) || (a.name && a.name.toLowerCase() === (m.name || '').toLowerCase()));
-      const safeEmail = (m.email || m.name || '').replace(/'/g, "\\'");
-      const safeName = (m.name || '').replace(/'/g, "\\'");
-      return `<div class="as-opt ${isSel ? 'selected' : ''}" onmousedown="toggleAsMember('${prefix}', '${safeEmail}', '${safeName}', event)">` +
-        `<span class="mem-avatar" style="width:20px;height:20px;font-size:9px">${(m.name || '?').slice(0, 2).toUpperCase()}</span>` +
-        `<span style="flex:1">${m.name}</span>` +
-        `<span style="color:var(--t3);font-size:10px">${m.role || ''}</span>` +
-        (isSel ? `<span class="as-opt-check">✓ Đã chọn</span>` : '') +
-        `</div>`;
-    }).join('');
+
+  const pjMembers = filtered.filter(m => m.isProjectMember);
+  const otherMembers = filtered.filter(m => !m.isProjectMember);
+
+  const renderOpt = (m) => {
+    const isSel = selList.some(a => 
+      (m.email && a.email && a.email.toLowerCase() === m.email.toLowerCase()) || 
+      (m.code && a.code && a.code.toLowerCase() === m.code.toLowerCase()) ||
+      (m.name && a.name && a.name.toLowerCase() === m.name.toLowerCase())
+    );
+    const safeEmail = (m.email || m.name || '').replace(/'/g, "\\'");
+    const safeName = (m.name || '').replace(/'/g, "\\'");
+    const initial = (m.name || '?').slice(0, 2).toUpperCase();
+    const tag = m.rank || m.role || (m.code ? `Mã: ${m.code}` : '');
+    return `<div class="as-opt ${isSel ? 'selected' : ''}" onmousedown="toggleAsMember('${prefix}', '${safeEmail}', '${safeName}', event)">` +
+      `<span class="mem-avatar" style="width:22px;height:22px;font-size:9px;background:var(--p);color:#fff">${initial}</span>` +
+      `<div style="flex:1;min-width:0">` +
+        `<div style="font-weight:600;font-size:12px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name}</div>` +
+        (tag ? `<div style="color:var(--t3);font-size:10px">${tag}${m.isProjectMember ? ' • Thành viên DA' : ''}</div>` : '') +
+      `</div>` +
+      (isSel ? `<span class="as-opt-check">✓ Đã chọn</span>` : '') +
+      `</div>`;
+  };
+
+  if (pjMembers.length > 0 && otherMembers.length > 0) {
+    html += `<div style="padding:4px 10px;font-size:10px;font-weight:700;color:var(--p);background:#f8fafc;border-bottom:1px solid var(--bdr)">👥 THÀNH VIÊN DỰ ÁN</div>`;
+    html += pjMembers.map(renderOpt).join('');
+    html += `<div style="padding:4px 10px;font-size:10px;font-weight:700;color:var(--t2);background:#f8fafc;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)">🏢 NHÂN SỰ TOÀN CÔNG TY</div>`;
+    html += otherMembers.map(renderOpt).join('');
+  } else if (filtered.length) {
+    html += filtered.map(renderOpt).join('');
+  } else if (!q) {
+    html += `<div style="padding:16px;text-align:center;color:var(--t3);font-size:11px">Chưa có danh sách nhân sự</div>`;
   }
+
   if (q) {
     const alreadyExact = members.find(m => (m.name || '').toLowerCase() === q || (m.email || '').toLowerCase() === q);
     if (!alreadyExact) {
       const safeQ = q.replace(/'/g, "\\'");
-      html += `<div class="as-opt as-opt-sep as-opt-new" onmousedown="addAsCustom('${prefix}', event)">✚ Dùng tên: "<b>${q}</b>"</div>`;
+      html += `<div class="as-opt as-opt-sep as-opt-new" onmousedown="addAsCustom('${prefix}', event)">✚ Dùng tên mới: "<b>${q}</b>"</div>`;
     }
   }
   list.innerHTML = html;
@@ -4571,14 +4825,28 @@ function toggleAsMember(prefix, email, name, e) {
   if (e) { e.preventDefault(); e.stopPropagation(); }
   if (!_selectedAssignees[prefix]) _selectedAssignees[prefix] = [];
   const list = _selectedAssignees[prefix];
+  const pjId = prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value;
+  const m = _findMember(email || name, pjId);
+  const targetName = (m && m.name) || name || email;
+  const targetEmail = (m && m.email) || (email && email.includes('@') ? email : '');
+  const targetCode = (m && m.code) || '';
+
   const idx = list.findIndex(a => 
-    (email && a.email && a.email.toLowerCase() === email.toLowerCase()) || 
-    (name && a.name && a.name.toLowerCase() === name.toLowerCase())
+    (targetEmail && a.email && a.email.toLowerCase() === targetEmail.toLowerCase()) || 
+    (targetCode && a.code && a.code.toLowerCase() === targetCode.toLowerCase()) ||
+    (targetName && a.name && a.name.toLowerCase() === targetName.toLowerCase())
   );
   if (idx >= 0) {
     list.splice(idx, 1);
   } else {
-    list.push({ email: email || name, name: name || (email && email.includes('@') ? email.split('@')[0] : email) });
+    list.push({
+      id: targetCode,
+      code: targetCode,
+      email: targetEmail,
+      name: targetName,
+      role: (m && m.role) || '',
+      rank: (m && m.rank) || ''
+    });
   }
   renderAsChips(prefix);
   const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
@@ -4593,19 +4861,37 @@ function addAsCustom(prefix, e) {
   if (e) { e.preventDefault(); e.stopPropagation(); }
   const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
   if (!inp) return;
-  const name = inp.value.trim();
-  if (!name) return;
+  const rawText = inp.value.trim();
+  if (!rawText) return;
+
   if (!_selectedAssignees[prefix]) _selectedAssignees[prefix] = [];
   const list = _selectedAssignees[prefix];
   const pjId = prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value;
-  const m = _getAllAssignees(pjId).find(x => (x.name && x.name.toLowerCase() === name.toLowerCase()) || (x.email && x.email.toLowerCase() === name.toLowerCase()));
+  const m = _findMember(rawText, pjId);
+
   if (m) {
-    if (!list.some(a => a.email === m.email)) {
-      list.push({ email: m.email, name: m.name });
+    const key = (m.code || m.email || m.name).toLowerCase();
+    if (!list.some(a => (a.code || a.email || a.name || '').toLowerCase() === key)) {
+      list.push({
+        id: m.code || m.id || '',
+        code: m.code || '',
+        email: m.email || '',
+        name: m.name,
+        role: m.role || '',
+        rank: m.rank || ''
+      });
     }
   } else {
-    if (!list.some(a => a.email === name || a.name === name)) {
-      list.push({ email: name, name: name.includes('@') ? name.split('@')[0] : name });
+    const key = rawText.toLowerCase();
+    if (!list.some(a => (a.name || a.email || '').toLowerCase() === key)) {
+      list.push({
+        id: '',
+        code: '',
+        email: rawText.includes('@') ? rawText : '',
+        name: rawText.includes('@') ? rawText.split('@')[0].replace(/^(member_|user_)/i, '') : rawText,
+        role: 'Bên ngoài',
+        rank: ''
+      });
     }
   }
   inp.value = '';
@@ -4667,19 +4953,44 @@ function ldAsSel(id, sel) {
   (S.members || []).forEach(m=>{ const o=document.createElement("option"); o.value=m.email; o.textContent=`${m.name}(${m.role})`; if(sel&&m.email===sel) o.selected=true; el.appendChild(o); });
 }
 
-// Get raw assignee value (comma-separated string of emails / custom names)
+// Get raw assignee value (chuẩn hóa định dạng chuỗi lưu trữ tương thích cao)
 function _getAssigneeVal(prefix) {
   const inp = document.getElementById(prefix === 'qtk' ? 'mqtk-as' : 'tp-as');
+  const pjId = prefix === 'qtk' ? document.getElementById('mqtk-pj')?.value : document.getElementById('tp-pj')?.value;
   const list = [...(_selectedAssignees[prefix] || [])];
+
   if (inp && inp.value.trim()) {
     const text = inp.value.trim();
-    const m = (S.members || []).find(x => x.name === text || x.email === text);
-    const item = m ? { email: m.email, name: m.name } : { email: text, name: text };
-    if (!list.some(a => a.email === item.email || a.name === item.name)) {
+    const m = _findMember(text, pjId);
+    const item = m ? {
+      id: m.code || m.id || '',
+      code: m.code || '',
+      email: m.email || '',
+      name: m.name,
+      role: m.role || '',
+      rank: m.rank || ''
+    } : {
+      id: '',
+      code: '',
+      email: text.includes('@') ? text : '',
+      name: text.includes('@') ? text.split('@')[0].replace(/^(member_|user_)/i, '') : text,
+      role: 'Bên ngoài',
+      rank: ''
+    };
+    const key = (item.code || item.email || item.name).toLowerCase();
+    if (!list.some(a => (a.code || a.email || a.name || '').toLowerCase() === key)) {
       list.push(item);
     }
   }
-  return list.map(a => a.email || a.name).join(', ');
+
+  const formatted = list.map(a => {
+    if (a.email && a.email.includes('@') && a.name && a.name !== a.email) {
+      return `${a.email}, ${a.name}`;
+    }
+    return a.name || a.email || a.code;
+  }).filter(Boolean);
+
+  return formatted.join(', ');
 }
 
 // ═══════════════════════════════════════
@@ -4955,7 +5266,7 @@ function renderAtGrid(tasks) {
 }
 function filterAtGrid(q) {
   const lq=(q||"").toLowerCase();
-  renderAtGrid(_atTasks.filter(t=>!lq||(t.name||"").toLowerCase().includes(lq)||(t.projectName||"").toLowerCase().includes(lq)||(t.assignee||"").toLowerCase().includes(lq)));
+  renderAtGrid(_atTasks.filter(t=>!lq||(t.name||"").toLowerCase().includes(lq)||(t.projectName||"").toLowerCase().includes(lq)||(t.assignee||"").toLowerCase().includes(lq)||_displayName(t.assignee).toLowerCase().includes(lq)));
 }
 
 // ═══════════════════════════════════════
@@ -5390,7 +5701,7 @@ function renderPgTkGroups(tasks) {
               <tr class="${isOver ? 'row-ov' : ''}">
                 <td><input type="checkbox" ${tk.status === "Hoàn thành" ? "checked" : ""} onchange="toggleTaskDone('${tk.id}', this.checked)"></td>
                 <td style="cursor:pointer;color:var(--p)" onclick="openFullTaskEdit('${tk.id}')"><b>${tk.name || ""}</b>${isOver ? `<br><span style="font-size:9px;color:#ef4444">⚠ ${tStatus('Quá hạn')}</span>` : ""}</td>
-                <td><small>${_displayName(tk.assignee)}</small></td>
+                <td>${_renderAssigneeCell(tk.assignee, tk.id)}</td>
                 <td><span class="badge ${sBadge(tk.status)}">${tStatus(tk.status)}</span></td>
                 <td><span class="badge ${pBadge(tk.priority)}">${tPriority(tk.priority)}</span></td>
                 <td><div class="progc"><div class="pm"><div class="pmb" style="width:${tk.progress || 0}%"></div></div><small>${tk.progress || 0}%</small></div></td>
@@ -5419,7 +5730,8 @@ function filterPgTk() {
   const st = document.getElementById("pt-st")?.value || "";
   const pr = document.getElementById("pt-pr")?.value || "";
   const filtered = (S.tasks || []).filter(tk => {
-    const nameMatch = !q || String(tk.name || "").toLowerCase().includes(q) || String(tk.assignee || "").toLowerCase().includes(q);
+    const dispAs = _displayName(tk.assignee, tk.projectId).toLowerCase();
+    const nameMatch = !q || String(tk.name || "").toLowerCase().includes(q) || String(tk.assignee || "").toLowerCase().includes(q) || dispAs.includes(q);
     const statusMatch = !st || (st === 'Quá hạn' ? isTaskOverdue(tk) : tk.status === st);
     const prioMatch = !pr || tk.priority === pr;
     return nameMatch && statusMatch && prioMatch;
@@ -5557,7 +5869,7 @@ function openFullTaskEdit(taskId) {
   if (!taskId) { openNewFullTask(); return; }
   document.getElementById("task-panel").classList.add("show");
   document.getElementById("tp-id").value = taskId;
-  const existing = S.tasks.find(x => x.id === taskId);
+  const existing = S.tasks.find(x => String(x.id || "").trim() === String(taskId).trim());
   if (existing) fillTpForm(existing);
   else google.script.run.withSuccessHandler(res => { if(res.success) fillTpForm(res.data); }).getTaskDetail(taskId);
 }
@@ -5629,7 +5941,7 @@ function fillTpForm(task) {
   document.getElementById("tp-dl").value = toDateInputVal(task.deadlineRaw || task.deadline);
 
   ldPjSel("tp-pj", task.projectId, false);
-  setAssignees('tp', task.assignee || '');
+  setAssignees('tp', task.assignee || '', task.projectId);
   _currTkReminders = task.reminders || [];
   renderReminders();
   previewLinks();
@@ -5656,7 +5968,7 @@ function saveFullTk() {
     reminders:_currTkReminders,
   };
   if (!payload.name) { toast("Tên không được để trống","error"); return; }
-  const idx=S.tasks.findIndex(t=>t.id===id);
+  const idx=S.tasks.findIndex(t => String(t.id || "").trim() === String(id).trim());
   const fmtD = d => { if(!d) return ""; const p=d.split("-"); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d; };
   if (idx>=0) {
     const existing=S.tasks[idx];
@@ -5675,7 +5987,15 @@ function saveFullTk() {
   toast("Đang lưu...","info");
   closeTaskPanel();
   google.script.run
-    .withSuccessHandler(r=>{ if(r.success) toast(r.message,"success"); else { toast(r.error,"error"); loadApp(); } })
+    .withSuccessHandler(r=>{
+      if (r && r.success) {
+        toast(r.message || "Cập nhật thành công", "success");
+        if (r.task) localUpdateTask(r.task);
+      } else {
+        toast((r && r.error) || "Lỗi lưu dữ liệu", "error");
+        loadApp();
+      }
+    })
     .withFailureHandler(e=>{ toast(e.message||"Lỗi lưu","error"); loadApp(); })
     [id ? "updateTask" : "addTask"](payload);
 }
@@ -5741,9 +6061,10 @@ function popProjectTaxonomySelect(selectedCode) {
   if (!sel) return;
   const cur = selectedCode !== undefined ? selectedCode : sel.value;
   sel.innerHTML = `<option value="">-- ${t('pj_select_code_hint')} --</option>` +
-    ((S.taxonomy && S.taxonomy.projectCodes) || []).filter(c => c.status === 'Active').map(c => `
-      <option value="${c.code}">[${c.code}] ${c.name} ${c.extra2 ? '(' + c.extra2 + ')' : ''}</option>
-    `).join('');
+    ((S.taxonomy && S.taxonomy.projectCodes) || []).filter(c => c.status === 'Active').map(c => {
+      const stdName = (typeof formatStandardProjectCodeName === 'function') ? formatStandardProjectCodeName(c) : c.name;
+      return `<option value="${c.code}">[${c.code}] ${stdName}</option>`;
+    }).join('');
   if (cur) sel.value = cur;
 }
 
@@ -5763,9 +6084,12 @@ function applyProjectNameFromTaxonomy(showToast) {
 
   const item = ((S.taxonomy && S.taxonomy.projectCodes) || []).find(c => c.code === taxCode);
   if (item) {
-    nameInp.value = item.name || `${item.extra1 || '2026'}_${item.extra3 || '01'}_${item.code}_${item.desc || ''}`;
+    const stdName = (typeof formatStandardProjectCodeName === 'function') 
+      ? formatStandardProjectCodeName(item) 
+      : (item.name || `${item.extra1 || '2026'}_${item.extra3 || '01'}_${item.code}_${item.desc || ''}`);
+    nameInp.value = stdName;
     if (descInp) {
-      descInp.value = item.extra2 || "";
+      descInp.value = item.desc || item.name_jp || item.extra2 || "";
     }
     if (showToast) {
       toast(t('pj_name_updated_toast'), 'success');
@@ -5804,9 +6128,24 @@ function editPj(id) {
   const found = ((S.taxonomy && S.taxonomy.projectCodes) || []).find(it => 
     (p.name || "") === it.name ||
     (p.name || "").includes(it.code) ||
-    (it.desc && (p.name || "").includes(it.desc))
+    (p.id && String(p.id).toUpperCase() === String(it.code).toUpperCase()) ||
+    (it.desc && (p.name || "").includes(it.desc)) ||
+    (it.name_jp && (p.name || "").includes(it.name_jp)) ||
+    (it.name_vi && (p.name || "").includes(it.name_vi))
   );
-  if (found) matchedCode = found.code;
+  if (found) {
+    matchedCode = found.code;
+    const isStandard = /^(\d{4})[-_](\d{1,3})[-_]/.test(p.name || "");
+    if (!isStandard) {
+      const stdName = (typeof formatStandardProjectCodeName === 'function') ? formatStandardProjectCodeName(found) : '';
+      if (stdName) {
+        document.getElementById("mpj-nm").value = stdName;
+        if (!document.getElementById("mpj-ds").value) {
+          document.getElementById("mpj-ds").value = found.desc || found.name_jp || p.name;
+        }
+      }
+    }
+  }
 
   popProjectTaxonomySelect(matchedCode);
   openModal("m-pj");
@@ -6217,7 +6556,7 @@ function openTkMod(taskId, defaultPjId, initialTab) {
   if (taskId) {
     if (tabsWrap) tabsWrap.style.display = "none";
     switchQtkTab('single');
-    const t = S.tasks.find(x => x.id === taskId);
+    const t = S.tasks.find(x => String(x.id || "").trim() === String(taskId).trim());
     if (t) {
       document.getElementById("mqtk-nm").value = t.name || "";
       document.getElementById("mqtk-st").value = t.status || "Chờ thực hiện";
@@ -6225,7 +6564,7 @@ function openTkMod(taskId, defaultPjId, initialTab) {
       document.getElementById("mqtk-sd").value = toDateInputVal(t.startRaw || t.startDate);
       document.getElementById("mqtk-dl").value = toDateInputVal(t.deadlineRaw || t.deadline);
       ldPjSel("mqtk-pj", t.projectId || defaultPjId || "");
-      setAssignees('qtk', t.assignee || "");
+      setAssignees('qtk', t.assignee || "", t.projectId || defaultPjId || "");
 
       // Parse existing prefix e.g. [MD-DD-MD04] or [M3-BD-AR] or [M3-AR]
       const prefixMatch = (t.name || "").match(/^\[([A-Z0-9_\-]+)\]/i);
@@ -6834,12 +7173,13 @@ function popAnalyticsPjOptions() {
 
 function buildAnalyticsStaffList() {
   const c = document.getElementById('an-staff-checklist');
-  if (!c || !S.members || !S.members.length) return;
-  c.innerHTML = S.members.map(m => `
+  const staffList = (typeof _getAllAssignees === 'function') ? _getAllAssignees() : (S.members || []);
+  if (!c || !staffList.length) return;
+  c.innerHTML = staffList.map(m => `
     <label class="staff-cb-row">
-      <input type="checkbox" class="an-staff-cb" value="${m.email}" checked>
-      <span style="flex:1">${m.name || m.email}</span>
-      <span style="font-size:10px;color:var(--t3)">${tRole(m.role)}</span>
+      <input type="checkbox" class="an-staff-cb" value="${m.email || m.code || m.name}" checked>
+      <span style="flex:1">${m.name || m.email || m.code}</span>
+      <span style="font-size:10px;color:var(--t3)">${tRole ? tRole(m.role) : (m.role || '')}</span>
     </label>`).join('');
   document.querySelectorAll('.an-staff-cb').forEach(cb => cb.addEventListener('change', syncAnStaffAllCheckbox));
   _anStaffInited = true;
@@ -6883,8 +7223,9 @@ function updateAnStaffFilterLabel() {
   } else if (checked.length === 0) {
     lbl.textContent = '👤 ' + (S.lang === 'ja' ? '未選択' : (S.lang === 'en' ? 'No staff selected' : 'Chưa chọn'));
   } else if (checked.length === 1) {
-    const m = S.members.find(x => x.email === checked[0].value);
-    lbl.textContent = '👤 ' + (m ? m.name : checked[0].value);
+    const val = checked[0].value;
+    const m = (typeof _findMember === 'function') ? _findMember(val) : (S.members || []).find(x => x.email === val || x.code === val || x.name === val);
+    lbl.textContent = '👤 ' + (m ? m.name : val);
   } else {
     lbl.textContent = '👤 ' + t('an_comparing_members', { n: checked.length });
   }
@@ -6990,14 +7331,28 @@ function getFilteredAnalyticsTasks() {
   const selectedStaff = getAnSelectedStaff();
 
   return S.tasks.filter(tk => {
-    if (pjId && pjId !== 'all' && tk.projectId !== pjId) return false;
+    if (pjId && pjId !== 'all') {
+      const pjObj = (S.projects || []).find(p => p.id === pjId);
+      const pjName = pjObj ? pjObj.name : "";
+      const matchId = tk.projectId && (String(tk.projectId).trim().toLowerCase() === String(pjId).trim().toLowerCase());
+      const matchName = pjName && (
+        String(tk.projectName || "").trim().toLowerCase() === pjName.trim().toLowerCase() ||
+        String(tk.projectName || "").toLowerCase().includes(pjName.toLowerCase()) ||
+        pjName.toLowerCase().includes(String(tk.projectName || "").toLowerCase())
+      );
+      if (!matchId && !matchName) return false;
+    }
 
     if (selectedStaff && selectedStaff.length > 0) {
       if (!tk.assignee) return false;
-      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+      const disp = _displayName(tk.assignee).toLowerCase();
+      const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
       const matches = selectedStaff.some(em => {
-        const m = S.members.find(x => x.email === em);
-        return parts.includes(em.toLowerCase()) || (m && m.name && parts.includes(m.name.toLowerCase()));
+        const m = (typeof _findMember === 'function') ? _findMember(em) : (S.members || []).find(x => x.email === em || x.code === em || x.name === em);
+        const mName = (m && m.name ? m.name.toLowerCase() : "");
+        const mCode = (m && m.code ? m.code.toLowerCase() : "");
+        const emLower = String(em).toLowerCase();
+        return parts.includes(emLower) || (mName && (disp.includes(mName) || parts.includes(mName))) || (mCode && parts.includes(mCode));
       });
       if (!matches) return false;
     }
@@ -7024,9 +7379,9 @@ function applyAnalyticsFilter() {
   const filteredTasks = getFilteredAnalyticsTasks();
   const selectedStaff = getAnSelectedStaff();
   
-  let targetMembers = [...S.members];
+  let targetMembers = (typeof _getAllAssignees === 'function') ? _getAllAssignees() : [...(S.members || [])];
   if (selectedStaff && selectedStaff.length > 0) {
-    targetMembers = targetMembers.filter(m => selectedStaff.includes(m.email));
+    targetMembers = targetMembers.filter(m => selectedStaff.includes(m.email) || selectedStaff.includes(m.code) || selectedStaff.includes(m.name));
   }
 
   const distinctMembers = new Set();
@@ -7037,7 +7392,7 @@ function applyAnalyticsFilter() {
   filteredTasks.forEach(tk => {
     if (tk.projectId) distinctPjs.add(tk.projectId);
     if (tk.assignee) {
-      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
+      const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
       parts.forEach(p => distinctMembers.add(p));
     }
     if (tk.status === 'Hoàn thành') {
@@ -7082,12 +7437,15 @@ function renderAnalyticsCharts(tasks, members) {
   });
 
   const memberStats = members.map(m => {
-    const mEmail = m.email.toLowerCase();
+    const mEmail = (m.email || '').toLowerCase();
     const mName = (m.name || '').toLowerCase();
+    const mCode = (m.code || '').toLowerCase();
     const mTasks = tasks.filter(tk => {
       if (!tk.assignee) return false;
-      const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
-      return parts.includes(mEmail) || (mName && parts.includes(mName));
+      const disp = _displayName(tk.assignee).toLowerCase();
+      if (mName && disp.includes(mName)) return true;
+      const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+      return (mEmail && parts.includes(mEmail)) || (mCode && parts.includes(mCode)) || (mName && parts.includes(mName));
     });
 
     const done = mTasks.filter(tk => tk.status === 'Hoàn thành').length;
@@ -7219,7 +7577,8 @@ function renderAnalyticsCharts(tasks, members) {
   if (cPjShareEl) {
     const pjMap = {};
     tasks.forEach(tk => {
-      const pName = tk.projectName || (S.projects.find(p => p.id === tk.projectId)?.name) || tk.projectId || 'Dự án khác';
+      const pObj = (S.projects || []).find(p => p.id === tk.projectId || (p.name && tk.projectName && (p.name === tk.projectName || p.name.includes(tk.projectName) || tk.projectName.includes(p.name))));
+      const pName = (pObj && pObj.name) || tk.projectName || tk.projectId || 'Dự án khác';
       pjMap[pName] = (pjMap[pName] || 0) + 1;
     });
 
@@ -7253,15 +7612,22 @@ function renderAnalyticsCharts(tasks, members) {
   if (cTrendEl) {
     const pjStats = {};
     tasks.forEach(tk => {
-      const pName = tk.projectName || (S.projects.find(p => p.id === tk.projectId)?.name) || tk.projectId;
+      const pObj = (S.projects || []).find(p => p.id === tk.projectId || (p.name && tk.projectName && (p.name === tk.projectName || p.name.includes(tk.projectName) || tk.projectName.includes(p.name))));
+      const pName = (pObj && pObj.name) || tk.projectName || tk.projectId;
       if (!pName) return;
       if (!pjStats[pName]) pjStats[pName] = {};
       
       let assignedMember = 'Chưa gán';
       if (tk.assignee) {
-        const parts = String(tk.assignee).split(',').map(s => s.trim().toLowerCase());
-        const found = members.find(m => parts.includes(m.email.toLowerCase()) || (m.name && parts.includes(m.name.toLowerCase())));
+        const parts = String(tk.assignee).split(/[,;\n]+/).map(s => s.trim().toLowerCase());
+        const found = members.find(m => {
+          const em = (m.email || '').toLowerCase();
+          const nm = (m.name || '').toLowerCase();
+          const cd = (m.code || '').toLowerCase();
+          return (em && parts.includes(em)) || (cd && parts.includes(cd)) || (nm && parts.includes(nm));
+        });
         if (found) assignedMember = found.name || found.email;
+        else if (typeof _displayName === 'function') assignedMember = _displayName(tk.assignee);
       }
       pjStats[pName][assignedMember] = (pjStats[pName][assignedMember] || 0) + 1;
     });
@@ -7564,9 +7930,7 @@ function renderTaxonomyTable() {
       extraDisplay = `<span style="font-size:11px;color:var(--t2)">${item.extra2}</span>`;
     }
 
-    const nameVI = item.name_vi || item.name || '';
-    const nameEN = item.name_en || '';
-    const nameJP = item.name_jp || item.extra2 || '';
+    const nameJP = item.name_jp || item.extra2 || item.desc || '';
 
     return `
       <tr>
@@ -7578,15 +7942,8 @@ function renderTaxonomyTable() {
         </td>
         <td>
           <div style="font-weight:700;color:var(--tx);font-size:13px">${tTaxonomy(item)}</div>
-          ${(_activeTaxSubTab !== 'EMPLOYEE' && (nameVI || nameEN || nameJP)) ? `
-            <div style="display:flex;gap:6px;margin-top:3px;flex-wrap:wrap;font-size:10px">
-              ${nameVI ? `<span class="badge" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:10px" title="Tiếng Việt">🇻🇳 ${nameVI}</span>` : ''}
-              ${nameEN ? `<span class="badge" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;font-size:10px" title="English">🇺🇸 ${nameEN}</span>` : ''}
-              ${nameJP ? `<span class="badge" style="background:#fdf2f8;color:#9d174d;border:1px solid #fbcfe8;font-size:10px" title="日本語">🇯🇵 ${nameJP}</span>` : ''}
-            </div>
-          ` : ''}
         </td>
-        <td style="font-size:12px;color:var(--t2);max-width:300px;line-height:1.4">${item.desc || '-'}</td>
+        <td style="font-size:12px;color:var(--t2);max-width:300px;line-height:1.4">${_activeTaxSubTab === 'PROJECT_CODE' ? (item.desc || nameJP || '-') : (item.desc || '-')}</td>
         <td>${extraDisplay}</td>
         <td>${statusBadge}</td>
         <td>
@@ -7623,9 +7980,11 @@ function syncTaxProjectName() {
   if (nameInp) {
     const parts = [];
     if (yr) parts.push(yr);
-    if (seq) parts.push(seq);
+    if (seq) parts.push(String(seq).padStart(2, '0'));
     if (code) parts.push(code);
-    if (desc) parts.push(desc);
+    let cleanDesc = desc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+    if (code) cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+    if (cleanDesc) parts.push(cleanDesc);
     nameInp.value = parts.join('_');
   }
   updateTaxPreview();
@@ -7676,16 +8035,21 @@ function openTaxonomyMod(id) {
         const pjcName = document.getElementById('mtax-pjc-name');
         const pjcExtra2 = document.getElementById('mtax-pjc-extra2');
 
-        const seqMatch = (item.name || '').match(/^(\d{4})[-_](\d{1,3})[-_]/);
+        const seqMatch = (item.name || item.name_en || item.desc || '').match(/^(\d{4})[-_](\d{1,3})[-_]([A-Za-z0-9]+)[-_](.*)$/);
         const yr = item.extra1 || (seqMatch ? seqMatch[1] : new Date().getFullYear().toString());
-        const seq = item.extra3 || (seqMatch ? seqMatch[2] : '01');
+        const seq = item.extra3 || (seqMatch ? seqMatch[2] : (item.sortOrder ? String(item.sortOrder) : '01'));
+        const code = item.code || (seqMatch ? seqMatch[3] : '');
+
+        let cleanDesc = item.desc || item.name_jp || item.name_vi || '';
+        cleanDesc = cleanDesc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+        if (code) cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
 
         if (pjcYear) pjcYear.value = yr;
         if (pjcSeq) pjcSeq.value = String(seq).padStart(2, '0');
-        if (pjcCode) pjcCode.value = item.code || '';
-        if (pjcDesc) pjcDesc.value = item.desc || '';
-        if (pjcExtra2) pjcExtra2.value = item.extra2 || '';
-        if (pjcName) pjcName.value = item.name || '';
+        if (pjcCode) pjcCode.value = code;
+        if (pjcDesc) pjcDesc.value = cleanDesc;
+        if (pjcExtra2) pjcExtra2.value = item.extra2 || item.name_jp || '';
+        if (pjcName) pjcName.value = formatStandardProjectCodeName(item);
       } else {
         codeInp.value = item.code || '';
         if (orderInp) orderInp.value = item.sortOrder || 1;
@@ -7887,18 +8251,24 @@ function submitTaxonomyItem() {
     extra3 = (document.getElementById('mtax-pjc-seq')?.value || '').trim();
     code = (document.getElementById('mtax-pjc-code')?.value || '').trim().toUpperCase();
     desc = (document.getElementById('mtax-pjc-desc')?.value || '').trim();
-    name = (document.getElementById('mtax-pjc-name')?.value || '').trim();
     extra2 = (document.getElementById('mtax-pjc-extra2')?.value || '').trim();
-    name_vi = desc;
-    name_en = name;
-    name_jp = extra2;
     sortOrder = parseInt(extra3, 10) || 1;
 
     if (!extra1) { toast("Vui lòng nhập năm triển khai", "error"); return; }
     if (!extra3) { toast("Vui lòng nhập số thứ tự (STT)", "error"); return; }
     if (!code) { toast("Vui lòng nhập mã viết tắt", "error"); return; }
     if (!desc) { toast("Vui lòng nhập tên đầy đủ dự án", "error"); return; }
-    if (!name) name = `${extra1}_${extra3}_${code}_${desc}`;
+
+    const seqPad = String(extra3).padStart(2, '0');
+    let cleanDesc = desc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+    if (code) cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+
+    const standardProjectName = `${extra1}_${seqPad}_${code}_${cleanDesc}`;
+    name = standardProjectName;
+    name_vi = standardProjectName; // Tên phân loại chuẩn: Năm_STT_Mã_Tên đầy đủ
+    name_en = standardProjectName;
+    name_jp = extra2 || cleanDesc;
+    desc = cleanDesc;
   } else {
     code = (document.getElementById('mtax-code')?.value || '').trim().toUpperCase();
     name_vi = (document.getElementById('mtax-name-vi')?.value || document.getElementById('mtax-name')?.value || '').trim();

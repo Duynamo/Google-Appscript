@@ -149,11 +149,45 @@ function cascadeUpdateStaffCode(oldStaffCode, newStaffCode, staffEmail, newName)
       }
     }
 
+    // 6. Cập nhật bảng TASKS (Cột 6: Người Thực Hiện - index 5)
+    const shTasks = ss.getSheetByName(CONFIG.SHEET_TASKS || "TASKS");
+    if (shTasks && shTasks.getLastRow() >= 2) {
+      const tkData = shTasks.getDataRange().getValues();
+      let tkChanged = false;
+      for (let i = 1; i < tkData.length; i++) {
+        const asgn = String(tkData[i][5] || "");
+        if (!asgn) continue;
+        let parts = asgn.split(',').map(s => s.trim()).filter(Boolean);
+        let changedRow = false;
+        parts = parts.map(p => {
+          const pUpper = p.toUpperCase();
+          const pLower = p.toLowerCase();
+          if (pUpper === srcCode) {
+            changedRow = true;
+            return dstCode;
+          }
+          if (targetEmail && pLower === targetEmail) {
+            changedRow = true;
+            return newName ? `${targetEmail}, ${newName}` : targetEmail;
+          }
+          return p;
+        });
+        if (changedRow) {
+          tkData[i][5] = parts.join(', ');
+          tkChanged = true;
+        }
+      }
+      if (tkChanged) {
+        shTasks.getRange(1, 1, tkData.length, tkData[0].length).setValues(tkData);
+      }
+    }
+
     SpreadsheetApp.flush();
     invalidateCache([
       CONFIG.SHEET_USERS || "USERS",
       CONFIG.SHEET_TAXONOMY || "TAXONOMY",
       CONFIG.SHEET_PROJECTS || "PROJECTS",
+      CONFIG.SHEET_TASKS || "TASKS",
       "TIMESHEET_2026",
       "TIMESHEET_DAILY_ROLLUP"
     ]);

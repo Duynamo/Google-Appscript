@@ -105,10 +105,12 @@ function updateTask(payload) {
   const sh = ss.getSheetByName(CONFIG.SHEET_TASKS);
   const rows = sh.getDataRange().getValues();
 
+  const targetId = String(payload.id).trim().toLowerCase();
   for (let i = 1; i < rows.length; i++) {
-    if (rows[i][0] === payload.id) {
+    const rowId = String(rows[i][0] || "").trim().toLowerCase();
+    if (rowId === targetId) {
       const canMg = hasPermission(user.role, "manage_tasks");
-      const isAssignee = userMatchesAssignee(rows[i][5], user.email, user.name);
+      const isAssignee = userMatchesAssignee(rows[i][5], user.email, user.name, user.staffCode);
 
       if (user.role === "Member" && !isAssignee)
         return { success:false, error:"Không có quyền cập nhật task này" };
@@ -124,8 +126,8 @@ function updateTask(payload) {
         if (payload.reminders    !== undefined) sh.getRange(i+1, 19).setValue(JSON.stringify(payload.reminders));
       } else if (canMg) {
         if (user.role === "Manager") {
-          const pj = getSheetData(CONFIG.SHEET_PROJECTS).find(p => p[0] === rows[i][1]);
-          if (pj && pj[3] !== user.email && !userMatchesAssignee(rows[i][5], user.email, user.name)) {
+          const pj = getSheetData(CONFIG.SHEET_PROJECTS).find(p => String(p[0] || "").trim().toLowerCase() === String(rows[i][1] || "").trim().toLowerCase());
+          if (pj && pj[3] !== user.email && !userMatchesAssignee(rows[i][5], user.email, user.name, user.staffCode)) {
             return { success:false, error:"Không có quyền quản lý task của dự án này" };
           }
         }
@@ -145,6 +147,21 @@ function updateTask(payload) {
         if (payload.progress  !== undefined) sh.getRange(i+1, 11).setValue(payload.progress);
         set(12, payload.note); set(16, payload.target); set(17, payload.linkResults); set(18, payload.outputResult);
         if (payload.reminders !== undefined) sh.getRange(i+1, 19).setValue(JSON.stringify(payload.reminders));
+
+        if (payload.assignee && payload.assignee !== rows[i][5]) {
+          const rawList = String(payload.assignee).split(',').map(s => s.trim()).filter(Boolean);
+          const allUsers = getSheetData(CONFIG.SHEET_USERS);
+          rawList.forEach(item => {
+            let email = item;
+            if (!email.includes("@")) {
+              const u = allUsers.find(r => r[2] && r[2].toLowerCase() === item.toLowerCase());
+              if (u && u[1]) email = u[1];
+            }
+            if (email && email !== user.email && email.includes("@") && !email.endsWith(".local")) {
+              sendAssignmentEmail(email, payload.name || rows[i][3], rows[i][2], payload.deadline);
+            }
+          });
+        }
       } else {
         return { success:false, error:"Không có quyền" };
       }
@@ -155,7 +172,11 @@ function updateTask(payload) {
       updateProjectProgress(pjId);
       invalidateCache([CONFIG.SHEET_TASKS, CONFIG.SHEET_PROJECTS]);
       writeLog("UPDATE_TASK", `Cập nhật task: ${payload.id}`);
-      return { success:true, message:"Cập nhật thành công" };
+
+      // Lấy toàn bộ dòng vừa cập nhật để phản hồi ngay lập tức cho client
+      const updatedRow = sh.getRange(i+1, 1, 1, 20).getValues()[0];
+      const mappedTask = (typeof mapTaskFull === "function") ? mapTaskFull(updatedRow) : null;
+      return { success:true, message:"Cập nhật thành công", id:payload.id, task:mappedTask };
     }
   }
   return { success:false, error:"Không tìm thấy" };

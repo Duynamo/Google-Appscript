@@ -396,11 +396,16 @@ function writeLog(action, detail) {
   } catch(e) {}
 }
 
-function userMatchesAssignee(assigneeStr, userEmail, userName) {
+function userMatchesAssignee(assigneeStr, userEmail, userName, staffCode) {
   if (!assigneeStr) return false;
   const list = String(assigneeStr).split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-  if (userEmail && list.includes(String(userEmail).toLowerCase())) return true;
-  if (userName && list.includes(String(userName).toLowerCase())) return true;
+  if (userEmail && list.includes(String(userEmail).toLowerCase().trim())) return true;
+  if (userName && list.includes(String(userName).toLowerCase().trim())) return true;
+  if (staffCode && list.includes(String(staffCode).toLowerCase().trim())) return true;
+  if (userName) {
+    const unLower = String(userName).toLowerCase().trim();
+    if (list.some(item => item === unLower || (item.length > 2 && (unLower.includes(item) || item.includes(unLower))))) return true;
+  }
   return false;
 }
 
@@ -465,7 +470,14 @@ function getInitData() {
 
   const mappedProjects = projects.map(r=>mapProject(r));
   const mappedTasks    = tasks.sort((a,b)=>(Number(a[19])||999)-(Number(b[19])||999)).map(t=>mapTaskFull(t));
-  const members        = allUsers.filter(r=>r[4]==="Active").map(r=>({email:r[1],name:r[2],role:r[3]}));
+  const members        = allUsers.filter(r=>r[4]==="Active").map(r=>({
+    id: r[0],
+    code: r[0],
+    email: r[1] || "",
+    name: r[2] || (r[1] ? r[1].split('@')[0] : r[0]),
+    role: r[3] || "Member",
+    rank: r[6] || ""
+  }));
 
   const taskByStatus = {};
   CONFIG.TASK_STATUS.forEach(s=>taskByStatus[s]=0);

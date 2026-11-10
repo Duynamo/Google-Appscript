@@ -1365,8 +1365,29 @@ function tRole(role) {
   return item[lang] || item['vi'] || role;
 }
 
+// Chuẩn hóa tên mã dự án theo cú pháp: [Năm]_[STT]_[Mã viết tắt]_[Tên đầy đủ]
+function formatStandardProjectCodeName(item) {
+  if (!item) return '';
+  const seqMatch = (item.name || item.name_en || item.desc || '').match(/^(\d{4})[-_](\d{1,3})[-_]([A-Za-z0-9]+)[-_](.*)$/);
+  const yr = item.extra1 || (seqMatch ? seqMatch[1] : '2026');
+  const seq = item.extra3 || (seqMatch ? seqMatch[2] : (item.sortOrder ? String(item.sortOrder) : '01'));
+  const seqPad = String(seq).padStart(2, '0');
+  const code = (item.code || (seqMatch ? seqMatch[3] : '')).toUpperCase().trim();
+  
+  let cleanDesc = item.desc || item.name_jp || item.name_vi || item.name || '';
+  cleanDesc = cleanDesc.replace(/^(\d{4})[-_](\d{1,3})[-_][A-Za-z0-9]+[-_]/i, '').trim();
+  if (code) {
+    cleanDesc = cleanDesc.replace(new RegExp('^' + code + '[-_\\s]+', 'i'), '').trim();
+  }
+
+  return `${yr}_${seqPad}_${code}_${cleanDesc}`;
+}
+
 function tTaxonomy(item, lang) {
   if (!item) return "";
+  if (item.type === 'PROJECT_CODE') {
+    return formatStandardProjectCodeName(item);
+  }
   const curLang = lang || ((typeof S !== 'undefined' && S.lang) ? S.lang : 'vi');
   let text = "";
   if (curLang === 'ja') text = item.name_jp || item.name_en || item.name_vi || item.name || item.code || "";
